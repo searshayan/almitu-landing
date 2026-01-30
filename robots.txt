@@ -1,0 +1,10 @@
+# almitu - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.almitu.com/sitemap.xml
+
+# Disallow specific paths (add as needed)
+# Disallow: /admin/
+# Disallow: /private/
