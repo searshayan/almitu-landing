@@ -1,0 +1,5 @@
+# Netlify redirects
+
+# Keep internal database migrations out of the public site.
+# They live in the repo for version control, but must not be fetchable.
+/supabase/*   /404.html   404

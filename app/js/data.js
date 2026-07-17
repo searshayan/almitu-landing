@@ -139,6 +139,22 @@ async function dataListTutorSessions(tutorId) {
   return data || [];
 }
 
+/* Set (or clear) the Google Meet link on a live session. */
+async function dataSetMeetLink(id, link) {
+  return dataUpdateSession(id, { meet_link: link });
+}
+
+/* Student: the tutor's currently-running session for this student, if any.
+   Polled by the student dashboard so "Join the Session" can light up. */
+async function dataGetLiveSessionForStudent(studentId) {
+  const c = requireSb();
+  const { data, error } = await c.from('sessions').select(SESSION_SELECT)
+    .eq('student_id', studentId).eq('status', 'live')
+    .order('created_at', { ascending: false }).limit(1);
+  throwIf(error, 'getLiveSessionForStudent');
+  return (data && data[0]) || null;
+}
+
 /* Student (or admin View-as): completed sessions belonging to a student. */
 async function dataListStudentSessions(studentId) {
   const c = requireSb();
@@ -147,6 +163,31 @@ async function dataListStudentSessions(studentId) {
     .order('created_at', { ascending: false });
   throwIf(error, 'listStudentSessions');
   return data || [];
+}
+
+/* ─────────────── session_plans (the tutor's reusable library) ───────────────
+   A plan is student-agnostic: generated once, reusable for any number of
+   students. A `sessions` row is one delivery of a plan to one student. */
+
+async function dataListPlans(tutorId) {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans').select('*')
+    .eq('tutor_id', tutorId).order('created_at', { ascending: false });
+  throwIf(error, 'listPlans');
+  return data || [];
+}
+
+async function dataCreatePlan(row) {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans').insert(row).select('*').single();
+  throwIf(error, 'createPlan');
+  return data;
+}
+
+async function dataDeletePlan(id) {
+  const c = requireSb();
+  const { error } = await c.from('session_plans').delete().eq('id', id);
+  throwIf(error, 'deletePlan');
 }
 
 /* ─────────────── app settings (AI engine config) ─────────────── */

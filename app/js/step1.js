@@ -448,6 +448,10 @@ async function generatePlan() {
     st.generation.fingerprint = fingerprint;
     st.generation.stale = false;
 
+    // This is brand-new content — unlink it from any library plan that was
+    // loaded before, so saving/starting creates a NEW library entry.
+    if (window.tutorState) { tutorState.currentPlanId = null; tutorState.currentSessionId = null; }
+
     stopLoadingAnim();
     if (result.warning) showToast(result.warning, 'warn');
     setTimeout(() => {
@@ -544,11 +548,6 @@ function updateEditButton() {
   btn.style.background = _editMode ? 'var(--success)' : 'white';
   btn.style.color = _editMode ? 'white' : 'var(--ink)';
   btn.style.borderColor = _editMode ? 'var(--success)' : 'var(--line)';
-}
-
-function launchFromPreview() {
-  if (_editMode) savePvEdit();
-  launchCall();
 }
 
 /* Once a session is launched, wipe the prep surface so the tutor returns to a

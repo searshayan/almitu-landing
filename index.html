@@ -43,20 +43,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    
-    <!-- Almitu auth buttons → app at /app -->
-<div style="display:flex; gap:12px; align-items:center;">
-  <a href="/app/?mode=signin"
-     style="font-family:Inter,system-ui,sans-serif; font-weight:600; font-size:14px; text-decoration:none; padding:10px 20px; border-radius:12px; color:#004E89; border:1.5px solid #004E89; background:#fff;">
-    Sign in
-  </a>
-  <a href="/app/?mode=signup"
-     style="font-family:Inter,system-ui,sans-serif; font-weight:600; font-size:14px; text-decoration:none; padding:10px 20px; border-radius:12px; color:#fff; background:linear-gradient(135deg,#FF6B35,#E85A2A); box-shadow:0 4px 14px rgba(255,107,53,.3);">
-    Create account
-  </a>
-</div>
-   <!-- Almitu auth buttons → app at /app --> 
-    
   </head>
 
   <body>
@@ -76,8 +62,8 @@
             <li><a href="#solution">For Learners</a></li>
             <li><a href="#solution">For Tutors</a></li>
             <li><a href="blog.html">Blog</a></li>
-            <li><a href="https://forms.gle/fEbpuxFvx3N8Rh2eA" target="_blank" rel="noopener noreferrer"
-                class="nav-cta">Join Early Access</a></li>
+            <li><a href="/app/?mode=signin">Sign In</a></li>
+            <li><a href="/app/?mode=signup" class="nav-cta">Create Account</a></li>
           </ul>
         </nav>
       </div>
@@ -100,9 +86,8 @@
             </p>
 
             <div class="cta-row">
-              <a class="btn btn-primary" href="https://forms.gle/fEbpuxFvx3N8Rh2eA" target="_blank"
-                rel="noopener noreferrer">
-                Join the Early Access List
+              <a class="btn btn-primary" href="/app/?mode=signup">
+                Create Account
                 <span aria-hidden="true">→</span>
               </a>
               <a class="btn btn-secondary" href="#how">
@@ -520,19 +505,21 @@
         style="padding:120px 0; background: linear-gradient(135deg, rgba(255,107,53,.06), rgba(0,78,137,.04));">
         <div class="container">
           <div class="section-head">
-            <span class="kicker">Early Access</span>
-            <h2>Be among the first to experience almitu</h2>
+            <span class="kicker">Get Started</span>
+            <h2>Start learning with almitu</h2>
             <p class="muted">
-              Launching Q1 2026 with limited pilot spots.<br>
-              Join the waitlist and get exclusive launch pricing.
+              Create your free account in under a minute.<br>
+              Get matched with a tutor and book your first 25-minute session.
             </p>
           </div>
 
-          <div style="display:flex; justify-content:center;">
-            <a class="btn btn-primary" href="https://forms.gle/fEbpuxFvx3N8Rh2eA" target="_blank"
-              rel="noopener noreferrer" style="font-size:19px; padding:20px 44px;">
-              Join the Early Access List
+          <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="/app/?mode=signup" style="font-size:19px; padding:20px 44px;">
+              Create Account
               <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn-secondary" href="/app/?mode=signin" style="font-size:19px; padding:20px 44px;">
+              Sign In
             </a>
           </div>
         </div>

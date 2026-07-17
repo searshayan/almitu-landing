@@ -979,8 +979,29 @@ footer {
     padding: 28px 24px;
   }
 
-  .nav-links li:not(:last-child) {
+  /* Keep the last two items (Sign In + Create Account) visible on mobile;
+     hide the section links. */
+  .nav-links li:not(:nth-last-child(-n+2)) {
     display: none;
+  }
+
+  .nav-links a {
+    padding: 10px 12px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  /* Free up room in the mobile bar for the two auth links */
+  .brand-text .tag {
+    display: none;
+  }
+
+  .brand-text .name {
+    font-size: 22px;
+  }
+
+  .nav-links {
+    gap: 4px;
   }
 
   h1 {

@@ -58,6 +58,7 @@ function showDashboard(kind) {
   document.getElementById('viewAdmin').classList.toggle('hidden', kind !== 'admin');
   document.getElementById('viewTutor').classList.toggle('hidden', kind !== 'tutor');
   document.getElementById('viewStudent').classList.toggle('hidden', kind !== 'student');
+  if (kind !== 'student') stopStudentLivePolling();   // don't poll off-screen
   if (kind === 'admin') initAdminDashboard();
   else if (kind === 'tutor') initTutorDashboard();
   else initStudentDashboard();
@@ -206,7 +207,15 @@ function exitViewAs(silent) {
 
 /* ═════════════════════ TUTOR DASHBOARD ═════════════════════ */
 
-window.tutorState = { sessions: [], students: [], editingSessionId: null, selectedStudent: null };
+window.tutorState = {
+  sessions: [],          // delivered sessions (live/completed) — per student
+  plans: [],             // the reusable plan library — student-agnostic
+  students: [],
+  selectedStudent: null,
+  currentPlanId: null,   // library id of the plan currently loaded in the preview
+  currentSessionId: null,// the live session row, once started
+  openStudentId: null    // which student's history is expanded
+};
 
 async function initTutorDashboard() {
   const ctx = activeContext();
@@ -215,11 +224,13 @@ async function initTutorDashboard() {
   home.innerHTML = '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading your dashboard…</div>';
   loadRemoteConfig();   // fetch the central AI engine config (non-blocking)
   try {
-    const [sessions, students] = await Promise.all([
+    const [sessions, plans, students] = await Promise.all([
       dataListTutorSessions(ctx.userId),
+      dataListPlans(ctx.userId),
       dataListMyStudents(ctx.userId)
     ]);
     tutorState.sessions = sessions;
+    tutorState.plans = plans;
     tutorState.students = students;
     renderTutorHome();
   } catch (e) {
@@ -238,111 +249,173 @@ function tutorGoHome() {
 function renderTutorHome() {
   const ctx = activeContext();
   const home = document.getElementById('tutorHome');
-  const s = tutorState;
-  const planned = s.sessions.filter(x => x.status === 'planned');
-  const completed = s.sessions.filter(x => x.status === 'completed');
 
   const newBtn = ctx.readOnly ? '' : `
     <button onclick="tutorNewSession()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-      New Session
+      Generate New Session
     </button>`;
 
   home.innerHTML = `
     <div class="flex items-center justify-between gap-3 mb-6">
       <div>
         <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Tutor Dashboard</h1>
-        <p class="text-sm" style="color:var(--muted);">Plan sessions ahead, run them live, and keep notes for each student.</p>
+        <p class="text-sm" style="color:var(--muted);">Generate a session once — then reuse it with any student, as many times as you like.</p>
       </div>
       ${newBtn}
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div class="lg:col-span-8 space-y-6">
-        ${sessionListCard('🗓 Planned sessions', planned, 'planned', ctx.readOnly)}
-        ${sessionListCard('✅ Completed sessions', completed, 'completed', ctx.readOnly)}
-      </div>
-      <div class="lg:col-span-4">
-        ${studentsCard(s.students)}
-      </div>
+      <div class="lg:col-span-7">${plansCard(tutorState.plans, ctx.readOnly)}</div>
+      <div class="lg:col-span-5">${studentsCard(tutorState.students)}</div>
     </div>`;
 }
 
-function sessionListCard(title, list, kind, readOnly) {
+/* ── The reusable plan library ── */
+function plansCard(plans, readOnly) {
   let rows;
-  if (!list.length) {
-    rows = `<div class="text-center py-8 text-sm" style="color:var(--muted);">No ${kind} sessions yet.</div>`;
+  if (!plans.length) {
+    rows = `<div class="text-center py-8 text-sm" style="color:var(--muted);">No saved plans yet. Generate a session and save it — it'll live here for reuse.</div>`;
   } else {
-    rows = list.map(row => {
-      const nb = rowToNotebook(row);
-      const studentName = (row.student && row.student.full_name) || nb.studentName || 'Unassigned';
-      const open = kind === 'planned' && !readOnly
-        ? `<button onclick="tutorOpenPlanned('${row.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style="background:var(--primary);">Open &amp; launch</button>`
-        : `<button onclick="tutorViewSession('${row.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>`;
-      const del = readOnly ? '' : `<button onclick="tutorDeleteSession('${row.id}')" title="Delete" class="text-[11px] font-semibold px-2 py-1 rounded-lg ml-auto" style="background:white;border:1px solid var(--line);color:#EF4444;">🗑</button>`;
+    rows = plans.map(p => {
+      const typeLabel = getSessionType(p.session_type) ? getSessionType(p.session_type).label : (p.session_type || '');
+      const date = p.created_at ? new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const use = readOnly ? '' : `<button onclick="tutorUsePlanPrompt('${p.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style="background:var(--primary);">Use for a student</button>`;
+      const del = readOnly ? '' : `<button onclick="tutorDeletePlan('${p.id}')" title="Delete plan" class="text-[11px] font-semibold px-2 py-1 rounded-lg ml-auto" style="background:white;border:1px solid var(--line);color:#EF4444;">🗑</button>`;
       return `
         <div class="px-4 py-3 rounded-xl border mb-2" style="background:white;border-color:var(--line);">
           <div class="flex items-center justify-between mb-1">
-            <span class="text-sm font-semibold truncate mr-2" style="color:var(--navy);">${escapeHtml(nb.title)}</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded font-medium flex-shrink-0" style="background:rgba(0,78,137,.06);color:var(--secondary);">${escapeHtml(getSessionType(nb.sessionType).label)}</span>
+            <span class="text-sm font-semibold truncate mr-2" style="color:var(--navy);">${escapeHtml(p.title || 'Session')}</span>
+            <span class="text-[9px] px-1.5 py-0.5 rounded font-medium flex-shrink-0" style="background:rgba(0,78,137,.06);color:var(--secondary);">${escapeHtml(typeLabel)}</span>
           </div>
           <div class="flex items-center gap-2 text-[11px] mb-2" style="color:var(--muted);">
-            <span>👤 ${escapeHtml(studentName)}</span><span>·</span>
-            <span>${escapeHtml(nb.plan?.meta?.level || nb.student.level || '')}</span><span>·</span>
-            <span>${nb.duration}m</span><span>·</span><span>${nb.date}</span>
+            <span>${escapeHtml(p.level || '')}</span><span>·</span>
+            <span>${p.duration || ''}m</span><span>·</span><span>Saved ${date}</span>
           </div>
-          <div class="flex gap-2">${open}${del}</div>
+          <div class="flex gap-2">
+            <button onclick="tutorViewPlan('${p.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View content</button>
+            ${use}${del}
+          </div>
         </div>`;
     }).join('');
   }
   return `<div class="card-surface rounded-2xl p-5">
-      <h2 class="text-sm font-semibold mb-4" style="color:var(--navy);">${title}</h2>
+      <h2 class="text-sm font-semibold mb-1" style="color:var(--navy);">📚 My Session Plans</h2>
+      <p class="text-[11px] mb-4" style="color:var(--muted);">Reusable — using a plan again costs nothing to generate.</p>
       ${rows}
     </div>`;
 }
 
+/* ── Students, each expanding to their own completed history ── */
 function studentsCard(students) {
-  const rows = students.length
-    ? students.map(st => `
-        <div class="px-4 py-3 rounded-xl border mb-2" style="background:white;border-color:var(--line);">
-          <p class="text-sm font-semibold" style="color:var(--navy);">${escapeHtml(st.full_name || 'Student')}</p>
-          <p class="text-[11px]" style="color:var(--muted);">${escapeHtml([st.level, st.language, st.country].filter(Boolean).join(' · ') || st.email || '')}</p>
-        </div>`).join('')
-    : `<div class="text-center py-8 text-sm" style="color:var(--muted);">No students assigned yet. Ask your admin to assign students to you.</div>`;
+  if (!students.length) {
+    return `<div class="card-surface rounded-2xl p-5">
+        <h2 class="text-sm font-semibold mb-4" style="color:var(--navy);">👥 My Students</h2>
+        <div class="text-center py-8 text-sm" style="color:var(--muted);">No students assigned yet. Ask your admin to assign students to you.</div>
+      </div>`;
+  }
+  const rows = students.map(st => {
+    const open = tutorState.openStudentId === st.id;
+    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed');
+    const history = !open ? '' : `
+      <div class="mt-3 pt-3" style="border-top:1px dashed var(--line);">
+        ${done.length ? done.map(row => {
+          const nb = rowToNotebook(row);
+          return `<div class="flex items-center justify-between gap-2 py-1.5">
+              <div class="min-w-0">
+                <p class="text-[12px] font-semibold truncate" style="color:var(--navy);">${escapeHtml(nb.title)}</p>
+                <p class="text-[10px]" style="color:var(--muted);">${nb.date} · ${nb.duration}m</p>
+              </div>
+              <button onclick="tutorViewSession('${row.id}')" class="text-[10px] font-semibold px-2 py-1 rounded-lg flex-shrink-0" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>
+            </div>`;
+        }).join('') : `<p class="text-[11px] py-2" style="color:var(--muted);">No completed sessions yet.</p>`}
+      </div>`;
+    return `
+      <div class="px-4 py-3 rounded-xl border mb-2" style="background:white;border-color:${open ? 'rgba(255,107,53,.35)' : 'var(--line)'};">
+        <button onclick="tutorToggleStudent('${st.id}')" class="w-full text-left">
+          <div class="flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <p class="text-sm font-semibold truncate" style="color:var(--navy);">${escapeHtml(st.full_name || 'Student')}</p>
+              <p class="text-[11px]" style="color:var(--muted);">${escapeHtml([st.level, st.language, st.country].filter(Boolean).join(' · ') || st.email || '')}</p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold flex-shrink-0" style="background:rgba(6,214,160,.12);color:#059669;">${done.length} done</span>
+          </div>
+        </button>
+        ${history}
+      </div>`;
+  }).join('');
   return `<div class="card-surface rounded-2xl p-5">
-      <h2 class="text-sm font-semibold mb-4" style="color:var(--navy);">👥 My Students</h2>
+      <h2 class="text-sm font-semibold mb-1" style="color:var(--navy);">👥 My Students</h2>
+      <p class="text-[11px] mb-4" style="color:var(--muted);">Click a student to see their completed sessions.</p>
       ${rows}
     </div>`;
 }
 
-/* ── Tutor: start a new session (opens the prep engine) ── */
-function tutorNewSession() {
-  if (activeContext().readOnly) return;
-  tutorState.editingSessionId = null;
-  tutorState.selectedStudent = null;
-  document.getElementById('tutorHome').classList.add('hidden');
-  document.getElementById('tutorPrepBar').classList.remove('hidden');
-  document.getElementById('tutorPrepContext').textContent = 'New session';
-  renderTutorStudentPicker();
-  if (typeof resetPrepForm === 'function') resetPrepForm();
-  showStep(1);
+function tutorToggleStudent(id) {
+  tutorState.openStudentId = tutorState.openStudentId === id ? null : id;
+  renderTutorHome();
 }
 
-/* ── Tutor: open a planned session → load its plan into the preview to launch ── */
-function tutorOpenPlanned(id) {
-  const row = tutorState.sessions.find(x => x.id === id);
-  if (!row) return;
-  tutorState.editingSessionId = id;
-  tutorState.selectedStudent = row.student || null;
-  const st = getState();
-  st.generatedLessonPlan = row.plan;
-  st.previewSlide = 0;
-  st.generation.fingerprint = row.plan && row.plan.fingerprint;
-  st.generation.stale = false;
+/* ── View a saved plan's actual slide content ── */
+function tutorViewPlan(planId) {
+  const p = tutorState.plans.find(x => x.id === planId);
+  if (!p || !p.plan) return;
+  const slides = p.plan.slides || [];
+  const body = slides.map((sl, i) => `
+    <div class="mb-4">
+      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">${sl.icon || ''} ${escapeHtml(sl.label || ('Slide ' + (i + 1)))}</p>
+      <div class="slide-card p-4">${sl.html || ''}</div>
+    </div>`).join('') || '<p class="text-sm" style="color:var(--muted);">This plan has no slides.</p>';
+  showModal(`
+    <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">${escapeHtml(p.title || 'Session')}</h3>
+    <p class="text-xs mb-4" style="color:var(--muted);">${escapeHtml(p.level || '')} · ${escapeHtml((getSessionType(p.session_type) || {}).label || '')} · ${p.duration || ''}min · ${slides.length} slides</p>
+    <div class="max-h-[60vh] overflow-y-auto pr-1">${body}</div>`);
+}
+
+/* ── Reuse a plan: pick a student, then land in the preview as if just generated ── */
+function tutorUsePlanPrompt(planId) {
+  if (activeContext().readOnly) return;
+  const students = tutorState.students || [];
+  if (!students.length) { showToast('No students assigned yet — ask your admin to assign one.', 'warn'); return; }
+  const p = tutorState.plans.find(x => x.id === planId);
+  if (!p) return;
+  showModal(`
+    <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">Use this plan for…</h3>
+    <p class="text-xs mb-4" style="color:var(--muted);">${escapeHtml(p.title || '')} — pick which student this session is for.</p>
+    <select id="usePlanStudent" class="w-full rounded-xl px-4 py-3 text-sm field-input mb-4">
+      ${students.map(st => `<option value="${st.id}">${escapeHtml(st.full_name || st.email)}</option>`).join('')}
+    </select>
+    <button onclick="tutorUsePlanConfirm('${planId}')" class="w-full py-3 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Open session</button>`);
+}
+
+function tutorUsePlanConfirm(planId) {
+  const studentId = document.getElementById('usePlanStudent').value;
+  const p = tutorState.plans.find(x => x.id === planId);
+  const st = (tutorState.students || []).find(x => x.id === studentId);
+  if (!p || !st) return;
+  const modal = document.getElementById('genericModal');
+  if (modal) modal.classList.add('hidden');
+  tutorLoadPlanIntoPreview(p.plan, p.id, st, 'Reusing: ' + (p.title || ''));
+}
+
+/* Load a plan object into the prep preview — the shared path for both
+   "freshly generated" and "reused from the library". */
+function tutorLoadPlanIntoPreview(plan, planId, student, contextLabel) {
+  tutorState.currentPlanId = planId;
+  tutorState.currentSessionId = null;
+  tutorState.selectedStudent = student || null;
+  const s = getState();
+  s.generatedLessonPlan = plan;
+  s.previewSlide = 0;
+  s.generation.fingerprint = plan && plan.fingerprint;
+  s.generation.stale = false;
+  if (plan && plan.meta) {
+    s.sessionType = plan.meta.sessionType || s.sessionType;
+    s.sessionDuration = plan.meta.duration || s.sessionDuration;
+  }
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.remove('hidden');
-  document.getElementById('tutorPrepContext').textContent =
-    'Planned: ' + ((row.plan && row.plan.meta && row.plan.meta.title) || row.title || '');
+  document.getElementById('tutorPrepContext').textContent = contextLabel || '';
   renderTutorStudentPicker();
   showStep(1);
   renderPlanPreview();
@@ -350,6 +423,30 @@ function tutorOpenPlanned(id) {
   document.getElementById('outputLoading').classList.add('hidden');
   document.getElementById('outputPlan').classList.remove('hidden');
   setGenStatus('current');
+}
+
+async function tutorDeletePlan(id) {
+  if (activeContext().readOnly) return;
+  try {
+    await dataDeletePlan(id);
+    tutorState.plans = tutorState.plans.filter(x => x.id !== id);
+    renderTutorHome();
+    showToast('Plan deleted.', 'info');
+  } catch (e) { showToast('Delete failed: ' + e.message, 'error'); }
+}
+
+/* ── Tutor: generate a brand-new session (opens the prep engine) ── */
+function tutorNewSession() {
+  if (activeContext().readOnly) return;
+  tutorState.currentPlanId = null;
+  tutorState.currentSessionId = null;
+  tutorState.selectedStudent = null;
+  document.getElementById('tutorHome').classList.add('hidden');
+  document.getElementById('tutorPrepBar').classList.remove('hidden');
+  document.getElementById('tutorPrepContext').textContent = 'New session';
+  renderTutorStudentPicker();
+  if (typeof resetPrepForm === 'function') resetPrepForm();
+  showStep(1);
 }
 
 /* ── Tutor: view a completed session (read-only summary + notes) ── */
@@ -365,16 +462,6 @@ function tutorViewSession(id) {
       <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">📝 Notes &amp; Assignments</p>
       <p class="text-sm whitespace-pre-wrap leading-relaxed" style="color:var(--ink);">${notes}</p>
     </div>`);
-}
-
-async function tutorDeleteSession(id) {
-  if (activeContext().readOnly) return;
-  try {
-    await dataDeleteSession(id);
-    tutorState.sessions = tutorState.sessions.filter(x => x.id !== id);
-    renderTutorHome();
-    showToast('Session deleted.', 'info');
-  } catch (e) { showToast('Delete failed: ' + e.message, 'error'); }
 }
 
 /* Student picker injected into the prep form (Step 1). */
@@ -430,14 +517,71 @@ async function initStudentDashboard() {
   showStep(3);
   renderNotebooks();
   if (getActiveNotebook()) actOverview();
+
+  // Watch for the tutor starting a session / sharing the Meet link.
+  refreshStudentLive(ctx.userId);
+  startStudentLivePolling(ctx.userId);
 }
 
-/* Build a sessions-table row from the current generated plan. */
+/* ── "Join the Session" banner: locked until the tutor shares a link ── */
+
+const STUDENT_POLL_MS = 10000;
+
+function startStudentLivePolling(studentId) {
+  stopStudentLivePolling();                     // never stack timers
+  window._studentPoll = setInterval(() => refreshStudentLive(studentId), STUDENT_POLL_MS);
+}
+
+function stopStudentLivePolling() {
+  if (window._studentPoll) { clearInterval(window._studentPoll); window._studentPoll = null; }
+}
+
+async function refreshStudentLive(studentId) {
+  try {
+    const live = await dataGetLiveSessionForStudent(studentId);
+    renderStudentLiveBanner(live);
+  } catch (e) {
+    // Silent: polling shouldn't spam the student with toasts.
+    console.warn('live poll failed', e);
+  }
+}
+
+function renderStudentLiveBanner(live) {
+  const host = document.getElementById('studentLiveBanner');
+  if (!host) return;
+  if (!live) { host.classList.add('hidden'); host.innerHTML = ''; return; }
+
+  const link = live.meet_link;
+  const tutorName = (live.tutor && live.tutor.full_name) || 'Your tutor';
+  const title = live.title || 'your session';
+  host.classList.remove('hidden');
+  host.innerHTML = `
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 rounded-2xl mb-6" style="background:${link ? 'rgba(6,214,160,.08)' : 'rgba(255,210,63,.10)'}; border:1px solid ${link ? 'rgba(6,214,160,.3)' : 'rgba(255,210,63,.35)'};">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="w-2.5 h-2.5 rounded-full animate-pulse flex-shrink-0" style="background:${link ? '#059669' : '#B45309'};"></span>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold" style="color:var(--navy);">${link ? 'Your session is ready to join' : 'Your session is starting…'}</p>
+          <p class="text-[11px] truncate" style="color:var(--muted);">${escapeHtml(tutorName)} · ${escapeHtml(title)}${link ? '' : ' — waiting for your tutor to share the link'}</p>
+        </div>
+      </div>
+      ${link
+        ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold glow-success flex-shrink-0" style="background:linear-gradient(135deg, #06D6A0, #05B586);">
+             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+             Join the Session
+           </a>`
+        : `<button disabled class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold flex-shrink-0 cursor-not-allowed" style="background:#E5E7EB; color:#9CA3AF;">
+             Join the Session
+           </button>`}
+    </div>`;
+}
+
+/* Build a sessions-table row (one delivery of a plan to one student). */
 function buildSessionRow(plan, student, status, notes) {
   const meta = plan.meta || {};
   return {
     tutor_id: currentUserId(),
     student_id: student ? student.id : null,
+    plan_id: tutorState.currentPlanId || null,
     title: meta.title || 'Session',
     session_type: meta.sessionType || getState().sessionType,
     level: meta.level || null,
@@ -448,20 +592,96 @@ function buildSessionRow(plan, student, status, notes) {
   };
 }
 
-/* Save the current generated plan as a "planned" session (create or update). */
-async function tutorSavePlanned() {
+/* Make sure the plan currently in the preview exists in the tutor's library,
+   so it's reusable later. Returns its library id. */
+async function ensurePlanInLibrary(plan) {
+  if (tutorState.currentPlanId) return tutorState.currentPlanId;
+  const meta = plan.meta || {};
+  const created = await dataCreatePlan({
+    tutor_id: currentUserId(),
+    title: meta.title || 'Session',
+    session_type: meta.sessionType || getState().sessionType,
+    level: meta.level || null,
+    duration: meta.duration || getState().sessionDuration,
+    plan: plan
+  });
+  tutorState.currentPlanId = created.id;
+  tutorState.plans.unshift(created);
+  return created.id;
+}
+
+/* Save the generated plan into the reusable library (student-agnostic). */
+async function tutorSaveToPlans() {
   if (activeContext().readOnly) return;
   const plan = getState().generatedLessonPlan;
   if (!plan) { showToast('Generate a session first.', 'warn'); return; }
-  const student = tutorState.selectedStudent;
-  if (!student) { showToast('Pick a student for this session first.', 'warn'); return; }
+  if (tutorState.currentPlanId) { showToast('This plan is already saved in My Session Plans.', 'info'); return; }
   try {
-    const row = buildSessionRow(plan, student, 'planned', '');
-    if (tutorState.editingSessionId) await dataUpdateSession(tutorState.editingSessionId, row);
-    else { const created = await dataCreateSession(row); tutorState.editingSessionId = created.id; }
-    showToast('Session saved under Planned sessions.', 'success');
+    await ensurePlanInLibrary(plan);
+    showToast('Saved to My Session Plans — reuse it with any student.', 'success');
     await initTutorDashboard();
   } catch (e) { showToast('Save failed: ' + e.message, 'error'); }
+}
+
+/* ── Start The Session: open Google Meet + show the presentation ── */
+function startSession() {
+  if (activeContext().readOnly) { showToast('Read-only view — cannot start sessions.', 'warn'); return; }
+  const plan = getState().generatedLessonPlan;
+  if (!plan) { showToast('Generate or open a session first.', 'warn'); return; }
+  const student = tutorState.selectedStudent;
+  if (!student) { showToast('Pick a student for this session first.', 'warn'); return; }
+
+  // Must fire synchronously inside the click handler, BEFORE any await,
+  // or the popup blocker will swallow the new tab.
+  window.open('https://meet.google.com/', '_blank', 'noopener');
+
+  if (typeof _editMode !== 'undefined' && _editMode) savePvEdit();
+  launchCall();          // shows the presentation in this tab
+
+  // Then persist the live session in the background.
+  (async () => {
+    try {
+      await ensurePlanInLibrary(plan);
+      const row = await dataCreateSession(buildSessionRow(plan, student, 'live', ''));
+      tutorState.currentSessionId = row.id;
+      renderMeetLinkBox();
+    } catch (e) {
+      showToast('Could not start the session record: ' + e.message, 'error');
+    }
+  })();
+}
+
+/* ── The Meet-link box inside the live view ── */
+function renderMeetLinkBox() {
+  const host = document.getElementById('meetLinkBox');
+  if (!host) return;
+  const shared = tutorState.currentMeetLink;
+  host.innerHTML = `
+    <label class="block text-[11px] font-semibold mb-1.5" style="color:var(--navy);">🔗 Paste your Google Meet link</label>
+    <div class="flex gap-1.5">
+      <input id="meetLinkInput" type="url" placeholder="https://meet.google.com/abc-defg-hij" value="${escapeHtml(shared || '')}"
+        class="flex-1 rounded-lg px-3 py-2 text-xs focus:outline-none field-input">
+      <button onclick="shareMeetLink()" class="px-3 py-2 rounded-lg text-white text-xs font-semibold flex-shrink-0" style="background:var(--primary);">Share</button>
+    </div>
+    <p id="meetLinkState" class="text-[10px] mt-1.5" style="color:${shared ? '#059669' : 'var(--muted)'};">
+      ${shared ? '✓ Shared — your student can now join.' : 'Your student\'s Join button stays locked until you share this.'}
+    </p>`;
+}
+
+async function shareMeetLink() {
+  const input = document.getElementById('meetLinkInput');
+  const link = (input.value || '').trim();
+  if (!link) { showToast('Paste the Meet link first.', 'warn'); return; }
+  if (!/^https?:\/\/meet\.google\.com\//i.test(link)) {
+    showToast('That doesn\'t look like a Google Meet link (https://meet.google.com/...).', 'warn'); return;
+  }
+  if (!tutorState.currentSessionId) { showToast('Session is still starting — try again in a moment.', 'warn'); return; }
+  try {
+    await dataSetMeetLink(tutorState.currentSessionId, link);
+    tutorState.currentMeetLink = link;
+    renderMeetLinkBox();
+    showToast('Link shared — your student can join now.', 'success');
+  } catch (e) { showToast('Could not share the link: ' + e.message, 'error'); }
 }
 
 /* ═════════════════════ tiny modal helper ═════════════════════ */

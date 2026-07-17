@@ -21,6 +21,10 @@ function launchCall() {
   const saveState = document.getElementById('notesSaveState');
   if (saveState) saveState.textContent = '';
 
+  // Each session starts with a fresh Meet link box.
+  if (window.tutorState) tutorState.currentMeetLink = null;
+  if (typeof renderMeetLinkBox === 'function') renderMeetLinkBox();
+
   renderSlideViewer();
   startTimer();
 
@@ -152,9 +156,12 @@ function endSession() {
       const planClone = JSON.parse(JSON.stringify({ ...plan, _practicePromise: undefined }));
       const row = buildSessionRow(planClone, student, 'completed', notes);
 
-      if (tutorState.editingSessionId) await dataUpdateSession(tutorState.editingSessionId, row);
+      // startSession() already created the 'live' row — complete that one so we
+      // don't leave a stray live session behind or duplicate the history.
+      if (tutorState.currentSessionId) await dataUpdateSession(tutorState.currentSessionId, row);
       else await dataCreateSession(row);
-      tutorState.editingSessionId = null;
+      tutorState.currentSessionId = null;
+      tutorState.currentMeetLink = null;
 
       document.getElementById('compileDone').classList.remove('hidden');
       setTimeout(async () => {

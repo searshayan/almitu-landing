@@ -34,6 +34,7 @@ async function authSignOut() {
   if (c) await c.auth.signOut();
   window.almituAuth = { user: null, profile: null, loading: false };
   if (typeof exitViewAs === 'function') exitViewAs(true);   // drop any admin View-as
+  if (typeof stopStudentLivePolling === 'function') stopStudentLivePolling();
   routeApp();
 }
 

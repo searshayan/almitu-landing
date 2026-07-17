@@ -334,18 +334,33 @@
             </div>
             <p class="text-[10px] text-center mt-2" style="color:var(--muted);">Review each slide — click <strong>Edit</strong> to change content in place before saving or launching.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
-              <button onclick="tutorSavePlanned()"
+              <button onclick="tutorSaveToPlans()"
                 class="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2"
                 style="background:white; border:1.5px solid var(--secondary); color:var(--secondary);">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                Save for later
+                Save to My Plans
               </button>
-              <button onclick="launchFromPreview()"
+              <button onclick="startSession()"
                 class="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300 glow-success flex items-center justify-center gap-2"
                 style="background:linear-gradient(135deg, #06D6A0, #05B586);">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                Launch Live Call
+                Start The Session
               </button>
+            </div>
+
+            <!-- What the tutor must do in the Google Meet tab that opens -->
+            <div class="mt-3 rounded-xl p-4" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.15);">
+              <p class="text-[11px] font-bold uppercase tracking-wide mb-2" style="color:var(--secondary);">
+                ▶ Pressing Start opens a Google Meet tab — do this:
+              </p>
+              <ol class="space-y-1.5 text-[12px]" style="color:var(--ink);">
+                <li><strong>1.</strong> Click <strong>“New Meeting”</strong></li>
+                <li><strong>2.</strong> Click <strong>“Start an Instant Meeting”</strong></li>
+                <li><strong>3.</strong> <strong>Copy the meeting link</strong> — it looks like
+                  <code class="px-1 py-0.5 rounded font-mono text-[11px]" style="background:white; border:1px solid var(--line); color:var(--secondary);">https://meet.google.com/abc-defg-hij</code>
+                </li>
+                <li><strong>4.</strong> <strong>Paste it into this tab</strong> to share it with your student.</li>
+              </ol>
             </div>
           </div>
         </div>
@@ -406,11 +421,8 @@
             </div>
           </div>
 
-          <!-- Google Meet reminder -->
-          <div class="px-3 py-2 rounded-xl text-[11px] flex items-center gap-2" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12); color:var(--secondary);">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            <span>Run the call on <strong>Google Meet</strong> and share your screen to present these slides.</span>
-          </div>
+          <!-- Paste + share the Google Meet link (unlocks the student's Join button) -->
+          <div id="meetLinkBox" class="px-3 py-3 rounded-xl" style="background:white; border:1px solid var(--line);"></div>
 
           <!-- Tutor Notes (replaces the old chat) -->
           <div class="chat-compact flex-1 flex flex-col" style="min-height:280px;">
@@ -463,6 +475,9 @@
 
     <!-- ═══════════ STUDENT DASHBOARD ═══════════ -->
     <div id="viewStudent" class="hidden">
+    <!-- Live session banner: "Join the Session" (rendered by js/router.js) -->
+    <div id="studentLiveBanner" class="hidden"></div>
+
     <!-- ─── STEP 3: STUDENT DASHBOARD ─── -->
     <section id="step3" class="hidden animate-fade-in">
       <div class="mb-6">
