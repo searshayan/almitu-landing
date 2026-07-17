@@ -223,6 +223,7 @@ function exitViewAs(silent) {
 window.tutorState = {
   sessions: [],          // delivered sessions (live/completed) — per student
   plans: [],             // the reusable plan library — student-agnostic
+  attempts: [],          // students' practice attempts on those sessions
   students: [],
   selectedStudent: null,
   currentPlanId: null,   // library id of the plan currently loaded in the preview
@@ -245,6 +246,8 @@ async function initTutorDashboard() {
     tutorState.sessions = sessions;
     tutorState.plans = plans;
     tutorState.students = students;
+    // Practice stats for the tutor's own sessions (RLS scopes this to them).
+    tutorState.attempts = await dataListAttemptsForSessions(sessions.map(s => s.id)).catch(() => []);
     renderTutorHome();
   } catch (e) {
     home.innerHTML = `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load your dashboard: ${escapeHtml(e.message)}</div>`;
@@ -334,10 +337,15 @@ function studentsCard(students) {
       <div class="mt-3 pt-3" style="border-top:1px dashed var(--line);">
         ${done.length ? done.map(row => {
           const nb = rowToNotebook(row);
+          const p = summariseAttempts(((tutorState.attempts) || []).filter(a => a.session_id === row.id));
+          const practice = p.count
+            ? `<p class="text-[10px] font-semibold" style="color:#B45309;">⚡ ${p.count} ${p.count === 1 ? 'activity' : 'activities'} · ${formatDuration(p.seconds)} · ${p.xp} XP</p>`
+            : `<p class="text-[10px]" style="color:var(--muted);">No practice yet</p>`;
           return `<div class="flex items-center justify-between gap-2 py-1.5">
               <div class="min-w-0">
                 <p class="text-[12px] font-semibold truncate" style="color:var(--navy);">${escapeHtml(nb.title)}</p>
                 <p class="text-[10px]" style="color:var(--muted);">${nb.date} · ${nb.duration}m</p>
+                ${practice}
               </div>
               <button onclick="tutorViewSession('${row.id}')" class="text-[10px] font-semibold px-2 py-1 rounded-lg flex-shrink-0" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>
             </div>`;
@@ -468,13 +476,33 @@ function tutorViewSession(id) {
   if (!row) return;
   const nb = rowToNotebook(row);
   const notes = nb.tutorNotes ? escapeHtml(nb.tutorNotes) : '<span style="color:var(--muted);">No notes recorded.</span>';
+
+  const attempts = ((tutorState.attempts) || []).filter(a => a.session_id === row.id);
+  const p = summariseAttempts(attempts);
+  const practiceBlock = p.count ? `
+    <div class="rounded-xl p-4 mt-2" style="background:rgba(255,210,63,.10);border:1px solid rgba(255,210,63,.35);">
+      <p class="text-[10px] uppercase tracking-wider font-semibold mb-2" style="color:#B45309;">⚡ Practice after this session</p>
+      <p class="text-sm font-semibold mb-3" style="color:var(--navy);">${p.count} ${p.count === 1 ? 'activity' : 'activities'} · ${formatDuration(p.seconds)} · ${p.xp} XP</p>
+      <div class="space-y-1">
+        ${attempts.map(a => `
+          <div class="flex items-center justify-between gap-2 text-[11px] py-1" style="border-top:1px dashed rgba(180,83,9,.2);">
+            <span class="font-semibold" style="color:var(--ink);">${escapeHtml(ACTIVITY_LABELS[a.activity] || a.activity)}${a.challenge ? ' ⚡' : ''}</span>
+            <span style="color:var(--muted);">${escapeHtml(formatAttemptScore(a))} · ${formatDuration(a.seconds)} · +${a.xp} XP</span>
+          </div>`).join('')}
+      </div>
+    </div>`
+    : `<div class="rounded-xl p-4 mt-2 text-center" style="background:var(--surface);border:1px solid var(--line);">
+         <p class="text-xs" style="color:var(--muted);">No post-session practice recorded yet.</p>
+       </div>`;
+
   showModal(`
     <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">${escapeHtml(nb.title)}</h3>
     <p class="text-xs mb-4" style="color:var(--muted);">${escapeHtml((row.student && row.student.full_name) || '')} · ${nb.plan?.meta?.level || ''} · ${getSessionType(nb.sessionType).label} · ${nb.duration}min · ${nb.date}</p>
-    <div class="rounded-xl p-4 mb-2" style="background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.15);">
+    <div class="rounded-xl p-4" style="background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.15);">
       <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">📝 Notes &amp; Assignments</p>
       <p class="text-sm whitespace-pre-wrap leading-relaxed" style="color:var(--ink);">${notes}</p>
-    </div>`);
+    </div>
+    ${practiceBlock}`);
 }
 
 /* Student picker injected into the prep form (Step 1). */
@@ -516,24 +544,66 @@ function applyStudentToForm(st) {
 
 /* ═════════════════════ STUDENT DASHBOARD ═════════════════════ */
 
+window.studentProgress = { attempts: [] };
+
 async function initStudentDashboard() {
   const ctx = activeContext();
   const s = getState();
   try {
-    const rows = await dataListStudentSessions(ctx.userId);
+    const [rows, attempts] = await Promise.all([
+      dataListStudentSessions(ctx.userId),
+      dataListAttemptsForStudent(ctx.userId).catch(() => [])
+    ]);
     s.savedNotebooks = rows.map(rowToNotebook);
     s.selectedNotebookId = s.savedNotebooks[0] ? s.savedNotebooks[0].id : null;
+    studentProgress.attempts = attempts;
   } catch (e) {
     s.savedNotebooks = [];
     showToast('Could not load your sessions: ' + e.message, 'error');
   }
   showStep(3);
   renderNotebooks();
+  renderStudentXpBadge();
   if (getActiveNotebook()) actOverview();
 
   // Watch for the tutor starting a session / sharing the Meet link.
   refreshStudentLive(ctx.userId);
   startStudentLivePolling(ctx.userId);
+}
+
+/* ── Student XP badge: lifetime total + this session's practice ── */
+function renderStudentXpBadge() {
+  const host = document.getElementById('studentXpBadge');
+  if (!host) return;
+  const all = (window.studentProgress && studentProgress.attempts) || [];
+  const lifetime = summariseAttempts(all);
+  if (!lifetime.count) { host.classList.add('hidden'); host.innerHTML = ''; return; }
+
+  const nb = getActiveNotebook();
+  const thisSession = summariseAttempts(all.filter(a => nb && a.session_id === nb.id));
+
+  const stat = (label, value, color) => `
+    <div class="text-center px-3">
+      <p class="text-lg font-bold font-display leading-tight" style="color:${color};">${value}</p>
+      <p class="text-[10px] uppercase tracking-wide" style="color:var(--muted);">${label}</p>
+    </div>`;
+
+  host.classList.remove('hidden');
+  host.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-3 rounded-2xl mb-6" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.35);">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">⚡</span>
+        <div>
+          <p class="text-sm font-semibold" style="color:var(--navy);">${lifetime.xp} XP earned</p>
+          <p class="text-[11px]" style="color:var(--muted);">${lifetime.count} ${lifetime.count === 1 ? 'activity' : 'activities'} · ${formatDuration(lifetime.seconds)} of practice, all time</p>
+        </div>
+      </div>
+      <div class="flex items-center divide-x" style="border-color:var(--line);">
+        ${stat('This session', thisSession.xp + ' XP', '#B45309')}
+        ${stat('Activities', thisSession.count, 'var(--secondary)')}
+        ${stat('Time', formatDuration(thisSession.seconds), 'var(--secondary)')}
+      </div>
+    </div>`;
 }
 
 /* ── "Join the Session" banner: locked until the tutor shares a link ── */

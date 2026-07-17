@@ -160,6 +160,7 @@ function selectSession(id) {
   persistNotebooks();
   document.getElementById('notebookExpanded').classList.add('hidden');
   renderNotebooks();
+  if (typeof renderStudentXpBadge === 'function') renderStudentXpBadge();
   actOverview();               // Overview is the default display for a selected session
 }
 
@@ -300,10 +301,13 @@ function actFlashcards(challenge) {
   let html = activityHeader('🃏', 'Flashcards', challenge
     ? `Reversed mode: read the meaning, recall the word. ${cards.length} cards.`
     : `Click any card to flip. ${cards.length} cards from your session.`, challenge);
+  // Track which cards have been flipped so a full pass can earn XP.
+  window._flashState = { total: cards.length, flipped: new Set(), challenge: !!challenge, recorded: false };
+
   html += '<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">';
   cards.forEach((card, i) => {
     html += `
-      <div class="flashcard cursor-pointer" onclick="this.classList.toggle('flipped')" style="height:160px">
+      <div class="flashcard cursor-pointer" onclick="flipCard(this, ${i})" style="height:160px">
         <div class="flashcard-inner w-full h-full">
           <div class="flashcard-front rounded-2xl p-5 flex flex-col items-center justify-center text-center" style="background:white; border:1px solid var(--line);">
             <span class="text-[10px] uppercase tracking-wider mb-2 font-semibold" style="color:var(--muted);">Card ${i + 1} — tap to flip</span>
@@ -317,12 +321,33 @@ function actFlashcards(challenge) {
       </div>`;
   });
   html += `</div>
-    <div class="flex justify-center mt-4">
+    <div id="flashDone" class="hidden mt-4 p-3 rounded-xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"></div>
+    <p class="text-[11px] text-center mt-3" style="color:var(--muted);">Flip every card to earn XP for this pass.</p>
+    <div class="flex justify-center mt-2">
       <button onclick="actFlashcards(${!challenge})" class="px-4 py-2 rounded-xl text-sm font-semibold text-white" style="background:#7C3AED;">
         ${challenge ? '↩️ Normal Mode' : '⚡ Challenge Practice'}
       </button>
     </div>`;
   showPracticeContent(html);
+  ActivityTimer.start('flashcards');
+}
+
+/* Flip a card, and award XP once every card has been seen at least once.
+   (Flashcards have no score, so a full pass is the only meaningful signal.) */
+function flipCard(el, i) {
+  el.classList.toggle('flipped');
+  const st = window._flashState;
+  if (!st || st.recorded) return;
+  st.flipped.add(i);
+  if (st.flipped.size === st.total) {
+    st.recorded = true;   // only once per pass
+    recordActivityCompletion('flashcards', null, null, st.challenge);
+    const done = document.getElementById('flashDone');
+    if (done) {
+      done.classList.remove('hidden');
+      done.innerHTML = `<p class="font-semibold" style="color:#059669;">🎉 You've been through all ${st.total} cards!</p>`;
+    }
+  }
 }
 
 /* ═══════════ 2. QUIZ MCQ (challenge = meaning → term) ═══════════ */
@@ -369,6 +394,7 @@ function actQuiz(challenge) {
   html += `</div><div id="quizScore" class="hidden mt-4 p-4 rounded-xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"><span class="font-bold text-lg" id="scoreText" style="color:#059669;"></span><div id="quizActions"></div></div>`;
   showPracticeContent(html);
   window._quizState = { total: questions.length, correct: 0, answered: 0 };
+  ActivityTimer.start('quiz');
 }
 
 function quizAnswer(qi, oi, correctIdx) {
@@ -398,6 +424,7 @@ function quizAnswer(qi, oi, correctIdx) {
   if (window._quizState.answered === window._quizState.total) {
     const { correct: c, total: t } = window._quizState;
     const perfect = c === t;
+    recordActivityCompletion('quiz', c, t, window._quizChallenge);
     document.getElementById('quizScore').classList.remove('hidden');
     document.getElementById('scoreText').textContent = `Score: ${c}/${t} — ${perfect ? 'Perfect! 🎯' : c >= Math.ceil(t * 0.6) ? 'Great job!' : 'Keep practicing!'}`;
     document.getElementById('quizActions').innerHTML = completionButtons('actQuiz', perfect && window._quizChallenge) ;
@@ -434,6 +461,7 @@ function actReorder(challenge) {
   html += `<div id="reorderArea"></div>`;
   showPracticeContent(html);
   renderReorderRound();
+  ActivityTimer.start('reorder');
 }
 
 function renderReorderRound() {
@@ -488,6 +516,7 @@ function checkReorder() {
       if (r.index < r.sentences.length) renderReorderRound();
       else {
         const perfect = r.score === r.sentences.length;
+        recordActivityCompletion('reorder', r.score, r.sentences.length, r.challenge);
         document.getElementById('reorderArea').innerHTML = `
           <div class="p-6 rounded-2xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);">
             <p class="text-2xl mb-2">🎉</p>
@@ -549,12 +578,14 @@ function actGapFill(challenge) {
   html += `</div><div id="gapScore" class="hidden mt-4 p-4 rounded-xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"><span class="font-bold text-lg" id="gapScoreText" style="color:#059669;"></span><div id="gapActions"></div></div>`;
   showPracticeContent(html);
   window._gapState = { total: rounds.length, correct: 0, answered: 0 };
+  ActivityTimer.start('gapfill');
 }
 
 function finishGapIfDone() {
   if (window._gapState.answered === window._gapState.total) {
     const { correct: c, total: t } = window._gapState;
     const perfect = c === t;
+    recordActivityCompletion('gapfill', c, t, window._gapChallenge);
     document.getElementById('gapScore').classList.remove('hidden');
     document.getElementById('gapScoreText').textContent = `Score: ${c}/${t}${perfect ? ' — Perfect! 🎯' : ''}`;
     document.getElementById('gapActions').innerHTML = (perfect && window._gapChallenge)
@@ -650,6 +681,7 @@ function actMatching(challenge) {
     <div id="matchDone" class="hidden mt-4 p-5 rounded-2xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"></div>`;
   showPracticeContent(html);
   renderMatch();
+  ActivityTimer.start('matching');
 }
 
 function renderMatch() {
@@ -695,6 +727,8 @@ function pickRight(i) {
     renderMatch();
     if (m.matched.size === m.pairs.length) {
       const perfect = m.attempts === m.pairs.length;
+      // correct = pairs matched, total = attempts taken (efficiency-scaled XP)
+      recordActivityCompletion('matching', m.pairs.length, m.attempts, m.challenge);
       const d = document.getElementById('matchDone');
       d.classList.remove('hidden');
       d.innerHTML = `<p class="text-2xl mb-1">🎉</p><p class="font-bold" style="color:#059669;">All matched in ${m.attempts} attempts!${perfect ? ' Flawless! 🎯' : ''}</p>

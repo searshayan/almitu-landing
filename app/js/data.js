@@ -165,6 +165,48 @@ async function dataListStudentSessions(studentId) {
   return data || [];
 }
 
+/* ─────────────── activity_attempts (XP + practice time) ───────────────
+   One row per completed post-session activity. RLS keeps students to their
+   own rows and tutors to attempts on sessions they own. */
+
+async function dataRecordAttempt(row) {
+  const c = requireSb();
+  const { data, error } = await c.from('activity_attempts').insert(row).select('*').single();
+  throwIf(error, 'recordAttempt');
+  return data;
+}
+
+/* How many times this student already completed this activity for this
+   session — drives the "half XP on repeats" rule. Counted server-side so it
+   stays correct across devices. */
+async function dataCountAttempts(sessionId, studentId, activity) {
+  const c = requireSb();
+  const { count, error } = await c.from('activity_attempts')
+    .select('id', { count: 'exact', head: true })
+    .eq('session_id', sessionId).eq('student_id', studentId).eq('activity', activity);
+  throwIf(error, 'countAttempts');
+  return count || 0;
+}
+
+/* Student: every attempt they've made (for lifetime + per-session XP). */
+async function dataListAttemptsForStudent(studentId) {
+  const c = requireSb();
+  const { data, error } = await c.from('activity_attempts').select('*')
+    .eq('student_id', studentId).order('created_at', { ascending: false });
+  throwIf(error, 'listAttemptsForStudent');
+  return data || [];
+}
+
+/* Tutor: attempts across a set of their own sessions (RLS enforces ownership). */
+async function dataListAttemptsForSessions(sessionIds) {
+  if (!sessionIds || !sessionIds.length) return [];
+  const c = requireSb();
+  const { data, error } = await c.from('activity_attempts').select('*')
+    .in('session_id', sessionIds).order('created_at', { ascending: false });
+  throwIf(error, 'listAttemptsForSessions');
+  return data || [];
+}
+
 /* ─────────────── session_plans (the tutor's reusable library) ───────────────
    A plan is student-agnostic: generated once, reusable for any number of
    students. A `sessions` row is one delivery of a plan to one student. */
