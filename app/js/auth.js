@@ -35,6 +35,8 @@ async function authSignOut() {
   window.almituAuth = { user: null, profile: null, loading: false };
   if (typeof exitViewAs === 'function') exitViewAs(true);   // drop any admin View-as
   if (typeof stopStudentLivePolling === 'function') stopStudentLivePolling();
+  if (window.tutorState) { tutorState.currentSessionId = null; tutorState.currentMeetLink = null; }
+  if (window._timerInterval) clearInterval(window._timerInterval);
   routeApp();
 }
 
@@ -59,12 +61,20 @@ async function authInit() {
   }
   const c = requireSb();
 
-  // React to every future sign-in / sign-out / token refresh.
-  c.auth.onAuthStateChange(async (_event, session) => {
+  // React to sign-in / sign-out — but NOT to token refreshes or the re-emits
+  // supabase-js fires when the tab regains focus. Re-routing on those would
+  // tear down whatever the user is doing (e.g. a tutor mid-session loses the
+  // presentation the moment they switch to the Google Meet tab and back).
+  c.auth.onAuthStateChange(async (event, session) => {
+    const newId = session ? session.user.id : null;
+    const prevId = window.almituAuth.user ? window.almituAuth.user.id : null;
     window.almituAuth.user = session ? session.user : null;
+    window.almituAuth.loading = false;
+
+    if (newId === prevId && event !== 'SIGNED_OUT') return;   // same person → leave the UI alone
+
     if (session) { await refreshProfile(); }
     else { window.almituAuth.profile = null; }
-    window.almituAuth.loading = false;
     routeApp();
   });
 

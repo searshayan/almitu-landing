@@ -59,9 +59,22 @@ function showDashboard(kind) {
   document.getElementById('viewTutor').classList.toggle('hidden', kind !== 'tutor');
   document.getElementById('viewStudent').classList.toggle('hidden', kind !== 'student');
   if (kind !== 'student') stopStudentLivePolling();   // don't poll off-screen
+
   if (kind === 'admin') initAdminDashboard();
-  else if (kind === 'tutor') initTutorDashboard();
+  else if (kind === 'tutor') {
+    // A re-route must never yank the tutor out of a running session — they'd
+    // lose the slides, timer, notes and the Meet-link box mid-call.
+    if (tutorIsInLiveSession()) return;
+    initTutorDashboard();
+  }
   else initStudentDashboard();
+}
+
+/* True while the tutor is actually presenting a started session. */
+function tutorIsInLiveSession() {
+  const step2 = document.getElementById('step2');
+  return !!(window.tutorState && tutorState.currentSessionId
+            && step2 && !step2.classList.contains('hidden'));
 }
 
 /* ─────────────── header ─────────────── */
