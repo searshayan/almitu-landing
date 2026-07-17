@@ -2,4 +2,7 @@
 
 # Keep internal database migrations out of the public site.
 # They live in the repo for version control, but must not be fetchable.
-/supabase/*   /404.html   404
+#
+# NOTE the trailing "!" — Netlify skips a redirect when a real file exists at
+# that path, so without the force flag these .sql files would still be served.
+/supabase/*   /404.html   404!

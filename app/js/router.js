@@ -665,6 +665,10 @@ function renderMeetLinkBox() {
     </div>
     <p id="meetLinkState" class="text-[10px] mt-1.5" style="color:${shared ? '#059669' : 'var(--muted)'};">
       ${shared ? '✓ Shared — your student can now join.' : 'Your student\'s Join button stays locked until you share this.'}
+    </p>
+    <p class="text-[10px] mt-1.5" style="color:var(--muted);">
+      Meet tab didn't open? Your browser may have blocked it —
+      <a href="https://meet.google.com/" target="_blank" rel="noopener" class="font-semibold" style="color:var(--secondary); text-decoration:underline;">open Google Meet</a>.
     </p>`;
 }
 
