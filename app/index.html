@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almitu Pro — MVP Prototype</title>
+
+  <!-- Fonts (matches almitu.com) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase JS (auth + database) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT:'#FF6B35', dark:'#E85A2A', light:'#FF8C66' },
+            secondary: { DEFAULT:'#004E89', dark:'#003D6B' },
+            accent: { DEFAULT:'#FFD23F' },
+            success: { DEFAULT:'#06D6A0' },
+            navy: '#1A1D29', ink: '#2D3142', muted: '#6C7489', surface: '#F8F9FD',
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          animation: { 'fade-in': 'fadeIn .4s ease-out' }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/main.css">
+  <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
+</head>
+
+<body class="bg-surface text-ink min-h-screen">
+
+  <!-- ═══════════════════════ AUTH SCREEN ═══════════════════════ -->
+  <div id="authView" class="hidden min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="card-surface rounded-2xl p-8 w-full max-w-md">
+      <div class="flex items-center gap-2 mb-6">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white" style="background:linear-gradient(135deg, #004E89, #FF6B35);">A</div>
+        <span class="text-xl font-display font-bold tracking-tight" style="background:linear-gradient(135deg, #004E89, #FF6B35); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">almitu<span>Pro</span></span>
+        <span class="ml-1 text-xs font-semibold px-2 py-0.5 rounded-full" style="background:rgba(255,107,53,.1); color:var(--primary);">Pilot</span>
+      </div>
+
+      <div id="authConfigWarn" class="hidden mb-4 px-3 py-2.5 rounded-xl text-xs" style="background:rgba(239,68,68,.06); border:1px solid rgba(239,68,68,.25); color:#B91C1C;">
+        <strong>Backend not configured.</strong> Add your Supabase URL and anon key in <code>js/supabase.js</code>, then reload.
+      </div>
+
+      <div class="flex rounded-xl p-1 mb-5" style="background:rgba(29,33,41,.04); border:1px solid var(--line);">
+        <button onclick="setAuthMode('signin')" id="authTabSignin" class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all">Sign in</button>
+        <button onclick="setAuthMode('signup')" id="authTabSignup" class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all">Create account</button>
+      </div>
+
+      <form id="authForm" onsubmit="submitAuth(event)" class="space-y-3">
+        <div id="authNameRow" class="hidden">
+          <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">Full name</label>
+          <input id="authName" type="text" autocomplete="name" placeholder="Your name"
+            class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none field-input">
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">Email</label>
+          <input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com"
+            class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none field-input">
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">Password</label>
+          <input id="authPassword" type="password" required autocomplete="current-password" placeholder="••••••••" minlength="6"
+            class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none field-input">
+        </div>
+        <button type="submit" id="authSubmit"
+          class="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all glow-primary"
+          style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Sign in</button>
+      </form>
+      <p id="authMsg" class="text-xs mt-3 text-center hidden"></p>
+      <p class="text-[11px] mt-4 text-center" style="color:var(--muted);">New tutors &amp; students need admin approval before their dashboard unlocks.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ PENDING APPROVAL ═══════════════════════ -->
+  <div id="pendingView" class="hidden min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="card-surface rounded-2xl p-8 w-full max-w-md text-center">
+      <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4" style="background:rgba(255,210,63,.15); border:1px solid rgba(255,210,63,.3);">
+        <svg class="w-8 h-8" style="color:#B45309;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h2 class="text-xl font-display font-bold mb-2" style="color:var(--navy);">Awaiting approval</h2>
+      <p id="pendingMsg" class="text-sm mb-6" style="color:var(--muted);">Your account is pending review by an admin. You'll get access to your dashboard once you're approved and assigned a role.</p>
+      <div class="flex gap-2 justify-center">
+        <button onclick="recheckApproval()" class="px-4 py-2.5 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Refresh status</button>
+        <button onclick="authSignOut()" class="px-4 py-2.5 rounded-xl text-sm font-semibold" style="background:white; border:1px solid var(--line); color:var(--muted);">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ APP SHELL ═══════════════════════ -->
+  <div id="appShell" class="hidden">
+    <!-- GLOBAL TOP BAR (role-aware) -->
+    <header class="fixed top-0 inset-x-0 z-50 header-glass">
+      <div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white text-sm" style="background:linear-gradient(135deg, #004E89, #FF6B35);">A</div>
+          <span class="text-lg font-display font-bold tracking-tight" style="background:linear-gradient(135deg, #004E89, #FF6B35); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">almitu<span>Pro</span></span>
+          <span id="roleBadge" class="ml-1 text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:rgba(0,78,137,.08); color:var(--secondary);"></span>
+        </div>
+
+        <nav id="headerNav" class="flex items-center gap-1 flex-1 justify-center flex-wrap"></nav>
+
+        <div class="flex items-center gap-3 flex-shrink-0">
+          <div class="hidden sm:flex flex-col items-end leading-tight">
+            <span id="userNameLabel" class="text-sm font-semibold" style="color:var(--navy);"></span>
+            <span id="userEmailLabel" class="text-[10px]" style="color:var(--muted);"></span>
+          </div>
+          <button onclick="authSignOut()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style="background:white; border:1px solid var(--line); color:var(--muted);"
+            onmouseover="this.style.borderColor='#EF4444'; this.style.color='#EF4444';" onmouseout="this.style.borderColor='var(--line)'; this.style.color='var(--muted)';">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Sign out
+          </button>
+        </div>
+      </div>
+      <div class="h-0.5" style="background:var(--line);">
+        <div id="progressBar" class="h-full transition-all duration-700 ease-out" style="width:33%; background:linear-gradient(90deg, #FF6B35, #FFD23F);"></div>
+      </div>
+    </header>
+
+    <div class="h-[68px]"></div>
+
+    <!-- Admin "View as" banner -->
+    <div id="viewAsBanner" class="hidden max-w-[1440px] mx-auto px-4 sm:px-6 mt-2">
+      <div class="flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl" style="background:rgba(124,58,246,.08); border:1px solid rgba(124,58,246,.25);">
+        <span class="text-xs font-semibold" style="color:#6D28D9;">👁 Viewing as <span id="viewAsName"></span> <span id="viewAsRole" class="opacity-70"></span> — read-only</span>
+        <button onclick="exitViewAs()" class="text-xs font-semibold px-3 py-1 rounded-lg text-white" style="background:#7C3AED;">Exit view</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ MAIN CONTENT ═══════════════════════ -->
+    <main class="max-w-[1440px] mx-auto px-4 sm:px-6 py-6">
+
+    <!-- ═══════════ ADMIN DASHBOARD ═══════════ -->
+    <section id="viewAdmin" class="hidden animate-fade-in"></section>
+
+    <!-- ═══════════ TUTOR DASHBOARD (prep + live) ═══════════ -->
+    <div id="viewTutor" class="hidden">
+
+    <!-- Tutor landing: saved sessions + assigned students (rendered by js/router.js) -->
+    <section id="tutorHome" class="hidden animate-fade-in"></section>
+
+    <!-- Bar shown above the prep engine to return to the sessions list -->
+    <div id="tutorPrepBar" class="hidden flex items-center justify-between mb-4">
+      <button onclick="tutorGoHome()" class="flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-lg" style="background:white; border:1px solid var(--line); color:var(--muted);">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        My Sessions
+      </button>
+      <span id="tutorPrepContext" class="text-xs" style="color:var(--muted);"></span>
+    </div>
+
+    <!-- ─── STEP 1: TUTOR PREP ENGINE ─── -->
+    <section id="step1" class="animate-fade-in">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(255,107,53,.1); border:1px solid rgba(255,107,53,.2);">
+            <span class="font-bold text-sm" style="color:var(--primary);">01</span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Session Prep Engine</h1>
+            <p class="text-sm" style="color:var(--muted);">Configure the session — the tier system locks the AI to CEFR-aligned, level-specific output.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left: Form -->
+        <div class="card-surface rounded-2xl p-6">
+          <h2 class="text-base font-semibold mb-5 flex items-center gap-2" style="color:var(--navy);">
+            <svg class="w-5 h-5" style="color:var(--primary);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            Session Configuration
+          </h2>
+          <div class="space-y-4">
+
+            <!-- 1. Student -->
+            <!-- Hidden field kept so existing code can read the chosen student's name -->
+            <input id="inputName" type="hidden" value="">
+            <div class="grid grid-cols-2 gap-4">
+              <div id="tutorStudentPicker"></div>
+              <div>
+                <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">First Language <span style="color:var(--primary);">*</span></label>
+                <select id="inputLang" onchange="markContentDirty()" class="w-full rounded-xl px-4 py-3 text-sm appearance-none cursor-pointer focus:outline-none field-input">
+                  <option value="Ukrainian" selected>Ukrainian</option>
+                  <option value="Arabic">Arabic</option>
+                  <option value="Farsi Afghanistan">Farsi Afghanistan</option>
+                  <option value="Farsi Iran">Farsi Iran</option>
+                  <option value="Tigrinya">Tigrinya</option>
+                  <option value="Pashto">Pashto</option>
+                  <option value="Somali">Somali</option>
+                  <option value="Turkish">Turkish</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="French">French</option>
+                  <option value="German">German</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 2. Country of Resident -->
+            <div>
+              <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">Country of Resident <span class="text-[10px] font-normal" style="color:var(--muted);">(grounds examples &amp; scenarios)</span></label>
+              <input id="inputCountry" type="text" value="Canada" list="countryList" placeholder="e.g. Canada, Germany, UK…" oninput="markContentDirty()"
+                class="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-all field-input">
+              <datalist id="countryList">
+                <option value="Canada"><option value="United States"><option value="United Kingdom"><option value="Germany"><option value="France"><option value="Netherlands"><option value="Sweden"><option value="Australia"><option value="Spain">
+              </datalist>
+            </div>
+
+            <!-- 3. L1 support + duration -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">First Language Support <span style="color:var(--primary);">*</span></label>
+                <div class="flex gap-2">
+                  <button onclick="setL1Support(true)" id="l1Yes" class="flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all" style="background:var(--secondary); color:white; border-color:var(--secondary);">YES</button>
+                  <button onclick="setL1Support(false)" id="l1No" class="flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all" style="background:white; color:var(--muted); border-color:var(--line);">NO</button>
+                </div>
+                <p id="l1Microcopy" class="text-[10px] mt-1 hidden" style="color:var(--primary);">L1 support is unavailable for Proficiency sessions.</p>
+              </div>
+              <div>
+                <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">Session Duration <span style="color:var(--primary);">*</span></label>
+                <div class="flex gap-2">
+                  <button onclick="setDuration(15)" id="dur15" class="flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all" style="background:white; color:var(--muted); border-color:var(--line);">15 min</button>
+                  <button onclick="setDuration(25)" id="dur25" class="flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all" style="background:var(--secondary); color:white; border-color:var(--secondary);">25 min</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Level → auto Tier -->
+            <div>
+              <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">Student Level <span style="color:var(--primary);">*</span></label>
+              <select id="inputLevel" onchange="updateTierBadge()" class="w-full rounded-xl px-4 py-3 text-sm appearance-none cursor-pointer focus:outline-none field-input"></select>
+              <div id="tierBadge" class="tier-badge mt-2"></div>
+            </div>
+
+            <!-- 4. Session Type -->
+            <div>
+              <label class="block text-xs font-medium mb-2" style="color:var(--muted);">Session Type <span style="color:var(--primary);">*</span></label>
+              <div id="sessionTypeGrid" class="grid grid-cols-3 gap-2"></div>
+            </div>
+
+            <!-- 5. Dynamic session detail fields -->
+            <div class="pt-2" style="border-top:1px dashed var(--line);">
+              <p class="text-xs font-semibold mb-3 uppercase tracking-wide" style="color:var(--muted);">Session Details</p>
+              <div id="dynamicFields" class="space-y-4"></div>
+            </div>
+
+            <!-- 6. Generate -->
+            <button onclick="generatePlan()" id="btnGenerate"
+              class="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300 glow-primary flex items-center justify-center gap-2 mt-2"
+              style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Generate Session Slides
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: AI Output + Review/Edit -->
+        <div class="card-surface rounded-2xl p-6 relative overflow-hidden">
+          <h2 class="text-base font-semibold mb-5 flex items-center gap-2" style="color:var(--navy);">
+            <svg class="w-5 h-5" style="color:var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            almitu AI Engine Output
+          </h2>
+
+          <div id="genStatus" class="mb-4 px-3 py-2 rounded-xl inline-flex items-center flex-wrap gap-1" style="border:1px solid rgba(0,78,137,.15); background:rgba(0,78,137,.06);">
+            <span class="text-[11px] font-semibold" style="color:var(--secondary);">Ready for autofill</span>
+          </div>
+
+          <div id="outputPlaceholder" class="flex flex-col items-center justify-center py-16 text-center">
+            <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4" style="background:#F1F2F6; border:1px solid var(--line);">
+              <svg class="w-10 h-10" style="color:#D1D5DB;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <p class="font-medium text-sm" style="color:var(--muted);">Awaiting Form Input</p>
+            <p class="text-xs mt-1" style="color:#D1D5DB;">Complete the configuration and generate</p>
+          </div>
+
+          <div id="outputLoading" class="hidden">
+            <div class="flex flex-col items-center justify-center py-12">
+              <div class="relative w-16 h-16 mb-4">
+                <div class="absolute inset-0 rounded-full border-2" style="border-color:rgba(255,107,53,.15);"></div>
+                <div class="absolute inset-0 rounded-full border-2 border-transparent animate-spin" style="border-top-color:var(--primary);"></div>
+                <div class="absolute inset-2 rounded-full border-2 border-transparent animate-spin" style="border-top-color:var(--accent); animation-direction:reverse; animation-duration:1.5s;"></div>
+              </div>
+              <p class="text-[11px] mb-5 font-mono" id="loadingEngine" style="color:var(--muted);">Demo Engine</p>
+              <div class="space-y-3 w-full max-w-xs">
+                <div id="ls1" class="flex items-center gap-3 text-sm text-gray-400 transition-all duration-500">
+                  <div class="w-5 h-5 rounded-full flex items-center justify-center" style="border:1px solid var(--line);"><span class="loading-check hidden text-xs" style="color:var(--success);">✓</span></div>
+                  <span>Locking render template &amp; tier rules…</span>
+                </div>
+                <div id="ls2" class="flex items-center gap-3 text-sm text-gray-400 transition-all duration-500">
+                  <div class="w-5 h-5 rounded-full flex items-center justify-center" style="border:1px solid var(--line);"><span class="loading-check hidden text-xs" style="color:var(--success);">✓</span></div>
+                  <span>Calibrating to exact CEFR level…</span>
+                </div>
+                <div id="ls3" class="flex items-center gap-3 text-sm text-gray-400 transition-all duration-500">
+                  <div class="w-5 h-5 rounded-full flex items-center justify-center" style="border:1px solid var(--line);"><span class="loading-check hidden text-xs" style="color:var(--success);">✓</span></div>
+                  <span>Generating slide content…</span>
+                </div>
+                <div id="ls4" class="flex items-center gap-3 text-sm text-gray-400 transition-all duration-500">
+                  <div class="w-5 h-5 rounded-full flex items-center justify-center" style="border:1px solid var(--line);"><span class="loading-check hidden text-xs" style="color:var(--success);">✓</span></div>
+                  <span>Building practice bank…</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review & Edit Deck -->
+          <div id="outputPlan" class="hidden">
+            <div class="flex items-center justify-between mb-3" id="pvHeader"></div>
+            <div class="slide-viewer p-3">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold" id="pvLabel" style="color:var(--navy);">🎯 Objective</span>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono" id="pvCounter" style="color:var(--muted);">1 / 6</span>
+                  <button onclick="toggleEdit()" id="pvEditBtn" class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all" style="background:white; border-color:var(--line); color:var(--ink);"></button>
+                  <button onclick="pvPrevSlide()" id="pvPrev" class="slide-nav-btn" style="width:28px;height:28px;">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <button onclick="pvNextSlide()" id="pvNext" class="slide-nav-btn" style="width:28px;height:28px;">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div id="pvContent" class="slide-card p-5 overflow-y-auto" style="min-height:320px; max-height:420px;"></div>
+              <div class="flex items-center justify-center gap-2 mt-2.5" id="pvDots"></div>
+            </div>
+            <p class="text-[10px] text-center mt-2" style="color:var(--muted);">Review each slide — click <strong>Edit</strong> to change content in place before saving or launching.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+              <button onclick="tutorSavePlanned()"
+                class="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2"
+                style="background:white; border:1.5px solid var(--secondary); color:var(--secondary);">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                Save for later
+              </button>
+              <button onclick="launchFromPreview()"
+                class="w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-300 glow-success flex items-center justify-center gap-2"
+                style="background:linear-gradient(135deg, #06D6A0, #05B586);">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Launch Live Call
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── STEP 2: LIVE CALL — 2/3 SLIDES | 1/3 SIDEBAR ─── -->
+    <section id="step2" class="hidden animate-fade-in">
+      <div class="mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(6,214,160,.1); border:1px solid rgba(6,214,160,.2);">
+            <span class="font-bold text-sm" style="color:#059669;">02</span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Live Micro-Session</h1>
+            <p class="text-sm" style="color:var(--muted);">Slide-guided 25-minute call with real-time data capture.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4" style="min-height:600px;">
+        <!-- LEFT 2/3: Slide Viewer -->
+        <div class="lg:col-span-8">
+          <div class="slide-viewer p-4 h-full flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-semibold" id="slideLabel" style="color:var(--navy);">🎯 Objective</span>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-mono" id="slideCounter" style="color:var(--muted);">1 / 6</span>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="prevSlide()" id="slidePrev" class="slide-nav-btn">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <button onclick="nextSlide()" id="slideNext" class="slide-nav-btn">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="slideContent" class="slide-card flex-1 p-6 overflow-y-auto"></div>
+            <div class="flex items-center justify-center gap-2 mt-3" id="slideDots"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT 1/3: Timer + Tutor Notes -->
+        <div class="lg:col-span-4 flex flex-col gap-3">
+          <!-- Participant + live timer -->
+          <div class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl" style="background:white; border:1px solid var(--line);">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="avatar-circle" id="studentAvatar" style="width:34px;height:34px;font-size:14px;background:linear-gradient(135deg, #004E89, #003D6B);">A</div>
+              <div class="leading-tight min-w-0">
+                <p class="text-xs font-semibold truncate" id="studentVidName" style="color:var(--navy);">Amira</p>
+                <p class="text-[10px]" style="color:var(--muted);">Student</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <span class="w-2 h-2 rounded-full animate-pulse" style="background:#EF4444;"></span>
+              <span class="text-lg font-bold font-mono tracking-wider" id="timer" style="color:var(--navy);">25:00</span>
+            </div>
+          </div>
+
+          <!-- Google Meet reminder -->
+          <div class="px-3 py-2 rounded-xl text-[11px] flex items-center gap-2" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12); color:var(--secondary);">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <span>Run the call on <strong>Google Meet</strong> and share your screen to present these slides.</span>
+          </div>
+
+          <!-- Tutor Notes (replaces the old chat) -->
+          <div class="chat-compact flex-1 flex flex-col" style="min-height:280px;">
+            <div class="px-3 py-2 flex items-center justify-between" style="border-bottom:1px solid var(--line);">
+              <span class="text-xs font-semibold" style="color:var(--navy);">📝 Notes &amp; Assignments</span>
+              <span class="text-[9px]" id="notesSaveState" style="color:var(--muted);"></span>
+            </div>
+            <div class="p-3 flex-1 flex flex-col">
+              <textarea id="tutorNotes" oninput="onNotesInput()" placeholder="Write assignments, homework, corrections, and notes for your student here — they'll appear in the student's dashboard after the session."
+                class="w-full flex-1 rounded-lg px-3 py-2 text-[13px] resize-none focus:outline-none field-input" style="min-height:210px;"></textarea>
+              <p class="text-[10px] mt-1.5" style="color:var(--muted);">Only you can edit these. The student sees them read-only in their notebook.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-center">
+        <button onclick="endSession()"
+          class="px-10 py-4 rounded-2xl text-white font-bold text-base transition-all duration-300 glow-danger flex items-center gap-3 group"
+          style="background:linear-gradient(135deg, #EF4444, #DC2626);">
+          <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+          End Micro-Session &amp; Compile
+        </button>
+      </div>
+    </section>
+    </div><!-- /viewTutor -->
+
+    <!-- ─── COMPILATION OVERLAY ─── -->
+    <div id="compileOverlay" class="hidden fixed inset-0 z-[100] flex items-center justify-center" style="background:rgba(248,249,253,.95); backdrop-filter:blur(8px);">
+      <div class="card-surface rounded-2xl p-10 max-w-md w-full mx-4 text-center">
+        <div class="relative w-20 h-20 mx-auto mb-6">
+          <div class="absolute inset-0 rounded-full border-2" style="border-color:rgba(6,214,160,.2);"></div>
+          <div class="absolute inset-0 rounded-full border-2 border-transparent animate-spin" style="border-top-color:var(--success);"></div>
+        </div>
+        <h2 class="text-xl font-display font-bold mb-2" style="color:var(--navy);">Compiling Session Data</h2>
+        <div class="space-y-2 text-left max-w-xs mx-auto mt-6">
+          <div id="cs1" class="flex items-center gap-3 text-sm text-gray-400"><span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style="border:1px solid var(--line);"></span> Merging slide deck &amp; edits...</div>
+          <div id="cs2" class="flex items-center gap-3 text-sm text-gray-400"><span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style="border:1px solid var(--line);"></span> Saving your notes &amp; assignments...</div>
+          <div id="cs3" class="flex items-center gap-3 text-sm text-gray-400"><span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style="border:1px solid var(--line);"></span> Indexing practice bank...</div>
+          <div id="cs4" class="flex items-center gap-3 text-sm text-gray-400"><span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style="border:1px solid var(--line);"></span> Saving to student vault...</div>
+        </div>
+        <div id="compileDone" class="hidden mt-6">
+          <div class="w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-3" style="background:rgba(6,214,160,.1); border:1px solid rgba(6,214,160,.2);">
+            <svg class="w-7 h-7" style="color:var(--success);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <p class="font-semibold" style="color:#059669;">Notebook Saved Successfully</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ STUDENT DASHBOARD ═══════════ -->
+    <div id="viewStudent" class="hidden">
+    <!-- ─── STEP 3: STUDENT DASHBOARD ─── -->
+    <section id="step3" class="hidden animate-fade-in">
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(0,78,137,.08); border:1px solid rgba(0,78,137,.15);">
+            <span class="font-bold text-sm" style="color:var(--secondary);">03</span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Smart Notebook &amp; Practice Ground</h1>
+            <p class="text-sm" id="studentGreeting" style="color:var(--muted);">Personalized study vault — all activities generate from the live session.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: Notebooks -->
+        <div class="lg:col-span-4">
+          <div class="card-surface rounded-2xl p-5">
+            <h2 class="text-sm font-semibold mb-4 flex items-center gap-2" style="color:var(--navy);">
+              <svg class="w-4 h-4" style="color:var(--secondary);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              My Notebook Archives
+            </h2>
+            <div id="notebookList" class="space-y-2">
+              <div class="text-center py-8 text-sm" style="color:var(--muted);">No notebooks yet.</div>
+            </div>
+          </div>
+          <div id="notebookExpanded" class="hidden mt-4 card-surface rounded-2xl p-5 max-h-[500px] overflow-y-auto">
+            <div class="flex items-center justify-between mb-3">
+              <h3 id="notebookExpandedTitle" class="text-sm font-semibold" style="color:var(--navy);">Session Objective</h3>
+              <button onclick="document.getElementById('notebookExpanded').classList.add('hidden')" class="text-xs" style="color:var(--muted);">Close</button>
+            </div>
+            <div id="notebookRawData" class="text-xs font-mono space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- Right: 5 Practice Activities -->
+        <div class="lg:col-span-8">
+          <div class="card-surface rounded-2xl p-5 mb-4">
+            <h2 class="text-sm font-semibold mb-1 flex items-center gap-2" style="color:var(--navy);">
+              <svg class="w-4 h-4" style="color:var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              AI Studio Practice Ground
+            </h2>
+            <p class="text-xs" style="color:var(--muted);">Start with the Overview, then 5 activity types — each generated from the selected session's practice bank.</p>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+            <button onclick="actOverview()" class="card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📋</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Overview</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">Session summary</p>
+            </button>
+            <button onclick="actFlashcards()" class="card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🃏</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Flashcards</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">Flip &amp; learn</p>
+            </button>
+            <button onclick="actQuiz()" class="card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">❓</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Quiz MCQ</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">3 options each</p>
+            </button>
+            <button onclick="actReorder()" class="card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🔀</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Reorder</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">Build sentences</p>
+            </button>
+            <button onclick="actGapFill()" class="card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">✏️</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Gap Fill</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">Complete it</p>
+            </button>
+            <button onclick="actMatching()" class="card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🔗</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Matching</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">Pair them up</p>
+            </button>
+          </div>
+
+          <div class="card-surface rounded-2xl p-6 min-h-[300px]">
+            <div id="practiceEmpty" class="flex flex-col items-center justify-center py-12 text-center">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-3" style="background:#F1F2F6; border:1px solid var(--line);">
+                <svg class="w-8 h-8" style="color:#D1D5DB;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <p class="text-sm font-medium" style="color:var(--muted);">Select an activity above</p>
+              <p class="text-xs mt-1" style="color:#D1D5DB;">Content generates from your session's practice bank</p>
+            </div>
+            <div id="practiceContent" class="hidden"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div><!-- /viewStudent -->
+
+    </main>
+  </div><!-- /appShell -->
+
+  <!-- ═══════════════════════ SETTINGS MODAL (opened from Admin dashboard) ═══════════════════════ -->
+  <div id="settingsModal" class="hidden modal-backdrop" onclick="if(event.target===this)closeSettings()">
+    <div class="modal-card p-6">
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="text-lg font-display font-bold" style="color:var(--navy);">AI Engine Settings</h2>
+        <button onclick="closeSettings()" class="text-xl leading-none" style="color:var(--muted);">&times;</button>
+      </div>
+      <p class="text-xs mb-5" style="color:var(--muted);">Choose how session content is generated. This applies to every tutor. Keys are stored in your Supabase project's database (readable only by admins &amp; tutors) and are sent exclusively to the provider you select.</p>
+
+      <div class="space-y-3 mb-5">
+        <label class="engine-option">
+          <input type="radio" name="engineChoice" value="demo" class="mt-0.5" onchange="updateEngineSections()">
+          <div>
+            <p class="text-sm font-semibold" style="color:var(--navy);">Demo Engine <span class="text-[10px] font-normal px-1.5 py-0.5 rounded" style="background:rgba(255,210,63,.15); color:#B45309;">no key needed</span></p>
+            <p class="text-[11px] mt-0.5" style="color:var(--muted);">Rule-based templated content. Shows the full flow and render structures, but content quality is placeholder-level.</p>
+          </div>
+        </label>
+        <label class="engine-option">
+          <input type="radio" name="engineChoice" value="claude" class="mt-0.5" onchange="updateEngineSections()">
+          <div class="flex-1">
+            <p class="text-sm font-semibold" style="color:var(--navy);">Claude API <span class="text-[10px] font-normal px-1.5 py-0.5 rounded" style="background:rgba(255,107,53,.1); color:var(--primary);">recommended</span></p>
+            <p class="text-[11px] mt-0.5" style="color:var(--muted);">Real AI generation with the 9 CEFR-locked prompts. Paste your Anthropic API key.</p>
+            <div id="claudeSection" class="hidden mt-3 space-y-2">
+              <input id="cfgClaudeKey" type="password" placeholder="sk-ant-api03-..." class="w-full rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none field-input">
+              <input id="cfgClaudeModel" type="text" placeholder="Model (default: claude-sonnet-4-6)" class="w-full rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none field-input">
+            </div>
+          </div>
+        </label>
+        <label class="engine-option">
+          <input type="radio" name="engineChoice" value="custom" class="mt-0.5" onchange="updateEngineSections()">
+          <div class="flex-1">
+            <p class="text-sm font-semibold" style="color:var(--navy);">Custom API</p>
+            <p class="text-[11px] mt-0.5" style="color:var(--muted);">Any OpenAI-compatible endpoint (chat/completions format).</p>
+            <div id="customSection" class="hidden mt-3 space-y-2">
+              <input id="cfgCustomUrl" type="text" placeholder="Base URL, e.g. https://api.example.com/v1" class="w-full rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none field-input">
+              <input id="cfgCustomKey" type="password" placeholder="API key" class="w-full rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none field-input">
+              <input id="cfgCustomModel" type="text" placeholder="Model name" class="w-full rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none field-input">
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="flex gap-2 justify-end">
+        <button onclick="closeSettings()" class="px-4 py-2.5 rounded-xl text-sm font-semibold" style="background:white; border:1px solid var(--line); color:var(--muted);">Cancel</button>
+        <button onclick="saveSettings()" class="px-5 py-2.5 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (dependency order) -->
+  <script src="js/supabase.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/fingerprint.js"></script>
+  <script src="js/sessionTypes.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/prompts.js"></script>
+  <script src="js/renders.js"></script>
+  <script src="js/demoEngine.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/step1.js"></script>
+  <script src="js/step2.js"></script>
+  <script src="js/step3.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
