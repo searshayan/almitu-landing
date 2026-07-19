@@ -34,6 +34,7 @@ function renderAdmin() {
   let body;
   if (adminActiveTab === 'assignments') body = renderAssignmentsTab();
   else if (adminActiveTab === 'settings') body = renderSettingsTab();
+  else if (adminActiveTab === 'curriculum') body = renderCurriculumTabBody();
   else body = renderUsersTab();
 
   host.innerHTML = `

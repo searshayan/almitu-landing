@@ -119,6 +119,7 @@ function renderHeaderNav(ctx) {
     nav.innerHTML =
       btn('Users', "adminTab('users')", adminActiveTab === 'users') +
       btn('Assignments', "adminTab('assignments')", adminActiveTab === 'assignments') +
+      btn('Curriculum', "adminTab('curriculum')", adminActiveTab === 'curriculum') +
       btn('AI Settings', "adminTab('settings')", adminActiveTab === 'settings');
   } else if (ctx.role === 'tutor') {
     nav.innerHTML = '';   // tutor navigates via the home / prep bar

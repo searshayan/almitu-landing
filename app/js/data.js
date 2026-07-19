@@ -232,6 +232,45 @@ async function dataDeletePlan(id) {
   throwIf(error, 'deletePlan');
 }
 
+/* ─────────────── curriculum plans (shared, ownerless) ───────────────
+   Pre-generated CEFR sessions: tutor_id is null, is_curriculum is true.
+   Readable by every approved tutor; only admins can write them (RLS). */
+
+/* Which curriculum sessions already exist — drives resumable generation.
+   Selects only the id column, so this stays cheap as the library grows. */
+async function dataListCurriculumIds() {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans')
+    .select('curriculum_id').eq('is_curriculum', true);
+  throwIf(error, 'listCurriculumIds');
+  return new Set((data || []).map(r => r.curriculum_id).filter(Boolean));
+}
+
+async function dataCreateCurriculumPlan(row) {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans').insert(row).select('*').single();
+  throwIf(error, 'createCurriculumPlan');
+  return data;
+}
+
+async function dataGetCurriculumPlan(curriculumId) {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans').select('*')
+    .eq('is_curriculum', true).eq('curriculum_id', curriculumId).maybeSingle();
+  throwIf(error, 'getCurriculumPlan');
+  return data;
+}
+
+/* Every curriculum plan for a level — the tutor-facing library (phase 2). */
+async function dataListCurriculumPlans(level) {
+  const c = requireSb();
+  let q = c.from('session_plans').select('*').eq('is_curriculum', true);
+  if (level) q = q.eq('level', level);
+  const { data, error } = await q.order('curriculum_id', { ascending: true });
+  throwIf(error, 'listCurriculumPlans');
+  return data || [];
+}
+
 /* ─────────────── app settings (AI engine config) ─────────────── */
 
 async function dataGetSettings() {

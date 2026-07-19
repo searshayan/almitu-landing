@@ -52,13 +52,18 @@ function requireNotebook() {
   return nb;
 }
 
-/* ── Answer explanations: L1 for Foundation, English otherwise ── */
+/* ── Answer explanations: L1 for Foundation *with L1 support*, English otherwise ── */
 
 function explainAnswer(nb, item) {
   if (!item) return '';
   const tier = nb.plan.meta.tier;
+  // L1 explanations only make sense when the session was generated WITH L1
+  // support — otherwise there is no first language to explain in, and the old
+  // fallback rendered a broken `": word — meaning"`. Pre-generated curriculum
+  // sessions are always L1-off (tutors deliver L1 live), so they land here.
+  const l1On = !!(nb.student && nb.student.l1Support);
   let text, icon;
-  if (tier === 'foundation') {
+  if (tier === 'foundation' && l1On) {
     text = item.l1_explanation || `${nb.student.language}: "${item.term}" — ${item.meaning}`;
     icon = '🌐';
   } else {

@@ -1,0 +1,596 @@
+{
+ "level": "Pre-A1",
+ "tier": "foundation",
+ "sessions": [
+  {
+   "curriculum_id": "V-Pre-A1-01",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Keep exchanges formulaic; prioritize clear pronunciation and turn-taking.",
+   "title": "Greetings and Polite Words",
+   "words": [
+    "hello",
+    "hi",
+    "goodbye",
+    "please",
+    "thanks",
+    "sorry",
+    "yes",
+    "no",
+    "okay",
+    "name",
+    "I",
+    "you"
+   ],
+   "objective": "Use basic greeting and politeness words in short, memorized exchanges.",
+   "context": "Meeting people for the first time in class or in public."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-02",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Recycle 'this/that' and 'a/an' in teacher talk.",
+   "title": "Classroom Objects",
+   "words": [
+    "book",
+    "pen",
+    "pencil",
+    "paper",
+    "desk",
+    "chair",
+    "board",
+    "bag",
+    "phone",
+    "door",
+    "window",
+    "teacher"
+   ],
+   "objective": "Identify common objects; respond to 'What is this?' and simple imperatives.",
+   "context": "Understanding and following simple classroom instructions."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-03",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Add quick recognition tasks (hearing → pointing/choosing).",
+   "title": "Numbers 1–12",
+   "words": [
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve"
+   ],
+   "objective": "Recognize and say numbers 1–12; use them in short answers.",
+   "context": "Counting items and simple personal data (age, phone digits)."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-04",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Avoid overload: keep to high-frequency classroom/real-life objects.",
+   "title": "Colors",
+   "words": [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "black",
+    "white",
+    "orange",
+    "pink",
+    "brown",
+    "gray",
+    "purple",
+    "color"
+   ],
+   "objective": "Name common colors; answer 'What color is it?' with single-word or 2-word responses.",
+   "context": "Describing objects and basic preferences."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-05",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Personalize with learner photos or stick figures; keep language chunked.",
+   "title": "Family Words",
+   "words": [
+    "mother",
+    "father",
+    "sister",
+    "brother",
+    "son",
+    "daughter",
+    "baby",
+    "family",
+    "husband",
+    "wife",
+    "parents",
+    "children"
+   ],
+   "objective": "Identify immediate family members; understand simple 'This is my…' statements.",
+   "context": "Talking about close family using simple labels."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-06",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Support with visuals/realia; recycle please/thanks.",
+   "title": "Food and Drink Basics",
+   "words": [
+    "water",
+    "tea",
+    "coffee",
+    "milk",
+    "bread",
+    "rice",
+    "egg",
+    "chicken",
+    "apple",
+    "banana",
+    "salt",
+    "sugar"
+   ],
+   "objective": "Name common food/drink items; choose and request items with single words or short chunks.",
+   "context": "Very basic needs at home or a café."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-07",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Limit days to a few anchors; expand in A1/A2.",
+   "title": "Days and Time Basics",
+   "words": [
+    "today",
+    "tomorrow",
+    "yesterday",
+    "morning",
+    "afternoon",
+    "evening",
+    "night",
+    "Monday",
+    "Friday",
+    "weekend",
+    "time",
+    "now"
+   ],
+   "objective": "Use key time words for simple statements and short answers.",
+   "context": "Simple scheduling talk and classroom routines."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-08",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Use maps/pictures; keep grammar minimal.",
+   "title": "Places in Town",
+   "words": [
+    "home",
+    "school",
+    "store",
+    "market",
+    "bank",
+    "hospital",
+    "park",
+    "bus",
+    "street",
+    "restaurant",
+    "mall",
+    "toilet"
+   ],
+   "objective": "Recognize common place words; respond to 'Where?' with one-word answers.",
+   "context": "Survival navigation and asking where to go."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-09",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Prioritize comprehension; production can be choral/controlled.",
+   "title": "Everyday Action Verbs",
+   "words": [
+    "go",
+    "come",
+    "sit",
+    "stand",
+    "open",
+    "close",
+    "eat",
+    "drink",
+    "sleep",
+    "read",
+    "write",
+    "listen"
+   ],
+   "objective": "Comprehend and perform high-frequency verbs; produce simple verb + object chunks.",
+   "context": "Understanding common classroom and daily-life actions."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-10",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Keep distinctions concrete (states) rather than abstract emotions.",
+   "title": "Basic Feelings",
+   "words": [
+    "happy",
+    "sad",
+    "tired",
+    "hungry",
+    "thirsty",
+    "cold",
+    "hot",
+    "fine",
+    "sick",
+    "okay",
+    "good",
+    "bad"
+   ],
+   "objective": "Label basic feelings and states; answer 'How are you?' with simple choices.",
+   "context": "Checking in and expressing basic comfort/needs."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-OPT-01",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Challenge: Combine with 'today/tomorrow' and clothing choices. Keep structures simple but push for fuller responses.",
+   "title": "Weather and Seasons (Optional Harder)",
+   "words": [
+    "sun",
+    "rain",
+    "snow",
+    "wind",
+    "cloud",
+    "warm",
+    "cool",
+    "winter",
+    "summer",
+    "spring",
+    "fall",
+    "weather"
+   ],
+   "objective": "Use weather vocabulary in simple present statements; understand seasonal references.",
+   "context": "Describing basic weather conditions and seasonal concepts."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-OPT-02",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Challenge: Requires gesturing and more complex pain descriptions. Practice with role-play scenarios.",
+   "title": "Body Parts and Health (Optional Harder)",
+   "words": [
+    "head",
+    "hand",
+    "foot",
+    "eye",
+    "ear",
+    "mouth",
+    "nose",
+    "arm",
+    "leg",
+    "hurt",
+    "sick",
+    "doctor"
+   ],
+   "objective": "Identify body parts; express simple pain or illness with 'My ___ hurts' or 'I am sick.'",
+   "context": "Expressing basic health needs and body awareness."
+  },
+  {
+   "curriculum_id": "V-Pre-A1-OPT-03",
+   "skill": "vocabulary",
+   "level": "Pre-A1",
+   "notes": "Challenge: Abstract concepts like 'wait' and 'ticket' require more context. Use visual aids extensively.",
+   "title": "Transportation and Movement (Optional Harder)",
+   "words": [
+    "car",
+    "train",
+    "plane",
+    "bike",
+    "walk",
+    "drive",
+    "fly",
+    "stop",
+    "wait",
+    "ticket",
+    "station",
+    "airport"
+   ],
+   "objective": "Name common vehicles; express simple intentions with 'I go by ___' or 'I need a ___.'",
+   "context": "Discussing modes of transportation and basic travel."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-01",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Keep to memorized chunks; delay third-person expansion if needed.",
+   "title": "Subject Pronouns + BE (affirmative)",
+   "structure": "I am / You are / He is / She is",
+   "objective": "Produce short identity sentences (My name is…, I am…).",
+   "context": "Introductions and identity statements."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-02",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Use real objects; emphasize singular only.",
+   "title": "This/That + Noun",
+   "structure": "This is a… / That is a…",
+   "objective": "Ask/answer 'What is this/that?' with controlled patterns.",
+   "context": "Pointing to objects in class and at home."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-03",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Teach as sound-based; avoid exceptions overload.",
+   "title": "A / An (indefinite articles)",
+   "structure": "a + consonant sound / an + vowel sound",
+   "objective": "Use a/an accurately in simple noun phrases.",
+   "context": "Naming objects (a pen, an apple)."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-04",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Keep irregular plurals for A1 (children, people).",
+   "title": "Plural -s + Numbers",
+   "structure": "one book / two books",
+   "objective": "Form regular plurals; match number + noun in short phrases.",
+   "context": "Counting classroom items."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-05",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Use substitution drills: my book / your book.",
+   "title": "Possessive Adjectives",
+   "structure": "my, your, his, her",
+   "objective": "Say who something belongs to using short patterns.",
+   "context": "Talking about personal items and family."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-06",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Keep meaning concrete; avoid perfect aspect.",
+   "title": "HAVE (simple possession)",
+   "structure": "I have / I don’t have",
+   "objective": "State simple possession; answer yes/no questions with have.",
+   "context": "Personal items and needs."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-07",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Pair with TPR; add 'please' for politeness.",
+   "title": "Imperatives (classroom language)",
+   "structure": "Open…, Close…, Sit down…, Please + verb",
+   "objective": "Understand and use common imperatives politely.",
+   "context": "Classroom management and daily routines."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-08",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Focus on rhythm: Are you…? Yes, I am. / No, I’m not.",
+   "title": "BE Questions (Yes/No)",
+   "structure": "Are you…? / Is he…? + short answers",
+   "objective": "Ask and answer basic yes/no questions with BE.",
+   "context": "Simple check-in questions."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-09",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Keep to present only; use visuals.",
+   "title": "There is / There are (basic)",
+   "structure": "There is a… / There are (two)…",
+   "objective": "Make simple existence statements about places.",
+   "context": "Describing a room with objects."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-10",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Keep verb list limited and high-frequency.",
+   "title": "CAN for ability/request (basic)",
+   "structure": "I can… / Can I…?",
+   "objective": "Use can to talk about basic ability and ask permission.",
+   "context": "Simple abilities and polite permission."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-OPT-01",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Challenge: Plural forms and distance concepts are cognitively demanding. Use physical distance demonstrations.",
+   "title": "Demonstratives (this/that) + Plural Forms (Optional Harder)",
+   "structure": "This is / That is / These are / Those are",
+   "objective": "Use demonstratives correctly with singular and plural nouns in controlled situations.",
+   "context": "Distinguishing near/far and singular/plural objects."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-OPT-02",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Challenge: Requires understanding of third-person possessives which are abstract. Practice with family photos.",
+   "title": "Possessive Adjectives with Family (Optional Harder)",
+   "structure": "my, your, his, her + family words",
+   "objective": "Produce short sentences like 'This is my father' and 'Her name is ___.'",
+   "context": "Describing family relationships with possessive markers."
+  },
+  {
+   "curriculum_id": "G-Pre-A1-OPT-03",
+   "skill": "grammar",
+   "level": "Pre-A1",
+   "notes": "Challenge: Modal concept is advanced. Focus on memorized chunks before expanding.",
+   "title": "Present Simple: CAN for Ability (Optional Harder)",
+   "structure": "I can / I can't + verb",
+   "objective": "State simple abilities using 'can/can't' with common verbs (swim, read, speak).",
+   "context": "Expressing basic abilities and limitations."
+  },
+  {
+   "curriculum_id": "C-Pre-A1-01",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Use name cards; keep turn-taking highly scaffolded.",
+   "title": "Introducing Yourself",
+   "objective": "First meeting in class; saying name and country.",
+   "expressions": [
+    "My name is ___.",
+    "I am from ___.",
+    "Nice to meet you."
+   ],
+   "functions": "greeting; introducing; basic personal info"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-02",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Teach supportive gestures; encourage polite tone.",
+   "title": "Classroom Requests",
+   "objective": "Asking for help or repeating in class.",
+   "expressions": [
+    "Please help me.",
+    "Repeat, please.",
+    "Thank you."
+   ],
+   "functions": "requesting; asking for repetition; thanking"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-03",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Use real/fake money and price tags; focus on clarity.",
+   "title": "Numbers and Prices",
+   "objective": "Buying one item and understanding a simple price.",
+   "expressions": [
+    "How much?",
+    "It’s __ dollars.",
+    "Okay, thank you."
+   ],
+   "functions": "asking price; giving number; confirming"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-04",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Use simple maps; limit directions to here/there/left/right.",
+   "title": "Where Is…?",
+   "objective": "Finding a place in a building (toilet, office).",
+   "expressions": [
+    "Where is the ___?",
+    "It’s here/there.",
+    "Thanks."
+   ],
+   "functions": "asking location; understanding direction; thanking"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-05",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Keep menu very small; recycle please/thanks.",
+   "title": "Ordering a Drink",
+   "objective": "Ordering a tea/coffee at a café counter.",
+   "expressions": [
+    "I want ___.",
+    "Small, please.",
+    "That’s all, thanks."
+   ],
+   "functions": "ordering; requesting; polite closing"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-06",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Allow learners to choose how much personal detail to share.",
+   "title": "Talking About Family (Basic)",
+   "objective": "Showing a photo and naming family members.",
+   "expressions": [
+    "This is my ___.",
+    "He/She is my ___.",
+    "We are a family."
+   ],
+   "functions": "naming; identifying; simple possession"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-07",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Use visuals to reduce cognitive load; short turns.",
+   "title": "Likes and Dislikes (Basic)",
+   "objective": "Saying what you like (food/hobby) in simple form.",
+   "expressions": [
+    "I like ___.",
+    "I don’t like ___.",
+    "Me too."
+   ],
+   "functions": "expressing likes; simple preference"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-08",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Offer choice cards (fine/tired/happy) for fast participation.",
+   "title": "How Are You? (Basic Check-in)",
+   "objective": "Short greetings and feeling check at start of class.",
+   "expressions": [
+    "How are you?",
+    "I’m fine/tired.",
+    "I’m okay."
+   ],
+   "functions": "greeting; expressing state; responding"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-OPT-01",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Challenge: Requires confidence to initiate. Provide sentence starters and practice in safe scenarios first.",
+   "title": "Making Simple Requests (Optional Harder)",
+   "objective": "Asking for help with objects or actions in classroom/public.",
+   "expressions": [
+    "Can you help me?",
+    "I need ___.",
+    "Can I have ___?",
+    "Please give me ___.",
+    "Where is ___?"
+   ],
+   "functions": "requesting; asking for help; expressing needs"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-OPT-02",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Challenge: Question formation and short answers are complex. Drill patterns heavily before free use.",
+   "title": "Expressing Likes and Dislikes (Optional Harder)",
+   "objective": "Talking about personal preferences with food, colors, activities.",
+   "expressions": [
+    "I like ___.",
+    "I don't like ___.",
+    "Do you like ___?",
+    "Yes, I do.",
+    "No, I don't."
+   ],
+   "functions": "expressing preference; agreeing; disagreeing"
+  },
+  {
+   "curriculum_id": "C-Pre-A1-OPT-03",
+   "skill": "communication",
+   "level": "Pre-A1",
+   "notes": "Challenge: Spatial prepositions are abstract. Use physical manipulation and gestures extensively.",
+   "title": "Describing Location (Optional Harder)",
+   "objective": "Saying where objects or people are using basic prepositions.",
+   "expressions": [
+    "It is in ___.",
+    "It is on ___.",
+    "It is under ___.",
+    "Where is ___?",
+    "Here.",
+    "There."
+   ],
+   "functions": "describing location; giving simple directions"
+  }
+ ]
+}
