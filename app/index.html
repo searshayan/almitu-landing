@@ -103,7 +103,7 @@
   <div id="appShell" class="hidden">
     <!-- GLOBAL TOP BAR (role-aware) -->
     <header class="fixed top-0 inset-x-0 z-50 header-glass">
-      <div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between gap-4">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 min-h-16 py-2 flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
         <div class="flex items-center gap-2 flex-shrink-0">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white text-sm" style="background:linear-gradient(135deg, #004E89, #FF6B35);">A</div>
           <span class="text-lg font-display font-bold tracking-tight" style="background:linear-gradient(135deg, #004E89, #FF6B35); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">almitu<span>Pro</span></span>
@@ -155,17 +155,26 @@
     <section id="tutorCurriculum" class="hidden animate-fade-in"></section>
 
     <!-- Bar shown above the prep engine to return to the sessions list -->
-    <div id="tutorPrepBar" class="hidden flex items-center justify-between mb-4">
-      <button onclick="tutorGoHome()" class="flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-lg" style="background:white; border:1px solid var(--line); color:var(--muted);">
+    <div id="tutorPrepBar" class="hidden flex items-center justify-between gap-2 mb-4 flex-wrap">
+      <button onclick="tutorGoBackFromPrep()" class="flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-lg flex-shrink-0" style="background:white; border:1px solid var(--line); color:var(--muted);">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        My Sessions
+        <span id="prepBackLabel">My Sessions</span>
       </button>
-      <span id="tutorPrepContext" class="text-xs" style="color:var(--muted);"></span>
+      <div class="flex items-center gap-3 min-w-0">
+        <span id="tutorPrepContext" class="text-xs truncate" style="color:var(--muted);"></span>
+        <!-- Ready-made session: launch without scrolling past the deck -->
+        <button id="prepBarStart" onclick="startSession()"
+          class="hidden items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-lg text-white flex-shrink-0 glow-success"
+          style="background:linear-gradient(135deg, #06D6A0, #05B586);">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span class="hidden sm:inline">Start The Session</span><span class="sm:hidden">Start</span>
+        </button>
+      </div>
     </div>
 
     <!-- ─── STEP 1: TUTOR PREP ENGINE ─── -->
     <section id="step1" class="animate-fade-in">
-      <div class="mb-6">
+      <div id="step1Header" class="mb-6">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(255,107,53,.1); border:1px solid rgba(255,107,53,.2);">
             <span class="font-bold text-sm" style="color:var(--primary);">01</span>
@@ -177,9 +186,9 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Left: Form -->
-        <div class="card-surface rounded-2xl p-6">
+      <div id="prepGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left: Form (hidden when a ready-made session is opened for teaching) -->
+        <div id="prepFormCol" class="card-surface rounded-2xl p-6">
           <h2 class="text-base font-semibold mb-5 flex items-center gap-2" style="color:var(--navy);">
             <svg class="w-5 h-5" style="color:var(--primary);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             Session Configuration

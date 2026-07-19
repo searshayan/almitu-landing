@@ -113,7 +113,7 @@ function renderHeader(ctx, profile) {
 function renderHeaderNav(ctx) {
   const nav = document.getElementById('headerNav');
   const btn = (label, fn, active) =>
-    `<button onclick="${fn}" class="px-4 py-1.5 rounded-lg text-sm font-semibold transition-all" style="${active ? 'background:var(--primary);color:white;' : 'color:var(--muted);'}">${label}</button>`;
+    `<button onclick="${fn}" class="px-2.5 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all" style="${active ? 'background:var(--primary);color:white;' : 'color:var(--muted);'}">${label}</button>`;
 
   if (ctx.role === 'admin' && !viewAsTarget) {
     nav.innerHTML =
@@ -237,8 +237,9 @@ window.tutorState = {
   // ── curriculum browser ──
   view: 'home',          // 'home' | 'curriculum'
   curLevels: null,       // { 'Pre-A1': 37, ... } — levels that actually have content
+  curTier: null,         // 'foundation' | 'development' | 'proficiency'
   curLevel: null,        // selected level
-  curSkill: 'all',       // 'all' | 'vocabulary' | 'grammar' | 'communication'
+  curSkill: null,        // 'vocabulary' | 'grammar' | 'communication'
   curIndex: [],          // lightweight rows for the selected level (no plan payload)
   curLoading: false
 };
@@ -299,10 +300,6 @@ async function loadCurriculumBrowser() {
   renderCurriculumBrowser();
   try {
     tutorState.curLevels = await dataListCurriculumLevels();
-    // Default to the first level that actually has content.
-    const levels = LEVELS.map(l => l.value).filter(v => tutorState.curLevels[v]);
-    tutorState.curLevel = levels[0] || null;
-    if (tutorState.curLevel) tutorState.curIndex = await dataListCurriculumIndex(tutorState.curLevel);
   } catch (e) {
     showToast('Could not load the curriculum: ' + e.message, 'error');
   }
@@ -310,8 +307,26 @@ async function loadCurriculumBrowser() {
   renderCurriculumBrowser();
 }
 
+/* ── drill-down navigation: tiers → levels → session types → sessions ── */
+
+function tutorCurriculumCrumb(step) {
+  // step: 'tiers' | 'levels' | 'skills'
+  if (step === 'tiers')  { tutorState.curTier = null; tutorState.curLevel = null; tutorState.curSkill = null; }
+  if (step === 'levels') { tutorState.curLevel = null; tutorState.curSkill = null; }
+  if (step === 'skills') { tutorState.curSkill = null; }
+  renderCurriculumBrowser();
+}
+
+function tutorPickCurriculumTier(tier) {
+  tutorState.curTier = tier;
+  tutorState.curLevel = null;
+  tutorState.curSkill = null;
+  renderCurriculumBrowser();
+}
+
 async function tutorPickCurriculumLevel(level) {
   tutorState.curLevel = level;
+  tutorState.curSkill = null;
   tutorState.curLoading = true;
   renderCurriculumBrowser();
   try { tutorState.curIndex = await dataListCurriculumIndex(level); }
@@ -325,6 +340,27 @@ function tutorPickCurriculumSkill(skill) {
   renderCurriculumBrowser();
 }
 
+/* Breadcrumb trail — always shows where the tutor is in the drill-down. */
+function curriculumBreadcrumb() {
+  const ts = tutorState;
+  const sep = '<span style="color:#D1D5DB;">›</span>';
+  const crumb = (label, onclick) => onclick
+    ? `<button onclick="${onclick}" class="font-semibold hover:underline" style="color:var(--secondary);">${label}</button>`
+    : `<span class="font-semibold" style="color:var(--navy);">${label}</span>`;
+
+  const parts = [crumb('Curriculum', ts.curTier ? "tutorCurriculumCrumb('tiers')" : null)];
+  if (ts.curTier) {
+    const t = TIERS[ts.curTier];
+    parts.push(sep, crumb(escapeHtml(t.label), ts.curLevel ? "tutorCurriculumCrumb('levels')" : null));
+  }
+  if (ts.curLevel) {
+    const lv = LEVELS.find(l => l.value === ts.curLevel);
+    parts.push(sep, crumb(escapeHtml(lv ? lv.label : ts.curLevel), ts.curSkill ? "tutorCurriculumCrumb('skills')" : null));
+  }
+  if (ts.curSkill) parts.push(sep, crumb(escapeHtml(getSessionType(ts.curSkill).label), null));
+  return `<div class="flex items-center flex-wrap gap-2 text-sm mb-5">${parts.join(' ')}</div>`;
+}
+
 function renderCurriculumBrowser() {
   const host = document.getElementById('tutorCurriculum');
   const ts = tutorState;
@@ -334,73 +370,133 @@ function renderCurriculumBrowser() {
     return;
   }
 
-  const levelsWithContent = LEVELS.map(l => l.value).filter(v => (ts.curLevels || {})[v]);
-  if (!levelsWithContent.length) {
+  const available = ts.curLevels || {};
+  const totalSessions = Object.values(available).reduce((a, b) => a + b, 0);
+  if (!totalSessions) {
     host.innerHTML = `
-      <div class="card-surface rounded-2xl p-8 text-center">
-        <p class="text-3xl mb-2">📚</p>
-        <p class="text-sm font-semibold" style="color:var(--navy);">No curriculum sessions yet</p>
+      <div class="card-surface rounded-2xl p-10 text-center">
+        <p class="text-4xl mb-3">📚</p>
+        <p class="text-base font-semibold" style="color:var(--navy);">No curriculum sessions yet</p>
         <p class="text-xs mt-1" style="color:var(--muted);">An admin needs to generate the curriculum first.</p>
       </div>`;
     return;
   }
 
-  const chip = (label, active, onclick, sub) => `
-    <button onclick="${onclick}" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all"
-      style="${active ? 'background:var(--primary);color:white;border:1px solid var(--primary);'
-                      : 'background:white;color:var(--muted);border:1px solid var(--line);'}">
-      ${label}${sub ? ` <span class="text-[10px] opacity-70">${sub}</span>` : ''}
-    </button>`;
-
-  const levelChips = levelsWithContent
-    .map(v => chip(escapeHtml(v), v === ts.curLevel, `tutorPickCurriculumLevel('${v}')`, ts.curLevels[v]))
-    .join('');
-
-  const counts = { all: ts.curIndex.length };
-  ts.curIndex.forEach(r => { counts[r.session_type] = (counts[r.session_type] || 0) + 1; });
-  const skillChips = ['all', 'vocabulary', 'grammar', 'communication']
-    .filter(k => k === 'all' || counts[k])
-    .map(k => chip(k === 'all' ? 'All' : escapeHtml(getSessionType(k).label),
-                   ts.curSkill === k, `tutorPickCurriculumSkill('${k}')`, counts[k] || 0))
-    .join('');
-
-  const rows = ts.curIndex
-    .filter(r => ts.curSkill === 'all' || r.session_type === ts.curSkill)
-    .map(r => `
-      <div class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border mb-2" style="background:white;border-color:var(--line);">
-        <div class="min-w-0">
-          <p class="text-sm font-semibold truncate" style="color:var(--navy);">${escapeHtml(r.title || '')}</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--muted);">
-            <span class="font-mono">${escapeHtml(r.curriculum_id || '')}</span> ·
-            ${escapeHtml(getSessionType(r.session_type).label)} · ${r.duration}m
-          </p>
-        </div>
-        <div class="flex gap-1.5 flex-shrink-0">
-          <button onclick="tutorViewCurriculumPlan('${r.id}')" class="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>
-          <button onclick="tutorTeachCurriculumPrompt('${r.id}')" class="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg text-white" style="background:var(--primary);">Teach this</button>
-        </div>
-      </div>`).join('');
+  let body;
+  if (!ts.curTier)       body = renderCurriculumTiers(available);
+  else if (!ts.curLevel) body = renderCurriculumLevels(available);
+  else                   body = renderCurriculumSessions();
 
   host.innerHTML = `
-    <div class="mb-5">
+    <div class="mb-4">
       <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">📚 Curriculum</h1>
       <p class="text-sm" style="color:var(--muted);">
-        Ready-made CEFR sessions — pick a level and topic, then teach it to any of your students. No generation needed.
+        Ready-made CEFR sessions — choose a tier, level and topic, then teach it to any of your students.
       </p>
     </div>
+    ${curriculumBreadcrumb()}
+    ${body}`;
+}
 
-    <div class="card-surface rounded-2xl p-5 mb-4">
-      <p class="text-[10px] uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">Level</p>
-      <div class="flex flex-wrap gap-2 mb-4">${levelChips}</div>
-      <p class="text-[10px] uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">Session type</p>
-      <div class="flex flex-wrap gap-2">${skillChips}</div>
-    </div>
+/* Step 1 — the three tiers. */
+function renderCurriculumTiers(available) {
+  const cards = ['foundation', 'development', 'proficiency'].map(key => {
+    const t = TIERS[key];
+    const levels = LEVELS.filter(l => l.tier === key);
+    const count = levels.reduce((n, l) => n + (available[l.value] || 0), 0);
+    const ready = count > 0;
+    return `
+      <button onclick="${ready ? `tutorPickCurriculumTier('${key}')` : ''}"
+        class="text-left rounded-2xl p-6 transition-all ${ready ? 'card-hover' : 'opacity-55 cursor-not-allowed'}"
+        style="background:${t.bg}; border:2px solid ${t.border};">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-lg font-bold font-display" style="color:${t.color};">${escapeHtml(t.label)}</span>
+          <span class="text-[10px] font-bold px-2 py-1 rounded-full" style="background:white; border:1px solid ${t.border}; color:${t.color};">
+            ${count} ${count === 1 ? 'session' : 'sessions'}
+          </span>
+        </div>
+        <p class="text-xs font-semibold mb-2" style="color:var(--navy);">${escapeHtml(t.levels)}</p>
+        <p class="text-[11px] leading-snug" style="color:var(--muted);">${escapeHtml(t.desc)}</p>
+        ${ready ? '' : '<p class="text-[10px] mt-2 font-semibold" style="color:var(--muted);">Not generated yet</p>'}
+      </button>`;
+  }).join('');
+  return `<div class="grid grid-cols-1 md:grid-cols-3 gap-5">${cards}</div>`;
+}
 
-    <div class="card-surface rounded-2xl p-5">
-      ${ts.curLoading
-        ? '<div class="text-center py-10 text-sm" style="color:var(--muted);">Loading sessions…</div>'
-        : (rows || '<div class="text-center py-10 text-sm" style="color:var(--muted);">No sessions of this type at this level.</div>')}
-    </div>`;
+/* Step 2 — the levels inside the chosen tier. */
+function renderCurriculumLevels(available) {
+  const t = TIERS[tutorState.curTier];
+  const cards = LEVELS.filter(l => l.tier === tutorState.curTier).map(l => {
+    const count = available[l.value] || 0;
+    const ready = count > 0;
+    return `
+      <button onclick="${ready ? `tutorPickCurriculumLevel('${l.value}')` : ''}"
+        class="text-left card-surface rounded-2xl p-6 transition-all ${ready ? 'card-hover' : 'opacity-55 cursor-not-allowed'}"
+        style="border-left:5px solid ${t.color};">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-base font-bold font-display" style="color:var(--navy);">${escapeHtml(l.label)}</span>
+          <span class="text-[10px] font-bold px-2 py-1 rounded-full" style="background:${t.bg}; color:${t.color};">
+            ${count} ${count === 1 ? 'session' : 'sessions'}
+          </span>
+        </div>
+        <p class="text-[11px]" style="color:var(--muted);">${ready ? 'Tap to browse session types' : 'Not generated yet'}</p>
+      </button>`;
+  }).join('');
+  return `<div class="grid grid-cols-1 md:grid-cols-2 gap-5">${cards}</div>`;
+}
+
+/* Step 3 — session types, then the session list for the chosen type. */
+function renderCurriculumSessions() {
+  const ts = tutorState;
+  const t = TIERS[ts.curTier];
+
+  if (ts.curLoading) {
+    return '<div class="card-surface rounded-2xl p-10 text-center text-sm" style="color:var(--muted);">Loading sessions…</div>';
+  }
+
+  const counts = {};
+  ts.curIndex.forEach(r => { counts[r.session_type] = (counts[r.session_type] || 0) + 1; });
+
+  // No type chosen yet → show the session-type cards.
+  if (!ts.curSkill) {
+    const blurbs = {
+      vocabulary:    'Target words in context — themes, meanings and real-world use.',
+      grammar:       'One structure at a time, with guided practice and examples.',
+      communication: 'Speaking scenarios and target expressions for real situations.'
+    };
+    const cards = getAllSessionTypes().filter(st => counts[st.key]).map(st => `
+      <button onclick="tutorPickCurriculumSkill('${st.key}')"
+        class="text-left card-surface rounded-2xl p-6 card-hover transition-all">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+          style="background:${t.bg}; color:${t.color}; border:1px solid ${t.border};">${st.icon}</div>
+        <p class="text-base font-bold font-display mb-1" style="color:var(--navy);">${escapeHtml(st.label)}</p>
+        <p class="text-[11px] mb-3 leading-snug" style="color:var(--muted);">${escapeHtml(blurbs[st.key] || '')}</p>
+        <span class="text-[10px] font-bold px-2 py-1 rounded-full" style="background:${t.bg}; color:${t.color};">
+          ${counts[st.key]} ${counts[st.key] === 1 ? 'session' : 'sessions'}
+        </span>
+      </button>`).join('');
+    return `<div class="grid grid-cols-1 md:grid-cols-3 gap-5">${cards}</div>`;
+  }
+
+  // Type chosen → the session list.
+  const rows = ts.curIndex.filter(r => r.session_type === ts.curSkill).map(r => `
+    <div class="flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl mb-2 transition-all"
+      style="background:white; border:1px solid var(--line); border-left:5px solid ${t.color};">
+      <div class="min-w-0">
+        <p class="text-sm font-semibold truncate" style="color:var(--navy);">${escapeHtml(r.title || '')}</p>
+        <p class="text-[11px] mt-0.5" style="color:var(--muted);">
+          <span class="font-mono px-1.5 py-0.5 rounded" style="background:var(--surface);">${escapeHtml(r.curriculum_id || '')}</span>
+          · ${r.duration} min
+        </p>
+      </div>
+      <div class="flex gap-1.5 flex-shrink-0">
+        <button onclick="tutorViewCurriculumPlan('${r.id}')" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>
+        <button onclick="tutorTeachCurriculumPrompt('${r.id}')" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white" style="background:var(--primary);">Teach this</button>
+      </div>
+    </div>`).join('');
+
+  return `<div class="card-surface rounded-2xl p-5">${rows ||
+    '<div class="text-center py-10 text-sm" style="color:var(--muted);">No sessions of this type at this level.</div>'}</div>`;
 }
 
 /* Preview a curriculum session before teaching it. Fetches the full plan
@@ -610,6 +706,7 @@ function tutorUsePlanConfirm(planId) {
   if (!p || !st) return;
   const modal = document.getElementById('genericModal');
   if (modal) modal.classList.add('hidden');
+  tutorState.view = 'home';   // own library lives on the home screen
   tutorLoadPlanIntoPreview(p.plan, p.id, st, 'Reusing: ' + (p.title || ''));
 }
 
@@ -630,15 +727,46 @@ function tutorLoadPlanIntoPreview(plan, planId, student, contextLabel, isCurricu
     s.sessionDuration = plan.meta.duration || s.sessionDuration;
   }
   document.getElementById('tutorHome').classList.add('hidden');
+  document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.remove('hidden');
   document.getElementById('tutorPrepContext').textContent = contextLabel || '';
   renderTutorStudentPicker();
   showStep(1);
+  // The plan is already built — go straight to the deck. Showing the config
+  // form here just makes the tutor scroll past it to find Start.
+  setPrepDeckMode(true);
   renderPlanPreview();
   document.getElementById('outputPlaceholder').classList.add('hidden');
   document.getElementById('outputLoading').classList.add('hidden');
   document.getElementById('outputPlan').classList.remove('hidden');
   setGenStatus('current');
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+/* Deck mode collapses the two-column prep layout to just the slide deck.
+   Used whenever a ready-made plan is opened (curriculum or library reuse);
+   turned off for a fresh "New Session", which needs the config form. */
+function setPrepDeckMode(on) {
+  const grid = document.getElementById('prepGrid');
+  const form = document.getElementById('prepFormCol');
+  const head = document.getElementById('step1Header');
+  const start = document.getElementById('prepBarStart');
+  const back = document.getElementById('prepBackLabel');
+  if (!grid || !form) return;
+  form.classList.toggle('hidden', !!on);
+  grid.classList.toggle('lg:grid-cols-2', !on);
+  if (head) head.classList.toggle('hidden', !!on);
+  // Start lives in the top bar in deck mode so it's reachable without
+  // scrolling past the whole slide deck.
+  if (start) { start.classList.toggle('hidden', !on); start.classList.toggle('flex', !!on); }
+  if (back) back.textContent = (on && tutorState.view === 'curriculum') ? 'Curriculum' : 'My Sessions';
+}
+
+/* Back button returns to wherever the tutor came from. */
+function tutorGoBackFromPrep() {
+  setPrepDeckMode(false);
+  if (tutorState.view === 'curriculum') tutorGoCurriculum();
+  else tutorGoHome();
 }
 
 async function tutorDeletePlan(id) {
@@ -655,13 +783,17 @@ async function tutorDeletePlan(id) {
 function tutorNewSession() {
   if (activeContext().readOnly) return;
   tutorState.currentPlanId = null;
+  tutorState.currentPlanIsCurriculum = false;
   tutorState.currentSessionId = null;
   tutorState.selectedStudent = null;
+  tutorState.view = 'home';   // launched from the home screen — Back returns there
   document.getElementById('tutorHome').classList.add('hidden');
+  document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.remove('hidden');
   document.getElementById('tutorPrepContext').textContent = 'New session';
   renderTutorStudentPicker();
   if (typeof resetPrepForm === 'function') resetPrepForm();
+  setPrepDeckMode(false);   // a fresh session needs the config form
   showStep(1);
 }
 
