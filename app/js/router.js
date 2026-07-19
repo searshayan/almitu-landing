@@ -746,11 +746,12 @@ function tutorLoadPlanIntoPreview(plan, planId, student, contextLabel, isCurricu
 /* Deck mode collapses the two-column prep layout to just the slide deck.
    Used whenever a ready-made plan is opened (curriculum or library reuse);
    turned off for a fresh "New Session", which needs the config form. */
-function setPrepDeckMode(on) {
+function setPrepDeckMode(on, allowEditSetup) {
   const grid = document.getElementById('prepGrid');
   const form = document.getElementById('prepFormCol');
   const head = document.getElementById('step1Header');
   const start = document.getElementById('prepBarStart');
+  const edit = document.getElementById('prepBarEditSetup');
   const back = document.getElementById('prepBackLabel');
   if (!grid || !form) return;
   form.classList.toggle('hidden', !!on);
@@ -759,7 +760,18 @@ function setPrepDeckMode(on) {
   // Start lives in the top bar in deck mode so it's reachable without
   // scrolling past the whole slide deck.
   if (start) { start.classList.toggle('hidden', !on); start.classList.toggle('flex', !!on); }
+  // "Edit setup" only applies to on-demand generations — a curriculum or
+  // library plan has no config behind it to go back to.
+  const showEdit = !!on && !!allowEditSetup;
+  if (edit) { edit.classList.toggle('hidden', !showEdit); edit.classList.toggle('flex', showEdit); }
   if (back) back.textContent = (on && tutorState.view === 'curriculum') ? 'Curriculum' : 'My Sessions';
+}
+
+/* Reopen the config form after an on-demand generation, so the tutor can
+   change inputs and regenerate without starting over. */
+function tutorEditSetup() {
+  setPrepDeckMode(false);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* Back button returns to wherever the tutor came from. */

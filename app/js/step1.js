@@ -353,6 +353,15 @@ function collectFormData() {
   };
 }
 
+/* Once content exists the config form is just noise — collapse to the AI
+   Engine Output alone. This also takes the Generate button out of view, so a
+   tutor can't fire a second (billed) generation by accident. "Edit setup" in
+   the top bar brings the form back when they genuinely want new inputs. */
+function showFullDeck() {
+  if (typeof setPrepDeckMode === 'function') setPrepDeckMode(true, true);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 /* ─── Generation flow ─── */
 
 let _loadingTimer = null;
@@ -411,6 +420,7 @@ async function generatePlan() {
     renderPlanPreview();
     document.getElementById('outputPlan').classList.remove('hidden');
     setGenStatus('current');
+    showFullDeck();
     showToast('Content reused — inputs match the last generation (student name is instance-only, no re-run needed).', 'info');
     return;
   }
@@ -458,6 +468,7 @@ async function generatePlan() {
       renderPlanPreview();
       document.getElementById('outputPlan').classList.remove('hidden');
       setGenStatus('current');
+      showFullDeck();
     }, 380);
   } catch (e) {
     stopLoadingAnim();
