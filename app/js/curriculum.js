@@ -90,6 +90,14 @@ async function loadCurriculumLevel(level) {
 
 /* ─────────── Generation ─────────── */
 
+/* A unique-index violation means the session is already in the library, not
+   that generation failed. Happens when a run is interrupted between a
+   successful insert and the local status update. */
+function isAlreadyGeneratedError(e) {
+  const m = (e && (e.message || String(e))) || '';
+  return /duplicate key|23505|session_plans_curriculum_uniq/i.test(m);
+}
+
 /* Generate ONE curriculum session and store it. Mirrors generatePlan(). */
 async function generateCurriculumSession(rec) {
   const formData = curriculumFormData(rec);
@@ -168,11 +176,19 @@ async function runCurriculumGeneration() {
       cs.status[rec.curriculum_id] = 'done';
       ok++;
     } catch (e) {
-      // One failure must not abort the run — record it and keep going.
-      console.error('curriculum generation failed for', rec.curriculum_id, e);
-      cs.status[rec.curriculum_id] = 'failed';
-      cs.errors[rec.curriculum_id] = e.message || String(e);
-      failed++;
+      if (isAlreadyGeneratedError(e)) {
+        // The unique index rejected a duplicate: this session already exists
+        // (e.g. the browser died between a successful insert and this status
+        // update). That's success, not failure.
+        cs.status[rec.curriculum_id] = 'done';
+        ok++;
+      } else {
+        // One failure must not abort the run — record it and keep going.
+        console.error('curriculum generation failed for', rec.curriculum_id, e);
+        cs.status[rec.curriculum_id] = 'failed';
+        cs.errors[rec.curriculum_id] = e.message || String(e);
+        failed++;
+      }
     }
     renderCurriculumTab();
   }
@@ -204,9 +220,15 @@ async function retryCurriculumSession(id) {
     delete cs.errors[id];
     showToast(`${id} generated.`, 'success');
   } catch (e) {
-    cs.status[id] = 'failed';
-    cs.errors[id] = e.message || String(e);
-    showToast(`${id} failed: ${e.message}`, 'error');
+    if (isAlreadyGeneratedError(e)) {
+      cs.status[id] = 'done';
+      delete cs.errors[id];
+      showToast(`${id} was already generated.`, 'info');
+    } else {
+      cs.status[id] = 'failed';
+      cs.errors[id] = e.message || String(e);
+      showToast(`${id} failed: ${e.message}`, 'error');
+    }
   }
   renderCurriculumTab();
 }
