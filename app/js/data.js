@@ -261,7 +261,8 @@ async function dataGetCurriculumPlan(curriculumId) {
   return data;
 }
 
-/* Every curriculum plan for a level — the tutor-facing library (phase 2). */
+/* Every curriculum plan for a level — full rows, including the `plan` JSON.
+   Heavy: use dataListCurriculumIndex for browsing. */
 async function dataListCurriculumPlans(level) {
   const c = requireSb();
   let q = c.from('session_plans').select('*').eq('is_curriculum', true);
@@ -269,6 +270,41 @@ async function dataListCurriculumPlans(level) {
   const { data, error } = await q.order('curriculum_id', { ascending: true });
   throwIf(error, 'listCurriculumPlans');
   return data || [];
+}
+
+/* Lightweight browse index — deliberately EXCLUDES the `plan` jsonb column.
+   Each stored plan is tens of KB, so selecting it for a whole level would
+   pull megabytes just to render a list of titles. The full plan is fetched
+   only when a tutor actually views or teaches one. */
+async function dataListCurriculumIndex(level) {
+  const c = requireSb();
+  let q = c.from('session_plans')
+    .select('id, curriculum_id, title, session_type, level, duration')
+    .eq('is_curriculum', true);
+  if (level) q = q.eq('level', level);
+  const { data, error } = await q.order('curriculum_id', { ascending: true });
+  throwIf(error, 'listCurriculumIndex');
+  return data || [];
+}
+
+/* Which levels actually have curriculum content — drives the level picker
+   so tutors never see an empty level. */
+async function dataListCurriculumLevels() {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans')
+    .select('level').eq('is_curriculum', true);
+  throwIf(error, 'listCurriculumLevels');
+  const counts = {};
+  (data || []).forEach(r => { if (r.level) counts[r.level] = (counts[r.level] || 0) + 1; });
+  return counts;   // { 'Pre-A1': 37, ... }
+}
+
+/* One full plan row by primary key (used for View / Teach). */
+async function dataGetPlanById(id) {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans').select('*').eq('id', id).maybeSingle();
+  throwIf(error, 'getPlanById');
+  return data;
 }
 
 /* ─────────────── app settings (AI engine config) ─────────────── */

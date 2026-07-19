@@ -122,7 +122,9 @@ function renderHeaderNav(ctx) {
       btn('Curriculum', "adminTab('curriculum')", adminActiveTab === 'curriculum') +
       btn('AI Settings', "adminTab('settings')", adminActiveTab === 'settings');
   } else if (ctx.role === 'tutor') {
-    nav.innerHTML = '';   // tutor navigates via the home / prep bar
+    nav.innerHTML =
+      btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum') +
+      btn('📚 Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum');
   } else {
     nav.innerHTML = '';
   }
@@ -229,7 +231,16 @@ window.tutorState = {
   selectedStudent: null,
   currentPlanId: null,   // library id of the plan currently loaded in the preview
   currentSessionId: null,// the live session row, once started
-  openStudentId: null    // which student's history is expanded
+  openStudentId: null,   // which student's history is expanded
+  currentPlanIsCurriculum: false, // loaded plan came from the shared curriculum (read-only)
+
+  // ── curriculum browser ──
+  view: 'home',          // 'home' | 'curriculum'
+  curLevels: null,       // { 'Pre-A1': 37, ... } — levels that actually have content
+  curLevel: null,        // selected level
+  curSkill: 'all',       // 'all' | 'vocabulary' | 'grammar' | 'communication'
+  curIndex: [],          // lightweight rows for the selected level (no plan payload)
+  curLoading: false
 };
 
 async function initTutorDashboard() {
@@ -257,10 +268,192 @@ async function initTutorDashboard() {
 
 /* Show the tutor landing (sessions + students); hide the prep/live steps. */
 function tutorGoHome() {
+  tutorState.view = 'home';
   document.getElementById('tutorHome').classList.remove('hidden');
+  document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');
+  renderHeaderNav(activeContext());
+}
+
+/* ═════════════════ Curriculum browser (level → type → topic) ═════════════════
+   Deliberately independent of how slides are rendered: it only reads
+   title/type/level from the index, so the presentation layer can be
+   redesigned later without touching navigation. */
+
+function tutorGoCurriculum() {
+  tutorState.view = 'curriculum';
+  document.getElementById('tutorHome').classList.add('hidden');
+  document.getElementById('tutorCurriculum').classList.remove('hidden');
+  document.getElementById('tutorPrepBar').classList.add('hidden');
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.add('hidden');
+  renderHeaderNav(activeContext());
+  loadCurriculumBrowser();
+}
+
+async function loadCurriculumBrowser() {
+  if (tutorState.curLevels) { renderCurriculumBrowser(); return; }
+  tutorState.curLoading = true;
+  renderCurriculumBrowser();
+  try {
+    tutorState.curLevels = await dataListCurriculumLevels();
+    // Default to the first level that actually has content.
+    const levels = LEVELS.map(l => l.value).filter(v => tutorState.curLevels[v]);
+    tutorState.curLevel = levels[0] || null;
+    if (tutorState.curLevel) tutorState.curIndex = await dataListCurriculumIndex(tutorState.curLevel);
+  } catch (e) {
+    showToast('Could not load the curriculum: ' + e.message, 'error');
+  }
+  tutorState.curLoading = false;
+  renderCurriculumBrowser();
+}
+
+async function tutorPickCurriculumLevel(level) {
+  tutorState.curLevel = level;
+  tutorState.curLoading = true;
+  renderCurriculumBrowser();
+  try { tutorState.curIndex = await dataListCurriculumIndex(level); }
+  catch (e) { showToast('Could not load ' + level + ': ' + e.message, 'error'); }
+  tutorState.curLoading = false;
+  renderCurriculumBrowser();
+}
+
+function tutorPickCurriculumSkill(skill) {
+  tutorState.curSkill = skill;
+  renderCurriculumBrowser();
+}
+
+function renderCurriculumBrowser() {
+  const host = document.getElementById('tutorCurriculum');
+  const ts = tutorState;
+
+  if (ts.curLoading && !ts.curLevels) {
+    host.innerHTML = '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading curriculum…</div>';
+    return;
+  }
+
+  const levelsWithContent = LEVELS.map(l => l.value).filter(v => (ts.curLevels || {})[v]);
+  if (!levelsWithContent.length) {
+    host.innerHTML = `
+      <div class="card-surface rounded-2xl p-8 text-center">
+        <p class="text-3xl mb-2">📚</p>
+        <p class="text-sm font-semibold" style="color:var(--navy);">No curriculum sessions yet</p>
+        <p class="text-xs mt-1" style="color:var(--muted);">An admin needs to generate the curriculum first.</p>
+      </div>`;
+    return;
+  }
+
+  const chip = (label, active, onclick, sub) => `
+    <button onclick="${onclick}" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all"
+      style="${active ? 'background:var(--primary);color:white;border:1px solid var(--primary);'
+                      : 'background:white;color:var(--muted);border:1px solid var(--line);'}">
+      ${label}${sub ? ` <span class="text-[10px] opacity-70">${sub}</span>` : ''}
+    </button>`;
+
+  const levelChips = levelsWithContent
+    .map(v => chip(escapeHtml(v), v === ts.curLevel, `tutorPickCurriculumLevel('${v}')`, ts.curLevels[v]))
+    .join('');
+
+  const counts = { all: ts.curIndex.length };
+  ts.curIndex.forEach(r => { counts[r.session_type] = (counts[r.session_type] || 0) + 1; });
+  const skillChips = ['all', 'vocabulary', 'grammar', 'communication']
+    .filter(k => k === 'all' || counts[k])
+    .map(k => chip(k === 'all' ? 'All' : escapeHtml(getSessionType(k).label),
+                   ts.curSkill === k, `tutorPickCurriculumSkill('${k}')`, counts[k] || 0))
+    .join('');
+
+  const rows = ts.curIndex
+    .filter(r => ts.curSkill === 'all' || r.session_type === ts.curSkill)
+    .map(r => `
+      <div class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border mb-2" style="background:white;border-color:var(--line);">
+        <div class="min-w-0">
+          <p class="text-sm font-semibold truncate" style="color:var(--navy);">${escapeHtml(r.title || '')}</p>
+          <p class="text-[11px] mt-0.5" style="color:var(--muted);">
+            <span class="font-mono">${escapeHtml(r.curriculum_id || '')}</span> ·
+            ${escapeHtml(getSessionType(r.session_type).label)} · ${r.duration}m
+          </p>
+        </div>
+        <div class="flex gap-1.5 flex-shrink-0">
+          <button onclick="tutorViewCurriculumPlan('${r.id}')" class="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>
+          <button onclick="tutorTeachCurriculumPrompt('${r.id}')" class="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg text-white" style="background:var(--primary);">Teach this</button>
+        </div>
+      </div>`).join('');
+
+  host.innerHTML = `
+    <div class="mb-5">
+      <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">📚 Curriculum</h1>
+      <p class="text-sm" style="color:var(--muted);">
+        Ready-made CEFR sessions — pick a level and topic, then teach it to any of your students. No generation needed.
+      </p>
+    </div>
+
+    <div class="card-surface rounded-2xl p-5 mb-4">
+      <p class="text-[10px] uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">Level</p>
+      <div class="flex flex-wrap gap-2 mb-4">${levelChips}</div>
+      <p class="text-[10px] uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">Session type</p>
+      <div class="flex flex-wrap gap-2">${skillChips}</div>
+    </div>
+
+    <div class="card-surface rounded-2xl p-5">
+      ${ts.curLoading
+        ? '<div class="text-center py-10 text-sm" style="color:var(--muted);">Loading sessions…</div>'
+        : (rows || '<div class="text-center py-10 text-sm" style="color:var(--muted);">No sessions of this type at this level.</div>')}
+    </div>`;
+}
+
+/* Preview a curriculum session before teaching it. Fetches the full plan
+   on demand — the browse index deliberately omits it. */
+async function tutorViewCurriculumPlan(id) {
+  try {
+    const row = await dataGetPlanById(id);
+    if (!row || !row.plan) { showToast('Could not load that session.', 'error'); return; }
+    const p = row.plan;
+    const slides = (p.slides || []).map(sl => `
+      <div class="mb-4">
+        <p class="text-[10px] uppercase tracking-wider font-semibold mb-1" style="color:var(--primary);">${sl.icon || ''} ${escapeHtml(sl.label || '')}</p>
+        <div class="slide-card p-4">${sl.html}</div>
+      </div>`).join('');
+    showModal(`
+      <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">${escapeHtml(p.meta.title || row.title)}</h3>
+      <p class="text-xs mb-4" style="color:var(--muted);">
+        ${escapeHtml(row.curriculum_id || '')} · ${escapeHtml(p.meta.level || '')} ·
+        ${escapeHtml(getSessionType(p.meta.sessionType).label)} · ${p.meta.duration}min · ${(p.slides || []).length} slides
+      </p>
+      <div class="max-h-[55vh] overflow-y-auto mb-4">${slides}</div>
+      <button onclick="tutorTeachCurriculumPrompt('${row.id}')" class="w-full py-3 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Teach this session</button>`);
+  } catch (e) { showToast('Could not load: ' + e.message, 'error'); }
+}
+
+/* Pick which student this curriculum session is for. */
+function tutorTeachCurriculumPrompt(id) {
+  if (activeContext().readOnly) return;
+  const students = tutorState.students || [];
+  if (!students.length) { showToast('No students assigned yet — ask your admin to assign one.', 'warn'); return; }
+  const r = tutorState.curIndex.find(x => x.id === id);
+  showModal(`
+    <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">Teach this session to…</h3>
+    <p class="text-xs mb-4" style="color:var(--muted);">${escapeHtml((r && r.title) || '')} — pick the student.</p>
+    <select id="teachCurStudent" class="w-full rounded-xl px-4 py-3 text-sm field-input mb-4">
+      ${students.map(st => `<option value="${st.id}">${escapeHtml(st.full_name || st.email)}</option>`).join('')}
+    </select>
+    <button onclick="tutorTeachCurriculumConfirm('${id}')" class="w-full py-3 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Open session</button>`);
+}
+
+async function tutorTeachCurriculumConfirm(id) {
+  const studentId = document.getElementById('teachCurStudent').value;
+  const st = (tutorState.students || []).find(x => x.id === studentId);
+  if (!st) return;
+  const modal = document.getElementById('genericModal');
+  if (modal) modal.classList.add('hidden');
+  try {
+    const row = await dataGetPlanById(id);
+    if (!row || !row.plan) { showToast('Could not load that session.', 'error'); return; }
+    // Flagged as curriculum: read-only for tutors, so "Save to My Plans"
+    // makes an editable copy instead of attempting a blocked update.
+    tutorLoadPlanIntoPreview(row.plan, row.id, st, 'Curriculum: ' + (row.title || ''), true);
+  } catch (e) { showToast('Could not open: ' + e.message, 'error'); }
 }
 
 function renderTutorHome() {
@@ -422,8 +615,9 @@ function tutorUsePlanConfirm(planId) {
 
 /* Load a plan object into the prep preview — the shared path for both
    "freshly generated" and "reused from the library". */
-function tutorLoadPlanIntoPreview(plan, planId, student, contextLabel) {
+function tutorLoadPlanIntoPreview(plan, planId, student, contextLabel, isCurriculum) {
   tutorState.currentPlanId = planId;
+  tutorState.currentPlanIsCurriculum = !!isCurriculum;
   tutorState.currentSessionId = null;
   tutorState.selectedStudent = student || null;
   const s = getState();
@@ -694,15 +888,28 @@ async function ensurePlanInLibrary(plan) {
   return created.id;
 }
 
-/* Save the generated plan into the reusable library (student-agnostic). */
+/* Save the generated plan into the reusable library (student-agnostic).
+   A curriculum plan is shared and read-only, so saving it copies it into the
+   tutor's own library rather than trying to update the shared row. */
 async function tutorSaveToPlans() {
   if (activeContext().readOnly) return;
   const plan = getState().generatedLessonPlan;
   if (!plan) { showToast('Generate a session first.', 'warn'); return; }
-  if (tutorState.currentPlanId) { showToast('This plan is already saved in My Session Plans.', 'info'); return; }
+  if (tutorState.currentPlanId && !tutorState.currentPlanIsCurriculum) {
+    showToast('This plan is already saved in My Session Plans.', 'info');
+    return;
+  }
   try {
-    await ensurePlanInLibrary(plan);
-    showToast('Saved to My Session Plans — reuse it with any student.', 'success');
+    if (tutorState.currentPlanIsCurriculum) {
+      // Detach from the shared curriculum row and create an owned copy.
+      tutorState.currentPlanId = null;
+      tutorState.currentPlanIsCurriculum = false;
+      await ensurePlanInLibrary(plan);
+      showToast('Copied into My Session Plans — this copy is yours to edit.', 'success');
+    } else {
+      await ensurePlanInLibrary(plan);
+      showToast('Saved to My Session Plans — reuse it with any student.', 'success');
+    }
     await initTutorDashboard();
   } catch (e) { showToast('Save failed: ' + e.message, 'error'); }
 }
