@@ -208,39 +208,51 @@ function renderPresentation() {
   setTimeout(fitPresent, 60);        // settle fallback if rAF is throttled
 }
 
-/* Scale a slide onto the stage.
-   Default: "fit to screen" (contain) so the whole slide is visible and centered,
-   no scrollbar — the polished presentation look. Fallback: if containing the
-   slide would shrink it below a readable size (a very dense slide like the
-   25-min 12-word list), fill the WIDTH instead and let it scroll — bigger text
-   beats an unreadable, fully-visible slide. The wrapper is sized to the scaled
-   dimensions so that scroll works (a CSS transform alone creates no scroll area). */
+/* Scale a slide onto the stage. The slide FRAME always stays fully on screen.
+   - If the slide fits at a readable size, scale-to-contain and center it (no scroll).
+   - If it is too dense to contain without shrinking the text (e.g. the 25-min
+     12-word list), keep the text large (fit WIDTH), pin the frame to fill the
+     screen height, and scroll the content INSIDE the card. Font size is never
+     sacrificed; only the body scrolls, and the whole page never scrolls.
+   The wrapper is sized to the scaled dimensions (a CSS transform alone creates
+   no layout box), and clips the unscaled overflow. */
 function fitPresent() {
   const stage = document.getElementById('presentStage');
   const scaler = document.getElementById('presentScaler');
   const slide = document.getElementById('presentSlide');
   if (!stage || !scaler || !slide) return;
-  // Measure at natural size.
+  // Reset to natural size to measure the content height.
   slide.style.transform = 'none';
+  slide.style.height = 'auto';
+  slide.style.overflowY = 'visible';
   scaler.style.width = 'auto';
   scaler.style.height = 'auto';
   const w = slide.offsetWidth, h = slide.offsetHeight;
   if (!w || !h) return;
   const availW = stage.clientWidth - 56;      // account for the stage's 24px padding + slack
   const availH = stage.clientHeight - 56;
-  const CONTAIN_FLOOR = 0.66;                 // below this, containing looks too small
+  const CONTAIN_FLOOR = 0.66;                 // below this, containing shrinks the text too far
   const contain = Math.min(availW / w, availH / h);
   let k;
   if (contain >= CONTAIN_FLOOR) {
-    k = Math.min(contain, 2.4);               // fits: center it, no scroll
-    stage.style.alignItems = 'center';
+    // Fits nicely: scale-to-contain, natural height, no internal scroll.
+    k = Math.min(contain, 2.4);
+    slide.style.height = 'auto';
+    slide.style.overflowY = 'visible';
+    scaler.style.width = (w * k) + 'px';
+    scaler.style.height = (h * k) + 'px';
   } else {
-    k = Math.min(availW / w, 2.4);            // too tall: fill width, scroll vertically
-    stage.style.alignItems = 'flex-start';
+    // Too dense: keep text large (fit width), pin the frame to the screen height,
+    // scroll the content inside the card.
+    k = Math.min(availW / w, 2.4);
+    const frameH = availH / k;                // pre-scale height so the frame fills availH
+    slide.style.height = frameH + 'px';
+    slide.style.overflowY = 'auto';
+    scaler.style.width = (w * k) + 'px';
+    scaler.style.height = (frameH * k) + 'px';
   }
   slide.style.transform = `scale(${k})`;
-  scaler.style.width = (w * k) + 'px';
-  scaler.style.height = (h * k) + 'px';
+  stage.style.alignItems = 'center';
 }
 
 function enterPresentation() {
