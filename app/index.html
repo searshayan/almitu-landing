@@ -407,6 +407,10 @@
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm font-semibold" id="slideLabel" style="color:var(--navy);">🎯 Objective</span>
               <div class="flex items-center gap-3">
+                <button onclick="enterPresentation()" class="present-btn" title="Presentation view — full screen, large text for screen sharing">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20h8M12 16v4"/></svg>
+                  <span>Present</span>
+                </button>
                 <span class="text-xs font-mono" id="slideCounter" style="color:var(--muted);">1 / 6</span>
                 <div class="flex items-center gap-1.5">
                   <button onclick="prevSlide()" id="slidePrev" class="slide-nav-btn">
@@ -465,6 +469,40 @@
           <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
           End Micro-Session &amp; Compile
         </button>
+      </div>
+
+      <!-- ── Presentation Mode: full-screen, large slide for screen sharing ── -->
+      <div id="presentMode" class="present-mode hidden" aria-hidden="true">
+        <div class="present-topbar">
+          <span id="presentLabel" class="present-label"></span>
+          <div class="present-tools">
+            <div class="present-timer-pill">
+              <span class="present-live-dot"></span>
+              <span id="presentTimer" class="present-timer">25:00</span>
+            </div>
+            <button onclick="togglePresentFullscreen()" id="presentFsBtn" class="present-icon-btn" title="Toggle full screen (F)">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg>
+            </button>
+            <button onclick="exitPresentation()" class="present-icon-btn" title="Exit presentation (Esc)">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="present-stage" id="presentStage">
+          <div class="present-scaler" id="presentScaler">
+            <div class="present-slide slide-card" id="presentSlide"></div>
+          </div>
+        </div>
+        <div class="present-nav">
+          <button onclick="prevSlide()" id="presentPrev" class="present-nav-btn" title="Previous (left arrow)">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div id="presentDots" class="present-dots"></div>
+          <span id="presentCounter" class="present-counter">1 / 6</span>
+          <button onclick="nextSlide()" id="presentNext" class="present-nav-btn" title="Next (right arrow)">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
     </section>
     </div><!-- /viewTutor -->

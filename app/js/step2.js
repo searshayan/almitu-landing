@@ -82,6 +82,8 @@ function renderSlideViewer() {
 
   document.getElementById('slideDots').innerHTML = slides.map((sl, i) =>
     `<button onclick="goToSlide(${i})" class="slide-dot ${i === idx ? 'active' : ''}" title="${escapeHtml(sl.label)}"></button>`).join('');
+
+  if (window._presentActive) renderPresentation();
 }
 
 function nextSlide() {
@@ -110,9 +112,13 @@ function startTimer() {
 function updateTimerDisplay() {
   const m = Math.floor(window._timerSeconds / 60);
   const sec = window._timerSeconds % 60;
+  const text = `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  const color = window._timerSeconds < 60 ? '#EF4444' : 'var(--navy)';
   const el = document.getElementById('timer');
-  el.textContent = `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-  el.style.color = window._timerSeconds < 60 ? '#EF4444' : 'var(--navy)';
+  if (el) { el.textContent = text; el.style.color = color; }
+  // Mirror onto the presentation-mode corner timer.
+  const pel = document.getElementById('presentTimer');
+  if (pel) { pel.textContent = text; pel.style.color = color; }
 }
 
 /* ─── Tutor notes (replaces chat) ─── */
@@ -174,4 +180,128 @@ function endSession() {
       showToast('Could not save the session: ' + e.message, 'error');
     }
   }, 3000);
+}
+
+/* ─── Presentation Mode ───
+   A full-screen, large-type view of ONLY the slide content, so a tutor can
+   screen-share a readable slide (incl. to students on mobile). Reuses the
+   same slide HTML, currentSlide state and timer — nothing is duplicated. */
+
+function renderPresentation() {
+  const s = getState();
+  const plan = s.generatedLessonPlan;
+  if (!plan || !plan.slides) return;
+  const slides = plan.slides;
+  const idx = s.currentSlide;
+  const slide = slides[idx];
+
+  document.getElementById('presentSlide').innerHTML = slide.html;
+  document.getElementById('presentLabel').textContent = slide.label || '';
+  document.getElementById('presentCounter').textContent = `${idx + 1} / ${slides.length}`;
+  document.getElementById('presentPrev').disabled = idx === 0;
+  document.getElementById('presentNext').disabled = idx === slides.length - 1;
+  document.getElementById('presentDots').innerHTML = slides.map((sl, i) =>
+    `<button onclick="goToSlide(${i})" class="slide-dot ${i === idx ? 'active' : ''}" title="${escapeHtml(sl.label)}"></button>`).join('');
+
+  fitPresent();                      // synchronous (offsetWidth forces layout)
+  requestAnimationFrame(fitPresent); // refine after paint / web-font settle
+  setTimeout(fitPresent, 60);        // settle fallback if rAF is throttled
+}
+
+/* Scale a slide onto the stage.
+   Default: "fit to screen" (contain) so the whole slide is visible and centered,
+   no scrollbar — the polished presentation look. Fallback: if containing the
+   slide would shrink it below a readable size (a very dense slide like the
+   25-min 12-word list), fill the WIDTH instead and let it scroll — bigger text
+   beats an unreadable, fully-visible slide. The wrapper is sized to the scaled
+   dimensions so that scroll works (a CSS transform alone creates no scroll area). */
+function fitPresent() {
+  const stage = document.getElementById('presentStage');
+  const scaler = document.getElementById('presentScaler');
+  const slide = document.getElementById('presentSlide');
+  if (!stage || !scaler || !slide) return;
+  // Measure at natural size.
+  slide.style.transform = 'none';
+  scaler.style.width = 'auto';
+  scaler.style.height = 'auto';
+  const w = slide.offsetWidth, h = slide.offsetHeight;
+  if (!w || !h) return;
+  const availW = stage.clientWidth - 56;      // account for the stage's 24px padding + slack
+  const availH = stage.clientHeight - 56;
+  const CONTAIN_FLOOR = 0.66;                 // below this, containing looks too small
+  const contain = Math.min(availW / w, availH / h);
+  let k;
+  if (contain >= CONTAIN_FLOOR) {
+    k = Math.min(contain, 2.4);               // fits: center it, no scroll
+    stage.style.alignItems = 'center';
+  } else {
+    k = Math.min(availW / w, 2.4);            // too tall: fill width, scroll vertically
+    stage.style.alignItems = 'flex-start';
+  }
+  slide.style.transform = `scale(${k})`;
+  scaler.style.width = (w * k) + 'px';
+  scaler.style.height = (h * k) + 'px';
+}
+
+function enterPresentation() {
+  const plan = getState().generatedLessonPlan;
+  if (!plan || !plan.slides || !plan.slides.length) { showToast('Generate a session first.', 'warn'); return; }
+  const el = document.getElementById('presentMode');
+  // Reparent to <body> so it can never be hidden by an ancestor's display:none
+  // or trapped in a transformed stacking context.
+  if (el.parentElement !== document.body) document.body.appendChild(el);
+  el.classList.remove('hidden');
+  el.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  window._presentActive = true;
+  window.addEventListener('keydown', presentKeydown);
+  document.addEventListener('fullscreenchange', onPresentFsChange);
+  // Refit whenever the stage changes size (initial layout settle, window resize,
+  // fullscreen enter/exit) — more reliable than a one-off resize listener.
+  if (window.ResizeObserver) {
+    window._presentRO = new ResizeObserver(() => fitPresent());
+    window._presentRO.observe(document.getElementById('presentStage'));
+  } else {
+    window.addEventListener('resize', fitPresent);
+  }
+  renderPresentation();
+  updateTimerDisplay();
+  presentRequestFullscreen(el);
+}
+
+function exitPresentation() {
+  const el = document.getElementById('presentMode');
+  el.classList.add('hidden');
+  el.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  window._presentActive = false;
+  window.removeEventListener('keydown', presentKeydown);
+  window.removeEventListener('resize', fitPresent);
+  document.removeEventListener('fullscreenchange', onPresentFsChange);
+  if (window._presentRO) { window._presentRO.disconnect(); window._presentRO = null; }
+  presentExitFullscreen();
+}
+
+function presentKeydown(e) {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+  else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); togglePresentFullscreen(); }
+  else if (e.key === 'Escape') { if (!document.fullscreenElement) exitPresentation(); } // in fullscreen, let the browser exit that first
+}
+
+function onPresentFsChange() { requestAnimationFrame(fitPresent); }
+
+function presentRequestFullscreen(el) {
+  const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+  if (fn) { try { const p = fn.call(el); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
+}
+function presentExitFullscreen() {
+  if (document.fullscreenElement) {
+    const fn = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+    if (fn) { try { fn.call(document); } catch (e) {} }
+  }
+}
+function togglePresentFullscreen() {
+  if (document.fullscreenElement) presentExitFullscreen();
+  else presentRequestFullscreen(document.getElementById('presentMode'));
 }
