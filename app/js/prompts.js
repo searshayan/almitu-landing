@@ -9,17 +9,21 @@
 
 /* ── Layout data shapes the model must follow ── */
 const LAYOUT_DOCS = `
-LAYOUT DATA SHAPES (the "data" object for each layout):
-- "hero":      { "emoji": "☕", "heading": "...", "goal": "one sentence", "can_do": "CEFR can-do statement", "badges": ["...","..."] }
-- "cards":     { "intro": "short line or empty", "cols": 3, "items": [ { "emoji": "☕", "top": "main text", "mid": "secondary text or empty", "bottom": "small text or empty" } ] }
+LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any field:
+- "hero":      { "heading": "...", "goal": "objective statement (one sentence)", "warmup": "a single engaging warm-up question tied to the topic", "badges": ["short chip","..."] }
+- "wordlist":  { "intro": "short line or empty", "words": [ { "word": "Book", "pron": "/bʊk/  (IPA for A2-C2; a simple phonetic hint like 'say: buk' for Pre-A1/A1)", "pos": "Noun", "definition": "contextual meaning", "example": "sentence with the **Book** in bold", "l1": "L1 gloss or empty" } ], "collocations": ["read a book","..."] }
+- "cards":     { "intro": "short line or empty", "cols": 3, "items": [ { "top": "main text", "mid": "secondary text or empty", "bottom": "small text or empty" } ] }
 - "rows":      { "intro": "short line or empty", "rows": [ { "main": "primary text", "sub": "secondary text or empty", "note": "small colored note or empty" } ] }
-- "dialogue":  { "setting": "one line scene description", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }
+- "dialogue":  { "instruction": "Read the dialogue aloud with your tutor.", "setting": "one line scene description", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }
+- "text":      { "instruction": "Read the passage aloud with your tutor.", "paragraphs": ["... use **word** to bold target items ..."], "source_label": "label or empty", "note": "short note or empty" }
 - "table":     { "intro": "short line or empty", "headers": ["...","..."], "rows": [ ["cell","cell"] ] }
-- "text":      { "paragraphs": ["... use **word** to bold target items ..."], "source_label": "label or empty", "note": "short note or empty" }
 - "compare":   { "intro": "short line or empty", "pairs": [ { "good": "correct version", "bad": "incorrect version", "note": "why" } ] }
 - "task":      { "scenario": "...", "steps": ["...","..."], "tip": "short tip or empty", "criteria": ["success criterion", "..."] }
-- "checklist": { "intro": "short line or empty", "style": "check|numbered", "items": [ { "text": "...", "hint": "small hint or empty" } ], "footer": "homework/closing line or empty" }
-- "bankmatch": { "intro": "instructions", "bank": ["word1","word2"], "prompts": [ { "q": "question or sentence with ___", "a": "answer from bank" } ] }`;
+- "checklist": { "intro": "warm reinforcement line", "style": "check|numbered", "items": [ { "text": "I can ... (Can-Do statement)", "hint": "small hint or empty" } ], "footer": "the Next Step: name the post-session activity + note the tutor tracks completion time and metrics" }
+- "bankmatch": { "intro": "instructions", "bank": ["word1","word2"], "prompts": [ { "q": "sentence with ___", "a": "answer from bank" } ] }
+- "practice":  { "partA": { "instruction": "Fill in the blanks with the correct words from the Word Bank to complete the sentences.", "bank": ["6 dialogue words"], "sentences": ["... ___ ..."] }, "partB": { "instruction": "Create sentences using the following words.", "words": ["the 6 passage words"] } }
+- "integrated":{ "instruction": "Read the dialogue and text aloud with your tutor.", "dialogue": { "setting": "or empty", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }, "passage": { "paragraphs": ["... **word** ..."] } }
+- "applyreview":{ "application": { "instruction": "...", "bank": ["or omit"], "prompts": ["... ___ ..."] }, "review": { "can_do": "one core Can-Do statement", "next_step": "post-session activity + tutor tracks metrics" } }`;
 
 /* ── Tier rule blocks (CEFR alignment contract) ──
    {{L1_RULE}} is substituted per request in buildSystemPrompt. */
@@ -28,7 +32,7 @@ const TIER_RULES = {
 PRODUCTIVE & RECEPTIVE CONTRACT — every slide must comply:
 - L1 Semantic Support: {{L1_RULE}}
 - Lexis: high-frequency, CONCRETE nouns and highly functional verbs only. No abstraction.
-- High-Frequency Visuals: every core word or functional phrase carries a contextually relevant emoji for direct semantic mapping.
+- High-Frequency Support: anchor every core word or functional phrase in a concrete, immediately recognizable everyday context for direct semantic mapping. Do NOT use emojis.
 - Scaffolded Lexical Chunks: word banks ALWAYS provided in "bankmatch" activities. Teach set survival-communication phrases, not grammatical paradigms.
 - Oral-First Priming: chunks mirror immediate survival communication; activities centre on speaking/listening, minimal writing.
 - Pronunciation tips (note fields): NEVER use IPA. Use intuitive phonetic approximations, e.g. "say it like: 'wuh-ter'".
@@ -220,22 +224,34 @@ const RENDER_SPECS_15 = {
 };
 
 /* ═══════════════════════════════════════════════════════
-   UNIFIED RENDER SKELETON (supersedes RENDER_SPECS / RENDER_SPECS_15)
-   ONE fixed 6-slide shell per skill, used for EVERY tier and BOTH
-   durations. Slide TYPES never change; tier / level / duration / L1
-   drive only CONTENT depth, scaffolding, L1 lines and density —
-   handled by the tier, level and duration blocks in buildSystemPrompt.
-   (The two legacy spec objects above are now unused.)
+   RENDER SKELETONS
+   Vocabulary follows the emoji-free spec: a 6-slide (25-min) and a
+   distinct 4-slide (15-min) architecture — see VOCAB_SKELETON_* below.
+   Grammar & Communication keep their existing unified 6-slide shell
+   (both durations) until their own specs are defined. Slide TYPES are
+   fixed; tier / level / duration / L1 drive only CONTENT depth,
+   scaffolding and density — handled in buildSystemPrompt.
    ═══════════════════════════════════════════════════════ */
+
+/* ── Vocabulary · 25-minute · 6 slides ── */
+const VOCAB_SKELETON_25 = [
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the number of target words and the lexical domain. warmup = a SINGLE engaging warm-up question tied directly to the topic (this replaces the can-do here). 1-2 short chips. No emojis.' },
+  { icon: '', label: 'New Words', layout: 'wordlist', brief: 'words = EXACTLY 12 items (Pre-A1: EXACTLY 6). Each: word; pron = IPA in slashes for A2-C2, but a simple learner phonetic hint (e.g. "say: buk") for Pre-A1/A1 — NEVER IPA at Pre-A1/A1; pos = part of speech (label phrasal verbs as such from A2); definition = contextual meaning at the exact level; example = a level-appropriate sentence with the target word in **bold**; l1 = gloss ONLY if L1 support is on, else "". collocations = 4-5 topic collocations (Pre-A1: 2-3; B2/C1/C2: 5).' },
+  { icon: '', label: 'Dialogue Practice', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." Title the dialogue after the topic (put it in the slide title). Incorporate the FIRST 6 target words (Pre-A1: first 3) in a realistic exchange. Turns by level: Pre-A1 2-3 lines; A1 4; A2 6 service/workplace; B1 opinion + polite interruptions; B2 high-stakes sync-up; C1 sophisticated multi-turn; C2 register-shifting. Student side = right.' },
+  { icon: '', label: 'Article & Story', layout: 'text', brief: 'instruction EXACTLY "Read the passage aloud with your tutor." Title the passage after the topic. Incorporate the OTHER 6 target words (Pre-A1: other 3) with ZERO overlap with the dialogue words. Length by level: Pre-A1 30w micro-story, A1 40w, A2 60w, B1 70w, B2 80w, C1 90w, C2 100w. Bold each target word.' },
+  { icon: '', label: 'Fill in the Blanks & Sentence Building', layout: 'practice', brief: 'partA.instruction EXACTLY "Fill in the blanks with the correct words from the Word Bank to complete the sentences." partA.bank = the 6 dialogue words (Pre-A1: 3). partA.sentences = level-appropriate sentences each with ___ (Pre-A1 2, A1 3, A2-C2 3-5). Never reveal the answer in the sentence. partB.instruction EXACTLY "Create sentences using the following words." partB.words = the 6 passage words (Pre-A1: 3).' },
+  { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm, specific tutor reinforcement line. items = EXACTLY 3 Can-Do statements ("I can …") matched to the level. footer = the Next Step: name the level-appropriate post-session activity the student completes on the platform and note the tutor tracks completion time and practice metrics. Add an L1 line in items only if L1 support is on.' }
+];
+
+/* ── Vocabulary · 15-minute · 4 slides (distinct architecture, not a trimmed 25-min) ── */
+const VOCAB_SKELETON_15 = [
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective; warmup = a SINGLE engaging warm-up question tied to the topic. 1-2 short chips. No emojis.' },
+  { icon: '', label: 'New Words & Collocations', layout: 'wordlist', brief: 'words = EXACTLY 6 high-impact items (Pre-A1: EXACTLY 4). Same fields as the 25-min word list (pron = IPA for A2-C2, phonetic hint for Pre-A1/A1; pos; definition; example with target in **bold**; l1 only if on). collocations = 3 key collocations (Pre-A1: 2).' },
+  { icon: '', label: 'Integrated Practice', layout: 'integrated', brief: 'instruction EXACTLY "Read the dialogue and text aloud with your tutor." dialogue.lines = a short exchange (3-4 lines; Pre-A1: 2) and passage.paragraphs = a micro-passage (Pre-A1 20w, A1 30w, A2 40w, B1 45w, B2 50w, C1 55w, C2 60w). Together they integrate ALL target words with zero redundancy; bold each target word where it appears in the passage.' },
+  { icon: '', label: 'Application & Review', layout: 'applyreview', brief: 'application.prompts = 3 rapid gap-fill or sentence-building tasks (Pre-A1: 2) using the target words; include application.bank (the target words) for Foundation levels only, omit for others. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
+];
+
 const RENDER_SKELETON = {
-  vocabulary: [
-    { icon: '🎯', label: 'Objective', layout: 'hero', brief: 'Title + duration subtitle. One goal sentence and one CEFR-appropriate "I can…" statement. 1-2 short chips (word count, place, "Speak today!").' },
-    { icon: '🃏', label: 'New Words', layout: 'cards', brief: 'Target words as cards, cols:3. Each card: emoji, the word (top), L1 translation (mid — ONLY if L1 support on, else empty string), ONE example sentence whose complexity matches the exact level (bottom). Item count scales with duration (fewer for 15-min).' },
-    { icon: '🗣️', label: 'Listen & Repeat', layout: 'rows', brief: '4-6 short sentences combining the new words with useful frames. row.main = the sentence (complexity by level); row.sub = L1 translation (only if L1 on); row.note = a SIMPLE learner-friendly phonetic hint (Foundation only, and only where truly helpful).' },
-    { icon: '🧩', label: 'Word Bank', layout: 'bankmatch', brief: 'bank = all target words as chips. 6-8 clues (fewer for 15-min); each clue ends with ___. Clue difficulty by tier: Foundation concrete/visual, Development contextual, Proficiency inferential. Never reveal the answer word in the clue.' },
-    { icon: '🎤', label: 'Scenario / Speak', layout: 'task', brief: 'scenario anchored in the country of residence where natural (e.g. Tim Hortons in Canada). 3-5 numbered steps (fewer for 15-min), each using target language. tip references the Word Bank. criteria = 2-4 success points graded by tier.' },
-    { icon: '✅', label: 'Review & Homework', layout: 'checklist', brief: 'style:check. "I can…" / "I know…" review items (add an L1 line only if L1 on). footer = one small, level-appropriate homework task.' }
-  ],
   grammar: [
     { icon: '🎯', label: 'Objective', layout: 'hero', brief: 'Title + duration subtitle. Goal + a CEFR-appropriate "I can…" (e.g. "I can tell a short story using past simple"). 1-2 chips.' },
     { icon: '📐', label: 'Grammar Focus', layout: 'rows', brief: 'intro = the pattern line (e.g. "have/has + past participle"). 3-6 example rows: main = an example sentence using the pattern (complexity by level); sub = L1 gloss (only if L1 on); note = a short right-vs-wrong or usage hint where helpful.' },
@@ -254,9 +270,15 @@ const RENDER_SKELETON = {
   ]
 };
 
-/* One fixed skeleton per skill, for all tiers and both durations. */
+/* Vocabulary switches architecture by duration (6-slide / 4-slide);
+   Grammar & Communication use their unified 6-slide shell for both. */
 function getRenderSpec(skill, tier, duration) {
-  const slides = RENDER_SKELETON[skill] || RENDER_SKELETON.vocabulary;
+  let slides;
+  if (skill === 'vocabulary') {
+    slides = Number(duration) === 15 ? VOCAB_SKELETON_15 : VOCAB_SKELETON_25;
+  } else {
+    slides = RENDER_SKELETON[skill] || VOCAB_SKELETON_25;
+  }
   return { id: renderIdFor(skill, tier), slides };
 }
 
@@ -270,7 +292,8 @@ function buildSystemPrompt(formData) {
     : 'DISABLED — keep all L1 data slots strictly as empty strings (""). Do not introduce any non-English text under any circumstances.';
   const tierRules = TIER_RULES[tier].replace(/\{\{L1_RULE\}\}/g, l1Rule);
   const dur = getDuration(formData.duration);
-  const durationRules = `SESSION FORMAT: ${dur.label.toUpperCase()} (${dur.slideCount} slides)
+  const slideCount = getRenderSpec(formData.sessionType, formData.tier, formData.duration).slides.length;
+  const durationRules = `SESSION FORMAT: ${dur.label.toUpperCase()} (${slideCount} slides)
 Lesson arc: ${dur.arc}
 Format rules — every slide must comply:
 ${dur.rules.map(r => '- ' + r).join('\n')}`;
@@ -292,6 +315,7 @@ ANTI-HALLUCINATION & LINGUISTIC CONTRACT (non-negotiable):
 3. Strict Level Lock: the learner's confirmed level is ${formData.level}. Every instructional phrase, scenario, text, and review question must be written at or below this exact CEFR level — no accidental level-drift where a simple task carries complex instructions.
 4. Minimalist Data Sourcing: when tutor input is sparse, generate sparse, concrete, tightly-focused content. Never invent biographical facts about the learner.
 5. Schema as Absolute Boundary: treat every JSON field as a hard boundary. Content strings must never break or restructure the layout fields. Return exactly one valid JSON object — no markdown fences, no preamble, no trailing comments, no unescaped characters.
+6. No Emojis: never output an emoji or pictographic character in ANY field (titles, text, examples, chips, icons). Keep every "icon" field an empty string. Use plain professional typography only.
 
 OUTPUT SCHEMA (slides only — post-session practice is generated in a later, separate call):
 { "slides": [ ...exactly the slides specified, in order... ] }

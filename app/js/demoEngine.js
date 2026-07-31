@@ -609,35 +609,117 @@ function vocHomework(fd, theme) {
   return `Prepare a 1-minute spoken opinion comparing two options related to ${theme.toLowerCase()}, ready for next session.`;
 }
 
+/* ── Vocabulary spec helpers (emoji-free; 25-min 6-slide / 15-min 4-slide) ── */
+function vCap(s) { s = String(s); return s.charAt(0).toUpperCase() + s.slice(1); }
+const V_VERBS = ['order','pay','help','book','call','ask','wait','choose','recommend','arrive','depart','compare','apply','manage','organise','organize','suggest','prefer','look forward','check in','sign up'];
+const V_ADJS = ['cheap','open','closed','fresh','busy','early','late','decadent','artisanal','chronic','sustainable','nuanced'];
+function vPos(t) { const w = String(t).toLowerCase(); if (V_VERBS.includes(w)) return 'verb'; if (V_ADJS.includes(w)) return 'adjective'; if (w.trim().includes(' ')) return 'phrasal verb'; return 'noun'; }
+/* Pre-A1/A1 (foundation) → simple phonetic hint; A2-C2 → IPA slot (real IPA comes from the API). */
+function vPron(t, isFound) { return isFound ? ('say: ' + (phoneticFor(t) || String(t))) : ('/' + String(t) + '/'); }
+function vExample(t, f) {
+  if (f.isFound) return `I want the **${t}**.`;
+  if (f.isDev) return `I usually choose the **${t}** because it is reliable.`;
+  return `On balance, the **${t}** proved the more astute choice.`;
+}
+function vDef(t, theme, f) {
+  if (f.isFound) return `a common ${theme.toLowerCase()} word.`;
+  if (f.isDev) return `something linked to ${theme.toLowerCase()} that you use or choose day to day.`;
+  return `a ${theme.toLowerCase()} term carrying a specific register and connotation in context.`;
+}
+function vWords(terms, fd, f) {
+  const theme = fd.details.vocabTheme || 'this topic';
+  return terms.map(t => ({ word: vCap(t), pron: vPron(t, f.isFound), pos: vPos(t),
+    definition: vDef(t, theme, f), example: vExample(t, f), l1: f.l1on ? demoL1(t, fd) : '' }));
+}
+function vCollocations(terms, n) {
+  const v = ['order a', 'choose the', 'ask for a', 'enjoy the', 'prefer the'];
+  return terms.slice(0, n).map((t, i) => `${v[i % v.length]} ${t}`);
+}
+function vDialogueLines(words) {
+  return words.map((w, i) => i % 2 === 0
+    ? { speaker: 'Student', side: 'right', line: `Could I have the **${w}**, please?` }
+    : { speaker: 'Tutor', side: 'left', line: `Of course — here is the **${w}**.` });
+}
+const V_BLANKS = ['Please pass the ___.', 'I would like the ___.', 'Where is the ___?', 'Can I have a ___?', 'This ___ is very good.', 'We need a ___ today.'];
+function vBlankSentences(words) { return words.map((_, i) => V_BLANKS[i % V_BLANKS.length]); }
+function vCanDo(fd, theme) {
+  if (fd.tier === 'foundation') return [`I can name basic ${theme.toLowerCase()} words.`, 'I can ask for something using a fixed phrase.', 'I can recognise the words when I hear them.'];
+  if (fd.tier === 'development') return [`I can use ${theme.toLowerCase()} words in connected sentences.`, 'I can use common collocations correctly.', 'I can explain a choice with a reason.'];
+  return [`I can use ${theme.toLowerCase()} lexis with precise connotation.`, 'I can shift register deliberately.', 'I can justify my lexical choices under challenge.'];
+}
+function vNextStep(fd, theme) {
+  const act = fd.tier === 'foundation' ? `match each word to a picture and record yourself saying the ${theme.toLowerCase()} words aloud`
+    : fd.tier === 'development' ? `add today's words to your flashcard deck and write three sentences using the new collocations`
+      : `complete the register and collocation drill, then write a short paragraph using the target lexis about ${theme.toLowerCase()}`;
+  return `Complete your post-session activity on the platform: ${act}. Your tutor tracks your completion time and practice metrics before the next session.`;
+}
+function vHero(fd, theme, goal, warmup) {
+  const dur = getDuration(fd.duration);
+  const badges = [fd.level, `${dur.key} min`, `${parseVocabList(fd.details.targetVocab).length} words`];
+  return { icon: '', label: 'Objective & Warm-up', title: theme, layout: 'hero',
+    data: { heading: theme, goal, warmup, badges, duration_label: `${fd.duration}-Minute Live Micro-Session` } };
+}
+
 const SKELETON_GEN = {
 
   vocabulary(fd) {
     const d = fd.details; const f = tierFlags(fd);
     const theme = d.vocabTheme || 'New words';
+    const isPreA1 = fd.level === 'Pre-A1';
     let terms = parseVocabList(d.targetVocab);
-    terms = terms.slice(0, f.short ? 8 : (f.isProf ? 8 : 12));
-    const ex = t => f.isFound ? `I want a ${t}.` : f.isDev ? `I ordered a ${t} yesterday.` : `The ${t} was worth every cent.`;
-    const goal = f.isFound ? `Learn ${theme.toLowerCase()} words and ask for what you want.`
-      : f.isDev ? `Use ${theme.toLowerCase()} words to talk about a real situation and make choices.`
-        : `Use precise ${theme.toLowerCase()} lexis to discuss and evaluate a real issue.`;
+    terms = terms.slice(0, f.short ? (isPreA1 ? 4 : 6) : (isPreA1 ? 6 : 12));
+    const ex = t => vExample(t, f).replace(/\*\*/g, '');
+    const goal = f.isFound ? `Learn ${terms.length} core ${theme.toLowerCase()} words and use them right away.`
+      : f.isDev ? `Learn ${terms.length} ${theme.toLowerCase()} words and use them in real, connected sentences.`
+        : `Master ${terms.length} precise ${theme.toLowerCase()} items and deploy them with register and nuance.`;
+    const warmup = f.isFound ? `Which ${theme.toLowerCase()} words do you already know?`
+      : f.isDev ? `When did you last deal with ${theme.toLowerCase()}? What happened?`
+        : `What makes some ${theme.toLowerCase()} choices better than others, in your view?`;
+
+    if (f.short) {
+      // ── 15-minute · 4 slides ──
+      const collN = isPreA1 ? 2 : 3;
+      const slides = [
+        vHero(fd, theme, goal, warmup),
+        { icon: '', label: 'New Words & Collocations', title: `New Words — ${theme}`, layout: 'wordlist',
+          data: { intro: 'A tight set to master fast.', words: vWords(terms, fd, f), collocations: vCollocations(terms, collN) } },
+        { icon: '', label: 'Integrated Practice', title: `${theme} in Use`, layout: 'integrated',
+          data: { instruction: 'Read the dialogue and text aloud with your tutor.',
+            dialogue: { setting: (d.realWorldContext || `Talking about ${theme.toLowerCase()}${f.place}.`).trim(),
+              lines: vDialogueLines(terms.slice(0, 2)) },
+            passage: { paragraphs: [terms.map(t => `You see the **${t}** here.`).join(' ')] } } },
+        { icon: '', label: 'Application & Review', title: 'Application & Review', layout: 'applyreview',
+          data: { application: { instruction: 'Complete each sentence using the target words.',
+              bank: f.isFound ? terms : undefined, prompts: vBlankSentences(terms.slice(0, isPreA1 ? 2 : 3)) },
+            review: { can_do: vCanDo(fd, theme)[0], next_step: vNextStep(fd, theme) } } }
+      ];
+      return { slides, practice_bank: practiceBank(terms, fd, ex) };
+    }
+
+    // ── 25-minute · 6 slides ──
+    const half = Math.ceil(terms.length / 2);
+    const dWords = terms.slice(0, half);   // dialogue words
+    const pWords = terms.slice(half);      // passage words (zero overlap)
+    const collN = f.isFound ? 3 : 5;
     const slides = [
-      heroSlide('🎯', theme, goal, `I can name ${theme.toLowerCase()} items and say what I want.`, fd, 'Objective'),
-      { icon: '🃏', label: 'New Words', title: `New Words — ${theme}`, layout: 'cards',
-        data: { intro: f.short ? 'A small set to master today.' : 'One clear meaning each.', cols: 3,
-          items: terms.map(t => ({ emoji: emojiFor(t), top: t, mid: f.l1on ? demoL1(t, fd) : '', bottom: ex(t) })) } },
-      { icon: '🗣️', label: 'Listen & Repeat', title: 'Listen & Repeat', layout: 'rows',
-        data: { intro: 'Say each line. Slow, then natural.',
-          rows: terms.slice(0, f.short ? 4 : 6).map(t => ({
-            main: f.isFound ? `I want a ${t}, please.` : f.isDev ? `First a ${t}, then something else.` : `I'd rather have the ${t}, honestly.`,
-            sub: f.l1on ? demoL1(t, fd) : '', note: f.isFound ? phoneticFor(t) : '' })) } },
-      { icon: '🧩', label: 'Word Bank', title: 'Word Bank', layout: 'bankmatch',
-        data: { intro: 'Choose the right word from the bank.', bank: terms,
-          prompts: terms.slice(0, f.short ? 5 : 7).map(t => ({ q: vocClue(t, fd), a: t })) } },
-      { icon: '🎤', label: 'Scenario / Speak', title: `Speak — ${theme}`, layout: 'task',
-        data: { scenario: (d.realWorldContext || `You are ordering ${theme.toLowerCase()}${f.place}.`).trim(),
-          steps: vocSteps(fd, terms), tip: 'Use the Word Bank from Slide 4.', criteria: vocCriteria(fd) } },
-      { icon: '✅', label: 'Review & Homework', title: 'Review & Homework', layout: 'checklist',
-        data: { intro: 'What you can do now:', style: 'check', items: vocReview(fd, terms, f.l1on), footer: vocHomework(fd, theme) } }
+      vHero(fd, theme, goal, warmup),
+      { icon: '', label: 'New Words', title: `New Words — ${theme}`, layout: 'wordlist',
+        data: { intro: 'One clear meaning and example each.', words: vWords(terms, fd, f), collocations: vCollocations(terms, collN) } },
+      { icon: '', label: 'Dialogue Practice', title: `Dialogue — ${theme}`, layout: 'dialogue',
+        data: { instruction: 'Read the dialogue aloud with your tutor.',
+          setting: (d.realWorldContext || `A short exchange about ${theme.toLowerCase()}${f.place}.`).trim(),
+          lines: vDialogueLines(dWords) } },
+      { icon: '', label: 'Article & Story', title: `Reading — ${theme}`, layout: 'text',
+        data: { instruction: 'Read the passage aloud with your tutor.',
+          paragraphs: [pWords.map(t => `The **${t}** matters here.`).join(' ')],
+          note: `This passage uses ${pWords.length} of today's words; the other ${dWords.length} are in the dialogue.` } },
+      { icon: '', label: 'Fill in the Blanks & Sentence Building', title: 'Practice', layout: 'practice',
+        data: { partA: { instruction: 'Fill in the blanks with the correct words from the Word Bank to complete the sentences.',
+            bank: dWords, sentences: vBlankSentences(dWords) },
+          partB: { instruction: 'Create sentences using the following words.', words: pWords } } },
+      { icon: '', label: 'Review & Next Step', title: 'Review & Next Step', layout: 'checklist',
+        data: { intro: 'Great work today — here is what you can now do:', style: 'check',
+          items: vCanDo(fd, theme).map(t => ({ text: t, hint: '' })), footer: vNextStep(fd, theme) } }
     ];
     return { slides, practice_bank: practiceBank(terms, fd, ex) };
   },

@@ -1,10 +1,13 @@
 /* ═══════════════════════════════════════════════════════
    Almitu Pro — Render Engine
    Turns slide JSON (from Claude / custom API / demo engine)
-   into themed HTML. The 9 render templates (R1–R9) are
-   sequences of these layouts — defined in prompts.js and
-   produced by the engines. Layout = structure; tier rules
+   into themed HTML. Layouts = structure; tier/level rules
    live in the content itself.
+
+   Emoji-free: no decorative emojis in any chrome. Vocabulary
+   follows the 6-slide (25-min) / 4-slide (15-min) spec via the
+   wordlist / practice / integrated / applyreview layouts below.
+   Grammar & Communication keep their existing layouts.
    ═══════════════════════════════════════════════════════ */
 
 function md(text) {
@@ -15,15 +18,20 @@ function md(text) {
 const LAYOUT_BUILDERS = {
 
   hero(d, ctx, slide) {
+    const durationLabel = d.duration_label || (ctx && ctx.durationLabel) || '25-Minute Live Micro-Session';
     return `
       <div class="text-center py-6">
-        <div class="text-5xl mb-4">${escapeHtml(d.emoji || '🎯')}</div>
         <h3 class="text-2xl mb-2">${md(d.heading || slide.title)}</h3>
-        <p class="text-sm mb-5" style="color:var(--muted);">25-Minute Live Micro-Session</p>
+        <p class="text-sm mb-5" style="color:var(--muted);">${escapeHtml(durationLabel)}</p>
         <div class="inline-flex px-5 py-3 rounded-2xl mb-3" style="background:rgba(255,107,53,.07); border:1px solid rgba(255,107,53,.15);">
-          <span class="text-sm font-semibold" style="color:var(--primary);">Today's Goal</span>
+          <span class="text-sm font-semibold" style="color:var(--primary);">Today's Objective</span>
         </div>
         <p class="font-medium" style="color:var(--ink);">${md(d.goal)}</p>
+        ${d.warmup ? `
+          <div class="mt-5 mx-auto max-w-md p-4 rounded-2xl text-left" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.14);">
+            <p class="text-[11px] uppercase tracking-wider font-semibold mb-1" style="color:var(--secondary);">Warm-up</p>
+            <p class="text-sm" style="color:var(--ink);">${md(d.warmup)}</p>
+          </div>` : ''}
         ${d.can_do ? `<p class="text-sm mt-3 italic" style="color:var(--secondary);">"${md(d.can_do)}"</p>` : ''}
         <div class="flex justify-center flex-wrap gap-2 mt-6">
           ${(d.badges || []).map(b => `<span class="text-xs px-3 py-1 rounded-full" style="background:#F1F2F6; color:var(--muted);">${escapeHtml(b)}</span>`).join('')}
@@ -31,20 +39,36 @@ const LAYOUT_BUILDERS = {
       </div>`;
   },
 
-  cards(d, ctx, slide) {
-    const cols = d.cols === 2 ? 'grid-cols-2' : d.cols === 4 ? 'grid-cols-4' : 'grid-cols-3';
+  /* ── Slide 2 (Vocabulary): two-column word list ──
+     Col 1: word (bold blue) + pronunciation (orange) + part of speech.
+     Col 2: contextual definition + example (target word in **bold**).
+     Optional L1 gloss line; collocation chips at the bottom. */
+  wordlist(d, ctx, slide) {
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
       ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
-      <div class="grid ${cols} gap-3">
-        ${(d.items || []).map(it => `
-          <div class="vocab-card">
-            ${it.emoji ? `<div class="text-2xl mb-1">${escapeHtml(it.emoji)}</div>` : ''}
-            <p class="text-sm font-semibold" style="color:var(--navy);">${md(it.top)}</p>
-            ${it.mid ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${escapeHtml(it.mid)}</p>` : ''}
-            ${it.bottom ? `<p class="text-[11px] mt-0.5" style="color:var(--muted);">${md(it.bottom)}</p>` : ''}
+      <div class="rounded-2xl overflow-hidden" style="border:1px solid var(--line);">
+        ${(d.words || []).map((w, i) => `
+          <div class="grid grid-cols-[minmax(0,38%)_1fr] gap-3 p-3" style="${i ? 'border-top:1px solid var(--line);' : ''}background:${i % 2 ? '#F8F9FD' : 'white'};">
+            <div>
+              <p class="text-base font-bold leading-tight" style="color:var(--secondary);">${md(w.word)}</p>
+              ${w.pron ? `<p class="text-xs mt-0.5" style="color:var(--primary);">${escapeHtml(w.pron)}</p>` : ''}
+              ${w.pos ? `<span class="inline-block text-[10px] mt-1 px-2 py-0.5 rounded-full uppercase tracking-wide" style="background:#F1F2F6; color:var(--muted);">${escapeHtml(w.pos)}</span>` : ''}
+            </div>
+            <div>
+              <p class="text-sm" style="color:var(--ink);">${md(w.definition)}</p>
+              ${w.example ? `<p class="text-sm mt-1 italic" style="color:var(--navy);">${md(w.example)}</p>` : ''}
+              ${w.l1 ? `<p class="text-[11px] mt-1" style="color:var(--secondary);">${escapeHtml(w.l1)}</p>` : ''}
+            </div>
           </div>`).join('')}
-      </div>`;
+      </div>
+      ${(d.collocations && d.collocations.length) ? `
+        <div class="mt-4 p-3 rounded-2xl" style="background:rgba(255,210,63,.1); border:1px dashed rgba(255,210,63,.4);">
+          <p class="text-[10px] font-bold uppercase tracking-wide mb-2" style="color:#B45309;">Collocations</p>
+          <div class="flex flex-wrap gap-2">
+            ${d.collocations.map(c => `<span class="text-sm px-3 py-1 rounded-full font-medium" style="background:white; border:1px solid rgba(255,210,63,.4); color:var(--navy);">${escapeHtml(c)}</span>`).join('')}
+          </div>
+        </div>` : ''}`;
   },
 
   rows(d, ctx, slide) {
@@ -61,10 +85,26 @@ const LAYOUT_BUILDERS = {
       </div>`;
   },
 
+  cards(d, ctx, slide) {
+    const cols = d.cols === 2 ? 'grid-cols-2' : d.cols === 4 ? 'grid-cols-4' : 'grid-cols-3';
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="grid ${cols} gap-3">
+        ${(d.items || []).map(it => `
+          <div class="vocab-card">
+            <p class="text-sm font-semibold" style="color:var(--navy);">${md(it.top)}</p>
+            ${it.mid ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${escapeHtml(it.mid)}</p>` : ''}
+            ${it.bottom ? `<p class="text-[11px] mt-0.5" style="color:var(--muted);">${md(it.bottom)}</p>` : ''}
+          </div>`).join('')}
+      </div>`;
+  },
+
   dialogue(d, ctx, slide) {
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
-      ${d.setting ? `<p class="text-sm mb-4" style="color:var(--muted);">📍 ${md(d.setting)}</p>` : '<div class="mb-4"></div>'}
+      ${d.instruction ? `<p class="text-sm mb-2 font-medium" style="color:var(--primary);">${md(d.instruction)}</p>` : ''}
+      ${d.setting ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.setting)}</p>` : '<div class="mb-4"></div>'}
       <div class="space-y-2.5">
         ${(d.lines || []).map(l => `
           <div class="flex ${l.side === 'right' ? 'justify-end' : ''}">
@@ -79,7 +119,7 @@ const LAYOUT_BUILDERS = {
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
       ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
-      <div class="rounded-2xl overflow-hidden" style="border:1px solid var(--line);">
+      <div class="rounded-2xl overflow-x-auto" style="border:1px solid var(--line);">
         <table class="w-full text-sm">
           <thead><tr style="background:#F1F2F6;">
             ${(d.headers || []).map(h => `<th class="text-left p-3 font-semibold" style="color:var(--navy);">${escapeHtml(h)}</th>`).join('')}
@@ -94,7 +134,8 @@ const LAYOUT_BUILDERS = {
   text(d, ctx, slide) {
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
-      ${d.source_label ? `<p class="text-[11px] uppercase tracking-wider mb-3 font-semibold" style="color:var(--muted);">📄 ${escapeHtml(d.source_label)}</p>` : '<div class="mb-3"></div>'}
+      ${d.instruction ? `<p class="text-sm mb-2 font-medium" style="color:var(--primary);">${md(d.instruction)}</p>` : ''}
+      ${d.source_label ? `<p class="text-[11px] uppercase tracking-wider mb-3 font-semibold" style="color:var(--muted);">${escapeHtml(d.source_label)}</p>` : '<div class="mb-3"></div>'}
       <div class="p-5 rounded-2xl space-y-3" style="background:#F8F9FD; border:1px solid var(--line);">
         ${(d.paragraphs || []).map(p => `<p class="text-sm leading-relaxed" style="color:var(--ink);">${md(p)}</p>`).join('')}
       </div>
@@ -109,15 +150,15 @@ const LAYOUT_BUILDERS = {
         ${(d.pairs || []).map(p => `
           <div class="grid grid-cols-2 gap-3">
             <div class="p-3 rounded-xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);">
-              <p class="text-[10px] font-semibold mb-1" style="color:#059669;">✓ CORRECT</p>
+              <p class="text-[10px] font-semibold mb-1" style="color:#059669;">CORRECT</p>
               <p class="text-sm font-medium" style="color:var(--ink);">${md(p.good)}</p>
             </div>
             <div class="p-3 rounded-xl" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);">
-              <p class="text-[10px] font-semibold mb-1 text-red-500">✗ NOT THIS</p>
+              <p class="text-[10px] font-semibold mb-1 text-red-500">NOT THIS</p>
               <p class="text-sm font-medium" style="color:var(--ink);">${md(p.bad)}</p>
             </div>
           </div>
-          ${p.note ? `<p class="text-[11px] -mt-1 px-1" style="color:var(--primary);">→ ${md(p.note)}</p>` : ''}`).join('')}
+          ${p.note ? `<p class="text-[11px] -mt-1 px-1" style="color:var(--primary);">${md(p.note)}</p>` : ''}`).join('')}
       </div>`;
   },
 
@@ -135,11 +176,11 @@ const LAYOUT_BUILDERS = {
             <p class="text-sm pt-0.5" style="color:var(--ink);">${md(s)}</p>
           </div>`).join('')}
       </div>
-      ${d.tip ? `<div class="p-3 rounded-xl text-xs mb-3" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.15);"><span class="font-semibold" style="color:#059669;">💡 Tip:</span> <span style="color:var(--ink);">${md(d.tip)}</span></div>` : ''}
+      ${d.tip ? `<div class="p-3 rounded-xl text-xs mb-3" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.15);"><span class="font-semibold" style="color:#059669;">Tip:</span> <span style="color:var(--ink);">${md(d.tip)}</span></div>` : ''}
       ${(d.criteria && d.criteria.length) ? `
         <div class="p-3 rounded-xl" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12);">
           <p class="text-xs font-semibold mb-1.5" style="color:var(--secondary);">Success criteria</p>
-          ${d.criteria.map(c => `<p class="text-xs flex items-start gap-1.5" style="color:var(--ink);"><span style="color:var(--secondary);">▸</span> ${md(c)}</p>`).join('')}
+          ${d.criteria.map(c => `<p class="text-xs flex items-start gap-1.5" style="color:var(--ink);"><span style="color:var(--secondary);">-</span> ${md(c)}</p>`).join('')}
         </div>` : ''}`;
   },
 
@@ -151,33 +192,112 @@ const LAYOUT_BUILDERS = {
       <div class="space-y-2">
         ${(d.items || []).map((it, i) => `
           <div class="flex items-start gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
-            <span class="flex-shrink-0 ${numbered ? 'w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white' : 'text-base'}" style="${numbered ? 'background:var(--secondary);' : 'color:#059669;'}">${numbered ? i + 1 : '✓'}</span>
+            <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style="background:${numbered ? 'var(--secondary)' : '#059669'};">${numbered ? i + 1 : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'}</span>
             <div>
               <p class="text-sm font-medium" style="color:var(--ink);">${md(it.text)}</p>
               ${it.hint ? `<p class="text-[11px] mt-0.5" style="color:var(--muted);">${md(it.hint)}</p>` : ''}
             </div>
           </div>`).join('')}
       </div>
-      ${d.footer ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);"><p class="font-semibold text-sm" style="color:#059669;">📝 Homework</p><p class="text-sm mt-1" style="color:var(--ink);">${md(d.footer)}</p></div>` : ''}`;
+      ${d.footer ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);"><p class="font-semibold text-sm" style="color:#059669;">Next Step</p><p class="text-sm mt-1" style="color:var(--ink);">${md(d.footer)}</p></div>` : ''}`;
   },
 
   bankmatch(d, ctx, slide) {
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
       ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
-      <div class="p-3 rounded-2xl mb-4 flex flex-wrap gap-2 justify-center" style="background:rgba(255,210,63,.1); border:1px dashed rgba(255,210,63,.4);">
-        <span class="text-[10px] font-bold self-center uppercase tracking-wide" style="color:#B45309;">Word Bank:</span>
-        ${(d.bank || []).map(w => `<span class="text-sm px-3 py-1 rounded-full font-medium" style="background:white; border:1px solid rgba(255,210,63,.4); color:var(--navy);">${escapeHtml(w)}</span>`).join('')}
-      </div>
+      ${bankChips(d.bank)}
       <div class="space-y-2.5">
         ${(d.prompts || []).map((p, i) => `
           <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
             <span class="text-[11px] font-bold w-5" style="color:var(--muted);">${i + 1}.</span>
-            <p class="text-sm flex-1" style="color:var(--ink);">${md(p.q)}</p>
+            <p class="text-sm flex-1" style="color:var(--ink);">${md(typeof p === 'string' ? p : p.q)}</p>
           </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Slide 5 (Vocabulary, 25-min): Fill-in-the-Blanks + Sentence Building ── */
+  practice(d, ctx, slide) {
+    const a = d.partA || {};
+    const b = d.partB || {};
+    return `
+      <h3 class="text-lg mb-3">${escapeHtml(slide.title)}</h3>
+      <div class="mb-5">
+        <p class="text-sm font-semibold mb-2" style="color:var(--secondary);">Part A — Fill in the Blanks</p>
+        ${a.instruction ? `<p class="text-xs mb-3" style="color:var(--muted);">${md(a.instruction)}</p>` : ''}
+        ${bankChips(a.bank)}
+        <div class="space-y-2.5">
+          ${(a.sentences || []).map((s, i) => `
+            <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
+              <span class="text-[11px] font-bold w-5" style="color:var(--muted);">${i + 1}.</span>
+              <p class="text-sm flex-1" style="color:var(--ink);">${md(s)}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div>
+        <p class="text-sm font-semibold mb-2" style="color:var(--secondary);">Part B — Sentence Building</p>
+        ${b.instruction ? `<p class="text-xs mb-3" style="color:var(--muted);">${md(b.instruction)}</p>` : ''}
+        <div class="flex flex-wrap gap-2">
+          ${(b.words || []).map(w => `<span class="text-sm px-3 py-1.5 rounded-xl font-medium" style="background:white; border:1px solid var(--line); color:var(--navy);">${escapeHtml(w)}</span>`).join('')}
+        </div>
+      </div>`;
+  },
+
+  /* ── Slide 3 (Vocabulary, 15-min): dialogue + mini-passage in one slide ── */
+  integrated(d, ctx, slide) {
+    const dl = d.dialogue || {};
+    const ps = d.passage || {};
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.instruction ? `<p class="text-sm mb-3 font-medium" style="color:var(--primary);">${md(d.instruction)}</p>` : ''}
+      ${dl.setting ? `<p class="text-sm mb-2" style="color:var(--muted);">${md(dl.setting)}</p>` : ''}
+      <div class="space-y-2.5 mb-4">
+        ${(dl.lines || []).map(l => `
+          <div class="flex ${l.side === 'right' ? 'justify-end' : ''}">
+            <div class="dialogue-bubble ${l.side === 'right' ? 'right' : 'left'}">
+              <span class="text-[10px] font-semibold block mb-0.5">${escapeHtml(l.speaker)}</span>${md(l.line)}
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="p-5 rounded-2xl space-y-3" style="background:#F8F9FD; border:1px solid var(--line);">
+        ${(ps.paragraphs || []).map(p => `<p class="text-sm leading-relaxed" style="color:var(--ink);">${md(p)}</p>`).join('')}
+      </div>`;
+  },
+
+  /* ── Slide 4 (Vocabulary, 15-min): Application + one-line Review ── */
+  applyreview(d, ctx, slide) {
+    const app = d.application || {};
+    const rev = d.review || {};
+    return `
+      <h3 class="text-lg mb-3">${escapeHtml(slide.title)}</h3>
+      <div class="mb-5">
+        <p class="text-sm font-semibold mb-2" style="color:var(--secondary);">Application</p>
+        ${app.instruction ? `<p class="text-xs mb-3" style="color:var(--muted);">${md(app.instruction)}</p>` : ''}
+        ${bankChips(app.bank)}
+        <div class="space-y-2.5">
+          ${(app.prompts || []).map((p, i) => `
+            <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
+              <span class="text-[11px] font-bold w-5" style="color:var(--muted);">${i + 1}.</span>
+              <p class="text-sm flex-1" style="color:var(--ink);">${md(typeof p === 'string' ? p : p.q)}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);">
+        ${rev.can_do ? `<p class="text-sm font-medium" style="color:var(--ink);">"${md(rev.can_do)}"</p>` : ''}
+        ${rev.next_step ? `<p class="text-xs mt-2" style="color:var(--muted);"><span class="font-semibold" style="color:#059669;">Next Step:</span> ${md(rev.next_step)}</p>` : ''}
       </div>`;
   }
 };
+
+/* Shared: a "Word Bank" chip strip (used by bankmatch, practice, applyreview). */
+function bankChips(bank) {
+  if (!bank || !bank.length) return '';
+  return `
+    <div class="p-3 rounded-2xl mb-4 flex flex-wrap gap-2 justify-center" style="background:rgba(255,210,63,.1); border:1px dashed rgba(255,210,63,.4);">
+      <span class="text-[10px] font-bold self-center uppercase tracking-wide" style="color:#B45309;">Word Bank:</span>
+      ${bank.map(w => `<span class="text-sm px-3 py-1 rounded-full font-medium" style="background:white; border:1px solid rgba(255,210,63,.4); color:var(--navy);">${escapeHtml(w)}</span>`).join('')}
+    </div>`;
+}
 
 /* Render one slide JSON → HTML string */
 function renderSlideHTML(slide, ctx) {

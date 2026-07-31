@@ -139,24 +139,23 @@ const DURATIONS = {
   15: {
     key: 15,
     label: '15-min micro session',
-    slideCount: 6,
-    arc: 'the same 6-slide arc, delivered with reduced language load and tighter tasks',
+    arc: 'a tight, high-intensity arc with reduced language load and fewer target items',
     rules: [
-      'SAME 6 slides as the 25-min session — scale DENSITY and DEPTH, never slide count',
-      'Fewer target items (≈6-8), fewer word-bank clues (≈4-6), fewer scenario steps (3-4)',
-      'Reduced explanation; tighter instructions; lighter, more focused homework',
-      'Keep one clear production task and a concise one-point feedback/close'
+      'Follow EXACTLY the slide sequence given in the required-slides list — do not add or drop slides',
+      'Fewer target items and shorter texts than the 25-min session; one clear focus',
+      'Reduced explanation; tighter instructions; concise close',
+      'Keep one clear application/production step and a brief review'
     ]
   },
   25: {
     key: 25,
     label: '25-min normal session',
-    slideCount: 6,
-    arc: 'the full 6-slide arc: Objective → Words/Focus/Phrases → Listen & Repeat/Form → Word Bank/Practice → Scenario/Speak → Review & Homework',
+    arc: 'the fuller arc with room for guided practice plus a production stage',
     rules: [
-      'Fuller scope: up to 10-12 words / 6-8 clues / 4-5 scenario steps',
-      'Room for a substantial communicative/production stage',
-      'Richer feedback and a broader but still focused review'
+      'Follow EXACTLY the slide sequence given in the required-slides list — do not add or drop slides',
+      'Fuller scope: the complete target-word set, richer examples and practice',
+      'Room for a substantial practice/production stage',
+      'A broader but still focused review and next step'
     ]
   }
 };

@@ -432,7 +432,8 @@ async function generatePlan() {
   try {
     // PHASE 1: slides only — fast, so the tutor can review/edit without waiting.
     const result = await generateSlides(formData);
-    const ctx = { tier: formData.tier, l1Support: formData.l1Support, language: formData.language };
+    const ctx = { tier: formData.tier, l1Support: formData.l1Support, language: formData.language,
+      durationLabel: `${formData.duration}-Minute Live Micro-Session` };
     const slides = renderAllSlides(result.content, ctx);
 
     const fingerprint = computeFingerprint(formData);
