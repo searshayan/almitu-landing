@@ -529,8 +529,10 @@
   box-shadow: 0 24px 70px rgba(29, 33, 41, .18);
   transform-origin: top left;
   transition: transform .12s ease-out;
-  box-sizing: border-box;   /* pinned height (dense slides) includes the padding */
+  box-sizing: border-box;   /* the fixed frame height includes the padding */
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;   /* lets content center in the frame when it fits */
 }
 /* Scale the slide's own typography up so it is legible when the screen is
    downscaled into a mobile Meet video. */
