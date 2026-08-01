@@ -727,39 +727,92 @@ const SKELETON_GEN = {
   grammar(fd) {
     const d = fd.details; const f = tierFlags(fd);
     const title = d.grammarTitle || 'Grammar focus';
-    const structure = d.grammarStructure || 'target structure';
-    const userEx = String(d.exampleSentences || '').split(/[.\n]/).map(s => s.trim()).filter(Boolean).map(s => s + '.');
-    const base = userEx.length ? userEx : (f.isFound ? ['I have a book.', 'She has a pen.'] : f.isDev ? ['I have lived here for two years.', 'Have you ever tried this?'] : ['Had it not been for the delay, we would have arrived on time.']);
-    const ex = t => base[0] || `We use ${structure}.`;
-    const goal = f.isFound ? 'Use the pattern in a few short sentences about you.'
-      : f.isDev ? `Describe your experiences using ${title.toLowerCase()}.`
-        : `Use ${title.toLowerCase()} to argue and qualify a position.`;
+    const structure = d.grammarStructure || 'Subject + target structure + complement';
+    const userEx = String(d.exampleSentences || '').split(/(?<=[.!?])\s+|\n/).map(s => s.trim()).filter(Boolean).map(s => /[.!?]$/.test(s) ? s : s + '.');
+    // Positive / Negative / Question model sentences (tutor's own if given, else tier fallback).
+    const formEx = userEx.length >= 3 ? userEx.slice(0, 3)
+      : f.isFound ? ['I have a book.', 'I do not have a pen.', 'Do you have a book?']
+        : f.isDev ? ['I have lived here for two years.', 'I have not finished it yet.', 'Have you ever tried this?']
+          : ['Seldom have I encountered such resolve.', 'Not once has the outcome varied.', 'Had you weighed the alternative first?'];
+    const ex = t => formEx[0];
+    const dur = getDuration(fd.duration);
+    const goal = f.isFound ? `Use ${title.toLowerCase()} in a few short sentences about you.`
+      : f.isDev ? `Form, negate and question ${title.toLowerCase()} to talk about real experiences.`
+        : `Deploy ${title.toLowerCase()} with precision, nuance and appropriate register.`;
+    const warmup = f.isFound ? 'Can you say one true sentence about yourself right now?'
+      : f.isDev ? 'What have you done so far this week?'
+        : `Where does ${title.toLowerCase()} shift the emphasis of what you want to say?`;
+    const l1note = f.l1on ? `${resolveL1Language(fd.language)} note on this pattern — via API` : '';
+    const errNote = String(d.commonErrors || '').trim() || (f.isFound ? 'Keep the pattern fixed — do not change the ending.' : 'Watch the form: this is where learners often slip.');
+
+    const hero = { icon: '', label: 'Objective & Warm-up', title, layout: 'hero',
+      data: { heading: title, goal, warmup, badges: [fd.level, `${dur.key} min`, 'Grammar'], duration_label: `${fd.duration}-Minute Live Micro-Session` } };
+    const formSlide = { icon: '', label: 'Form & Use', title: `Form & Use — ${title}`, layout: 'form',
+      data: { formula: structure,
+        forms: [ { label: 'Positive', example: formEx[0] }, { label: 'Negative', example: formEx[1] }, { label: 'Question', example: formEx[2] } ],
+        use: f.isFound ? 'you talk about simple, true facts.' : f.isDev ? 'you connect a past action to now, or talk about experience.' : 'you want to foreground stance, emphasis or nuance.',
+        examples: formEx.slice(0, 2), l1: l1note, note: errNote } };
+
+    const dialogueLines = (() => {
+      const lines = [ { speaker: 'Tutor', side: 'left', line: 'Tell me a little about your week.' },
+        { speaker: 'Student', side: 'right', line: `**${formEx[0]}**` },
+        { speaker: 'Tutor', side: 'left', line: 'And is there anything you have not done yet?' },
+        { speaker: 'Student', side: 'right', line: `**${formEx[1]}**` } ];
+      return f.short ? lines.slice(0, 3) : lines;
+    })();
+    const passage = [ `Here is ${title.toLowerCase()} in everyday use. **${formEx[0]}** We hear sentences like this all the time.`,
+      `We can also make it negative or turn it into a question: **${formEx[1]}** **${formEx[2]}**` ];
+    const errorPairs = (() => {
+      const raw = String(d.commonErrors || '').trim();
+      const pairs = [];
+      if (raw) pairs.push({ good: 'Use the correct target form.', bad: raw, note: 'A frequent slip — fix the form.' });
+      pairs.push({ good: 'I have seen that film.', bad: 'I have saw that film.', note: 'Use the past participle, not the past simple.' });
+      pairs.push({ good: 'She has lived here since 2020.', bad: 'She has lived here for 2020.', note: 'Use "since" with a point in time.' });
+      return pairs.slice(0, 3);
+    })();
+    const gapBank = structure.split(/[+/]/).map(x => x.trim()).filter(Boolean);
+    const gapSentences = formEx.map(e => e.replace(/\b([A-Za-z]{3,})\b/, '___'));
+    const buildPrompts = f.isFound ? ['about you', 'about your family', 'a question']
+      : f.isDev ? ['about your weekend', 'about a past experience', 'a question for your tutor', 'a negative sentence']
+        : ['to make a concession', 'to emphasise a point', 'to hedge a claim', 'to open an argument'];
+    const canDo = f.isFound ? ['I can say a few true sentences with the pattern.', 'I can keep the form correct.', 'I can answer a simple question with it.']
+      : f.isDev ? [`I can form, negate and question ${title.toLowerCase()}.`, 'I can describe real experiences with it.', 'I can correct my own common mistake.']
+        : [`I can deploy ${title.toLowerCase()} for stance and nuance.`, 'I can shift register deliberately.', 'I can sustain a precise, extended turn.'];
+    const nextStep = `Complete your post-session activity on the platform: ${f.isFound ? `say five true sentences using "${structure}" and record them` : f.isDev ? `write five sentences using ${title.toLowerCase()} about your week, including one question` : `write a short paragraph that uses ${title.toLowerCase()} at least three times for deliberate effect`}. Your tutor tracks your completion time and practice metrics before the next session.`;
+
+    if (f.short) {
+      // ── 15-minute · 4 slides ──
+      const slides = [
+        hero,
+        formSlide,
+        { icon: '', label: 'In Context', title: `${title} in Use`, layout: 'integrated',
+          data: { instruction: 'Read the dialogue and text aloud with your tutor.',
+            dialogue: { setting: (d.objective || `Talking about real life${f.place}.`).trim(), lines: dialogueLines },
+            passage: { paragraphs: [passage[0]] } } },
+        { icon: '', label: 'Practice & Review', title: 'Practice & Review', layout: 'applyreview',
+          data: { application: { instruction: 'Complete each sentence with the correct form.', bank: f.isFound ? gapBank : undefined, prompts: gapSentences.slice(0, f.isFound ? 2 : 3) },
+            review: { can_do: canDo[0], next_step: nextStep } } }
+      ];
+      return { slides, practice_bank: practiceBank(formEx, fd, ex) };
+    }
+
+    // ── 25-minute · 7 slides ──
     const slides = [
-      heroSlide('🎯', title, goal, `I can use ${title.toLowerCase()} in ${f.isFound ? '2-4 short sentences' : f.isDev ? '3-5 connected sentences' : 'extended, precise discourse'}.`, fd, 'Objective'),
-      { icon: '📐', label: 'Grammar Focus', title: 'Grammar Focus', layout: 'rows',
-        data: { intro: `Pattern: ${structure}`,
-          rows: base.slice(0, f.short ? 3 : 5).map((e, i) => ({ main: e, sub: f.l1on ? `${resolveL1Language(fd.language)} gloss — via API` : '', note: i === 0 ? (f.isFound ? 'One fixed pattern — keep it the same.' : 'Notice the form.') : '' })) } },
-      { icon: '🔁', label: 'Form Practice', title: 'Form Practice', layout: 'rows',
-        data: { intro: 'Repeat, and change one part each time.',
-          rows: (f.isFound ? ['I ___ …', 'You ___ …', 'We ___ …'] : ['Positive: …', 'Negative: …', 'Question: …', 'Past: …']).slice(0, f.short ? 3 : 4).map(s => ({ main: `${s}  (${structure})`, sub: '', note: '' })) } },
-      { icon: '🧩', label: 'Controlled Practice', title: 'Controlled Practice', layout: 'bankmatch',
-        data: { intro: 'Complete each sentence with the correct form.', bank: structure.split(/[+/]/).map(x => x.trim()).filter(Boolean),
-          prompts: base.slice(0, f.short ? 4 : 6).map(e => ({ q: e.replace(/\b(\w{3,})\b/, '___'), a: '' })) } },
-      { icon: '🎤', label: 'Scenario / Speak', title: 'Scenario / Speak', layout: 'task',
-        data: { scenario: (d.objective || `Talk about a real situation${f.place} using ${title.toLowerCase()}.`).trim(),
-          steps: (f.isFound ? ['Say one true sentence with the pattern.', 'Change one word and say it again.', 'Say a sentence about your family.']
-            : f.isDev ? ['Describe a real experience using the structure.', 'Add one detail or reason.', 'Ask a question with the structure.', 'Respond and extend.']
-              : ['State a position.', 'Qualify it with the target structure.', 'Rebut a counter-point.', 'Summarize.']).slice(0, f.short ? 3 : (f.isFound ? 3 : 4)),
-          tip: `Use the pattern: ${structure}.`,
-          criteria: f.isFound ? ['Say 2 correct sentences with the pattern.'] : f.isDev ? ['Use the structure at least 3 times.', 'Give one reason.'] : ['Use the structure with precision and appropriate register.', 'Sustain an extended turn.'] } },
-      { icon: '✅', label: 'Review & Homework', title: 'Review & Homework', layout: 'checklist',
-        data: { intro: 'What you can do now:', style: 'check',
-          items: f.isFound ? [{ text: `I can use: ${structure}.`, hint: '' }, { text: 'I can make 2-3 short sentences.', hint: '' }]
-            : f.isDev ? [{ text: `I can form, negate and question ${title.toLowerCase()}.`, hint: '' }, { text: 'I can describe my experiences.', hint: '' }]
-              : [{ text: `I can deploy ${title.toLowerCase()} for stance and nuance.`, hint: '' }, { text: 'I can sustain a precise argument.', hint: '' }],
-          footer: f.isFound ? `Homework: say 2 sentences with "${structure}" at home.` : f.isDev ? `Homework: write 5 sentences using ${title.toLowerCase()} about your week.` : `Homework: prepare a short argument that uses ${title.toLowerCase()} at least three times.` } }
+      hero,
+      formSlide,
+      { icon: '', label: 'In Context — Dialogue', title: `Dialogue — ${title}`, layout: 'dialogue',
+        data: { instruction: 'Read the dialogue aloud with your tutor.', setting: (d.objective || `A short exchange${f.place}.`).trim(), lines: dialogueLines } },
+      { icon: '', label: 'In Context — Passage', title: `Reading — ${title}`, layout: 'text',
+        data: { instruction: 'Read the passage aloud with your tutor.', paragraphs: passage, note: '' } },
+      { icon: '', label: 'Watch Out — Correct vs Incorrect', title: 'Correct vs Incorrect', layout: 'compare',
+        data: { intro: 'Spot the difference, then say the correct version aloud.', pairs: errorPairs } },
+      { icon: '', label: 'Practice', title: 'Practice', layout: 'practice',
+        data: { partA: { instruction: 'Complete each sentence with the correct form.', bank: gapBank, sentences: gapSentences },
+          partB: { instruction: 'Create sentences using the following words.', words: buildPrompts } } },
+      { icon: '', label: 'Review & Next Step', title: 'Review & Next Step', layout: 'checklist',
+        data: { intro: 'Great work — here is what you can now do:', style: 'check', items: canDo.map(t => ({ text: t, hint: '' })), footer: nextStep } }
     ];
-    return { slides, practice_bank: practiceBank(base.slice(0, 6), fd, ex) };
+    return { slides, practice_bank: practiceBank(formEx, fd, ex) };
   },
 
   communication(fd) {

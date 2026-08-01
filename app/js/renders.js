@@ -286,6 +286,34 @@ const LAYOUT_BUILDERS = {
         ${rev.can_do ? `<p class="text-sm font-medium" style="color:var(--ink);">"${md(rev.can_do)}"</p>` : ''}
         ${rev.next_step ? `<p class="text-xs mt-2" style="color:var(--muted);"><span class="font-semibold" style="color:#059669;">Next Step:</span> ${md(rev.next_step)}</p>` : ''}
       </div>`;
+  },
+
+  /* ── Grammar: Form & Use ── formula banner + positive/negative/question forms
+     + a "use it when" line + model example sentences (target parts in **bold**). */
+  form(d, ctx, slide) {
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+      ${d.formula ? `
+        <div class="p-4 rounded-2xl mb-4 text-center" style="background:rgba(0,78,137,.06); border:1px solid rgba(0,78,137,.15);">
+          <p class="text-[10px] font-bold uppercase tracking-wide mb-1" style="color:var(--secondary);">The Pattern</p>
+          <p class="text-base font-bold" style="color:var(--navy);">${md(d.formula)}</p>
+        </div>` : ''}
+      ${(d.forms && d.forms.length) ? `
+        <div class="space-y-2 mb-4">
+          ${d.forms.map(f => `
+            <div class="flex items-start gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
+              <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full" style="background:rgba(0,78,137,.08); color:var(--secondary);">${escapeHtml(f.label || '')}</span>
+              <p class="text-sm pt-0.5" style="color:var(--ink);">${md(f.example)}</p>
+            </div>`).join('')}
+        </div>` : ''}
+      ${d.use ? `<div class="p-3 rounded-xl mb-4 text-sm" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);"><span class="font-semibold" style="color:var(--primary);">Use it when:</span> <span style="color:var(--ink);">${md(d.use)}</span></div>` : ''}
+      ${(d.examples && d.examples.length) ? `
+        <div class="space-y-1.5">
+          ${d.examples.map(ex => `<p class="text-sm" style="color:var(--navy);">${md(ex)}</p>`).join('')}
+        </div>` : ''}
+      ${d.l1 ? `<p class="text-[11px] mt-3" style="color:var(--secondary);">${escapeHtml(d.l1)}</p>` : ''}
+      ${d.note ? `<div class="mt-3 p-3 rounded-xl text-xs" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);"><span class="font-semibold text-red-500">Watch out:</span> <span style="color:var(--ink);">${md(d.note)}</span></div>` : ''}`;
   }
 };
 

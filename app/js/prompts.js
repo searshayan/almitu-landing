@@ -23,7 +23,8 @@ LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any 
 - "bankmatch": { "intro": "instructions", "bank": ["word1","word2"], "prompts": [ { "q": "sentence with ___", "a": "answer from bank" } ] }
 - "practice":  { "partA": { "instruction": "Fill in the blanks with the correct words from the Word Bank to complete the sentences.", "bank": ["6 dialogue words"], "sentences": ["... ___ ..."] }, "partB": { "instruction": "Create sentences using the following words.", "words": ["the 6 passage words"] } }
 - "integrated":{ "instruction": "Read the dialogue and text aloud with your tutor.", "dialogue": { "setting": "or empty", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }, "passage": { "paragraphs": ["... **word** ..."] } }
-- "applyreview":{ "application": { "instruction": "...", "bank": ["or omit"], "prompts": ["... ___ ..."] }, "review": { "can_do": "one core Can-Do statement", "next_step": "post-session activity + tutor tracks metrics" } }`;
+- "applyreview":{ "application": { "instruction": "...", "bank": ["or omit"], "prompts": ["... ___ ..."] }, "review": { "can_do": "one core Can-Do statement", "next_step": "post-session activity + tutor tracks metrics" } }
+- "form":       { "intro": "short line or empty", "formula": "Subject + have/has + past participle", "forms": [ { "label": "Positive|Negative|Question", "example": "sentence with the target parts in **bold**" } ], "use": "one line: when/why to use it", "examples": [ "model sentence with target parts in **bold**" ], "l1": "L1 note on the pattern or empty", "note": "a short common-error / watch-out line or empty" }`;
 
 /* ── Tier rule blocks (CEFR alignment contract) ──
    {{L1_RULE}} is substituted per request in buildSystemPrompt. */
@@ -225,12 +226,12 @@ const RENDER_SPECS_15 = {
 
 /* ═══════════════════════════════════════════════════════
    RENDER SKELETONS
-   Vocabulary follows the emoji-free spec: a 6-slide (25-min) and a
-   distinct 4-slide (15-min) architecture — see VOCAB_SKELETON_* below.
-   Grammar & Communication keep their existing unified 6-slide shell
-   (both durations) until their own specs are defined. Slide TYPES are
-   fixed; tier / level / duration / L1 drive only CONTENT depth,
-   scaffolding and density — handled in buildSystemPrompt.
+   Vocabulary and Grammar follow the emoji-free spec, each with a 25-min
+   and a distinct 15-min architecture (VOCAB_SKELETON_* / GRAMMAR_SKELETON_*).
+   Communication keeps its existing unified 6-slide shell (both durations)
+   until its own spec is defined. Slide TYPES are fixed; tier / level /
+   duration / L1 drive only CONTENT depth, scaffolding and density —
+   handled in buildSystemPrompt.
    ═══════════════════════════════════════════════════════ */
 
 /* ── Vocabulary · 25-minute · 6 slides ── */
@@ -251,15 +252,26 @@ const VOCAB_SKELETON_15 = [
   { icon: '', label: 'Application & Review', layout: 'applyreview', brief: 'application.prompts = 3 rapid gap-fill or sentence-building tasks (Pre-A1: 2) using the target words; include application.bank (the target words) for Foundation levels only, omit for others. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
 ];
 
+/* ── Grammar · 25-minute · 7 slides (Present → Expose → Correct → Practice → Produce → Review) ── */
+const GRAMMAR_SKELETON_25 = [
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the target structure and what the learner will be able to DO with it. warmup = a SINGLE warm-up question engineered to naturally pull the target structure out of the learner (e.g. "What have you done today?" for present perfect). 1-2 short chips. No emojis.' },
+  { icon: '', label: 'Form & Use', layout: 'form', brief: 'formula = the pattern (e.g. "Subject + have/has + past participle"). forms = the Positive / Negative / Question forms, each a model sentence with the target parts in **bold**. use = one line on when/why to use it. examples = 2-4 model sentences with target parts **bold**. l1 = a short L1 note on the pattern ONLY if L1 support is on, else "". note = a brief common-error watch-out or "". Foundation: present the structure as fixed memorised chunks, minimal metalanguage; Proficiency: precise, include aspect/register nuance.' },
+  { icon: '', label: 'In Context — Dialogue', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." Title the dialogue after the topic. A natural exchange where the target structure recurs several times (bold each occurrence). Anchor in the learner\'s real-world context. Turns/complexity by level. Student side = right.' },
+  { icon: '', label: 'In Context — Passage', layout: 'text', brief: 'instruction EXACTLY "Read the passage aloud with your tutor." A short passage that uses the target structure naturally (bold each occurrence). Length by level: Pre-A1 30w, A1 40w, A2 60w, B1 70w, B2 80w, C1 90w, C2 100w.' },
+  { icon: '', label: 'Watch Out — Correct vs Incorrect', layout: 'compare', brief: 'pairs = 3-4 common errors with the target structure (draw on the tutor\'s common-errors / L1-interference input where given). good = the correct form; bad = the typical mistake; note = a one-line why. Keep the error realistic for the level and this L1.' },
+  { icon: '', label: 'Practice', layout: 'practice', brief: 'partA.instruction = a gap-fill / transformation instruction for the target form (accuracy). partA.bank = the pattern pieces or verb forms (include for Foundation/Development; may omit for Proficiency). partA.sentences = level-appropriate items each with ___ where the target form goes. partB.instruction EXACTLY "Create sentences using the following words." partB.words = 4-6 prompts/cues for the learner to build their OWN sentences using the structure (personalization).' },
+  { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm, specific tutor reinforcement line. items = EXACTLY 3 Can-Do statements ("I can …") about using the structure, matched to the level. footer = the Next Step: name the level-appropriate post-session activity and note the tutor tracks completion time and practice metrics. Add an L1 line in items only if L1 support is on.' }
+];
+
+/* ── Grammar · 15-minute · 4 slides ── */
+const GRAMMAR_SKELETON_15 = [
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the structure; warmup = a SINGLE warm-up question that pulls the target structure. 1-2 short chips. No emojis.' },
+  { icon: '', label: 'Form & Use', layout: 'form', brief: 'formula + the Positive/Negative/Question forms (model sentences, target parts **bold**) + use (one line) + 1-2 examples. note = a one-line common-error watch-out (this carries the error-contrast in the short session). l1 only if L1 support is on.' },
+  { icon: '', label: 'In Context', layout: 'integrated', brief: 'instruction EXACTLY "Read the dialogue and text aloud with your tutor." dialogue.lines = a short exchange (3-4 lines; Pre-A1: 2) using the structure, and passage.paragraphs = a 2-3 sentence micro-passage using it. Bold every occurrence of the target structure.' },
+  { icon: '', label: 'Practice & Review', layout: 'applyreview', brief: 'application.instruction = a transform/gap-fill instruction; application.prompts = 3 rapid items (Pre-A1: 2) practising the target form; include application.bank (pattern pieces/verb forms) for Foundation only. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
+];
+
 const RENDER_SKELETON = {
-  grammar: [
-    { icon: '🎯', label: 'Objective', layout: 'hero', brief: 'Title + duration subtitle. Goal + a CEFR-appropriate "I can…" (e.g. "I can tell a short story using past simple"). 1-2 chips.' },
-    { icon: '📐', label: 'Grammar Focus', layout: 'rows', brief: 'intro = the pattern line (e.g. "have/has + past participle"). 3-6 example rows: main = an example sentence using the pattern (complexity by level); sub = L1 gloss (only if L1 on); note = a short right-vs-wrong or usage hint where helpful.' },
-    { icon: '🔁', label: 'Form Practice', layout: 'rows', brief: '4-6 lines exemplifying the pattern across persons/tenses for oral repetition. main = sentence; sub = L1 (if on); note = phonetic/usage hint (Foundation, only if helpful).' },
-    { icon: '🧩', label: 'Controlled Practice', layout: 'bankmatch', brief: 'Gap-fill / transformation. bank = the pattern pieces or verb forms. 6-8 prompts (fewer for 15-min), each with ___ where the target form goes. Difficulty by tier.' },
-    { icon: '🎤', label: 'Scenario / Speak', layout: 'task', brief: 'Communicative task that forces the structure, anchored in the country where natural. 3-5 steps, tip, tiered criteria (e.g. "use the structure at least 3 times").' },
-    { icon: '✅', label: 'Review & Homework', layout: 'checklist', brief: 'style:check. Rule review + "I can…" lines (L1 line only if L1 on). footer = one small homework task.' }
-  ],
   communication: [
     { icon: '🎯', label: 'Objective', layout: 'hero', brief: 'Title + duration subtitle. Goal + "I can…" (e.g. "I can order food and ask the price"). 1-2 chips.' },
     { icon: '💬', label: 'Key Phrases', layout: 'cards', brief: '4-8 functional phrases as cards, cols:2. Each card: emoji, the phrase (top), L1 (mid — only if L1 on), function / when-to-use (bottom). Complexity by tier: Foundation very short, Development phrase + reason, Proficiency discourse-level.' },
@@ -270,12 +282,15 @@ const RENDER_SKELETON = {
   ]
 };
 
-/* Vocabulary switches architecture by duration (6-slide / 4-slide);
-   Grammar & Communication use their unified 6-slide shell for both. */
+/* Vocabulary and Grammar switch architecture by duration (spec-based);
+   Communication still uses its unified 6-slide shell for both durations. */
 function getRenderSpec(skill, tier, duration) {
+  const short = Number(duration) === 15;
   let slides;
   if (skill === 'vocabulary') {
-    slides = Number(duration) === 15 ? VOCAB_SKELETON_15 : VOCAB_SKELETON_25;
+    slides = short ? VOCAB_SKELETON_15 : VOCAB_SKELETON_25;
+  } else if (skill === 'grammar') {
+    slides = short ? GRAMMAR_SKELETON_15 : GRAMMAR_SKELETON_25;
   } else {
     slides = RENDER_SKELETON[skill] || VOCAB_SKELETON_25;
   }
