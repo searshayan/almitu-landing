@@ -208,40 +208,49 @@ function renderPresentation() {
   setTimeout(fitPresent, 60);        // settle fallback if rAF is throttled
 }
 
-/* Fit a slide into a FIXED presentation frame.
-   Every slide uses the SAME frame (fills the screen) and the SAME large font
-   size (a single width-based zoom, so text reads identically big on every
-   slide when screen-shared to a phone). Content that fits is centered in the
-   frame; ANY slide with more content than fits scrolls INSIDE the frame — the
-   frame and font never change, and the whole page never scrolls.
-   The wrapper is sized to the scaled dimensions (a CSS transform alone creates
-   no layout box) and clips the unscaled overflow. */
+/* Fit a slide into a FIXED frame (identical size on every slide, filling the
+   stage). The content is zoom-scaled to fit inside that frame, within a readable
+   band [MIN, MAX]:
+     - fits at a readable size  → scale up to fit and CENTER it, no scroll
+     - too long to fit at MIN   → hold MIN and SCROLL inside the frame
+   So short slides never scroll and only genuinely lengthy slides do. `zoom`
+   scales layout (unlike transform), so the frame scrolls naturally. */
+const PRESENT_MIN_ZOOM = 1.2;   // readable floor for long, scrolling slides
+const PRESENT_MAX_ZOOM = 1.6;   // cap so short slides don't get oversized / lines too long
 function fitPresent() {
   const stage = document.getElementById('presentStage');
-  const scaler = document.getElementById('presentScaler');
-  const slide = document.getElementById('presentSlide');
-  if (!stage || !scaler || !slide) return;
-  // Reset to natural size to measure the content height.
-  slide.style.transform = 'none';
-  slide.style.height = 'auto';
-  slide.style.overflowY = 'visible';
-  slide.style.justifyContent = 'flex-start';
-  scaler.style.width = 'auto';
-  scaler.style.height = 'auto';
-  const w = slide.offsetWidth, h = slide.offsetHeight;
+  const frame = document.getElementById('presentScaler');
+  const content = document.getElementById('presentSlide');
+  if (!stage || !frame || !content) return;
+  // Measure the content at natural size (zoom 1). Its width is fixed at 760px.
+  content.style.zoom = '1';
+  const w = content.offsetWidth, h = content.offsetHeight;
   if (!w || !h) return;
-  const availW = stage.clientWidth - 56;      // account for the stage's 24px padding + slack
+  const availW = stage.clientWidth - 56;   // stage padding + slack
   const availH = stage.clientHeight - 56;
-  const k = Math.min(availW / w, 2.4);        // one consistent zoom → same big font everywhere
-  const frameH = availH / k;                  // fixed frame height (pre-scale) → fills availH
-  slide.style.height = frameH + 'px';
-  slide.style.overflowY = 'auto';
-  // Center content when it fits the frame; top-align + scroll when it overflows.
-  slide.style.justifyContent = (h <= frameH) ? 'center' : 'flex-start';
-  slide.style.transform = `scale(${k})`;
-  scaler.style.width = (w * k) + 'px';
-  scaler.style.height = (frameH * k) + 'px';  // = availH
+  const PADX = 48, PADY = 40;              // must match .present-scaler padding
+  const innerW = availW - 2 * PADX;
+  const innerH = availH - 2 * PADY;
+  let k = Math.min(innerW / w, innerH / h);      // largest scale that contains the slide
+  k = Math.max(PRESENT_MIN_ZOOM, Math.min(k, PRESENT_MAX_ZOOM));
+  k = Math.min(k, innerW / w);                   // never overflow width (narrow screens)
+  content.style.zoom = k;
+  // Fixed frame — same on every slide.
+  frame.style.width = availW + 'px';
+  frame.style.height = availH + 'px';
+  // Center vertically when it fits; top-align + scroll when it overflows.
+  frame.style.justifyContent = (h * k <= innerH) ? 'center' : 'flex-start';
   stage.style.alignItems = 'center';
+  updatePresentFade();
+}
+
+/* Show the bottom "more below" fade only while the frame can still scroll down. */
+function updatePresentFade() {
+  const stage = document.getElementById('presentStage');
+  const frame = document.getElementById('presentScaler');
+  if (!stage || !frame) return;
+  const more = (frame.scrollHeight - frame.clientHeight - frame.scrollTop) > 4;
+  stage.classList.toggle('can-scroll-down', more);
 }
 
 function enterPresentation() {
@@ -256,6 +265,7 @@ function enterPresentation() {
   document.body.style.overflow = 'hidden';
   window._presentActive = true;
   window.addEventListener('keydown', presentKeydown);
+  document.getElementById('presentScaler').addEventListener('scroll', updatePresentFade);
   document.addEventListener('fullscreenchange', onPresentFsChange);
   // Refit whenever the stage changes size (initial layout settle, window resize,
   // fullscreen enter/exit) — more reliable than a one-off resize listener.
@@ -278,6 +288,8 @@ function exitPresentation() {
   window._presentActive = false;
   window.removeEventListener('keydown', presentKeydown);
   window.removeEventListener('resize', fitPresent);
+  const pf = document.getElementById('presentScaler');
+  if (pf) pf.removeEventListener('scroll', updatePresentFade);
   document.removeEventListener('fullscreenchange', onPresentFsChange);
   if (window._presentRO) { window._presentRO.disconnect(); window._presentRO = null; }
   presentExitFullscreen();
