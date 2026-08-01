@@ -261,6 +261,15 @@ async function dataGetCurriculumPlan(curriculumId) {
   return data;
 }
 
+/* Remove a curriculum plan so it can be regenerated with the current specs.
+   Deleting a non-existent row is a no-op (not an error). */
+async function dataDeleteCurriculumPlan(curriculumId) {
+  const c = requireSb();
+  const { error } = await c.from('session_plans').delete()
+    .eq('is_curriculum', true).eq('curriculum_id', curriculumId);
+  throwIf(error, 'deleteCurriculumPlan');
+}
+
 /* Every curriculum plan for a level — full rows, including the `plan` JSON.
    Heavy: use dataListCurriculumIndex for browsing. */
 async function dataListCurriculumPlans(level) {

@@ -98,8 +98,10 @@ function isAlreadyGeneratedError(e) {
   return /duplicate key|23505|session_plans_curriculum_uniq/i.test(m);
 }
 
-/* Generate ONE curriculum session and store it. Mirrors generatePlan(). */
-async function generateCurriculumSession(rec) {
+/* Generate ONE curriculum session and store it. Mirrors generatePlan().
+   With overwrite=true, an existing library entry is deleted first so the
+   session is rebuilt with the current design specs. */
+async function generateCurriculumSession(rec, overwrite) {
   const formData = curriculumFormData(rec);
 
   const result = await generateSlides(formData);
@@ -133,6 +135,9 @@ async function generateCurriculumSession(rec) {
   plan.content.practice_bank = await generatePracticeBank(formData, slides);
   plan.practiceReady = true;
 
+  // Regeneration: clear the old entry so the insert (unique on curriculum_id) succeeds.
+  if (overwrite) await dataDeleteCurriculumPlan(rec.curriculum_id);
+
   await dataCreateCurriculumPlan({
     tutor_id: null,
     is_curriculum: true,
@@ -147,8 +152,20 @@ async function generateCurriculumSession(rec) {
   return plan;
 }
 
-/* Run the whole level, sequentially, skipping anything already done. */
-async function runCurriculumGeneration() {
+/* Confirm, then regenerate every session in the level with the current specs
+   (overwriting the existing library entries). */
+function regenerateCurriculum() {
+  const cs = window.curriculumState;
+  if (cs.running || !cs.sessions.length) return;
+  const ok = window.confirm(
+    `Regenerate all ${cs.sessions.length} ${cs.level} sessions with the current design specs?\n\n` +
+    `This OVERWRITES the existing library entries and uses Claude API credits.`);
+  if (ok) runCurriculumGeneration(true);
+}
+
+/* Run the whole level, sequentially. Normally skips anything already done;
+   with regenerate=true it re-runs and overwrites every session. */
+async function runCurriculumGeneration(regenerate) {
   const cs = window.curriculumState;
   if (cs.running) return;
 
@@ -163,16 +180,17 @@ async function runCurriculumGeneration() {
   cs.cancel = false;
   renderCurriculumTab();
 
-  const pending = cs.sessions.filter(r => cs.status[r.curriculum_id] !== 'done');
+  // Regenerate: every session; otherwise only the ones not yet done.
+  const todo = regenerate ? cs.sessions.slice() : cs.sessions.filter(r => cs.status[r.curriculum_id] !== 'done');
   let ok = 0, failed = 0;
 
-  for (const rec of pending) {
+  for (const rec of todo) {
     if (cs.cancel) break;
     cs.status[rec.curriculum_id] = 'running';
     delete cs.errors[rec.curriculum_id];
     renderCurriculumTab();
     try {
-      await generateCurriculumSession(rec);
+      await generateCurriculumSession(rec, regenerate);
       cs.status[rec.curriculum_id] = 'done';
       ok++;
     } catch (e) {
@@ -241,6 +259,33 @@ function renderCurriculumTab() {
   if (typeof adminActiveTab !== 'undefined' && adminActiveTab === 'curriculum') renderAdmin();
 }
 
+/* Switch the curriculum level being viewed/generated (each level is a separate
+   JSON authored under curriculum/). Re-triggers the lazy load. */
+function selectCurriculumLevel(level) {
+  const cs = window.curriculumState;
+  if (cs.running || cs.level === level) return;
+  cs.level = level;
+  cs.loaded = false;
+  cs.sessions = [];
+  cs.status = {};
+  cs.errors = {};
+  renderCurriculumTab();
+}
+
+/* The level-picker pills, shown above the curriculum table. */
+function curriculumLevelPicker() {
+  const cs = window.curriculumState;
+  const pills = LEVELS.map(l => {
+    const active = l.value === cs.level;
+    return `<button onclick="selectCurriculumLevel('${l.value}')" ${cs.running ? 'disabled' : ''}
+      class="px-3 py-1.5 rounded-lg text-xs font-semibold ${cs.running ? 'opacity-60 cursor-not-allowed' : ''}"
+      style="${active ? 'background:var(--secondary);color:#fff;' : 'background:#fff;border:1px solid var(--line);color:var(--muted);'}">
+      ${escapeHtml(l.value)}</button>`;
+  }).join('');
+  return `<div class="card-surface rounded-2xl p-3 mb-4 flex flex-wrap gap-2 items-center">
+    <span class="text-[11px] font-semibold uppercase tracking-wide mr-1" style="color:var(--muted);">Level</span>${pills}</div>`;
+}
+
 const CURRICULUM_STATUS = {
   pending: ['rgba(29,33,41,.05)', 'var(--muted)', 'Pending'],
   running: ['rgba(255,210,63,.18)', '#B45309', 'Generating…'],
@@ -251,15 +296,16 @@ const CURRICULUM_STATUS = {
 function renderCurriculumTabBody() {
   const cs = window.curriculumState;
 
-  // Lazy-load the level's JSON the first time the tab is opened.
+  // Lazy-load the level's JSON the first time a level is opened.
   if (!cs.loaded) {
     loadCurriculumLevel(cs.level)
       .then(renderCurriculumTab)
       .catch(e => {
         document.getElementById('viewAdmin').innerHTML =
-          `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load curriculum: ${escapeHtml(e.message)}</div>`;
+          curriculumLevelPicker() +
+          `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load curriculum/${escapeHtml(cs.level.toLowerCase())}.json: ${escapeHtml(e.message)}</div>`;
       });
-    return '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading curriculum…</div>';
+    return curriculumLevelPicker() + '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading ' + escapeHtml(cs.level) + ' curriculum…</div>';
   }
 
   const total = cs.sessions.length;
@@ -276,11 +322,18 @@ function renderCurriculumTabBody() {
 
   const controls = cs.running
     ? `<button onclick="cancelCurriculumGeneration()" class="px-4 py-2.5 rounded-xl text-white text-sm font-semibold" style="background:#EF4444;">Stop after current</button>`
-    : `<button onclick="runCurriculumGeneration()" ${isDemo ? 'disabled' : ''}
-         class="px-4 py-2.5 rounded-xl text-white text-sm font-semibold ${isDemo ? 'opacity-50 cursor-not-allowed' : 'glow-primary'}"
-         style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">
-         ${done ? `Generate remaining (${total - done})` : `Generate all ${total}`}
-       </button>`;
+    : `<div class="flex gap-2 flex-wrap">
+         <button onclick="runCurriculumGeneration()" ${isDemo ? 'disabled' : ''}
+           class="px-4 py-2.5 rounded-xl text-white text-sm font-semibold ${isDemo ? 'opacity-50 cursor-not-allowed' : 'glow-primary'}"
+           style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">
+           ${done ? `Generate remaining (${total - done})` : `Generate all ${total}`}
+         </button>
+         ${done ? `<button onclick="regenerateCurriculum()" ${isDemo ? 'disabled' : ''}
+           class="px-4 py-2.5 rounded-xl text-sm font-semibold ${isDemo ? 'opacity-50 cursor-not-allowed' : ''}"
+           style="background:white;border:1px solid var(--line);color:var(--secondary);">
+           Regenerate all (overwrite)
+         </button>` : ''}
+       </div>`;
 
   const rows = cs.sessions.map(r => {
     const st = cs.status[r.curriculum_id] || 'pending';
@@ -303,6 +356,7 @@ function renderCurriculumTabBody() {
   }).join('');
 
   return `
+    ${curriculumLevelPicker()}
     ${engineWarning}
     <div class="card-surface rounded-2xl p-5 mb-4">
       <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">

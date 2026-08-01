@@ -1,0 +1,986 @@
+{
+ "level": "C2",
+ "tier": "proficiency",
+ "sessions": [
+  {
+   "curriculum_id": "V-C2-01",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Focus on context and appropriateness; discuss regional variations.",
+   "title": "Idiomatic and Colloquial Mastery",
+   "words": [
+    "run-of-the-mill",
+    "cutting-edge",
+    "par for the course",
+    "in the pipeline",
+    "across the board",
+    "at the drop of a hat",
+    "behind the scenes",
+    "in the long run",
+    "up in the air",
+    "out of the blue",
+    "on the fence",
+    "to cut corners"
+   ],
+   "objective": "Use idiomatic expressions naturally and appropriately across various registers.",
+   "context": "Natural, native-like expression in informal and semi-formal contexts."
+  },
+  {
+   "curriculum_id": "V-C2-02",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use in context; discuss consequences of confusion.",
+   "title": "Subtle Semantic Distinctions",
+   "words": [
+    "imply vs infer",
+    "affect vs effect",
+    "disinterested vs uninterested",
+    "principle vs principal",
+    "compliment vs complement",
+    "elicit vs illicit",
+    "emigrate vs immigrate",
+    "historic vs historical",
+    "continuous vs continual",
+    "farther vs further",
+    "counsel vs council",
+    "stationary vs stationery"
+   ],
+   "objective": "Distinguish between commonly confused words and use them with complete accuracy.",
+   "context": "Precision in formal and professional communication."
+  },
+  {
+   "curriculum_id": "V-C2-03",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Connect to authentic academic texts; discuss discipline-specific usage.",
+   "title": "Advanced Academic Register",
+   "words": [
+    "juxtaposition",
+    "dichotomy",
+    "hegemony",
+    "ubiquitous",
+    "intrinsic",
+    "extrinsic",
+    "temporal",
+    "spatial",
+    "trajectory",
+    "discourse",
+    "paradigmatic",
+    "heuristic"
+   ],
+   "objective": "Command sophisticated academic vocabulary used across multiple disciplines.",
+   "context": "Reading and producing highly academic texts across disciplines."
+  },
+  {
+   "curriculum_id": "V-C2-04",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Discuss ethics of euphemistic language; political language analysis.",
+   "title": "Euphemisms and Dysphemisms",
+   "words": [
+    "passed away",
+    "let go",
+    "downsizing",
+    "enhanced interrogation",
+    "collateral damage",
+    "economical with the truth",
+    "pre-owned",
+    "underprivileged",
+    "vertically challenged",
+    "between jobs",
+    "correctional facility",
+    "revenue enhancement"
+   ],
+   "objective": "Recognize and decode euphemistic language; understand social and political implications.",
+   "context": "Understanding indirect language use in sensitive or political contexts."
+  },
+  {
+   "curriculum_id": "V-C2-05",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Connect to poetry and literary prose; encourage aesthetic appreciation.",
+   "title": "Literary and Poetic Vocabulary",
+   "words": [
+    "ephemeral",
+    "ethereal",
+    "melancholy",
+    "sublime",
+    "paradox",
+    "juxtapose",
+    "evocative",
+    "resonate",
+    "eloquent",
+    "poignant",
+    "wistful",
+    "nostalgia"
+   ],
+   "objective": "Use literary vocabulary to discuss aesthetic and emotional qualities of texts.",
+   "context": "Appreciating and discussing literary works with sophistication."
+  },
+  {
+   "curriculum_id": "V-C2-06",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use court transcripts; discuss legal systems.",
+   "title": "Forensic and Legal Discourse",
+   "words": [
+    "plaintiff",
+    "defendant",
+    "litigation",
+    "deposition",
+    "testimony",
+    "precedent",
+    "statute",
+    "jurisprudence",
+    "admissible",
+    "perjury",
+    "verdict",
+    "appeal"
+   ],
+   "objective": "Comprehend legal proceedings and courtroom discourse at native-like level.",
+   "context": "Understanding legal proceedings and courtroom language."
+  },
+  {
+   "curriculum_id": "V-C2-07",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use medical journals; focus on comprehension over production.",
+   "title": "Medical and Clinical Terminology (Advanced)",
+   "words": [
+    "pathology",
+    "etiology",
+    "epidemiology",
+    "comorbidity",
+    "palliative",
+    "prophylactic",
+    "endemic",
+    "pandemic",
+    "benign",
+    "malignant",
+    "remission",
+    "contraindication"
+   ],
+   "objective": "Comprehend medical texts and discussions at professional level.",
+   "context": "Understanding medical research and clinical discussions."
+  },
+  {
+   "curriculum_id": "V-C2-08",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use primary philosophical texts; encourage deep thinking.",
+   "title": "Philosophical Precision",
+   "words": [
+    "ontology",
+    "metaphysics",
+    "teleology",
+    "phenomenology",
+    "existentialism",
+    "determinism",
+    "free will",
+    "solipsism",
+    "nihilism",
+    "pragmatism",
+    "realism",
+    "idealism"
+   ],
+   "objective": "Use precise philosophical terminology to engage with philosophical texts and ideas.",
+   "context": "Engaging in advanced philosophical discussions and reading philosophy."
+  },
+  {
+   "curriculum_id": "V-C2-09",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use financial news and economic analysis; discuss policy debates.",
+   "title": "Economic and Financial Sophistication",
+   "words": [
+    "quantitative easing",
+    "fiscal austerity",
+    "hedge fund",
+    "derivatives",
+    "securities",
+    "arbitrage",
+    "liquidity trap",
+    "stagflation",
+    "monetary policy",
+    "supply-side economics",
+    "Keynesian",
+    "laissez-faire"
+   ],
+   "objective": "Comprehend sophisticated economic discussions in media and academic contexts.",
+   "context": "Understanding complex economic theory and financial markets."
+  },
+  {
+   "curriculum_id": "V-C2-10",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use speeches and poetry; focus on recognition and analysis.",
+   "title": "Rhetorical Devices and Figures of Speech",
+   "words": [
+    "hyperbole",
+    "litotes",
+    "synecdoche",
+    "metonymy",
+    "oxymoron",
+    "chiasmus",
+    "anaphora",
+    "asyndeton",
+    "polysyndeton",
+    "zeugma",
+    "antithesis",
+    "apostrophe"
+   ],
+   "objective": "Identify and potentially use rhetorical devices for effect in speaking and writing.",
+   "context": "Analyzing sophisticated texts and creating persuasive discourse."
+  },
+  {
+   "curriculum_id": "V-C2-11",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use biology texts; discuss scientific naming conventions.",
+   "title": "Scientific Nomenclature and Taxonomy",
+   "words": [
+    "taxonomy",
+    "genus",
+    "species",
+    "phylogeny",
+    "nomenclature",
+    "classification",
+    "binomial",
+    "specimen",
+    "morphology",
+    "anatomy",
+    "physiology",
+    "ecology"
+   ],
+   "objective": "Comprehend scientific texts with taxonomic and technical terminology.",
+   "context": "Understanding scientific classification and biological terminology."
+  },
+  {
+   "curriculum_id": "V-C2-12",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use Shakespeare and historical documents; discuss language change.",
+   "title": "Archaisms and Historical English",
+   "words": [
+    "thou",
+    "thee",
+    "thy",
+    "thine",
+    "whence",
+    "hither",
+    "thither",
+    "whither",
+    "forsooth",
+    "mayhap",
+    "perchance",
+    "betwixt"
+   ],
+   "objective": "Comprehend archaic English in historical documents and literature.",
+   "context": "Reading historical texts and understanding language evolution."
+  },
+  {
+   "curriculum_id": "V-C2-13",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Discuss language change and lexical innovation; update regularly.",
+   "title": "Neologisms and Contemporary Coinages",
+   "words": [
+    "podcast",
+    "blog",
+    "vlog",
+    "selfie",
+    "hashtag",
+    "crowdsource",
+    "gamification",
+    "binge-watch",
+    "photobomb",
+    "staycation",
+    "Brexit",
+    "mansplaining"
+   ],
+   "objective": "Understand and use recently coined words and contemporary language trends.",
+   "context": "Staying current with evolving English and new terminology."
+  },
+  {
+   "curriculum_id": "V-C2-14",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Analyze authentic conversations; discuss overuse and appropriateness.",
+   "title": "Discourse Particles and Pragmatic Markers",
+   "words": [
+    "actually",
+    "basically",
+    "literally",
+    "obviously",
+    "frankly",
+    "honestly",
+    "seriously",
+    "presumably",
+    "apparently",
+    "supposedly",
+    "incidentally",
+    "admittedly"
+   ],
+   "objective": "Use discourse markers naturally to manage conversation and express attitude.",
+   "context": "Natural, native-like spoken discourse with appropriate markers."
+  },
+  {
+   "curriculum_id": "V-C2-15",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Discuss other varieties (Australian, Canadian, etc.); explore stigma and prestige.",
+   "title": "Regional and Dialectal Variation",
+   "words": [
+    "British: lift/lorry/flat/queue vs American: elevator/truck/apartment/line",
+    "autumn vs fall",
+    "biscuit vs cookie",
+    "petrol vs gas",
+    "post vs mail",
+    "rubbish vs trash"
+   ],
+   "objective": "Recognize and potentially use both British and American English variants appropriately.",
+   "context": "Understanding major English varieties and regional differences."
+  },
+  {
+   "curriculum_id": "V-C2-16",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use technical manuals; practice clear technical writing.",
+   "title": "Technical Writing Precision",
+   "words": [
+    "specification",
+    "tolerance",
+    "calibration",
+    "parameter",
+    "threshold",
+    "baseline",
+    "benchmark",
+    "iteration",
+    "algorithm",
+    "interface",
+    "protocol",
+    "compatibility"
+   ],
+   "objective": "Use precise technical vocabulary in professional documentation contexts.",
+   "context": "Writing and understanding technical documentation."
+  },
+  {
+   "curriculum_id": "V-C2-17",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Use case studies; discuss with sensitivity to mental health.",
+   "title": "Psychological and Psychiatric Terminology",
+   "words": [
+    "psychopathology",
+    "neurosis",
+    "psychosis",
+    "cognitive dissonance",
+    "dissociation",
+    "defense mechanism",
+    "transference",
+    "countertransference",
+    "schema",
+    "attribution",
+    "metacognition",
+    "affect regulation"
+   ],
+   "objective": "Comprehend psychological research and clinical discussions at advanced level.",
+   "context": "Understanding advanced psychological concepts and mental health discussions."
+  },
+  {
+   "curriculum_id": "V-C2-18",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Discuss appropriateness and context; note generational differences.",
+   "title": "Slang, Jargon, and Register Variation",
+   "words": [
+    "cop out",
+    "rip off",
+    "blow off",
+    "screw up",
+    "mess up",
+    "freak out",
+    "chill out",
+    "hang out",
+    "make out",
+    "work out",
+    "figure out",
+    "check out"
+   ],
+   "objective": "Recognize and appropriately use informal language and slang in casual contexts.",
+   "context": "Understanding informal register and appropriate code-switching."
+  },
+  {
+   "curriculum_id": "V-C2-OPT-01",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Challenge: Requires historical linguistic knowledge. Use etymological dictionaries.",
+   "title": "Etymology and Word Origins (Optional Harder)",
+   "words": [
+    "Latin roots",
+    "Greek roots",
+    "Germanic origins",
+    "Romance borrowings",
+    "loan words",
+    "calques",
+    "cognates",
+    "false friends",
+    "semantic shift",
+    "broadening",
+    "narrowing",
+    "amelioration"
+   ],
+   "objective": "Analyze word origins and understand how etymology illuminates meaning and usage.",
+   "context": "Understanding the historical development and structure of English vocabulary."
+  },
+  {
+   "curriculum_id": "V-C2-OPT-02",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Challenge: Highly abstract and specialized. Use secondary sources for clarity.",
+   "title": "Critical Theory and Postmodern Discourse (Optional Harder)",
+   "words": [
+    "deconstruction",
+    "postmodernism",
+    "poststructuralism",
+    "hegemony",
+    "discourse",
+    "power/knowledge",
+    "othering",
+    "binary opposition",
+    "signifier",
+    "signified",
+    "simulacrum",
+    "hyperreality"
+   ],
+   "objective": "Comprehend and potentially use vocabulary from critical theory and cultural studies.",
+   "context": "Engaging with critical theory and postmodern academic texts."
+  },
+  {
+   "curriculum_id": "V-C2-OPT-03",
+   "skill": "vocabulary",
+   "level": "C2",
+   "notes": "Challenge: Requires knowledge of multiple languages. Focus on common phrases.",
+   "title": "Multilingual Code-Switching (Optional Harder)",
+   "words": [
+    "Foreign phrases used in English: ad hoc, bona fide, carte blanche, déjà vu, en route, fait accompli, in situ, non sequitur, per se, quid pro quo, raison d'être, zeitgeist"
+   ],
+   "objective": "Recognize and appropriately use foreign phrases that are part of educated English usage.",
+   "context": "Using foreign phrases naturally in sophisticated English discourse."
+  },
+  {
+   "curriculum_id": "G-C2-01",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Analyze literary texts; discuss formal vs informal contexts.",
+   "title": "Stylistic Inversion for Effect",
+   "structure": "Little did I know...; Not since...; So remarkable was...; Such was...",
+   "objective": "Use stylistic inversion to create sophisticated, emphatic prose and speech.",
+   "context": "Literary and rhetorical language for emphasis and effect."
+  },
+  {
+   "curriculum_id": "G-C2-02",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Discuss archaic vs modern usage; connect to language history.",
+   "title": "Subjunctive in Fixed Expressions",
+   "structure": "Come what may; Be that as it may; God save the Queen; Long live...; Far be it from me",
+   "objective": "Recognize subjunctive mood in fixed expressions; understand historical development.",
+   "context": "Recognizing and using fixed subjunctive expressions in formal and literary contexts."
+  },
+  {
+   "curriculum_id": "G-C2-03",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Practice unpacking complex sentences; discuss clarity vs complexity.",
+   "title": "Complex Sentence Architectures",
+   "structure": "Multiple embedded clauses; nested structures; extended noun phrases with layers of modification",
+   "objective": "Parse and comprehend highly complex sentence structures in authentic texts.",
+   "context": "Reading and potentially producing dense academic and literary prose."
+  },
+  {
+   "curriculum_id": "G-C2-04",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Compare varieties; discuss standard vs non-standard.",
+   "title": "Historical and Regional Grammar Variations",
+   "structure": "Differences in British vs American grammar (present perfect, prepositions, collective nouns)",
+   "objective": "Recognize and understand grammatical variation across major English varieties.",
+   "context": "Understanding variation across English-speaking regions and time periods."
+  },
+  {
+   "curriculum_id": "G-C2-05",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Analyze authentic academic writing; practice text organization.",
+   "title": "Marked Word Order for Cohesion",
+   "structure": "Topicalization; Thematic fronting; Existential there with complex subjects",
+   "objective": "Use marked word order to create cohesive, well-structured texts.",
+   "context": "Creating cohesion and managing information flow in extended discourse."
+  },
+  {
+   "curriculum_id": "G-C2-06",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Use authentic contexts to explore nuances.",
+   "title": "Nuances of Modal Meaning",
+   "structure": "Subtle differences: must vs have to; should vs ought to; may vs might; can vs could",
+   "objective": "Use modals with full awareness of subtle meaning differences.",
+   "context": "Expressing fine gradations of meaning in obligation, permission, and possibility."
+  },
+  {
+   "curriculum_id": "G-C2-07",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Analyze spoken corpora; discuss written vs spoken grammar.",
+   "title": "Anacoluthon and Syntactic Blends",
+   "structure": "Interrupted or irregular syntax; syntactic shifts mid-sentence (in speech)",
+   "objective": "Recognize and understand irregular syntactic patterns in authentic speech.",
+   "context": "Understanding natural speech patterns and syntactic irregularities."
+  },
+  {
+   "curriculum_id": "G-C2-08",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Practice with sentence combining; discuss formal register.",
+   "title": "Absolute Constructions",
+   "structure": "The weather being cold, we stayed inside; All things considered; Other things being equal",
+   "objective": "Use absolute constructions to add information concisely in formal writing.",
+   "context": "Creating economical, sophisticated written constructions."
+  },
+  {
+   "curriculum_id": "G-C2-09",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Connect to pragmatics; discuss Grice's maxims.",
+   "title": "Conditional Perfection and Implicature",
+   "structure": "Understanding implied conditions and conversational implicature with conditionals",
+   "objective": "Understand implied meanings and pragmatic aspects of conditional structures.",
+   "context": "Interpreting subtle conditional meaning in sophisticated discourse."
+  },
+  {
+   "curriculum_id": "G-C2-10",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Analyze authentic texts; practice style variation.",
+   "title": "Punctuation as Grammar",
+   "structure": "Semicolons, colons, dashes, parentheses for grammatical and rhetorical effect",
+   "objective": "Use punctuation marks with full command of their grammatical and stylistic functions.",
+   "context": "Using punctuation to create sophisticated written style."
+  },
+  {
+   "curriculum_id": "G-C2-11",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Analyze academic writing; practice establishing voice.",
+   "title": "Metadiscourse and Stance Markers",
+   "structure": "I argue that; It is clear that; In my view; As I see it; Arguably; Presumably",
+   "objective": "Use metadiscourse markers to establish authorial voice and stance.",
+   "context": "Positioning oneself in academic and argumentative discourse."
+  },
+  {
+   "curriculum_id": "G-C2-12",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Use ambiguous sentences; discuss logical interpretation.",
+   "title": "Scope and Negation",
+   "structure": "Understanding scope of negation; negative raising; metalinguistic negation",
+   "objective": "Understand scope ambiguities and subtle meanings created by negation.",
+   "context": "Precise interpretation of complex negative sentences."
+  },
+  {
+   "curriculum_id": "G-C2-13",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Use literary texts; discuss narrative perspective.",
+   "title": "Free Indirect Discourse",
+   "structure": "Blending narrator and character perspective (She would go. What choice did she have?)",
+   "objective": "Recognize free indirect discourse and understand its effects in narrative.",
+   "context": "Understanding sophisticated narrative techniques in literature."
+  },
+  {
+   "curriculum_id": "G-C2-14",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Analyze authentic conversations; discuss functions.",
+   "title": "Pragmatic Particles in Context",
+   "structure": "Well, Now, Right, OK, So (as discourse markers with subtle pragmatic functions)",
+   "objective": "Use pragmatic particles naturally to manage discourse and express stance.",
+   "context": "Natural conversation management and speaker stance."
+  },
+  {
+   "curriculum_id": "G-C2-15",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Connect to systemic functional linguistics; analyze academic texts.",
+   "title": "Grammatical Metaphor",
+   "structure": "Processes realized as nouns (discover → discovery); relational as material processes",
+   "objective": "Recognize grammatical metaphor as a feature of formal register.",
+   "context": "Understanding nominalization and abstraction in academic writing."
+  },
+  {
+   "curriculum_id": "G-C2-16",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Use corpus data; focus on frequency and naturalness.",
+   "title": "Formulaic Language and Collocations",
+   "structure": "Fixed and semi-fixed expressions; strong collocations; lexical bundles",
+   "objective": "Use formulaic language and strong collocations naturally and accurately.",
+   "context": "Achieving native-like fluency through formulaic sequences."
+  },
+  {
+   "curriculum_id": "G-C2-17",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Use timeline and situation types; discuss aspectual coercion.",
+   "title": "Complex Aspectual Distinctions",
+   "structure": "Perfect continuous forms; stative vs dynamic; telic vs atelic; punctual vs durative",
+   "objective": "Command full aspectual system with awareness of subtle meaning differences.",
+   "context": "Expressing fine temporal and aspectual distinctions."
+  },
+  {
+   "curriculum_id": "G-C2-18",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Use garden path sentences; discuss processing strategies.",
+   "title": "Garden Path Sentences and Ambiguity",
+   "structure": "Understanding and resolving temporarily ambiguous structures",
+   "objective": "Recognize and resolve structural ambiguities in reading and listening.",
+   "context": "Comprehension strategies for complex and ambiguous structures."
+  },
+  {
+   "curriculum_id": "G-C2-OPT-01",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Challenge: Requires linguistic awareness. Discuss split infinitives, preposition stranding, etc.",
+   "title": "Prescriptive vs Descriptive Grammar (Optional Harder)",
+   "structure": "Understanding controversial grammar rules and actual usage patterns",
+   "objective": "Understand differences between prescriptive rules and descriptive reality of English usage.",
+   "context": "Meta-grammatical awareness and sociolinguistic competence."
+  },
+  {
+   "curriculum_id": "G-C2-OPT-02",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Challenge: Highly theoretical. Use for linguistics students or interested learners only.",
+   "title": "Generative Grammar Concepts (Optional Harder)",
+   "structure": "Understanding deep structure, transformations, and generative principles",
+   "objective": "Understand basic concepts from generative grammar theory.",
+   "context": "Academic linguistic analysis and theoretical understanding."
+  },
+  {
+   "curriculum_id": "G-C2-OPT-03",
+   "skill": "grammar",
+   "level": "C2",
+   "notes": "Challenge: Requires literary sensitivity. Use poetry and experimental prose.",
+   "title": "Poetic License and Grammatical Deviation (Optional Harder)",
+   "structure": "Understanding intentional grammatical deviation in poetry and creative writing",
+   "objective": "Recognize and interpret intentional grammatical deviation for artistic effect.",
+   "context": "Literary analysis and understanding aesthetic effects of non-standard grammar."
+  },
+  {
+   "curriculum_id": "C-C2-01",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Extremely demanding; requires bilingual proficiency and training.",
+   "title": "Simultaneous Translation and Interpreting",
+   "objective": "Real-time interpretation between English and learners' first language.",
+   "expressions": [
+    "The speaker is saying...",
+    "To convey the meaning...",
+    "The equivalent would be...",
+    "I need to clarify...",
+    "Let me rephrase that..."
+   ],
+   "functions": "listening; processing; reproducing; managing cognitive load; maintaining equivalence"
+  },
+  {
+   "curriculum_id": "C-C2-02",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Formal and rule-bound; teach procedure explicitly.",
+   "title": "Parliamentary Debate and Formal Procedure",
+   "objective": "Participating in formal debates following parliamentary procedure.",
+   "expressions": [
+    "I move that...",
+    "Point of order...",
+    "I rise to speak for/against...",
+    "I yield the floor to...",
+    "The motion is carried/defeated..."
+   ],
+   "functions": "following procedure; making motions; points of order; rebuttals; voting"
+  },
+  {
+   "curriculum_id": "C-C2-03",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Requires close reading and critical theory knowledge.",
+   "title": "Literary and Film Criticism",
+   "objective": "Analyzing and critiquing literary works and films with sophistication.",
+   "expressions": [
+    "The author subverts...",
+    "This can be read as...",
+    "The film interrogates...",
+    "Through the lens of...",
+    "The text resists..."
+   ],
+   "functions": "analyzing; interpreting; evaluating; comparing; contextualizing"
+  },
+  {
+   "curriculum_id": "C-C2-04",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Teach peer review conventions; balance criticism with constructiveness.",
+   "title": "Academic Peer Review",
+   "objective": "Reviewing academic papers and providing constructive scholarly critique.",
+   "expressions": [
+    "The methodology is sound/flawed...",
+    "The contribution to the field is...",
+    "A significant limitation is...",
+    "I recommend major/minor revisions...",
+    "The claims are not adequately supported..."
+   ],
+   "functions": "evaluating methodology; assessing contribution; identifying weaknesses; recommending revisions"
+  },
+  {
+   "curriculum_id": "C-C2-05",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Focus on big ideas and delivery; teach speechwriting.",
+   "title": "Keynote Speaking",
+   "objective": "Delivering a major keynote address to a large, diverse audience.",
+   "expressions": [
+    "I stand before you today to...",
+    "Imagine a world where...",
+    "The question we must ask is...",
+    "I challenge you to...",
+    "Together, we can..."
+   ],
+   "functions": "inspiring; informing; entertaining; challenging; memorable delivery"
+  },
+  {
+   "curriculum_id": "C-C2-06",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Requires diplomacy and strong facilitation skills.",
+   "title": "Moderating Contentious Discussions",
+   "objective": "Moderating debates or discussions between parties with strong disagreements.",
+   "expressions": [
+    "Let's hear from all sides...",
+    "Can we find common ground on...",
+    "I'd like to redirect us to...",
+    "Let's maintain respectful dialogue...",
+    "We need to move toward..."
+   ],
+   "functions": "maintaining neutrality; managing conflict; ensuring fairness; guiding toward resolution"
+  },
+  {
+   "curriculum_id": "C-C2-07",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Culturally complex; requires shared knowledge and subtlety.",
+   "title": "Satirical and Ironic Communication",
+   "objective": "Using satire, irony, and indirect criticism effectively.",
+   "expressions": [
+    "One might think...",
+    "How convenient that...",
+    "Surely no one believes...",
+    "It's fascinating how...",
+    "Of course, we're told..."
+   ],
+   "functions": "critiquing indirectly; using humor; employing irony; subverting expectations"
+  },
+  {
+   "curriculum_id": "C-C2-08",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Requires abstract thinking; use classic thought experiments.",
+   "title": "Philosophical Dialogue and Thought Experiments",
+   "objective": "Engaging in philosophical discussions using thought experiments.",
+   "expressions": [
+    "Consider a scenario where...",
+    "What if we imagine...",
+    "This raises the question of...",
+    "Following this logic...",
+    "The implications would be..."
+   ],
+   "functions": "proposing scenarios; exploring implications; challenging assumptions; reasoning abstractly"
+  },
+  {
+   "curriculum_id": "C-C2-09",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Teach proposal structure; practice Q&A under pressure.",
+   "title": "Grant Writing and Proposal Defense",
+   "objective": "Writing and defending research or project grant proposals.",
+   "expressions": [
+    "This project addresses a critical gap...",
+    "The significance lies in...",
+    "Our methodology is robust because...",
+    "The expected outcomes include...",
+    "We have mitigated risks by..."
+   ],
+   "functions": "justifying; explaining significance; defending methodology; addressing concerns; persuading"
+  },
+  {
+   "curriculum_id": "C-C2-10",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Culturally very challenging; requires understanding of humor styles.",
+   "title": "Comedic Timing and Stand-up Performance",
+   "objective": "Delivering humor and comedy with appropriate timing and cultural awareness.",
+   "expressions": [
+    "So the other day...",
+    "You know what I hate about...",
+    "Has anyone else noticed...",
+    "Let me tell you something...",
+    "But seriously though..."
+   ],
+   "functions": "telling stories; delivering punchlines; reading audience; timing; recovering from silence"
+  },
+  {
+   "curriculum_id": "C-C2-11",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Emotionally demanding; teach ceremonial genres.",
+   "title": "Eulogies and Ceremonial Speeches",
+   "objective": "Delivering eulogies, toasts, and other ceremonial speeches.",
+   "expressions": [
+    "We gather today to remember...",
+    "What made [name] special was...",
+    "We will always remember...",
+    "May we honor [name] by...",
+    "Let us raise a glass to..."
+   ],
+   "functions": "commemorating; honoring; comforting; celebrating; connecting"
+  },
+  {
+   "curriculum_id": "C-C2-12",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Teach legal language; practice staying calm under pressure.",
+   "title": "Testimony and Legal Proceedings",
+   "objective": "Providing testimony in legal or formal investigative contexts.",
+   "expressions": [
+    "To the best of my knowledge...",
+    "I can confirm that...",
+    "I do not recall...",
+    "That is not accurate...",
+    "Could you rephrase the question?"
+   ],
+   "functions": "stating facts clearly; answering precisely; maintaining composure; clarifying; avoiding traps"
+  },
+  {
+   "curriculum_id": "C-C2-13",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Requires strategic thinking and cultural sensitivity.",
+   "title": "Diplomatic Negotiations",
+   "objective": "Conducting high-stakes negotiations requiring extreme tact and strategy.",
+   "expressions": [
+    "We are prepared to consider...",
+    "From our perspective...",
+    "Perhaps we could explore...",
+    "This would be acceptable if...",
+    "Let's focus on our shared interests..."
+   ],
+   "functions": "negotiating; finding common ground; making concessions strategically; maintaining relationships"
+  },
+  {
+   "curriculum_id": "C-C2-14",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Requires training in counseling techniques; emphasize ethical boundaries.",
+   "title": "Therapeutic and Counseling Communication",
+   "objective": "Using therapeutic communication techniques to support others.",
+   "expressions": [
+    "It sounds like you're feeling...",
+    "Help me understand...",
+    "What I'm hearing is...",
+    "That must be very difficult...",
+    "How are you coping with..."
+   ],
+   "functions": "active listening; reflecting; empathizing; asking open questions; avoiding judgment"
+  },
+  {
+   "curriculum_id": "C-C2-15",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Practice regularly; teach mental frameworks for quick organization.",
+   "title": "Extemporaneous Speaking Mastery",
+   "objective": "Speaking eloquently with minimal or no preparation on complex topics.",
+   "expressions": [
+    "That's an excellent question...",
+    "There are several dimensions to this...",
+    "If I may offer a perspective...",
+    "Drawing on my experience...",
+    "In conclusion..."
+   ],
+   "functions": "organizing spontaneously; speaking fluently; managing nerves; thinking on feet"
+  },
+  {
+   "curriculum_id": "C-C2-16",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Requires patience and skill; model respectful questioning.",
+   "title": "Socratic Teaching and Inquiry",
+   "objective": "Leading learning through questioning rather than direct instruction.",
+   "expressions": [
+    "What leads you to that conclusion?",
+    "Can you think of a counterexample?",
+    "How do you know that's true?",
+    "What assumptions are you making?",
+    "Where does that logic take us?"
+   ],
+   "functions": "questioning; probing; challenging; guiding discovery; developing critical thinking"
+  },
+  {
+   "curriculum_id": "C-C2-OPT-01",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Challenge: Requires creativity and aesthetic sense. Highly subjective.",
+   "title": "Poetry Composition and Recitation (Optional Harder)",
+   "objective": "Creating and performing original poetry in English.",
+   "expressions": [
+    "Through metaphor...",
+    "The rhythm creates...",
+    "This image evokes...",
+    "The volta occurs when...",
+    "My intention was to..."
+   ],
+   "functions": "composing; using form; employing devices; performing; evoking emotion"
+  },
+  {
+   "curriculum_id": "C-C2-OPT-02",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Challenge: Requires high academic proficiency. For graduate students or academics.",
+   "title": "Academic Journal Article Publication (Optional Harder)",
+   "objective": "Writing and revising academic articles for publication in peer-reviewed journals.",
+   "expressions": [
+    "Previous research has shown...",
+    "This study addresses...",
+    "Our findings suggest...",
+    "In response to Reviewer 2...",
+    "We have revised the manuscript to..."
+   ],
+   "functions": "arguing; citing; structuring; revising; responding to reviewers"
+  },
+  {
+   "curriculum_id": "C-C2-OPT-03",
+   "skill": "communication",
+   "level": "C2",
+   "notes": "Challenge: Requires sociolinguistic knowledge and performance skill. Risk of stereotyping.",
+   "title": "Dialect Performance and Code-Switching (Optional Harder)",
+   "objective": "Performing or analyzing different English dialects and code-switching patterns.",
+   "expressions": [
+    "In this dialect, you'd say...",
+    "The features include...",
+    "Code-switching occurs when...",
+    "This variety is characterized by...",
+    "The social meaning of this is..."
+   ],
+   "functions": "imitating; analyzing; switching registers; performing; understanding variation"
+  }
+ ]
+}

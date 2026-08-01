@@ -1,0 +1,783 @@
+{
+ "level": "A1",
+ "tier": "foundation",
+ "sessions": [
+  {
+   "curriculum_id": "V-A1-01",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Recycle time words from Pre-A1; introduce basic sequencing (first/then).",
+   "title": "Daily Routine Verbs",
+   "words": [
+    "wake",
+    "wash",
+    "shower",
+    "dress",
+    "eat",
+    "drink",
+    "work",
+    "study",
+    "go",
+    "come",
+    "start",
+    "finish"
+   ],
+   "objective": "Describe a simple daily routine using common verbs in sequence.",
+   "context": "Talking about typical weekday routines."
+  },
+  {
+   "curriculum_id": "V-A1-02",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Use house pictures; keep collocations natural.",
+   "title": "Home and Furniture",
+   "words": [
+    "kitchen",
+    "bathroom",
+    "bedroom",
+    "living room",
+    "bed",
+    "sofa",
+    "table",
+    "fridge",
+    "oven",
+    "lamp",
+    "mirror",
+    "floor"
+   ],
+   "objective": "Name common rooms and furniture; support 'There is/are' descriptions.",
+   "context": "Describing where things are at home."
+  },
+  {
+   "curriculum_id": "V-A1-03",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Recycle colors; add simple 'I want…' requests.",
+   "title": "Clothes and Accessories",
+   "words": [
+    "shirt",
+    "pants",
+    "dress",
+    "skirt",
+    "jacket",
+    "shoes",
+    "socks",
+    "hat",
+    "coat",
+    "bag",
+    "size",
+    "color"
+   ],
+   "objective": "Ask/answer about clothes using simple descriptors (size/color).",
+   "context": "Shopping for basic clothing items."
+  },
+  {
+   "curriculum_id": "V-A1-04",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Keep adjective sets small; recycle hot/cold from Pre-A1.",
+   "title": "Weather Words",
+   "words": [
+    "sunny",
+    "rainy",
+    "cloudy",
+    "windy",
+    "snowy",
+    "hot",
+    "cold",
+    "warm",
+    "cool",
+    "storm",
+    "weather",
+    "umbrella"
+   ],
+   "objective": "Talk about the weather with short sentences and preferences.",
+   "context": "Making simple small talk and planning."
+  },
+  {
+   "curriculum_id": "V-A1-05",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Emphasize functional chunks: 'How much?' 'Can I…?'",
+   "title": "Shopping Basics",
+   "words": [
+    "price",
+    "cheap",
+    "expensive",
+    "cash",
+    "card",
+    "receipt",
+    "shop",
+    "buy",
+    "sell",
+    "try",
+    "change",
+    "help"
+   ],
+   "objective": "Use key shopping words; ask about price and payment in simple exchanges.",
+   "context": "Basic transactions and asking for support in a store."
+  },
+  {
+   "curriculum_id": "V-A1-06",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Pair with communication role-plays (asking for directions).",
+   "title": "Transport and Travel Basics",
+   "words": [
+    "bus",
+    "train",
+    "subway",
+    "taxi",
+    "car",
+    "ticket",
+    "station",
+    "stop",
+    "map",
+    "left",
+    "right",
+    "straight"
+   ],
+   "objective": "Use transport words to ask for directions and find routes.",
+   "context": "Simple travel inside a city."
+  },
+  {
+   "curriculum_id": "V-A1-07",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Stay high-frequency; extend to B1 with role-specific tasks.",
+   "title": "Jobs and Workplaces",
+   "words": [
+    "teacher",
+    "driver",
+    "nurse",
+    "doctor",
+    "cook",
+    "student",
+    "office",
+    "shop",
+    "factory",
+    "job",
+    "work",
+    "boss"
+   ],
+   "objective": "Name common jobs and workplaces; ask 'What do you do?'",
+   "context": "Talking about occupations and where people work."
+  },
+  {
+   "curriculum_id": "V-A1-08",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Recycle simple opinion adjectives: fun/boring later.",
+   "title": "Hobbies and Free Time",
+   "words": [
+    "music",
+    "movie",
+    "sport",
+    "reading",
+    "cooking",
+    "travel",
+    "walk",
+    "game",
+    "dance",
+    "swim",
+    "draw",
+    "hobby"
+   ],
+   "objective": "Use hobby words to say what you like/don’t like.",
+   "context": "Talking about likes and free-time activities."
+  },
+  {
+   "curriculum_id": "V-A1-09",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Keep symptoms minimal; expand in A2 with more detail.",
+   "title": "Body and Health Basics",
+   "words": [
+    "head",
+    "eye",
+    "ear",
+    "nose",
+    "mouth",
+    "tooth",
+    "hand",
+    "leg",
+    "back",
+    "pain",
+    "medicine",
+    "doctor"
+   ],
+   "objective": "Name basic body parts and simple health words; support 'I have…' statements.",
+   "context": "Simple health needs and symptoms."
+  },
+  {
+   "curriculum_id": "V-A1-10",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Introduce prepositions as chunks; accuracy over complexity.",
+   "title": "Directions and Places (Expanded)",
+   "words": [
+    "near",
+    "far",
+    "corner",
+    "between",
+    "next to",
+    "behind",
+    "in front of",
+    "across",
+    "turn",
+    "cross",
+    "intersection",
+    "address"
+   ],
+   "objective": "Use location words to give/understand basic directions.",
+   "context": "Navigating and describing locations."
+  },
+  {
+   "curriculum_id": "V-A1-11",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Recycle food basics; add meal labels for structure.",
+   "title": "Food Categories",
+   "words": [
+    "meat",
+    "fish",
+    "vegetables",
+    "fruit",
+    "bread",
+    "rice",
+    "soup",
+    "salad",
+    "breakfast",
+    "lunch",
+    "dinner",
+    "snack"
+   ],
+   "objective": "Describe simple meals and meal times; support ordering talk.",
+   "context": "Ordering and talking about meals."
+  },
+  {
+   "curriculum_id": "V-A1-12",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Keep verbs simple; later extend to privacy and settings.",
+   "title": "Technology Basics",
+   "words": [
+    "phone",
+    "message",
+    "call",
+    "email",
+    "internet",
+    "password",
+    "screen",
+    "camera",
+    "charger",
+    "wifi",
+    "app",
+    "online"
+   ],
+   "objective": "Use basic tech words for everyday needs and simple help requests.",
+   "context": "Simple digital life: calling, texting, logging in."
+  },
+  {
+   "curriculum_id": "V-A1-13",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Use personal relevance; avoid culturally heavy explanations.",
+   "title": "Holidays and Celebrations",
+   "words": [
+    "birthday",
+    "party",
+    "gift",
+    "cake",
+    "holiday",
+    "festival",
+    "invite",
+    "family",
+    "friends",
+    "celebrate",
+    "music",
+    "photo"
+   ],
+   "objective": "Describe a simple celebration and make/accept an invitation.",
+   "context": "Talking about common celebrations."
+  },
+  {
+   "curriculum_id": "V-A1-14",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Prepare for B1 opinion language; keep reasons minimal here.",
+   "title": "Simple Opinion Adjectives",
+   "words": [
+    "good",
+    "bad",
+    "great",
+    "nice",
+    "beautiful",
+    "ugly",
+    "easy",
+    "difficult",
+    "fun",
+    "boring",
+    "favorite",
+    "interesting"
+   ],
+   "objective": "Give simple opinions about objects, places, and activities.",
+   "context": "Expressing likes/dislikes and simple evaluations."
+  },
+  {
+   "curriculum_id": "V-A1-OPT-01",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Challenge: Abstract terms like 'wifi' and 'password' require contextual understanding. Practice with real devices.",
+   "title": "Technology and Devices (Optional Harder)",
+   "words": [
+    "computer",
+    "laptop",
+    "tablet",
+    "mouse",
+    "keyboard",
+    "screen",
+    "internet",
+    "email",
+    "password",
+    "charge",
+    "battery",
+    "wifi"
+   ],
+   "objective": "Name common devices and tech concepts; express simple tech needs.",
+   "context": "Using basic technology vocabulary in daily life and work."
+  },
+  {
+   "curriculum_id": "V-A1-OPT-02",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Challenge: Nuanced emotions require cultural and contextual understanding. Use facial expressions and scenarios.",
+   "title": "Emotions and States (Optional Harder)",
+   "words": [
+    "worried",
+    "excited",
+    "scared",
+    "angry",
+    "surprised",
+    "bored",
+    "lonely",
+    "nervous",
+    "proud",
+    "confused",
+    "relaxed",
+    "stressed"
+   ],
+   "objective": "Identify and express varied emotional states in appropriate contexts.",
+   "context": "Expressing a wider range of feelings beyond basic happy/sad."
+  },
+  {
+   "curriculum_id": "V-A1-OPT-03",
+   "skill": "vocabulary",
+   "level": "A1",
+   "notes": "Challenge: Countable vs uncountable distinction is emerging. Focus on common chunks like 'a bottle of water.'",
+   "title": "Quantities and Containers (Optional Harder)",
+   "words": [
+    "bottle",
+    "cup",
+    "glass",
+    "bowl",
+    "plate",
+    "box",
+    "bag",
+    "piece",
+    "some",
+    "many",
+    "much",
+    "enough"
+   ],
+   "objective": "Use container words with food items; express basic quantities.",
+   "context": "Describing quantities and containers for shopping and cooking."
+  },
+  {
+   "curriculum_id": "G-A1-01",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Control verbs; do not mix with continuous in this session.",
+   "title": "Present Simple (affirmative)",
+   "structure": "I/You/We/They + verb; He/She + verb-s",
+   "objective": "Describe routines using present simple with basic subject-verb agreement.",
+   "context": "Daily routines and habits."
+  },
+  {
+   "curriculum_id": "G-A1-02",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Keep to short statements; avoid long clauses.",
+   "title": "Present Simple (negative)",
+   "structure": "don’t / doesn’t + base verb",
+   "objective": "Form negatives accurately and give simple negative facts.",
+   "context": "Talking about what you don’t do."
+  },
+  {
+   "curriculum_id": "G-A1-03",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Prioritize question word order over speed.",
+   "title": "Present Simple Questions",
+   "structure": "Do/Does + subject + verb?",
+   "objective": "Ask and answer wh- and yes/no questions in present simple.",
+   "context": "Asking about routines and preferences."
+  },
+  {
+   "curriculum_id": "G-A1-04",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Recycle A2 vocab later; here keep to 5 key adverbs.",
+   "title": "Adverbs of Frequency",
+   "structure": "always/usually/often/sometimes/never + position",
+   "objective": "Place frequency adverbs correctly and use them in routine sentences.",
+   "context": "Describing habits."
+  },
+  {
+   "curriculum_id": "G-A1-05",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Use pictures/live actions; avoid future use until A2.",
+   "title": "Present Continuous (now)",
+   "structure": "am/is/are + verb-ing",
+   "objective": "Describe what is happening now in simple contexts.",
+   "context": "Talking about actions happening now."
+  },
+  {
+   "curriculum_id": "G-A1-06",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Keep contrast clear with time signals (every day / right now).",
+   "title": "Present Simple vs Continuous (basic contrast)",
+   "structure": "routine vs now",
+   "objective": "Choose present simple or continuous appropriately in short contexts.",
+   "context": "Explaining typical vs current actions."
+  },
+  {
+   "curriculum_id": "G-A1-07",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Avoid narrative verbs; keep to BE.",
+   "title": "Past of BE",
+   "structure": "was/were + short answers",
+   "objective": "Ask/answer about past states and locations with was/were.",
+   "context": "Talking about yesterday and past states."
+  },
+  {
+   "curriculum_id": "G-A1-08",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Teach pronunciation of -ed (basic awareness) without overload.",
+   "title": "Past Simple (regular verbs)",
+   "structure": "verb-ed + time expressions",
+   "objective": "Use past simple regular verbs in simple affirmative sentences.",
+   "context": "Talking about last weekend (simple actions)."
+  },
+  {
+   "curriculum_id": "G-A1-09",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Limit list; recycle repeatedly across communication sessions.",
+   "title": "Past Simple (common irregulars)",
+   "structure": "go/went, have/had, see/saw, etc.",
+   "objective": "Use a small set of high-frequency irregular verbs in past simple.",
+   "context": "Simple personal stories."
+  },
+  {
+   "curriculum_id": "G-A1-10",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Anchor to personal plans; avoid predictions here.",
+   "title": "Future: Going to (plans)",
+   "structure": "be going to + base verb",
+   "objective": "Express simple planned future actions.",
+   "context": "Talking about plans (today/tomorrow)."
+  },
+  {
+   "curriculum_id": "G-A1-11",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Contrast with going to later (A2).",
+   "title": "Future: Will (offers/decisions)",
+   "structure": "will + base verb",
+   "objective": "Use will for offers and spontaneous decisions in short dialogues.",
+   "context": "Offering help and quick decisions."
+  },
+  {
+   "curriculum_id": "G-A1-12",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Keep quantifier set small; save much/many for A2.",
+   "title": "Countable/Uncountable + Some/Any",
+   "structure": "some/any; a/an; plural",
+   "objective": "Ask for and quantify items appropriately with some/any.",
+   "context": "Shopping and ordering food."
+  },
+  {
+   "curriculum_id": "G-A1-13",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Use high-frequency adjectives (big, small, good).",
+   "title": "Comparatives",
+   "structure": "adj-er / more + adj; than",
+   "objective": "Make simple comparisons about people/objects/places.",
+   "context": "Comparing two things."
+  },
+  {
+   "curriculum_id": "G-A1-14",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Link to preferences and simple opinions.",
+   "title": "Superlatives",
+   "structure": "the adj-est / the most + adj",
+   "objective": "Use superlatives to talk about favorites and extremes.",
+   "context": "Talking about favorites."
+  },
+  {
+   "curriculum_id": "G-A1-OPT-01",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Challenge: Aspect distinction and -ing formation are complex. Practice with visible actions first.",
+   "title": "Present Continuous for Actions Happening Now (Optional Harder)",
+   "structure": "I am/You are/He is + verb-ing",
+   "objective": "Form and use present continuous for current activities; distinguish from present simple.",
+   "context": "Describing actions in progress at the moment of speaking."
+  },
+  {
+   "curriculum_id": "G-A1-OPT-02",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Challenge: Pronoun case distinction is difficult. Contrast with subject pronouns systematically.",
+   "title": "Object Pronouns (me, you, him, her, it, us, them) (Optional Harder)",
+   "structure": "verb + object pronoun",
+   "objective": "Use object pronouns correctly in simple sentences like 'I like him' or 'Call me.'",
+   "context": "Replacing nouns with pronouns in object position."
+  },
+  {
+   "curriculum_id": "G-A1-OPT-03",
+   "skill": "grammar",
+   "level": "A1",
+   "notes": "Challenge: Word order and abstract frequency concepts. Use timeline visuals and personal schedules.",
+   "title": "Adverbs of Frequency (Optional Harder)",
+   "structure": "always, usually, often, sometimes, never + present simple",
+   "objective": "Place frequency adverbs correctly in sentences about routines.",
+   "context": "Describing how often activities or habits occur."
+  },
+  {
+   "curriculum_id": "C-A1-01",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Keep questions simple; recycle Pre-A1 chunks with expansions.",
+   "title": "Meeting a New Neighbor",
+   "objective": "Introducing yourself and exchanging basic information.",
+   "expressions": [
+    "Where are you from?",
+    "I live in ___.",
+    "Nice to meet you."
+   ],
+   "functions": "small talk; introducing; asking personal details"
+  },
+  {
+   "curriculum_id": "C-A1-02",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Encourage 4–6 sentence routine with time words.",
+   "title": "Talking About Daily Routines",
+   "objective": "Describing a typical day (work/study).",
+   "expressions": [
+    "I usually ___.",
+    "What time do you ___?",
+    "Then I ___."
+   ],
+   "functions": "describing routines; sequencing; asking questions"
+  },
+  {
+   "curriculum_id": "C-A1-03",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Use real items or pictures; practice short Q/A cycles.",
+   "title": "Shopping for Clothes",
+   "objective": "Buying a shirt and asking about size/color.",
+   "expressions": [
+    "Do you have this in ___?",
+    "Can I try it on?",
+    "How much is it?"
+   ],
+   "functions": "requesting; asking about size/price; choosing"
+  },
+  {
+   "curriculum_id": "C-A1-04",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Keep menu limited; focus on politeness and clarity.",
+   "title": "Ordering Food in a Café",
+   "objective": "Ordering a simple meal and drink.",
+   "expressions": [
+    "I’d like ___, please.",
+    "Can I have the bill, please?",
+    "Thank you."
+   ],
+   "functions": "ordering; requesting; paying"
+  },
+  {
+   "curriculum_id": "C-A1-05",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Use a simple map; limit steps to 2–3 directions.",
+   "title": "Asking for Directions (Basic)",
+   "objective": "Finding a place in town using left/right/straight.",
+   "expressions": [
+    "Excuse me, where is ___?",
+    "Go straight.",
+    "Turn left/right."
+   ],
+   "functions": "asking for directions; understanding; confirming"
+  },
+  {
+   "curriculum_id": "C-A1-06",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Use a past-time visual timeline; keep verbs high-frequency.",
+   "title": "Talking About Your Weekend",
+   "objective": "Sharing 2–3 past activities.",
+   "expressions": [
+    "I went to ___.",
+    "I watched ___.",
+    "It was fun."
+   ],
+   "functions": "narrating (simple past); responding"
+  },
+  {
+   "curriculum_id": "C-A1-07",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Keep planning simple; add time and place if possible.",
+   "title": "Making Plans (Going to)",
+   "objective": "Planning an activity for tomorrow.",
+   "expressions": [
+    "I’m going to ___.",
+    "Do you want to ___?",
+    "Let’s ___."
+   ],
+   "functions": "planning; suggesting; agreeing"
+  },
+  {
+   "curriculum_id": "C-A1-08",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Avoid medical advice; focus on language and understanding instructions.",
+   "title": "At the Pharmacy (Basic)",
+   "objective": "Asking for basic medicine for a simple symptom.",
+   "expressions": [
+    "I have a headache.",
+    "Do you have something for ___?",
+    "How many per day?"
+   ],
+   "functions": "describing symptom; requesting; clarifying"
+  },
+  {
+   "curriculum_id": "C-A1-09",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Encourage short follow-ups (frequency, place).",
+   "title": "Talking About Hobbies",
+   "objective": "Explaining what you like doing in free time.",
+   "expressions": [
+    "I like ___ing.",
+    "I play/watch ___.",
+    "What about you?"
+   ],
+   "functions": "expressing likes; asking follow-up questions"
+  },
+  {
+   "curriculum_id": "C-A1-10",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Use a floor-plan picture or learner drawings.",
+   "title": "Describing Your Home",
+   "objective": "Describing rooms and what’s in them.",
+   "expressions": [
+    "There is a ___.",
+    "There are two ___.",
+    "It’s in the ___."
+   ],
+   "functions": "describing; locating objects"
+  },
+  {
+   "curriculum_id": "C-A1-11",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Practice listening to predictable responses; add spelling later.",
+   "title": "Making a Simple Phone Call",
+   "objective": "Calling to ask for basic information (hours, address).",
+   "expressions": [
+    "Hello, I have a question.",
+    "What time do you open?",
+    "Thank you, bye."
+   ],
+   "functions": "requesting info; confirming; closing"
+  },
+  {
+   "curriculum_id": "C-A1-12",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Use a simple timetable; focus on key questions.",
+   "title": "Booking a Simple Trip",
+   "objective": "Asking about a bus/train ticket and time.",
+   "expressions": [
+    "One ticket to ___, please.",
+    "What time is it?",
+    "Is this the right platform?"
+   ],
+   "functions": "requesting; checking schedule; confirming"
+  },
+  {
+   "curriculum_id": "C-A1-OPT-01",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Challenge: Requires negotiation and time management language. Provide structured dialogues first.",
+   "title": "Making Appointments and Plans (Optional Harder)",
+   "objective": "Scheduling a meeting or social event with time and place.",
+   "expressions": [
+    "Let's meet at ___.",
+    "What time is good?",
+    "How about ___?",
+    "That works for me.",
+    "See you on ___."
+   ],
+   "functions": "suggesting; arranging; confirming plans"
+  },
+  {
+   "curriculum_id": "C-A1-OPT-02",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Challenge: Spatial concepts and imperatives require cognitive load. Use physical movement and maps.",
+   "title": "Asking for and Giving Directions (Optional Harder)",
+   "objective": "Navigating a neighborhood or building with simple directions.",
+   "expressions": [
+    "Go straight.",
+    "Turn left/right.",
+    "It's next to ___.",
+    "How do I get to ___?",
+    "Is it far?"
+   ],
+   "functions": "asking for directions; giving directions; clarifying location"
+  },
+  {
+   "curriculum_id": "C-A1-OPT-03",
+   "skill": "communication",
+   "level": "A1",
+   "notes": "Challenge: Requires cause-effect thinking and modal verbs. Scaffold with visual problem scenarios.",
+   "title": "Describing Problems and Solutions (Optional Harder)",
+   "objective": "Explaining simple problems and asking for or suggesting solutions.",
+   "expressions": [
+    "I have a problem.",
+    "My ___ doesn't work.",
+    "Can you fix ___?",
+    "Maybe you should ___.",
+    "Try ___."
+   ],
+   "functions": "describing problems; asking for help; suggesting solutions"
+  }
+ ]
+}

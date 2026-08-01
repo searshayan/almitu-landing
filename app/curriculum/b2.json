@@ -1,0 +1,1003 @@
+{
+ "level": "B2",
+ "tier": "proficiency",
+ "sessions": [
+  {
+   "curriculum_id": "V-B2-01",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Push for precise usage: benefit vs advantage; drawback vs disadvantage.",
+   "title": "Evaluating Pros and Cons",
+   "words": [
+    "advantage",
+    "disadvantage",
+    "benefit",
+    "drawback",
+    "trade-off",
+    "effective",
+    "efficient",
+    "practical",
+    "realistic",
+    "impact",
+    "outcome",
+    "evidence"
+   ],
+   "objective": "Compare options using nuanced evaluation vocabulary.",
+   "context": "Evaluating choices and proposals."
+  },
+  {
+   "curriculum_id": "V-B2-02",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Coordinate with discourse-marker grammar sessions.",
+   "title": "Cause, Effect, and Consequences",
+   "words": [
+    "cause",
+    "factor",
+    "contribute",
+    "lead to",
+    "result in",
+    "consequence",
+    "therefore",
+    "hence",
+    "due to",
+    "because of",
+    "impact",
+    "outweigh"
+   ],
+   "objective": "Explain causes and consequences with appropriate connectors.",
+   "context": "Explaining why things happen and what follows."
+  },
+  {
+   "curriculum_id": "V-B2-03",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Practice polite firmness and conditional language.",
+   "title": "Negotiation and Compromise",
+   "words": [
+    "negotiate",
+    "compromise",
+    "proposal",
+    "counteroffer",
+    "concession",
+    "priority",
+    "stakeholder",
+    "mutual",
+    "flexible",
+    "constraint",
+    "agree on",
+    "resolve"
+   ],
+   "objective": "Use negotiation vocabulary to propose, adjust, and finalize agreements.",
+   "context": "Reaching agreements in work and life."
+  },
+  {
+   "curriculum_id": "V-B2-04",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Avoid over-specialization; focus on transferable academic lexis.",
+   "title": "Academic Study and Research",
+   "words": [
+    "hypothesis",
+    "method",
+    "data",
+    "analysis",
+    "findings",
+    "summary",
+    "reference",
+    "source",
+    "reliable",
+    "valid",
+    "bias",
+    "conclusion"
+   ],
+   "objective": "Describe research processes and evaluate sources in discussion.",
+   "context": "Discussing research and academic work."
+  },
+  {
+   "curriculum_id": "V-B2-05",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Useful for professional coaching and reviews.",
+   "title": "Workplace Performance and Growth",
+   "words": [
+    "performance",
+    "deliver",
+    "initiative",
+    "ownership",
+    "accountability",
+    "collaboration",
+    "leadership",
+    "feedback",
+    "growth",
+    "mentorship",
+    "KPI",
+    "strategy"
+   ],
+   "objective": "Explain performance goals and development plans with precision.",
+   "context": "Discussing performance, roles, and development."
+  },
+  {
+   "curriculum_id": "V-B2-06",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Encourage hedging to avoid overclaiming.",
+   "title": "Ethics and Responsibility",
+   "words": [
+    "ethical",
+    "responsible",
+    "transparent",
+    "fairness",
+    "privacy",
+    "consent",
+    "harm",
+    "duty",
+    "integrity",
+    "accountable",
+    "violate",
+    "justify"
+   ],
+   "objective": "Argue for ethical positions using balanced, respectful language.",
+   "context": "Discussing right/wrong in practical contexts."
+  },
+  {
+   "curriculum_id": "V-B2-07",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Align with startup/product contexts if relevant.",
+   "title": "Innovation and Change",
+   "words": [
+    "innovate",
+    "disrupt",
+    "adopt",
+    "implement",
+    "iterate",
+    "scalable",
+    "prototype",
+    "challenge",
+    "transform",
+    "shift",
+    "trend",
+    "resistance"
+   ],
+   "objective": "Discuss innovation processes and change management vocabulary.",
+   "context": "Talking about change in technology and society."
+  },
+  {
+   "curriculum_id": "V-B2-08",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Promote evidence-based language and qualifiers.",
+   "title": "Media and Misinformation",
+   "words": [
+    "headline",
+    "narrative",
+    "frame",
+    "misleading",
+    "misinformation",
+    "fact-check",
+    "source",
+    "credibility",
+    "sensational",
+    "objective",
+    "agenda",
+    "influence"
+   ],
+   "objective": "Evaluate media claims and describe bias and reliability.",
+   "context": "Analyzing news and media messages."
+  },
+  {
+   "curriculum_id": "V-B2-09",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Connect to conditionals and modal perfect forms.",
+   "title": "Risk and Uncertainty",
+   "words": [
+    "risk",
+    "uncertain",
+    "probability",
+    "scenario",
+    "assumption",
+    "estimate",
+    "mitigate",
+    "contingency",
+    "backup plan",
+    "trade-off",
+    "exposure",
+    "resilient"
+   ],
+   "objective": "Discuss risk and propose mitigation strategies.",
+   "context": "Planning under uncertainty."
+  },
+  {
+   "curriculum_id": "V-B2-10",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Encourage respectful, non-medical framing.",
+   "title": "Mental Wellbeing and Balance",
+   "words": [
+    "wellbeing",
+    "boundaries",
+    "burnout",
+    "resilience",
+    "coping",
+    "overload",
+    "mindful",
+    "support network",
+    "therapy",
+    "stigma",
+    "recover",
+    "sustainable"
+   ],
+   "objective": "Talk about wellbeing strategies with sensitivity and clarity.",
+   "context": "Discussing wellbeing at work and in life."
+  },
+  {
+   "curriculum_id": "V-B2-11",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Prepare for formal discussion and presentations.",
+   "title": "Sustainability and Policy",
+   "words": [
+    "policy",
+    "regulation",
+    "incentive",
+    "compliance",
+    "standard",
+    "emissions",
+    "renewable",
+    "efficiency",
+    "consumption",
+    "footprint",
+    "subsidy",
+    "initiative"
+   ],
+   "objective": "Explain policy tools and sustainability measures.",
+   "context": "Discussing sustainability initiatives and rules."
+  },
+  {
+   "curriculum_id": "V-B2-12",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Avoid stereotyping; use perspective-taking language.",
+   "title": "Globalization and Migration",
+   "words": [
+    "global",
+    "migration",
+    "integration",
+    "diversity",
+    "inclusion",
+    "barrier",
+    "opportunity",
+    "workforce",
+    "adapt",
+    "settlement",
+    "identity",
+    "belonging"
+   ],
+   "objective": "Discuss migration topics with nuance and respectful language.",
+   "context": "Discussing global movement and community."
+  },
+  {
+   "curriculum_id": "V-B2-13",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Align with communication: feedback, conflict resolution.",
+   "title": "Leadership and Team Dynamics",
+   "words": [
+    "delegate",
+    "align",
+    "motivate",
+    "conflict",
+    "mediate",
+    "stakeholders",
+    "vision",
+    "values",
+    "culture",
+    "trust",
+    "autonomy",
+    "accountability"
+   ],
+   "objective": "Describe leadership actions and team dynamics precisely.",
+   "context": "Leading and collaborating in teams."
+  },
+  {
+   "curriculum_id": "V-B2-14",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Useful for civic/policy communication tasks.",
+   "title": "Public Services and Systems",
+   "words": [
+    "infrastructure",
+    "access",
+    "eligibility",
+    "application",
+    "process",
+    "efficiency",
+    "service delivery",
+    "case",
+    "support",
+    "complaint",
+    "escalate",
+    "resolution"
+   ],
+   "objective": "Explain problems in systems and propose improvements.",
+   "context": "Interacting with institutions and systems."
+  },
+  {
+   "curriculum_id": "V-B2-15",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Keep legal language general; focus on communication.",
+   "title": "Consumer Rights and Contracts",
+   "words": [
+    "contract",
+    "terms",
+    "conditions",
+    "liability",
+    "refund policy",
+    "dispute",
+    "claim",
+    "compensation",
+    "breach",
+    "obligation",
+    "negotiate",
+    "settle"
+   ],
+   "objective": "Discuss rights, obligations, and dispute resolution language.",
+   "context": "Handling consumer issues and agreements."
+  },
+  {
+   "curriculum_id": "V-B2-16",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Encourage clear definitions and examples.",
+   "title": "Technology Trends and Society",
+   "words": [
+    "automation",
+    "AI",
+    "privacy-by-design",
+    "surveillance",
+    "digital divide",
+    "innovation",
+    "ethics",
+    "regulation",
+    "productivity",
+    "workflow",
+    "security",
+    "trade-off"
+   ],
+   "objective": "Explain and evaluate technology trends using balanced vocabulary.",
+   "context": "Discussing tech trends and societal impact."
+  },
+  {
+   "curriculum_id": "V-B2-17",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Strong alignment with hedging and discourse markers.",
+   "title": "Cultural Identity and Perspective",
+   "words": [
+    "identity",
+    "heritage",
+    "values",
+    "assumption",
+    "perspective",
+    "belonging",
+    "representation",
+    "stereotype",
+    "nuance",
+    "context",
+    "respectful",
+    "misunderstanding"
+   ],
+   "objective": "Express perspectives with nuance and avoid absolute claims.",
+   "context": "Discussing identity and culture thoughtfully."
+  },
+  {
+   "curriculum_id": "V-B2-18",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Tie to presentation and debate tasks.",
+   "title": "Persuasion and Rhetoric",
+   "words": [
+    "persuade",
+    "convince",
+    "emphasize",
+    "highlight",
+    "frame",
+    "appeal",
+    "counterargument",
+    "rebuttal",
+    "credible",
+    "compelling",
+    "tone",
+    "audience"
+   ],
+   "objective": "Use rhetorical vocabulary to structure persuasive communication.",
+   "context": "Arguing a position and influencing decisions."
+  },
+  {
+   "curriculum_id": "V-B2-OPT-01",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Challenge: Nuanced professional terminology and cultural workplace norms. Use case studies and scenarios.",
+   "title": "Professional and Career Development (Optional Harder)",
+   "words": [
+    "promotion",
+    "resignation",
+    "redundancy",
+    "colleague",
+    "supervisor",
+    "networking",
+    "qualification",
+    "expertise",
+    "leadership",
+    "productivity",
+    "collaborate",
+    "achievement"
+   ],
+   "objective": "Use professional vocabulary to describe workplace dynamics and career goals.",
+   "context": "Discussing career progression and professional relationships."
+  },
+  {
+   "curriculum_id": "V-B2-OPT-02",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Challenge: Highly abstract terms requiring strong L1 conceptual understanding. Use concrete examples to illustrate.",
+   "title": "Abstract Concepts and Philosophy (Optional Harder)",
+   "words": [
+    "concept",
+    "theory",
+    "perspective",
+    "assumption",
+    "contradiction",
+    "objective",
+    "subjective",
+    "rational",
+    "intuition",
+    "consciousness",
+    "existence",
+    "meaning"
+   ],
+   "objective": "Understand and discuss abstract concepts; express complex ideas with appropriate vocabulary.",
+   "context": "Engaging with abstract ideas and philosophical discussions."
+  },
+  {
+   "curriculum_id": "V-B2-OPT-03",
+   "skill": "vocabulary",
+   "level": "B2",
+   "notes": "Challenge: Non-literal meanings and cultural origins. Teach in context with clear meanings and usage notes.",
+   "title": "Idioms and Figurative Language (Optional Harder)",
+   "words": [
+    "under the weather",
+    "piece of cake",
+    "break the ice",
+    "hit the nail on the head",
+    "cost an arm and a leg",
+    "blessing in disguise",
+    "once in a blue moon",
+    "let the cat out of the bag",
+    "spill the beans",
+    "bite the bullet",
+    "beat around the bush",
+    "the ball is in your court"
+   ],
+   "objective": "Recognize idiomatic expressions; use appropriately in informal contexts.",
+   "context": "Understanding and using common English idioms in conversation."
+  },
+  {
+   "curriculum_id": "G-B2-01",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Teach as functional chunks; avoid long lists.",
+   "title": "Discourse Markers for Structure",
+   "structure": "on the one hand…; moreover; nevertheless",
+   "objective": "Use discourse markers to organize extended speech coherently.",
+   "context": "Presentations and extended discussion."
+  },
+  {
+   "curriculum_id": "G-B2-02",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Use controlled prompts; focus on form accuracy.",
+   "title": "Third Conditional",
+   "structure": "If + had + pp, would have + pp",
+   "objective": "Discuss unreal past outcomes using third conditional.",
+   "context": "Reflecting on past regrets and alternatives."
+  },
+  {
+   "curriculum_id": "G-B2-03",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Limit to 2 patterns; practice meaning carefully.",
+   "title": "Mixed Conditionals (core types)",
+   "structure": "past condition → present result / vice versa",
+   "objective": "Use mixed conditionals to express time-shifted hypotheticals.",
+   "context": "Explaining complex cause/effect across time."
+  },
+  {
+   "curriculum_id": "G-B2-04",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Keep limited set; emphasize register appropriateness.",
+   "title": "Inversion for Emphasis (intro)",
+   "structure": "Not only…, but also…; Rarely…",
+   "objective": "Use inversion structures to add emphasis in formal contexts.",
+   "context": "Formal speech and writing."
+  },
+  {
+   "curriculum_id": "G-B2-05",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Tie to persuasion and presentations.",
+   "title": "Cleft Sentences",
+   "structure": "What I need is… / It’s X that…",
+   "objective": "Use cleft sentences to highlight important points.",
+   "context": "Emphasizing key information."
+  },
+  {
+   "curriculum_id": "G-B2-06",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Keep to practical service contexts.",
+   "title": "Causative Have / Get",
+   "structure": "have/get something done",
+   "objective": "Describe arranging for services (haircut, repairs) using causatives.",
+   "context": "Services and outsourcing tasks."
+  },
+  {
+   "curriculum_id": "G-B2-07",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Allow informal alternatives; focus on clarity and correctness.",
+   "title": "Relative Clauses with Prepositions",
+   "structure": "the person (to) whom…; which…in",
+   "objective": "Use relative clauses with prepositions in appropriate register.",
+   "context": "More formal reference and precision."
+  },
+  {
+   "curriculum_id": "G-B2-08",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Prioritize meaning and punctuation.",
+   "title": "Participial Clauses (reduced clauses)",
+   "structure": "Having finished…, … / Feeling tired, …",
+   "objective": "Use participial clauses to combine ideas without repetition.",
+   "context": "Concise writing and storytelling."
+  },
+  {
+   "curriculum_id": "G-B2-09",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Careful with tone (polite critique).",
+   "title": "Modal Perfect (past speculation/critique)",
+   "structure": "might have / should have / could have",
+   "objective": "Express past speculation and criticism with modal perfect forms.",
+   "context": "Discussing past possibilities and regrets."
+  },
+  {
+   "curriculum_id": "G-B2-10",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Key for B2 interaction; practice paraphrase and tone.",
+   "title": "Hedging and Cautious Language",
+   "structure": "tend to; seem to; it appears that",
+   "objective": "Soften claims appropriately and increase precision.",
+   "context": "Academic/professional discussion."
+  },
+  {
+   "curriculum_id": "G-B2-11",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Limit to teachable set (claim, suggest, warn).",
+   "title": "Reported Speech (advanced)",
+   "structure": "reporting verbs; changes in modals/time",
+   "objective": "Report complex messages using a wider range of reporting verbs.",
+   "context": "Reporting meetings and information."
+  },
+  {
+   "curriculum_id": "G-B2-12",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Contrast with should; focus on formal register.",
+   "title": "Subjunctive / Formal Recommendations",
+   "structure": "It’s essential that + base verb",
+   "objective": "Make formal recommendations and requirements.",
+   "context": "Formal proposals and policy talk."
+  },
+  {
+   "curriculum_id": "G-B2-13",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Teach via rewriting tasks; keep small set.",
+   "title": "Nominalisation (intro)",
+   "structure": "decide → decision; improve → improvement",
+   "objective": "Transform verbs/adjectives into nouns to sound more formal.",
+   "context": "More formal writing."
+  },
+  {
+   "curriculum_id": "G-B2-14",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Use debate-style prompts; focus on cohesion.",
+   "title": "Concession and Contrast (advanced)",
+   "structure": "despite/in spite of; whereas; nonetheless",
+   "objective": "Express concession and contrast with more sophisticated connectors.",
+   "context": "Balanced arguments."
+  },
+  {
+   "curriculum_id": "G-B2-15",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Avoid jargon; focus on structure.",
+   "title": "Complex Noun Phrases",
+   "structure": "the rapid growth of…; a wide range of…",
+   "objective": "Build clearer, denser noun phrases for formal explanation.",
+   "context": "Academic and professional summaries."
+  },
+  {
+   "curriculum_id": "G-B2-16",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Practice in dialogues; focus on appropriacy.",
+   "title": "Ellipsis and Substitution",
+   "structure": "so do I / neither do I; I hope so",
+   "objective": "Use ellipsis/substitution to sound more natural and concise.",
+   "context": "Natural conversation and avoiding repetition."
+  },
+  {
+   "curriculum_id": "G-B2-17",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Tie to negotiation vocabulary and scenarios.",
+   "title": "Conditionals with Unless/Provided",
+   "structure": "unless; provided that; as long as",
+   "objective": "Express conditions and constraints in agreements.",
+   "context": "Negotiation and terms."
+  },
+  {
+   "curriculum_id": "G-B2-18",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Practice with planning scenarios and contingencies.",
+   "title": "Time Clauses (advanced)",
+   "structure": "by the time; once; whenever; in case",
+   "objective": "Use a range of time/precaution clauses for precision.",
+   "context": "Planning and risk management."
+  },
+  {
+   "curriculum_id": "G-B2-OPT-01",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Challenge: Complex time reference combinations. Use clear examples showing time relationships.",
+   "title": "Mixed Conditionals (Optional Harder)",
+   "structure": "If + past perfect, would + base / If + past simple, would have + past participle",
+   "objective": "Use mixed conditionals to show how past conditions affect present results and vice versa.",
+   "context": "Expressing hypothetical connections between different time periods."
+  },
+  {
+   "curriculum_id": "G-B2-OPT-02",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Challenge: Formal register and unusual word order. Present through literary texts and formal speeches.",
+   "title": "Inversion for Emphasis (Optional Harder)",
+   "structure": "Negative adverb + auxiliary + subject (Never have I..., Rarely does he...)",
+   "objective": "Recognize and produce inverted structures with negative adverbs for emphasis.",
+   "context": "Creating emphasis in formal writing or dramatic speech."
+  },
+  {
+   "curriculum_id": "G-B2-OPT-03",
+   "skill": "grammar",
+   "level": "B2",
+   "notes": "Challenge: Complex structure for information focus. Contrast with basic sentence forms to show emphasis shift.",
+   "title": "Cleft Sentences (It is/was... that/who) (Optional Harder)",
+   "structure": "It + be + focused element + that/who clause",
+   "objective": "Use cleft structures to highlight important information in discourse.",
+   "context": "Emphasizing specific information in statements."
+  },
+  {
+   "curriculum_id": "C-B2-01",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Emphasize evidence + hedging; discourage absolute claims.",
+   "title": "Defending an Opinion (Extended)",
+   "objective": "Discussion where you must defend a viewpoint with evidence.",
+   "expressions": [
+    "From my perspective, ___ .",
+    "The evidence suggests ___ .",
+    "That may be true, but ___ .",
+    "I’d qualify that by saying ___ .",
+    "Ultimately, the key point is ___ ."
+   ],
+   "functions": "arguing; supporting; qualifying"
+  },
+  {
+   "curriculum_id": "C-B2-02",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Practice terms/conditions; encourage respectful firmness.",
+   "title": "Negotiating a Solution",
+   "objective": "Negotiating a fair agreement with constraints.",
+   "expressions": [
+    "My proposal is ___ .",
+    "If we ___, we could ___ .",
+    "I’m willing to ___ provided that ___ .",
+    "That’s acceptable as long as ___ .",
+    "Let’s agree on ___ ."
+   ],
+   "functions": "negotiating; proposing; compromising"
+  },
+  {
+   "curriculum_id": "C-B2-03",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Focus on tone and perspective-taking; avoid blaming.",
+   "title": "Managing Interpersonal Conflict",
+   "objective": "Resolving a misunderstanding with a colleague/friend.",
+   "expressions": [
+    "I think there’s been a misunderstanding.",
+    "What I meant was ___ .",
+    "I can see how that came across.",
+    "I’d like to find a way forward.",
+    "Can we agree on ___?"
+   ],
+   "functions": "clarifying; apologizing; repairing"
+  },
+  {
+   "curriculum_id": "C-B2-04",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Practice controlling turn-taking and summarizing decisions.",
+   "title": "Leading a Formal Meeting Segment",
+   "objective": "Chairing a short meeting with agenda and outcomes.",
+   "expressions": [
+    "Let’s start with ___ .",
+    "Could you give us an update on ___?",
+    "To summarize, we’ve agreed to ___ .",
+    "The next step is ___ .",
+    "Does anyone have concerns?"
+   ],
+   "functions": "facilitating; summarizing; decision-making"
+  },
+  {
+   "curriculum_id": "C-B2-05",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Include counterarguments; focus on structure and clarity.",
+   "title": "Persuading an Audience",
+   "objective": "Pitching an idea or proposal to a group.",
+   "expressions": [
+    "I’d like to highlight ___ .",
+    "The main benefit is ___ .",
+    "A common concern is ___ .",
+    "However, we can mitigate that by ___ .",
+    "I’m confident this will ___ ."
+   ],
+   "functions": "persuading; emphasizing; addressing concerns"
+  },
+  {
+   "curriculum_id": "C-B2-06",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Use neutral examples; emphasize balanced reasoning.",
+   "title": "Discussing Policy and Social Impact",
+   "objective": "Discussing a policy idea and its outcomes.",
+   "expressions": [
+    "This policy could lead to ___ .",
+    "It would affect ___ in particular.",
+    "The trade-off is ___ .",
+    "In the long term, ___ .",
+    "What evidence supports that?"
+   ],
+   "functions": "evaluating; hypothesizing; considering stakeholders"
+  },
+  {
+   "curriculum_id": "C-B2-07",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Encourage respectful language and careful claims.",
+   "title": "Discussing Ethics (Work/Tech)",
+   "objective": "Evaluating an ethical dilemma in a realistic scenario.",
+   "expressions": [
+    "I’m concerned about ___ .",
+    "Is it ethical to ___?",
+    "We should consider ___ .",
+    "I don’t think we can justify ___ .",
+    "What principle are we prioritizing?"
+   ],
+   "functions": "evaluating; justifying; challenging respectfully"
+  },
+  {
+   "curriculum_id": "C-B2-08",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Use short excerpts/summaries; avoid heavy political content.",
+   "title": "Analyzing Media Bias",
+   "objective": "Comparing two reports of the same event.",
+   "expressions": [
+    "This source frames it as ___ .",
+    "The language is somewhat ___ .",
+    "It omits ___ .",
+    "Overall, it seems more/less ___ .",
+    "I’d verify this by ___ ."
+   ],
+   "functions": "analyzing; comparing; evaluating sources"
+  },
+  {
+   "curriculum_id": "C-B2-09",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Tie to risk language; practice uncertainty markers.",
+   "title": "Hypothesizing Future Scenarios",
+   "objective": "Discussing possible futures and uncertainties.",
+   "expressions": [
+    "It’s likely that ___ .",
+    "There’s a chance we’ll ___ .",
+    "If that happens, ___ .",
+    "We can’t rule out ___ .",
+    "The safest assumption is ___ ."
+   ],
+   "functions": "speculating; predicting; qualifying"
+  },
+  {
+   "curriculum_id": "C-B2-10",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Push for structured reasoning and clear decisions.",
+   "title": "Case-Based Problem Solving",
+   "objective": "Working through a realistic case (service failure, project delay).",
+   "expressions": [
+    "The root issue seems to be ___ .",
+    "One option would be to ___ .",
+    "The downside is ___ .",
+    "On balance, I’d recommend ___ .",
+    "Let’s set a timeline for ___ ."
+   ],
+   "functions": "diagnosing; proposing; deciding"
+  },
+  {
+   "curriculum_id": "C-B2-11",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Emphasize supportive tone and actionable suggestions.",
+   "title": "Giving Constructive Feedback",
+   "objective": "Giving feedback to a peer on work/performance.",
+   "expressions": [
+    "Overall, you did ___ well.",
+    "One area to improve is ___ .",
+    "Have you considered ___?",
+    "It might be more effective to ___ .",
+    "Let’s agree on next steps."
+   ],
+   "functions": "giving feedback; softening; proposing improvement"
+  },
+  {
+   "curriculum_id": "C-B2-12",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Practice active listening and referencing others.",
+   "title": "Participating in a Panel Discussion",
+   "objective": "Answering questions and building on others’ points.",
+   "expressions": [
+    "That’s an important question.",
+    "I’d build on what ___ said.",
+    "To clarify, ___ .",
+    "A key example is ___ .",
+    "In summary, ___ ."
+   ],
+   "functions": "responding; elaborating; referencing"
+  },
+  {
+   "curriculum_id": "C-B2-13",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Teach firmness without rudeness; include policy language.",
+   "title": "Escalating a Complaint Professionally",
+   "objective": "Escalating an issue when first response is insufficient.",
+   "expressions": [
+    "I appreciate your help, but ___ .",
+    "Could I speak to a supervisor?",
+    "According to your policy, ___ .",
+    "I’m requesting ___ as a resolution.",
+    "How can we finalize this today?"
+   ],
+   "functions": "asserting; requesting escalation; negotiating"
+  },
+  {
+   "curriculum_id": "C-B2-14",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Align to habit-based learning; emphasize supportive questioning.",
+   "title": "Mentoring and Coaching Conversation",
+   "objective": "Helping someone set goals and a plan.",
+   "expressions": [
+    "What outcome are you aiming for?",
+    "What’s your biggest obstacle?",
+    "What options have you considered?",
+    "Let’s define a realistic next step.",
+    "How will you measure progress?"
+   ],
+   "functions": "coaching; questioning; goal-setting"
+  },
+  {
+   "curriculum_id": "C-B2-15",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Use STAR structure; focus on precision and reflection.",
+   "title": "Advanced Interview (Competency-Based)",
+   "objective": "Answering competency questions with evidence.",
+   "expressions": [
+    "A situation I handled was ___ .",
+    "My approach was to ___ .",
+    "The result was ___ .",
+    "Looking back, I would ___ .",
+    "This experience taught me ___ ."
+   ],
+   "functions": "narrating; justifying; reflecting"
+  },
+  {
+   "curriculum_id": "C-B2-16",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Encourage clear arc (context → challenge → change → takeaway).",
+   "title": "Impact Storytelling",
+   "objective": "Telling a story designed to inform and inspire.",
+   "expressions": [
+    "What changed was ___ .",
+    "The turning point was ___ .",
+    "This matters because ___ .",
+    "The lesson I learned is ___ .",
+    "I’d invite you to ___ ."
+   ],
+   "functions": "storytelling; emphasizing; connecting to audience"
+  },
+  {
+   "curriculum_id": "C-B2-OPT-01",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Challenge: Extended discourse with formal register. Teach presentation structure and transition phrases explicitly.",
+   "title": "Delivering Formal Presentations (Optional Harder)",
+   "objective": "Giving structured presentations on complex topics with visual aids.",
+   "expressions": [
+    "I'd like to talk about ___.",
+    "Moving on to ___.",
+    "As you can see from ___.",
+    "To summarize ___.",
+    "That's an excellent question."
+   ],
+   "functions": "introducing topic; organizing content; presenting data; concluding; handling questions"
+  },
+  {
+   "curriculum_id": "C-B2-OPT-02",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Challenge: Specialized language for data and logical reasoning. Provide authentic data sets and model analysis.",
+   "title": "Analyzing and Interpreting Data (Optional Harder)",
+   "objective": "Discussing trends, statistics, and research findings from charts or reports.",
+   "expressions": [
+    "The data shows that ___.",
+    "There has been a significant increase/decrease in ___.",
+    "This suggests that ___.",
+    "According to the research ___.",
+    "One possible explanation is ___."
+   ],
+   "functions": "describing trends; comparing data; drawing conclusions; speculating on causes"
+  },
+  {
+   "curriculum_id": "C-B2-OPT-03",
+   "skill": "communication",
+   "level": "B2",
+   "notes": "Challenge: Requires critical thinking and complex sentence structures. Teach argumentation frameworks and hedging language.",
+   "title": "Expressing Complex Opinions and Arguments (Optional Harder)",
+   "objective": "Building sophisticated arguments with multiple perspectives on controversial topics.",
+   "expressions": [
+    "While it's true that ___, one must consider ___.",
+    "The evidence suggests ___.",
+    "On balance, ___.",
+    "It could be argued that ___.",
+    "This raises the question of ___."
+   ],
+   "functions": "presenting arguments; acknowledging counterarguments; evaluating evidence; reaching nuanced conclusions"
+  }
+ ]
+}

@@ -1,0 +1,1003 @@
+{
+ "level": "C1",
+ "tier": "proficiency",
+ "sessions": [
+  {
+   "curriculum_id": "V-C1-01",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Connect to research writing and academic presentations.",
+   "title": "Nuanced Academic Discourse",
+   "words": [
+    "substantiate",
+    "postulate",
+    "paradigm",
+    "empirical",
+    "qualitative",
+    "quantitative",
+    "hypothesis",
+    "methodology",
+    "correlation",
+    "inference",
+    "validity",
+    "phenomenon"
+   ],
+   "objective": "Use precise academic vocabulary to discuss research, theories, and methodologies with appropriate register.",
+   "context": "Engaging in sophisticated academic discussions and research."
+  },
+  {
+   "curriculum_id": "V-C1-02",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Practice with authentic business scenarios; discuss overuse and clarity.",
+   "title": "Idiomatic Business Language",
+   "words": [
+    "leverage",
+    "synergy",
+    "stakeholder",
+    "benchmark",
+    "deliverable",
+    "bandwidth",
+    "scalable",
+    "disruptive",
+    "value-add",
+    "actionable",
+    "pipeline",
+    "touchpoint"
+   ],
+   "objective": "Navigate business idioms and corporate jargon appropriately in professional contexts.",
+   "context": "Participating in corporate environments and strategic discussions."
+  },
+  {
+   "curriculum_id": "V-C1-03",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Use simplified contract excerpts; emphasize comprehension over production.",
+   "title": "Legal and Contractual Language",
+   "words": [
+    "pursuant",
+    "whereby",
+    "thereof",
+    "hereinafter",
+    "notwithstanding",
+    "indemnify",
+    "liability",
+    "provision",
+    "stipulate",
+    "breach",
+    "jurisdiction",
+    "enforceable"
+   ],
+   "objective": "Recognize formal legal terminology and understand contractual language structure.",
+   "context": "Understanding and discussing legal documents and agreements."
+  },
+  {
+   "curriculum_id": "V-C1-04",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Connect to well-being discussions and interpersonal relationships.",
+   "title": "Psychological and Emotional Complexity",
+   "words": [
+    "ambivalence",
+    "resilience",
+    "introspection",
+    "empathy",
+    "cognition",
+    "disposition",
+    "temperament",
+    "mindfulness",
+    "cathartic",
+    "vulnerability",
+    "compassion",
+    "self-efficacy"
+   ],
+   "objective": "Express subtle psychological concepts and emotional nuances accurately.",
+   "context": "Discussing mental states, personality, and emotional intelligence."
+  },
+  {
+   "curriculum_id": "V-C1-05",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Use current events; maintain political neutrality.",
+   "title": "Political and Governance Vocabulary",
+   "words": [
+    "legislature",
+    "constituency",
+    "ratify",
+    "referendum",
+    "diplomacy",
+    "sovereignty",
+    "bilateral",
+    "multilateral",
+    "sanctions",
+    "coalition",
+    "mandate",
+    "transparency"
+   ],
+   "objective": "Understand and use political terminology to discuss governance and policy.",
+   "context": "Following and discussing political systems and international relations."
+  },
+  {
+   "curriculum_id": "V-C1-06",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Practice with diagrams and process descriptions.",
+   "title": "Scientific and Technical Precision",
+   "words": [
+    "mechanism",
+    "catalyst",
+    "hypothesis",
+    "variable",
+    "protocol",
+    "calibration",
+    "synthesis",
+    "anomaly",
+    "parameter",
+    "replicate",
+    "extrapolate",
+    "optimize"
+   ],
+   "objective": "Use technical vocabulary accurately to describe scientific concepts and processes.",
+   "context": "Explaining scientific processes and technical procedures."
+  },
+  {
+   "curriculum_id": "V-C1-07",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Compare different media sources and analyze framing.",
+   "title": "Media and Journalistic Language",
+   "words": [
+    "headline",
+    "byline",
+    "editorial",
+    "column",
+    "bias",
+    "sensationalism",
+    "credibility",
+    "sources",
+    "coverage",
+    "angle",
+    "breaking",
+    "exclusive"
+   ],
+   "objective": "Identify and discuss media language, bias, and reporting techniques.",
+   "context": "Analyzing news media and journalistic writing."
+  },
+  {
+   "curriculum_id": "V-C1-08",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Connect to global issues and personal action.",
+   "title": "Environmental and Sustainability Issues",
+   "words": [
+    "biodiversity",
+    "ecosystem",
+    "deforestation",
+    "renewable",
+    "emissions",
+    "mitigation",
+    "adaptation",
+    "carbon footprint",
+    "sustainability",
+    "degradation",
+    "conservation",
+    "resilience"
+   ],
+   "objective": "Express complex environmental concepts and discuss policy implications.",
+   "context": "Discussing environmental challenges and solutions."
+  },
+  {
+   "curriculum_id": "V-C1-09",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Practice with authentic works; encourage personal interpretation.",
+   "title": "Cultural and Artistic Criticism",
+   "words": [
+    "aesthetic",
+    "interpretation",
+    "symbolism",
+    "narrative",
+    "genre",
+    "composition",
+    "motif",
+    "perspective",
+    "critique",
+    "avant-garde",
+    "contemporary",
+    "subtext"
+   ],
+   "objective": "Use sophisticated vocabulary to critique and interpret cultural products.",
+   "context": "Analyzing and discussing art, literature, and cultural works."
+  },
+  {
+   "curriculum_id": "V-C1-10",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Use graphs and current economic data.",
+   "title": "Economic Theory and Finance",
+   "words": [
+    "inflation",
+    "deflation",
+    "fiscal",
+    "monetary",
+    "equity",
+    "portfolio",
+    "dividend",
+    "liquidity",
+    "volatility",
+    "recession",
+    "surplus",
+    "deficit"
+   ],
+   "objective": "Use economic terminology to discuss market trends and financial concepts.",
+   "context": "Understanding and discussing economic principles and financial markets."
+  },
+  {
+   "curriculum_id": "V-C1-11",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Focus on patient perspective; avoid overly technical language.",
+   "title": "Healthcare and Medical Terminology",
+   "words": [
+    "diagnosis",
+    "prognosis",
+    "symptom",
+    "treatment",
+    "chronic",
+    "acute",
+    "preventive",
+    "therapeutic",
+    "adverse",
+    "prescription",
+    "intervention",
+    "protocol"
+   ],
+   "objective": "Understand medical vocabulary for patient-provider communication and health literacy.",
+   "context": "Discussing healthcare, medical procedures, and patient care."
+  },
+  {
+   "curriculum_id": "V-C1-12",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Present ethical scenarios; encourage respectful debate.",
+   "title": "Philosophical and Ethical Concepts",
+   "words": [
+    "ethics",
+    "morality",
+    "virtue",
+    "autonomy",
+    "justice",
+    "utilitarianism",
+    "deontology",
+    "consequence",
+    "principle",
+    "dilemma",
+    "integrity",
+    "reasoning"
+   ],
+   "objective": "Use philosophical vocabulary to examine ethical questions and moral reasoning.",
+   "context": "Engaging in philosophical discussions and ethical debates."
+  },
+  {
+   "curriculum_id": "V-C1-13",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Keep updated with current tech trends.",
+   "title": "Technology and Digital Innovation",
+   "words": [
+    "algorithm",
+    "artificial intelligence",
+    "automation",
+    "blockchain",
+    "cryptocurrency",
+    "cybersecurity",
+    "data mining",
+    "machine learning",
+    "interface",
+    "platform",
+    "disruption",
+    "innovation"
+   ],
+   "objective": "Use tech vocabulary to discuss innovation, implications, and societal impact.",
+   "context": "Discussing technological advances and digital transformation."
+  },
+  {
+   "curriculum_id": "V-C1-14",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Role-play complex scenarios; focus on diplomatic language.",
+   "title": "Interpersonal Dynamics and Conflict",
+   "words": [
+    "confrontation",
+    "reconciliation",
+    "mediation",
+    "compromise",
+    "tension",
+    "rapport",
+    "dynamics",
+    "boundaries",
+    "resolution",
+    "empathy",
+    "assertiveness",
+    "collaboration"
+   ],
+   "objective": "Express nuanced interpersonal situations and conflict resolution strategies.",
+   "context": "Managing complex interpersonal relationships and conflicts."
+  },
+  {
+   "curriculum_id": "V-C1-15",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Use excerpts from various genres.",
+   "title": "Literary Devices and Analysis",
+   "words": [
+    "metaphor",
+    "allegory",
+    "irony",
+    "foreshadowing",
+    "symbolism",
+    "imagery",
+    "tone",
+    "theme",
+    "protagonist",
+    "antagonist",
+    "plot",
+    "climax"
+   ],
+   "objective": "Identify and discuss literary devices and narrative techniques.",
+   "context": "Analyzing literature and creative writing techniques."
+  },
+  {
+   "curriculum_id": "V-C1-16",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Use images of buildings and city plans.",
+   "title": "Architecture and Urban Planning",
+   "words": [
+    "infrastructure",
+    "zoning",
+    "sustainability",
+    "aesthetics",
+    "functionality",
+    "blueprint",
+    "renovation",
+    "preservation",
+    "modernization",
+    "landscape",
+    "urban sprawl",
+    "gentrification"
+   ],
+   "objective": "Use architectural vocabulary to discuss design, planning, and urban issues.",
+   "context": "Discussing built environments and city development."
+  },
+  {
+   "curriculum_id": "V-C1-17",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Connect to cultural identity and globalization.",
+   "title": "Food Culture and Gastronomy",
+   "words": [
+    "cuisine",
+    "delicacy",
+    "palate",
+    "aromatic",
+    "texture",
+    "presentation",
+    "fusion",
+    "authentic",
+    "gourmet",
+    "culinary",
+    "indigenous",
+    "fermentation"
+   ],
+   "objective": "Use sophisticated food vocabulary to describe tastes, techniques, and culture.",
+   "context": "Discussing food traditions, cooking, and dining experiences."
+  },
+  {
+   "curriculum_id": "V-C1-18",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Emphasize multiple perspectives and historical thinking.",
+   "title": "Historical Analysis and Historiography",
+   "words": [
+    "chronology",
+    "era",
+    "legacy",
+    "artifact",
+    "primary source",
+    "secondary source",
+    "interpretation",
+    "context",
+    "causation",
+    "revolution",
+    "civilization",
+    "historiography"
+   ],
+   "objective": "Use historical vocabulary to discuss events, causation, and historical interpretation.",
+   "context": "Analyzing historical events and historical writing."
+  },
+  {
+   "curriculum_id": "V-C1-OPT-01",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Challenge: Highly abstract concepts. Use examples from multiple languages if possible.",
+   "title": "Abstract Linguistic Concepts (Optional Harder)",
+   "words": [
+    "semantics",
+    "pragmatics",
+    "syntax",
+    "morphology",
+    "phonology",
+    "etymology",
+    "connotation",
+    "denotation",
+    "register",
+    "dialect",
+    "vernacular",
+    "lexicon"
+   ],
+   "objective": "Understand and use metalinguistic vocabulary to analyze language itself.",
+   "context": "Discussing language structure, meaning, and variation."
+  },
+  {
+   "curriculum_id": "V-C1-OPT-02",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Challenge: Politically sensitive topics. Maintain objectivity and present multiple viewpoints.",
+   "title": "Geopolitics and International Relations (Optional Harder)",
+   "words": [
+    "hegemony",
+    "détente",
+    "apartheid",
+    "embargo",
+    "annexation",
+    "secession",
+    "autonomy",
+    "neutrality",
+    "imperialism",
+    "nationalism",
+    "globalization",
+    "multilateralism"
+   ],
+   "objective": "Use advanced political vocabulary to discuss global power dynamics and international affairs.",
+   "context": "Analyzing complex international political relationships and historical movements."
+  },
+  {
+   "curriculum_id": "V-C1-OPT-03",
+   "skill": "vocabulary",
+   "level": "C1",
+   "notes": "Challenge: Highly abstract philosophical concepts. Use thought experiments and clear examples.",
+   "title": "Epistemology and Theory of Knowledge (Optional Harder)",
+   "words": [
+    "epistemology",
+    "a priori",
+    "a posteriori",
+    "deduction",
+    "induction",
+    "skepticism",
+    "empiricism",
+    "rationalism",
+    "justification",
+    "belief",
+    "truth",
+    "knowledge"
+   ],
+   "objective": "Use philosophical terminology to discuss how we know what we know.",
+   "context": "Examining philosophical questions about knowledge and belief."
+  },
+  {
+   "curriculum_id": "G-C1-01",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with sentence combination and text improvement.",
+   "title": "Advanced Participle Clauses",
+   "structure": "Having + past participle; Being + past participle; participle clauses for cause, time, concession",
+   "objective": "Use participle clauses to reduce redundancy and create cohesive, elegant sentences.",
+   "context": "Creating concise, sophisticated written and spoken discourse."
+  },
+  {
+   "curriculum_id": "G-C1-02",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Contrast with British vs American usage.",
+   "title": "Subjunctive Mood in Formal Contexts",
+   "structure": "It is essential/vital/imperative that + subject + base verb; I suggest/demand that",
+   "objective": "Recognize and produce subjunctive forms in formal written and spoken English.",
+   "context": "Formal recommendations, requirements, and proposals."
+  },
+  {
+   "curriculum_id": "G-C1-03",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Balance nominalization with clarity; discuss when to avoid it.",
+   "title": "Nominalization for Academic Writing",
+   "structure": "Converting verbs/adjectives to nouns (discover → discovery, efficient → efficiency)",
+   "objective": "Use nominalization to create dense, formal prose appropriate to academic contexts.",
+   "context": "Formal academic and professional writing."
+  },
+  {
+   "curriculum_id": "G-C1-04",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with text analysis and paraphrasing.",
+   "title": "Ellipsis and Substitution",
+   "structure": "Omitting repeated elements; using 'do so', 'one', 'the former/latter'",
+   "objective": "Use ellipsis and substitution naturally to create cohesive, elegant text.",
+   "context": "Avoiding repetition in sophisticated discourse."
+  },
+  {
+   "curriculum_id": "G-C1-05",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Analyze authentic speeches for emphasis techniques.",
+   "title": "Fronting and Emphasizing Structures",
+   "structure": "What I need is...; All I want is...; The thing that matters is...",
+   "objective": "Use fronting structures to control information flow and emphasis.",
+   "context": "Emphasizing information in speech and writing."
+  },
+  {
+   "curriculum_id": "G-C1-06",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Essential for academic writing; practice with claims and evidence.",
+   "title": "Hedging and Boosting Language",
+   "structure": "Modal expressions (may, might, could); intensifiers (certainly, clearly, undoubtedly)",
+   "objective": "Use hedging to express caution and boosting to express certainty appropriately.",
+   "context": "Academic writing and professional communication requiring precision about certainty."
+  },
+  {
+   "curriculum_id": "G-C1-07",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with argumentative writing and debate.",
+   "title": "Adverbial Clauses of Concession",
+   "structure": "Although, even though, despite the fact that, while, whereas, much as",
+   "objective": "Use various concessive structures to acknowledge counterarguments and complexity.",
+   "context": "Presenting contrasting information in arguments and analysis."
+  },
+  {
+   "curriculum_id": "G-C1-08",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with hypothetical past and present situations.",
+   "title": "Conditionals: Mixed and Implied",
+   "structure": "Otherwise, or else, but for, with, without + would/could have",
+   "objective": "Express conditional meaning without explicit 'if' structures; use various conditional markers.",
+   "context": "Expressing complex conditional relationships implicitly."
+  },
+  {
+   "curriculum_id": "G-C1-09",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Use timeline visuals; practice with planning scenarios.",
+   "title": "Future Perfect and Future Continuous",
+   "structure": "Will have + past participle; will be + -ing",
+   "objective": "Use future perfect and continuous to express actions in progress or completed at future times.",
+   "context": "Making predictions and discussing future situations with temporal precision."
+  },
+  {
+   "curriculum_id": "G-C1-10",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Analyze academic texts for cohesive devices.",
+   "title": "Discourse Markers and Cohesion",
+   "structure": "Furthermore, moreover, nevertheless, nonetheless, conversely, by contrast, to this end",
+   "objective": "Use sophisticated discourse markers to signal relationships between ideas.",
+   "context": "Creating logical flow in extended discourse."
+  },
+  {
+   "curriculum_id": "G-C1-11",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Distinguish between formal and informal passive forms.",
+   "title": "Passive Voice: Advanced Forms",
+   "structure": "Get-passive; need + -ing; be + supposed to; passive infinitives and gerunds",
+   "objective": "Use full range of passive forms appropriately across contexts.",
+   "context": "Varied passive constructions for different registers and purposes."
+  },
+  {
+   "curriculum_id": "G-C1-12",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with complex sentence building.",
+   "title": "Relative Clauses: Reduced and Complex",
+   "structure": "Preposition + which/whom; reduced relative clauses; sentential relative clauses",
+   "objective": "Use advanced relative clause structures for precision and sophistication.",
+   "context": "Creating dense, information-rich noun phrases."
+  },
+  {
+   "curriculum_id": "G-C1-13",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with academic citation and news reporting.",
+   "title": "Reporting Verbs and Structures",
+   "structure": "Suggest, recommend, insist, deny, claim + that/to/gerund; reporting with modals",
+   "objective": "Use a wide range of reporting verbs with correct complementation patterns.",
+   "context": "Accurately reporting speech and thought with nuanced meaning."
+  },
+  {
+   "curriculum_id": "G-C1-14",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Balance complexity with clarity; practice unpacking dense phrases.",
+   "title": "Complex Noun Phrases",
+   "structure": "Multiple modifiers; embedded clauses; of-phrases; apposition",
+   "objective": "Build complex noun phrases with multiple layers of modification.",
+   "context": "Academic and professional writing requiring information density."
+  },
+  {
+   "curriculum_id": "G-C1-15",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Distinguish between different causative meanings.",
+   "title": "Causative Structures",
+   "structure": "Have/get something done; make/let/have someone do; get someone to do",
+   "objective": "Use causative verbs appropriately to express different levels of causation and agency.",
+   "context": "Describing caused actions and permissions in various registers."
+  },
+  {
+   "curriculum_id": "G-C1-16",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with reflection and alternative scenarios.",
+   "title": "Unreal Past and Wish Structures",
+   "structure": "I wish/if only + past perfect; it's time; would rather; as if/as though",
+   "objective": "Use unreal past structures to express complex counterfactual meanings.",
+   "context": "Expressing regret, preferences, and hypothetical situations."
+  },
+  {
+   "curriculum_id": "G-C1-17",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Practice with mystery scenarios and problem-solving.",
+   "title": "Modal Perfects for Speculation",
+   "structure": "Must/might/could/can't have + past participle",
+   "objective": "Use modal perfect forms to express varying degrees of certainty about the past.",
+   "context": "Making deductions and speculations about past events."
+  },
+  {
+   "curriculum_id": "G-C1-18",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Contrast with informal alternatives.",
+   "title": "It-Structures and Extraposition",
+   "structure": "It is adjective that...; It takes...; It occurs/happens that...",
+   "objective": "Use it-structures for extraposition and creating formal tone.",
+   "context": "Creating formal, impersonal constructions in academic writing."
+  },
+  {
+   "curriculum_id": "G-C1-OPT-01",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Challenge: Unusual word order. Use literary texts and formal speeches.",
+   "title": "Inversion After Negative Adverbials (Optional Harder)",
+   "structure": "Rarely/Seldom/Never/Hardly/Scarcely + auxiliary + subject + verb",
+   "objective": "Recognize and produce inverted structures after negative adverbials for dramatic effect.",
+   "context": "Creating emphasis in formal written and literary contexts."
+  },
+  {
+   "curriculum_id": "G-C1-OPT-02",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Challenge: Formal and somewhat archaic. Focus on recognition in reading.",
+   "title": "Conditionals with Inversion (Optional Harder)",
+   "structure": "Had I known...; Were it not for...; Should you need...",
+   "objective": "Use inverted conditional forms without 'if' for formal register.",
+   "context": "Formal writing and speech requiring sophisticated conditional expressions."
+  },
+  {
+   "curriculum_id": "G-C1-OPT-03",
+   "skill": "grammar",
+   "level": "C1",
+   "notes": "Challenge: Agreement rules with correlatives. Practice with sentence combining.",
+   "title": "Complex Coordination and Correlatives (Optional Harder)",
+   "structure": "Not only...but also; neither...nor; both...and; either...or (with subject-verb agreement)",
+   "objective": "Use correlative conjunctions correctly with proper parallelism and agreement.",
+   "context": "Creating balanced, sophisticated compound structures."
+  },
+  {
+   "curriculum_id": "C-C1-01",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Teach signposting and transitional phrases; practice fielding challenging questions.",
+   "title": "Academic Presentations with Q&A",
+   "objective": "Delivering a formal academic presentation on research or complex topic with questions.",
+   "expressions": [
+    "I'd like to draw your attention to...",
+    "This raises an important question...",
+    "Let me elaborate on that point...",
+    "To address your question...",
+    "The implications of this are..."
+   ],
+   "functions": "presenting; structuring; signposting; handling questions; defending positions"
+  },
+  {
+   "curriculum_id": "C-C1-02",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Focus on diplomatic language and keeping discussions on track.",
+   "title": "Chairing and Facilitating Meetings",
+   "objective": "Leading a professional meeting with multiple stakeholders and competing interests.",
+   "expressions": [
+    "Let's move to the next agenda item...",
+    "Could we hear from...?",
+    "To summarize the discussion so far...",
+    "We need to reach a decision on...",
+    "Let's table this for now and..."
+   ],
+   "functions": "facilitating; mediating; time-managing; summarizing; decision-making"
+  },
+  {
+   "curriculum_id": "C-C1-03",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Emphasize tone and body language; practice hedging language.",
+   "title": "Diplomatic Disagreement",
+   "objective": "Disagreeing professionally while maintaining relationships and respect.",
+   "expressions": [
+    "I see your point, however...",
+    "While I appreciate that perspective...",
+    "I'd like to offer an alternative view...",
+    "Perhaps we could consider...",
+    "I'm not entirely convinced that..."
+   ],
+   "functions": "disagreeing politely; acknowledging others; offering alternatives; softening criticism"
+  },
+  {
+   "curriculum_id": "C-C1-04",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Teach attribution and synthesis; practice avoiding plagiarism.",
+   "title": "Synthesizing Multiple Sources",
+   "objective": "Presenting information from various sources with analysis and evaluation.",
+   "expressions": [
+    "According to X, while Y argues...",
+    "The research suggests...",
+    "Drawing on multiple sources...",
+    "When we consider X in light of Y...",
+    "The consensus appears to be..."
+   ],
+   "functions": "synthesizing; comparing; evaluating; citing; concluding"
+  },
+  {
+   "curriculum_id": "C-C1-05",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Emphasize curiosity over assumptions; discuss cultural intelligence.",
+   "title": "Intercultural Communication",
+   "objective": "Navigating cultural differences in professional and social contexts.",
+   "expressions": [
+    "In my culture, we typically...",
+    "Could you help me understand...?",
+    "I want to make sure I'm understanding correctly...",
+    "What would be appropriate here...?",
+    "I'm still learning about..."
+   ],
+   "functions": "clarifying; checking understanding; adapting communication; showing respect; navigating norms"
+  },
+  {
+   "curriculum_id": "C-C1-06",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Focus on clarity, calmness, and transparency under pressure.",
+   "title": "Crisis Communication",
+   "objective": "Communicating effectively during emergencies or organizational crises.",
+   "expressions": [
+    "Here's what we know at this time...",
+    "Our priority is...",
+    "We are taking the following steps...",
+    "We will provide updates as...",
+    "We understand your concerns about..."
+   ],
+   "functions": "informing; reassuring; directing; updating; maintaining transparency"
+  },
+  {
+   "curriculum_id": "C-C1-07",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Teach feedback frameworks (e.g., SBI model); balance positive and developmental.",
+   "title": "Mentoring and Giving Feedback",
+   "objective": "Providing constructive feedback and guidance to colleagues or mentees.",
+   "expressions": [
+    "One area for development is...",
+    "I've noticed that you excel at...",
+    "Have you considered...?",
+    "What strategies might help you...?",
+    "Let's set some goals for..."
+   ],
+   "functions": "evaluating; encouraging; advising; critiquing constructively; goal-setting"
+  },
+  {
+   "curriculum_id": "C-C1-08",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Teach structuring techniques; practice with varied topics.",
+   "title": "Impromptu Speaking",
+   "objective": "Speaking without preparation on complex or abstract topics.",
+   "expressions": [
+    "That's an interesting question...",
+    "Let me think about that for a moment...",
+    "I would approach this from two angles...",
+    "To sum up my thoughts...",
+    "Building on what was just said..."
+   ],
+   "functions": "organizing thoughts quickly; structuring spontaneously; buying time; concluding effectively"
+  },
+  {
+   "curriculum_id": "C-C1-09",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Connect to written academic discourse; practice objective tone.",
+   "title": "Academic Writing Discussions",
+   "objective": "Discussing research, methodology, and findings in academic contexts.",
+   "expressions": [
+    "The study employed...",
+    "Our findings indicate...",
+    "This suggests that...",
+    "One limitation is...",
+    "Further research is needed to..."
+   ],
+   "functions": "describing methodology; presenting findings; analyzing implications; acknowledging limitations"
+  },
+  {
+   "curriculum_id": "C-C1-10",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Teach argumentation structure; practice rhetorical devices.",
+   "title": "Persuasive Argumentation",
+   "objective": "Building and presenting complex, persuasive arguments on controversial topics.",
+   "expressions": [
+    "The evidence clearly demonstrates...",
+    "Critics might argue..., however...",
+    "Consider the implications of...",
+    "The weight of evidence suggests...",
+    "We cannot ignore the fact that..."
+   ],
+   "functions": "arguing; providing evidence; anticipating objections; countering; concluding powerfully"
+  },
+  {
+   "curriculum_id": "C-C1-11",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Practice turn-taking and collaborative discourse.",
+   "title": "Panel Discussions",
+   "objective": "Participating in panel discussions with multiple experts and audience questions.",
+   "expressions": [
+    "To build on what [name] said...",
+    "I'd like to add a different perspective...",
+    "That's a crucial point about...",
+    "May I respond to that?",
+    "I'm glad you raised that because..."
+   ],
+   "functions": "contributing; building on others' points; managing turns; engaging audience; responding to questions"
+  },
+  {
+   "curriculum_id": "C-C1-12",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Emphasize clarity and audience awareness; use visuals.",
+   "title": "Explaining Complex Processes",
+   "objective": "Making complex technical or conceptual processes clear to non-experts.",
+   "expressions": [
+    "Think of it like...",
+    "To put it simply...",
+    "The process involves several stages...",
+    "Does that make sense?",
+    "Let me illustrate this with..."
+   ],
+   "functions": "simplifying; analogizing; sequencing; checking understanding; visualizing"
+  },
+  {
+   "curriculum_id": "C-C1-13",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Balance professional and personal; practice authenticity.",
+   "title": "Networking and Professional Relationships",
+   "objective": "Building and maintaining professional relationships through conversation.",
+   "expressions": [
+    "What brought you to...?",
+    "I'd love to hear more about...",
+    "Let's stay in touch...",
+    "Is there any way I can help with...?",
+    "I was thinking about our conversation..."
+   ],
+   "functions": "small talk; showing interest; following up; offering help; staying in touch"
+  },
+  {
+   "curriculum_id": "C-C1-14",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Emphasize cultural sensitivity and empathy.",
+   "title": "Handling Sensitive Topics",
+   "objective": "Discussing difficult or sensitive subjects with tact and respect.",
+   "expressions": [
+    "This is a sensitive topic, but...",
+    "I hope you don't mind my asking...",
+    "I understand this must be difficult...",
+    "Please let me know if you'd rather not discuss...",
+    "I appreciate you sharing that..."
+   ],
+   "functions": "approaching carefully; showing sensitivity; using euphemisms; respecting boundaries; supporting"
+  },
+  {
+   "curriculum_id": "C-C1-15",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Practice message discipline and bridging techniques.",
+   "title": "Media Interviews",
+   "objective": "Being interviewed by media and staying on message under pressure.",
+   "expressions": [
+    "What's important to understand is...",
+    "Let me be clear about...",
+    "The key point is...",
+    "What we're really talking about is...",
+    "I'd like to come back to..."
+   ],
+   "functions": "staying on message; bridging; managing difficult questions; sound bites; clarity"
+  },
+  {
+   "curriculum_id": "C-C1-16",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Focus on persuasive language and call to action.",
+   "title": "Policy and Advocacy",
+   "objective": "Advocating for policy changes or organizational reforms.",
+   "expressions": [
+    "I'm calling for...",
+    "The current situation demands...",
+    "We have an opportunity to...",
+    "The benefits would include...",
+    "I urge you to consider..."
+   ],
+   "functions": "proposing; justifying; addressing concerns; mobilizing support; maintaining momentum"
+  },
+  {
+   "curriculum_id": "C-C1-OPT-01",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Challenge: High cognitive load. Start with short passages; build up gradually.",
+   "title": "Simultaneous Interpretation Practice (Optional Harder)",
+   "objective": "Practicing basic consecutive interpretation between English and learners' L1.",
+   "expressions": [
+    "The speaker said that...",
+    "To paraphrase...",
+    "In other words...",
+    "The main point was...",
+    "Let me make sure I understood..."
+   ],
+   "functions": "listening actively; note-taking; reproducing message; managing cognitive load"
+  },
+  {
+   "curriculum_id": "C-C1-OPT-02",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Challenge: Requires philosophical thinking and patience. Model respectful questioning.",
+   "title": "Socratic Dialogue and Critical Inquiry (Optional Harder)",
+   "objective": "Engaging in Socratic method questioning to explore ideas deeply.",
+   "expressions": [
+    "What do you mean by...?",
+    "How do you know that...?",
+    "What would be an example of...?",
+    "Is that always true?",
+    "How does that follow from...?"
+   ],
+   "functions": "questioning assumptions; probing; challenging; clarifying; seeking consistency"
+  },
+  {
+   "curriculum_id": "C-C1-OPT-03",
+   "skill": "communication",
+   "level": "C1",
+   "notes": "Challenge: Meta-level analysis of language. Use political speeches and advertisements.",
+   "title": "Rhetorical Analysis and Deconstruction (Optional Harder)",
+   "objective": "Analyzing and deconstructing persuasive texts for rhetorical strategies.",
+   "expressions": [
+    "The speaker employs...",
+    "This appeals to...",
+    "The use of X creates...",
+    "This rhetorical strategy...",
+    "By framing it as..."
+   ],
+   "functions": "identifying rhetoric; analyzing effectiveness; critiquing; recognizing manipulation"
+  }
+ ]
+}

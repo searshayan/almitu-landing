@@ -1,0 +1,905 @@
+{
+ "level": "A2",
+ "tier": "development",
+ "sessions": [
+  {
+   "curriculum_id": "V-A2-01",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Recycle A1 routine verbs; keep adverbs controlled.",
+   "title": "Routines and Frequency",
+   "words": [
+    "usually",
+    "often",
+    "sometimes",
+    "rarely",
+    "never",
+    "always",
+    "weekday",
+    "weekend",
+    "schedule",
+    "habit",
+    "early",
+    "late"
+   ],
+   "objective": "Describe routines with basic frequency words; compare routine differences.",
+   "context": "Talking about routines with frequency and time habits."
+  },
+  {
+   "curriculum_id": "V-A2-02",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Build toward B1 travel-problem language.",
+   "title": "Travel and Accommodation",
+   "words": [
+    "passport",
+    "luggage",
+    "hotel",
+    "hostel",
+    "reservation",
+    "check-in",
+    "checkout",
+    "flight",
+    "airport",
+    "tour",
+    "map",
+    "souvenir"
+   ],
+   "objective": "Use travel words to book, arrive, and manage simple travel needs.",
+   "context": "Planning a short trip and staying overnight."
+  },
+  {
+   "curriculum_id": "V-A2-03",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Avoid advanced anatomy; focus on useful complaint words.",
+   "title": "At the Doctor (Expanded)",
+   "words": [
+    "appointment",
+    "symptom",
+    "fever",
+    "cough",
+    "headache",
+    "stomachache",
+    "allergy",
+    "stress",
+    "rest",
+    "prescription",
+    "clinic",
+    "pharmacy"
+   ],
+   "objective": "Describe symptoms and follow basic medical advice in simple language.",
+   "context": "Explaining simple health issues and getting help."
+  },
+  {
+   "curriculum_id": "V-A2-04",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Recycle food categories; add constraints (allergic/vegetarian).",
+   "title": "Eating Out",
+   "words": [
+    "menu",
+    "order",
+    "waiter",
+    "bill",
+    "tip",
+    "dessert",
+    "starter",
+    "main",
+    "spicy",
+    "sweet",
+    "vegetarian",
+    "allergic"
+   ],
+   "objective": "Use restaurant words to order, ask questions, and pay politely.",
+   "context": "Ordering food and making simple requests."
+  },
+  {
+   "curriculum_id": "V-A2-05",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Prepare for B1 renting and complaint conversations.",
+   "title": "Home Problems and Repairs",
+   "words": [
+    "broken",
+    "leak",
+    "noise",
+    "heater",
+    "electricity",
+    "rent",
+    "landlord",
+    "repair",
+    "fix",
+    "tool",
+    "clean",
+    "mess"
+   ],
+   "objective": "Describe household problems and request repairs.",
+   "context": "Reporting simple issues at home."
+  },
+  {
+   "curriculum_id": "V-A2-06",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Keep job-specific vocabulary general and transferable.",
+   "title": "Work Tasks and Routine",
+   "words": [
+    "meeting",
+    "deadline",
+    "report",
+    "email",
+    "shift",
+    "overtime",
+    "colleague",
+    "manager",
+    "task",
+    "schedule",
+    "training",
+    "salary"
+   ],
+   "objective": "Discuss work tasks, schedules, and basic workplace interactions.",
+   "context": "Talking about workplace routines and responsibilities."
+  },
+  {
+   "curriculum_id": "V-A2-07",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Strong horizontal alignment with communication lessons.",
+   "title": "Learning and Study",
+   "words": [
+    "lesson",
+    "homework",
+    "exam",
+    "practice",
+    "progress",
+    "mistake",
+    "improve",
+    "repeat",
+    "explain",
+    "review",
+    "goal",
+    "skill"
+   ],
+   "objective": "Describe learning goals and ask for clarification and feedback.",
+   "context": "Talking about learning strategies and class needs."
+  },
+  {
+   "curriculum_id": "V-A2-08",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Reinforce descriptive adjectives and comparatives later.",
+   "title": "Nature and Weather (Expanded)",
+   "words": [
+    "forest",
+    "river",
+    "mountain",
+    "beach",
+    "weather forecast",
+    "temperature",
+    "season",
+    "spring",
+    "summer",
+    "autumn",
+    "winter",
+    "stormy"
+   ],
+   "objective": "Describe nature places and seasonal plans with simple detail.",
+   "context": "Talking about places and seasons; planning activities."
+  },
+  {
+   "curriculum_id": "V-A2-09",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Bridge to B1 nuanced expression and storytelling.",
+   "title": "Feelings and Reactions",
+   "words": [
+    "excited",
+    "worried",
+    "surprised",
+    "angry",
+    "confused",
+    "relaxed",
+    "proud",
+    "nervous",
+    "disappointed",
+    "lonely",
+    "hopeful",
+    "ashamed"
+   ],
+   "objective": "Label common emotions and give simple reasons for feelings.",
+   "context": "Talking about feelings in everyday situations."
+  },
+  {
+   "curriculum_id": "V-A2-10",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Keep value judgments gentle; teach polite framing.",
+   "title": "Personality and Relationships",
+   "words": [
+    "friendly",
+    "shy",
+    "honest",
+    "quiet",
+    "talkative",
+    "helpful",
+    "rude",
+    "kind",
+    "relationship",
+    "neighbor",
+    "guest",
+    "host"
+   ],
+   "objective": "Describe people using simple personality adjectives and social roles.",
+   "context": "Describing people and social interactions."
+  },
+  {
+   "curriculum_id": "V-A2-11",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Prepare for B1 opinion language with reasons.",
+   "title": "Media and Entertainment",
+   "words": [
+    "news",
+    "channel",
+    "series",
+    "episode",
+    "documentary",
+    "review",
+    "actor",
+    "music",
+    "concert",
+    "ticket",
+    "subscribe",
+    "stream"
+   ],
+   "objective": "Describe preferences and make simple recommendations.",
+   "context": "Talking about what you watch/listen to."
+  },
+  {
+   "curriculum_id": "V-A2-12",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Avoid technical finance; keep functional language.",
+   "title": "Money and Banking Basics",
+   "words": [
+    "account",
+    "balance",
+    "deposit",
+    "withdraw",
+    "ATM",
+    "transfer",
+    "bill",
+    "budget",
+    "loan",
+    "fee",
+    "payment",
+    "savings"
+   ],
+   "objective": "Use money terms for simple banking tasks and questions.",
+   "context": "Managing basic finances in daily life."
+  },
+  {
+   "curriculum_id": "V-A2-13",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Strong alignment with A2 communication functions.",
+   "title": "Social Invitations and Plans",
+   "words": [
+    "invite",
+    "accept",
+    "decline",
+    "plan",
+    "arrange",
+    "cancel",
+    "postpone",
+    "available",
+    "busy",
+    "free",
+    "together",
+    "maybe"
+   ],
+   "objective": "Make, accept, and refuse invitations politely.",
+   "context": "Inviting people and making arrangements."
+  },
+  {
+   "curriculum_id": "V-A2-14",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Useful for newcomer integration contexts.",
+   "title": "City Services",
+   "words": [
+    "library",
+    "police",
+    "fire station",
+    "post office",
+    "ticket office",
+    "city hall",
+    "service",
+    "form",
+    "queue",
+    "counter",
+    "ID",
+    "hours"
+   ],
+   "objective": "Ask for information and complete simple service tasks.",
+   "context": "Using common public services."
+  },
+  {
+   "curriculum_id": "V-A2-15",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Bridge to B1 privacy and problem-solving vocabulary.",
+   "title": "Technology and Internet (Expanded)",
+   "words": [
+    "download",
+    "upload",
+    "link",
+    "profile",
+    "privacy",
+    "setting",
+    "update",
+    "restart",
+    "connect",
+    "signal",
+    "data",
+    "storage"
+   ],
+   "objective": "Describe a simple tech problem and follow troubleshooting steps.",
+   "context": "Solving basic tech issues and using apps."
+  },
+  {
+   "curriculum_id": "V-A2-16",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Sensitive topics: handle with care; allow opt-out.",
+   "title": "Life Events",
+   "words": [
+    "move",
+    "travel abroad",
+    "graduate",
+    "marry",
+    "divorce",
+    "born",
+    "die",
+    "celebrate",
+    "apply",
+    "interview",
+    "choose",
+    "decision"
+   ],
+   "objective": "Discuss past and future life events in simple narrative form.",
+   "context": "Talking about major life events and plans."
+  },
+  {
+   "curriculum_id": "V-A2-OPT-01",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Challenge: Abstract financial concepts and calculations. Practice with real transaction scenarios.",
+   "title": "Money and Financial Transactions (Optional Harder)",
+   "words": [
+    "cash",
+    "credit",
+    "debit",
+    "account",
+    "deposit",
+    "withdraw",
+    "receipt",
+    "change",
+    "pay",
+    "cost",
+    "price",
+    "expensive"
+   ],
+   "objective": "Use financial vocabulary in banking and shopping contexts; express costs and prices.",
+   "context": "Handling financial transactions and discussing money matters."
+  },
+  {
+   "curriculum_id": "V-A2-OPT-02",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Challenge: Abstract environmental concepts require background knowledge. Use images and simple cause-effect.",
+   "title": "Nature and Environment (Optional Harder)",
+   "words": [
+    "tree",
+    "flower",
+    "grass",
+    "mountain",
+    "river",
+    "lake",
+    "forest",
+    "beach",
+    "pollution",
+    "recycle",
+    "nature",
+    "environment"
+   ],
+   "objective": "Describe natural places; express simple environmental concerns.",
+   "context": "Discussing natural features and basic environmental awareness."
+  },
+  {
+   "curriculum_id": "V-A2-OPT-03",
+   "skill": "vocabulary",
+   "level": "A2",
+   "notes": "Challenge: Abstract character concepts are culturally nuanced. Provide clear examples and contexts.",
+   "title": "Adjectives for Personality and Character (Optional Harder)",
+   "words": [
+    "friendly",
+    "kind",
+    "smart",
+    "funny",
+    "serious",
+    "quiet",
+    "loud",
+    "brave",
+    "shy",
+    "patient",
+    "honest",
+    "generous"
+   ],
+   "objective": "Use personality adjectives appropriately; describe people beyond physical appearance.",
+   "context": "Describing people's personalities and character traits."
+  },
+  {
+   "curriculum_id": "G-A2-01",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep grammar stable; focus on coherence.",
+   "title": "Past Time Expressions + Narrative Order",
+   "structure": "first/then/after that; last week/in 2020",
+   "objective": "Sequence past events using time expressions with past simple.",
+   "context": "Telling a simple past story."
+  },
+  {
+   "curriculum_id": "G-A2-02",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Pair with past simple later; do not overload here.",
+   "title": "Past Continuous (background)",
+   "structure": "was/were + verb-ing",
+   "objective": "Use past continuous for background actions in simple stories.",
+   "context": "Describing what was happening at a time."
+  },
+  {
+   "curriculum_id": "G-A2-03",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Use controlled prompts; maintain clarity.",
+   "title": "Past Simple vs Past Continuous (basic)",
+   "structure": "when/while contrast",
+   "objective": "Choose past simple or past continuous appropriately in short narratives.",
+   "context": "Stories with interruptions."
+  },
+  {
+   "curriculum_id": "G-A2-04",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep to ever/never and a small verb set.",
+   "title": "Present Perfect (experience)",
+   "structure": "have/has + past participle; ever/never",
+   "objective": "Ask/answer about experiences using present perfect in simple exchanges.",
+   "context": "Talking about life experiences."
+  },
+  {
+   "curriculum_id": "G-A2-05",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Emphasize meaning; accept minor form errors early.",
+   "title": "Present Perfect (recent changes/results)",
+   "structure": "just/already/yet",
+   "objective": "Use just/already/yet in short, practical contexts.",
+   "context": "Talking about recent actions and outcomes."
+  },
+  {
+   "curriculum_id": "G-A2-06",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep signal words clear; avoid future continuous.",
+   "title": "Future: Going to vs Will (plans vs predictions)",
+   "structure": "going to (plan) / will (prediction)",
+   "objective": "Select the appropriate future form for plan vs prediction.",
+   "context": "Talking about future plans and weather predictions."
+  },
+  {
+   "curriculum_id": "G-A2-07",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Focus on politeness level and intonation.",
+   "title": "Modal Requests: Could/Can",
+   "structure": "Could you…? / Can I…?",
+   "objective": "Make polite requests and ask permission appropriately.",
+   "context": "Polite requests in services and class."
+  },
+  {
+   "curriculum_id": "G-A2-08",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Avoid subtle nuance; focus on functional use.",
+   "title": "Obligation: Have to / Must (basic)",
+   "structure": "have to (rules) / must (strong)",
+   "objective": "Express obligation and prohibition in simple contexts.",
+   "context": "Rules at work and in public."
+  },
+  {
+   "curriculum_id": "G-A2-09",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Link to problem/solution communication tasks.",
+   "title": "Advice: Should/Shouldn’t",
+   "structure": "should + base verb",
+   "objective": "Give and respond to advice in common situations.",
+   "context": "Giving simple advice about problems."
+  },
+  {
+   "curriculum_id": "G-A2-10",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Use controlled adjective sets; avoid idioms.",
+   "title": "Comparatives (expanded)",
+   "structure": "as…as; less…than",
+   "objective": "Use expanded comparison structures accurately.",
+   "context": "Comparing options (prices, places)."
+  },
+  {
+   "curriculum_id": "G-A2-11",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep intensifiers minimal (really, very, by far optional).",
+   "title": "Superlatives (review + intensifiers)",
+   "structure": "the best/worst; by far",
+   "objective": "Use superlatives to recommend and justify simple choices.",
+   "context": "Talking about favorites and recommendations."
+  },
+  {
+   "curriculum_id": "G-A2-12",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep contexts concrete (travel, schedules).",
+   "title": "First Conditional (real future)",
+   "structure": "If + present, will + verb",
+   "objective": "Use first conditional for likely future outcomes.",
+   "context": "Discussing plans and consequences."
+  },
+  {
+   "curriculum_id": "G-A2-13",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep examples non-technical and familiar.",
+   "title": "Zero Conditional (facts/routines)",
+   "structure": "If + present, present",
+   "objective": "Use zero conditional for general truths and routines.",
+   "context": "Talking about general rules and habits."
+  },
+  {
+   "curriculum_id": "G-A2-14",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Avoid long gerund lists; keep patterns tight.",
+   "title": "Gerunds after Like/Love/Hate",
+   "structure": "like + verb-ing",
+   "objective": "Use verb-ing after common preference verbs in simple sentences.",
+   "context": "Talking about hobbies and preferences."
+  },
+  {
+   "curriculum_id": "G-A2-15",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep to defining clauses; save non-defining for B1.",
+   "title": "Defining Relative Clauses (basic)",
+   "structure": "who/which/that",
+   "objective": "Combine two ideas into one sentence using simple relative clauses.",
+   "context": "Describing people and things."
+  },
+  {
+   "curriculum_id": "G-A2-16",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Keep agent optional; focus on form and meaning.",
+   "title": "Present Passive (simple processes)",
+   "structure": "am/is/are + past participle",
+   "objective": "Form simple present passive sentences to describe processes.",
+   "context": "Explaining how something is made."
+  },
+  {
+   "curriculum_id": "G-A2-OPT-01",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Challenge: Aspect concept and irregular past participles. Distinguish clearly from past simple.",
+   "title": "Present Perfect for Life Experiences (Optional Harder)",
+   "structure": "I have/haven't + past participle",
+   "objective": "Form present perfect for experiences; use with 'ever/never/before.'",
+   "context": "Talking about life experiences without specific time reference."
+  },
+  {
+   "curriculum_id": "G-A2-OPT-02",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Challenge: Multiple formation rules (regular, irregular, long adjectives). Practice with concrete comparisons.",
+   "title": "Comparative and Superlative Forms (Optional Harder)",
+   "structure": "-er/-est, more/most + adjective",
+   "objective": "Form and use comparatives and superlatives appropriately; use 'than' with comparatives.",
+   "context": "Comparing people, places, and things."
+  },
+  {
+   "curriculum_id": "G-A2-OPT-03",
+   "skill": "grammar",
+   "level": "A2",
+   "notes": "Challenge: Subtle meaning differences between modals. Provide clear context clues and practice scenarios.",
+   "title": "Modals of Obligation and Advice (should/must/have to) (Optional Harder)",
+   "structure": "You should/must/have to + verb",
+   "objective": "Distinguish between levels of obligation and recommendation; use appropriately in context.",
+   "context": "Giving advice, expressing rules and obligations."
+  },
+  {
+   "curriculum_id": "C-A2-01",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Push for clearer sequencing; keep length manageable.",
+   "title": "Telling a Past Experience",
+   "objective": "Sharing a short story about a trip or event.",
+   "expressions": [
+    "First, I ___ .",
+    "Then, we ___ .",
+    "After that, ___ .",
+    "It was ___ .",
+    "What about you?"
+   ],
+   "functions": "narrating; sequencing; reacting"
+  },
+  {
+   "curriculum_id": "C-A2-02",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Include availability language (busy/free).",
+   "title": "Making Arrangements and Changes",
+   "objective": "Setting a meeting time and changing it politely.",
+   "expressions": [
+    "Are you free on ___?",
+    "Can we change it to ___?",
+    "That works for me.",
+    "Let’s meet at ___.",
+    "See you then."
+   ],
+   "functions": "arranging; rescheduling; confirming"
+  },
+  {
+   "curriculum_id": "C-A2-03",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Emphasize calm tone and specific details.",
+   "title": "Complaining Politely in a Store",
+   "objective": "Returning a faulty item with a receipt.",
+   "expressions": [
+    "I bought this yesterday.",
+    "It doesn’t work.",
+    "Can I get a refund or exchange?",
+    "Here is the receipt.",
+    "Thank you for your help."
+   ],
+   "functions": "complaining; requesting solution; explaining problem"
+  },
+  {
+   "curriculum_id": "C-A2-04",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Keep advice practical; avoid health claims.",
+   "title": "Asking for and Giving Advice",
+   "objective": "A friend has a simple problem (sleep, stress, time).",
+   "expressions": [
+    "What should I do?",
+    "You should ___ .",
+    "You shouldn’t ___ .",
+    "Why don’t you ___?",
+    "That’s a good idea."
+   ],
+   "functions": "asking advice; giving advice; responding"
+  },
+  {
+   "curriculum_id": "C-A2-05",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Encourage one reason per goal; practice follow-up questions.",
+   "title": "Talking About Future Goals",
+   "objective": "Discussing study/work goals for the next year.",
+   "expressions": [
+    "I’m going to ___ .",
+    "I want to ___ because ___ .",
+    "My goal is to ___ .",
+    "I need to ___ .",
+    "I hope to ___ ."
+   ],
+   "functions": "expressing goals; explaining reasons; planning"
+  },
+  {
+   "curriculum_id": "C-A2-06",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Use real or fictional profiles; keep examples short.",
+   "title": "Describing People and Personality",
+   "objective": "Talking about a friend/teacher and their personality.",
+   "expressions": [
+    "He/She is very ___ .",
+    "He/She likes ___ .",
+    "He/She is good at ___ .",
+    "In my opinion, ___ .",
+    "I think ___ because ___ ."
+   ],
+   "functions": "describing; giving examples; comparing"
+  },
+  {
+   "curriculum_id": "C-A2-07",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Include basic time framing; keep tone polite and clear.",
+   "title": "Reporting a Home Problem",
+   "objective": "Calling a landlord about a leak/heater issue.",
+   "expressions": [
+    "There is a problem with ___.",
+    "It started ___ .",
+    "Can you fix it, please?",
+    "When can you come?",
+    "Thank you for your help."
+   ],
+   "functions": "explaining problem; requesting repair; arranging visit"
+  },
+  {
+   "curriculum_id": "C-A2-08",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Support with symptom cards; avoid diagnosing.",
+   "title": "Explaining Symptoms to a Doctor",
+   "objective": "Describing symptoms and answering simple questions.",
+   "expressions": [
+    "I’ve had ___ for ___ days.",
+    "It hurts here.",
+    "I feel ___ .",
+    "Do I need medicine?",
+    "What should I do next?"
+   ],
+   "functions": "describing symptoms; clarifying; following advice"
+  },
+  {
+   "curriculum_id": "C-A2-09",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Use simple comparison criteria (price, time, distance).",
+   "title": "Comparing Two Options",
+   "objective": "Choosing between two phones, two courses, or two places.",
+   "expressions": [
+    "This one is cheaper.",
+    "That one is more ___ .",
+    "This is as ___ as that.",
+    "I prefer ___ because ___ .",
+    "Let’s choose ___ ."
+   ],
+   "functions": "comparing; giving reasons; deciding"
+  },
+  {
+   "curriculum_id": "C-A2-10",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Keep topics neutral and safe; focus on summary language.",
+   "title": "Talking About News (Simple)",
+   "objective": "Sharing one news item and your reaction.",
+   "expressions": [
+    "Did you hear about ___?",
+    "It happened in ___ .",
+    "That’s surprising.",
+    "What do you think?",
+    "I think it’s ___ ."
+   ],
+   "functions": "summarizing; reacting; asking opinions"
+  },
+  {
+   "curriculum_id": "C-A2-11",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Encourage clarification questions and confirmation.",
+   "title": "Requesting Help at Work",
+   "objective": "Asking a colleague for help with a task.",
+   "expressions": [
+    "Can you help me with ___?",
+    "How do I do this?",
+    "Could you show me?",
+    "Thanks, I understand now.",
+    "I’ll do it like this."
+   ],
+   "functions": "requesting; clarifying; thanking"
+  },
+  {
+   "curriculum_id": "C-A2-12",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Focus on polite decline + alternative (A2 hallmark).",
+   "title": "Inviting Someone and Responding",
+   "objective": "Inviting a friend to an activity and responding politely.",
+   "expressions": [
+    "Would you like to ___?",
+    "I’d love to, but I’m busy.",
+    "Maybe another day?",
+    "How about ___?",
+    "Great, see you then."
+   ],
+   "functions": "inviting; accepting/declining; suggesting alternative"
+  },
+  {
+   "curriculum_id": "C-A2-13",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Use concrete actions; keep reasons short and simple.",
+   "title": "Talking About Environment Habits",
+   "objective": "Discussing recycling and daily eco-actions.",
+   "expressions": [
+    "I usually recycle ___.",
+    "We should reduce ___ .",
+    "Let’s use ___ instead.",
+    "That’s a good idea.",
+    "It helps because ___ ."
+   ],
+   "functions": "describing habits; suggesting; agreeing"
+  },
+  {
+   "curriculum_id": "C-A2-14",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Use clear step markers; encourage listener questions.",
+   "title": "Explaining a Simple Process",
+   "objective": "Explaining how to do something (register, apply, cook).",
+   "expressions": [
+    "First, you ___ .",
+    "Next, you ___ .",
+    "Then, ___ .",
+    "Finally, ___ .",
+    "Does that make sense?"
+   ],
+   "functions": "explaining steps; sequencing; checking understanding"
+  },
+  {
+   "curriculum_id": "C-A2-OPT-01",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Challenge: Requires tactful language and cultural awareness. Model appropriate tone and formality.",
+   "title": "Complaining and Apologizing (Optional Harder)",
+   "objective": "Addressing problems with services or situations requiring apology.",
+   "expressions": [
+    "I'm sorry, but ___.",
+    "There's a problem with ___.",
+    "I apologize for ___.",
+    "That's okay.",
+    "No problem."
+   ],
+   "functions": "complaining politely; explaining problems; accepting/making apologies"
+  },
+  {
+   "curriculum_id": "C-A2-OPT-02",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Challenge: Requires past tense control and sequencing language. Provide strong scaffolding with sequencers.",
+   "title": "Describing Past Events and Stories (Optional Harder)",
+   "objective": "Telling about personal experiences or simple stories with sequence.",
+   "expressions": [
+    "First, ___.",
+    "Then, ___.",
+    "After that, ___.",
+    "Finally, ___.",
+    "It was ___."
+   ],
+   "functions": "narrating; sequencing events; describing feelings about past"
+  },
+  {
+   "curriculum_id": "C-A2-OPT-03",
+   "skill": "communication",
+   "level": "A2",
+   "notes": "Challenge: Multiple suggestion forms and polite disagreement. Practice turn-taking and negotiation strategies.",
+   "title": "Making Suggestions and Responding (Optional Harder)",
+   "objective": "Planning activities or solving problems together with others.",
+   "expressions": [
+    "Why don't we ___?",
+    "How about ___?",
+    "That's a good idea.",
+    "I'd rather ___.",
+    "Let's ___ instead."
+   ],
+   "functions": "suggesting; agreeing/disagreeing; negotiating"
+  }
+ ]
+}

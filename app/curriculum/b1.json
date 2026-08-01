@@ -1,0 +1,1003 @@
+{
+ "level": "B1",
+ "tier": "development",
+ "sessions": [
+  {
+   "curriculum_id": "V-B1-01",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Encourage complete problem narratives (what happened → what you need).",
+   "title": "Travel Problems",
+   "words": [
+    "delay",
+    "cancelled",
+    "lost",
+    "stolen",
+    "refund",
+    "complaint",
+    "support",
+    "replacement",
+    "miss",
+    "connection",
+    "queue",
+    "urgent"
+   ],
+   "objective": "Describe a travel problem clearly and request help or compensation.",
+   "context": "Managing unexpected issues while traveling."
+  },
+  {
+   "curriculum_id": "V-B1-02",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Recycle A2 work words; extend to meeting discourse.",
+   "title": "Work Meetings and Collaboration",
+   "words": [
+    "agenda",
+    "minutes",
+    "decision",
+    "priority",
+    "delegate",
+    "feedback",
+    "collaborate",
+    "update",
+    "follow-up",
+    "responsibility",
+    "issue",
+    "solution"
+   ],
+   "objective": "Use meeting vocabulary to report progress and coordinate tasks.",
+   "context": "Participating in workplace discussions."
+  },
+  {
+   "curriculum_id": "V-B1-03",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Align with ALMITU-style habit learning concepts (teacher-facing).",
+   "title": "Study Goals and Progress",
+   "words": [
+    "achievement",
+    "improvement",
+    "strategy",
+    "strength",
+    "weakness",
+    "challenge",
+    "focus",
+    "consistent",
+    "habit",
+    "milestone",
+    "resource",
+    "practice"
+   ],
+   "objective": "Explain learning goals and strategies with simple justification.",
+   "context": "Discussing learning progress and plans."
+  },
+  {
+   "curriculum_id": "V-B1-04",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Avoid medical advice; focus on language for discussions.",
+   "title": "Health and Fitness",
+   "words": [
+    "diet",
+    "exercise",
+    "stretch",
+    "injury",
+    "recovery",
+    "appointment",
+    "treatment",
+    "sleep quality",
+    "stressful",
+    "healthy",
+    "unhealthy",
+    "routine"
+   ],
+   "objective": "Discuss health habits and simple cause/effect (X helps Y).",
+   "context": "Talking about health choices and wellbeing."
+  },
+  {
+   "curriculum_id": "V-B1-05",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Model neutral register and polite disclosure.",
+   "title": "Feelings and Coping",
+   "words": [
+    "overwhelmed",
+    "anxious",
+    "motivated",
+    "frustrated",
+    "grateful",
+    "insecure",
+    "confident",
+    "relieved",
+    "ashamed",
+    "jealous",
+    "burnout",
+    "supportive"
+   ],
+   "objective": "Express feelings with clearer nuance and appropriate intensity.",
+   "context": "Talking about emotions in work/study/life."
+  },
+  {
+   "curriculum_id": "V-B1-06",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Prepare for B2 argumentation and hedging.",
+   "title": "Opinions and Debate Basics",
+   "words": [
+    "opinion",
+    "reason",
+    "example",
+    "point",
+    "agree",
+    "disagree",
+    "perspective",
+    "argument",
+    "evidence",
+    "fair",
+    "unfair",
+    "bias"
+   ],
+   "objective": "State opinions and support them with reasons and examples.",
+   "context": "Sharing opinions in discussions."
+  },
+  {
+   "curriculum_id": "V-B1-07",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Reinforce modals for advice/obligation in grammar.",
+   "title": "Environment and Daily Choices",
+   "words": [
+    "recycle",
+    "waste",
+    "pollution",
+    "energy",
+    "reduce",
+    "reuse",
+    "plastic",
+    "carbon",
+    "public transport",
+    "local",
+    "sustainable",
+    "habit"
+   ],
+   "objective": "Talk about environmental habits and simple solutions.",
+   "context": "Discussing everyday environmental actions."
+  },
+  {
+   "curriculum_id": "V-B1-08",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Keep language practical and non-alarmist.",
+   "title": "Safety and Community",
+   "words": [
+    "neighborhood",
+    "safe",
+    "dangerous",
+    "report",
+    "emergency",
+    "witness",
+    "rule",
+    "fine",
+    "warning",
+    "theft",
+    "scam",
+    "insurance"
+   ],
+   "objective": "Describe incidents and ask what to do in common safety situations.",
+   "context": "Talking about safety and local rules."
+  },
+  {
+   "curriculum_id": "V-B1-09",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Avoid excessive technical detail; prioritize clarity.",
+   "title": "Technology and Privacy",
+   "words": [
+    "privacy",
+    "data breach",
+    "permission",
+    "settings",
+    "two-factor",
+    "password manager",
+    "phishing",
+    "secure",
+    "account",
+    "backup",
+    "device",
+    "update"
+   ],
+   "objective": "Explain basic privacy risks and protective actions.",
+   "context": "Discussing safe technology use."
+  },
+  {
+   "curriculum_id": "V-B1-10",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Useful for integration-focused communication practice.",
+   "title": "Culture and Social Norms",
+   "words": [
+    "custom",
+    "tradition",
+    "polite",
+    "rude",
+    "gesture",
+    "small talk",
+    "personal space",
+    "taboo",
+    "stereotype",
+    "respect",
+    "community",
+    "identity"
+   ],
+   "objective": "Discuss social norms with neutral, respectful language.",
+   "context": "Navigating cultural differences and expectations."
+  },
+  {
+   "curriculum_id": "V-B1-11",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Align with realistic newcomer scenarios.",
+   "title": "Renting and Housing",
+   "words": [
+    "lease",
+    "deposit",
+    "utilities",
+    "maintenance",
+    "inspection",
+    "shared",
+    "furnished",
+    "unfurnished",
+    "neighbor",
+    "noise",
+    "agreement",
+    "move-out"
+   ],
+   "objective": "Describe housing needs and handle routine rental issues.",
+   "context": "Finding and maintaining rental housing."
+  },
+  {
+   "curriculum_id": "V-B1-12",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Support with complaint-call role-plays.",
+   "title": "Customer Service and Complaints",
+   "words": [
+    "faulty",
+    "refund",
+    "exchange",
+    "warranty",
+    "charge",
+    "overcharged",
+    "receipt",
+    "policy",
+    "service desk",
+    "disappointed",
+    "apologize",
+    "resolve"
+   ],
+   "objective": "Make a complaint politely and negotiate a reasonable outcome.",
+   "context": "Handling problems with products/services."
+  },
+  {
+   "curriculum_id": "V-B1-13",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Coordinate with B1 communication (job interview).",
+   "title": "Career Planning",
+   "words": [
+    "career",
+    "qualification",
+    "experience",
+    "reference",
+    "skills",
+    "strengths",
+    "interview",
+    "resume",
+    "apply",
+    "opportunity",
+    "promotion",
+    "salary range"
+   ],
+   "objective": "Explain career plans and describe experience with relevant vocabulary.",
+   "context": "Discussing work goals and job search."
+  },
+  {
+   "curriculum_id": "V-B1-14",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Prepare for B2 media and persuasion topics.",
+   "title": "Social Media and Digital Life",
+   "words": [
+    "post",
+    "comment",
+    "share",
+    "viral",
+    "influencer",
+    "algorithm",
+    "trend",
+    "content",
+    "audience",
+    "subscribe",
+    "engagement",
+    "reputation"
+   ],
+   "objective": "Describe content habits and discuss pros/cons at a basic level.",
+   "context": "Discussing online content and platforms."
+  },
+  {
+   "curriculum_id": "V-B1-15",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Recycle meeting and study vocabulary.",
+   "title": "Time Management",
+   "words": [
+    "deadline",
+    "schedule",
+    "prioritize",
+    "delay",
+    "procrastinate",
+    "efficient",
+    "productive",
+    "plan",
+    "routine",
+    "focus",
+    "interrupt",
+    "balance"
+   ],
+   "objective": "Talk about time problems and strategies to improve productivity.",
+   "context": "Managing work/study and personal time."
+  },
+  {
+   "curriculum_id": "V-B1-16",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Avoid detailed financial advice; language focus.",
+   "title": "Personal Finance (Everyday)",
+   "words": [
+    "budget",
+    "expense",
+    "income",
+    "rent",
+    "savings",
+    "credit",
+    "interest",
+    "fee",
+    "subscription",
+    "cancel",
+    "afford",
+    "financial goal"
+   ],
+   "objective": "Explain simple financial decisions and compare options.",
+   "context": "Talking about managing money and choices."
+  },
+  {
+   "curriculum_id": "V-B1-17",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Useful for migrant/newcomer contexts.",
+   "title": "Education Systems and Pathways",
+   "words": [
+    "program",
+    "major",
+    "degree",
+    "certificate",
+    "tuition",
+    "scholarship",
+    "application",
+    "deadline",
+    "admission",
+    "requirement",
+    "campus",
+    "orientation"
+   ],
+   "objective": "Discuss education options and ask about requirements and timelines.",
+   "context": "Planning education and training."
+  },
+  {
+   "curriculum_id": "V-B1-18",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Strong alignment with narrative + reasons language.",
+   "title": "Community and Volunteering",
+   "words": [
+    "volunteer",
+    "mentor",
+    "coach",
+    "community center",
+    "donate",
+    "support",
+    "impact",
+    "initiative",
+    "organize",
+    "participate",
+    "responsibility",
+    "benefit"
+   ],
+   "objective": "Talk about volunteering experiences and motivations.",
+   "context": "Participating in community initiatives."
+  },
+  {
+   "curriculum_id": "V-B1-OPT-01",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Challenge: Specialized academic register and concepts. Provide authentic materials like syllabi or announcements.",
+   "title": "Academic and Educational Terms (Optional Harder)",
+   "words": [
+    "research",
+    "assignment",
+    "deadline",
+    "presentation",
+    "professor",
+    "semester",
+    "exam",
+    "grade",
+    "thesis",
+    "lecture",
+    "seminar",
+    "scholarship"
+   ],
+   "objective": "Use academic vocabulary in university or training contexts; discuss educational experiences.",
+   "context": "Navigating academic environments and discussing education."
+  },
+  {
+   "curriculum_id": "V-B1-OPT-02",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Challenge: Abstract social concepts and sensitive topics. Approach with cultural sensitivity and clear definitions.",
+   "title": "Social Issues and Current Events (Optional Harder)",
+   "words": [
+    "inequality",
+    "poverty",
+    "discrimination",
+    "community",
+    "volunteer",
+    "donate",
+    "awareness",
+    "campaign",
+    "rights",
+    "justice",
+    "impact",
+    "society"
+   ],
+   "objective": "Express opinions about social issues; describe community action and change.",
+   "context": "Discussing social topics and community involvement."
+  },
+  {
+   "curriculum_id": "V-B1-OPT-03",
+   "skill": "vocabulary",
+   "level": "B1",
+   "notes": "Challenge: Idiomatic meanings and particle usage. Teach in chunks with clear contexts, not as grammar rules.",
+   "title": "Phrasal Verbs for Daily Life (Optional Harder)",
+   "words": [
+    "put on",
+    "take off",
+    "look for",
+    "find out",
+    "give up",
+    "go on",
+    "turn off",
+    "turn on",
+    "look after",
+    "run out",
+    "come back",
+    "get up"
+   ],
+   "objective": "Understand and use high-frequency phrasal verbs appropriately in context.",
+   "context": "Using common phrasal verbs in conversational contexts."
+  },
+  {
+   "curriculum_id": "G-B1-01",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Use timelines and time expressions as decision tools.",
+   "title": "Present Perfect vs Past Simple",
+   "structure": "have done vs did (time reference)",
+   "objective": "Choose present perfect or past simple based on time reference.",
+   "context": "Talking about experiences and finished times."
+  },
+  {
+   "curriculum_id": "G-B1-02",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Limit to common verbs; focus on meaning.",
+   "title": "Present Perfect Continuous (intro)",
+   "structure": "have/has been + verb-ing",
+   "objective": "Use present perfect continuous for duration and ongoing situations.",
+   "context": "Talking about ongoing activities with present relevance."
+  },
+  {
+   "curriculum_id": "G-B1-03",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Keep story prompts short and clear.",
+   "title": "Past Perfect (basic)",
+   "structure": "had + past participle",
+   "objective": "Use past perfect to show sequence of past events.",
+   "context": "Explaining earlier past events in stories."
+  },
+  {
+   "curriculum_id": "G-B1-04",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Avoid overloading; emphasize contrasts with examples.",
+   "title": "Future Forms (review + future continuous)",
+   "structure": "will/going to/present cont.; will be + -ing",
+   "objective": "Select an appropriate future form for plans, predictions, and ongoing future actions.",
+   "context": "Planning and predicting with more range."
+  },
+  {
+   "curriculum_id": "G-B1-05",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Clarify meaning differences; practice short dialogues.",
+   "title": "Modals: Obligation and Prohibition",
+   "structure": "have to / must / mustn’t / don’t have to",
+   "objective": "Express obligation, lack of obligation, and prohibition accurately.",
+   "context": "Rules at work and in society."
+  },
+  {
+   "curriculum_id": "G-B1-06",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Link to travel problems and planning scenarios.",
+   "title": "Modals: Possibility and Probability",
+   "structure": "might/may/could; probably",
+   "objective": "Express uncertainty and probability in speech and writing.",
+   "context": "Speculating about situations."
+  },
+  {
+   "curriculum_id": "G-B1-07",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Keep contexts relatable (money, job, travel).",
+   "title": "Second Conditional",
+   "structure": "If + past, would + verb",
+   "objective": "Use second conditional for unreal/imaginary present/future situations.",
+   "context": "Hypothetical advice and imagined situations."
+  },
+  {
+   "curriculum_id": "G-B1-08",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Keep production controlled; focus on clarity.",
+   "title": "Relative Clauses (expanded)",
+   "structure": "non-defining; where/whose",
+   "objective": "Use a wider range of relative clauses with appropriate punctuation.",
+   "context": "Adding extra information."
+  },
+  {
+   "curriculum_id": "G-B1-09",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Use practical texts: notices, simple news.",
+   "title": "Passive Voice (present/past simple)",
+   "structure": "is done / was done",
+   "objective": "Form passive sentences and choose active vs passive appropriately.",
+   "context": "Processes and reports."
+  },
+  {
+   "curriculum_id": "G-B1-10",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Keep to common reporting verbs (say/tell).",
+   "title": "Reported Speech (statements)",
+   "structure": "He said (that)…; tense backshift basics",
+   "objective": "Report statements accurately with basic backshift.",
+   "context": "Reporting what someone said."
+  },
+  {
+   "curriculum_id": "G-B1-11",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Prioritize word order and 'if/whether'.",
+   "title": "Reported Speech (questions)",
+   "structure": "She asked if… / what…; word order",
+   "objective": "Report wh- and yes/no questions accurately.",
+   "context": "Reporting questions in conversation."
+  },
+  {
+   "curriculum_id": "G-B1-12",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Limit to a teachable set; recycle in communication tasks.",
+   "title": "Gerunds vs Infinitives (core patterns)",
+   "structure": "stop doing / remember to; want to",
+   "objective": "Use common verb patterns correctly in simple contexts.",
+   "context": "Talking about intentions and habits."
+  },
+  {
+   "curriculum_id": "G-B1-13",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Focus on frequent errors; avoid theory-heavy explanation.",
+   "title": "Articles (review and common uses)",
+   "structure": "a/an/the/zero article",
+   "objective": "Use articles more consistently with common nouns and places.",
+   "context": "Everyday descriptions and specificity."
+  },
+  {
+   "curriculum_id": "G-B1-14",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Use short paragraph tasks; avoid long sentences.",
+   "title": "Linking Words (contrast, reason, result)",
+   "structure": "although/however/because/so",
+   "objective": "Join ideas using basic discourse connectors to improve coherence.",
+   "context": "Explaining reasons and contrasts."
+  },
+  {
+   "curriculum_id": "G-B1-15",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Keep examples practical (time, money, effort).",
+   "title": "Result and Degree",
+   "structure": "so/such…that; too/enough",
+   "objective": "Express degree and result accurately in speaking and writing.",
+   "context": "Explaining outcomes and limits."
+  },
+  {
+   "curriculum_id": "G-B1-16",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Use charts or simple data visuals as prompts.",
+   "title": "Comparatives for Trends",
+   "structure": "more and more; increasingly; less and less",
+   "objective": "Describe trends and gradual change in simple reports.",
+   "context": "Talking about changes over time."
+  },
+  {
+   "curriculum_id": "G-B1-17",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Limit to high-frequency patterns; focus on intonation.",
+   "title": "Question Tags (basic)",
+   "structure": "…, isn’t it? / …, don’t you?",
+   "objective": "Use common question tags to confirm and keep conversation going.",
+   "context": "Checking information and engaging listeners."
+  },
+  {
+   "curriculum_id": "G-B1-18",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "High communicative value; practice in role-plays.",
+   "title": "Indirect Questions",
+   "structure": "Could you tell me…? / I wonder…",
+   "objective": "Form indirect questions with correct word order and politeness.",
+   "context": "Polite inquiries in services and work."
+  },
+  {
+   "curriculum_id": "G-B1-OPT-01",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Challenge: Double-past time reference is cognitively demanding. Use timeline visuals and clear narratives.",
+   "title": "Past Perfect for Earlier Past Events (Optional Harder)",
+   "structure": "had + past participle",
+   "objective": "Use past perfect to show sequence in past narratives; distinguish from past simple.",
+   "context": "Describing events that happened before another past event."
+  },
+  {
+   "curriculum_id": "G-B1-OPT-02",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Challenge: Multiple tense and pronoun changes. Practice systematically with clear transformation rules.",
+   "title": "Reported Speech (Statements) (Optional Harder)",
+   "structure": "He said (that) + statement with backshift",
+   "objective": "Transform direct speech to reported speech with appropriate tense changes.",
+   "context": "Reporting what others have said in conversations or writing."
+  },
+  {
+   "curriculum_id": "G-B1-OPT-03",
+   "skill": "grammar",
+   "level": "B1",
+   "notes": "Challenge: Voice transformation and agent inclusion/omission. Use process descriptions and news reports.",
+   "title": "Passive Voice (Present and Past) (Optional Harder)",
+   "structure": "is/was + past participle (by agent)",
+   "objective": "Form and use passive voice appropriately; understand when passive is more natural.",
+   "context": "Describing processes, events, or situations where the action is emphasized over the agent."
+  },
+  {
+   "curriculum_id": "C-B1-01",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Encourage 2 reasons + 1 example; manage turn length.",
+   "title": "Giving Opinions with Reasons",
+   "objective": "Discussing a familiar topic (work-study balance, city life).",
+   "expressions": [
+    "In my view, ___ .",
+    "The main reason is ___ .",
+    "For example, ___ .",
+    "I see your point, but ___ .",
+    "Overall, I think ___ ."
+   ],
+   "functions": "expressing opinion; giving reasons; giving examples"
+  },
+  {
+   "curriculum_id": "C-B1-02",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Teach polite framing; discourage blunt disagreement.",
+   "title": "Agreeing and Disagreeing Politely",
+   "objective": "Group discussion where views differ.",
+   "expressions": [
+    "I agree up to a point.",
+    "I’m not sure I agree.",
+    "That’s true, however…",
+    "I understand, but…",
+    "Let’s consider ___ ."
+   ],
+   "functions": "agreeing; disagreeing; softening"
+  },
+  {
+   "curriculum_id": "C-B1-03",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Push for coherence and clear timeline; use prompts.",
+   "title": "Telling a Detailed Story",
+   "objective": "Narrating an event with background and outcome.",
+   "expressions": [
+    "It started when ___ .",
+    "While I was ___, ___ .",
+    "Suddenly, ___ .",
+    "In the end, ___ .",
+    "I felt ___ because ___ ."
+   ],
+   "functions": "narrating; adding detail; reacting"
+  },
+  {
+   "curriculum_id": "C-B1-04",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Include audience questions; build interaction skills.",
+   "title": "Presenting a Simple Plan",
+   "objective": "Explaining a plan for study/work/project.",
+   "expressions": [
+    "First, I’m going to ___ .",
+    "My goal is to ___ .",
+    "This will help because ___ .",
+    "I might need to ___ .",
+    "Any suggestions?"
+   ],
+   "functions": "explaining; sequencing; justifying"
+  },
+  {
+   "curriculum_id": "C-B1-05",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Use realistic constraints (work shifts, family).",
+   "title": "Negotiating Schedules",
+   "objective": "Agreeing on a time with constraints.",
+   "expressions": [
+    "Could we meet on ___?",
+    "That doesn’t work for me.",
+    "What if we ___ instead?",
+    "I’m flexible after ___ .",
+    "Let’s confirm: ___ ."
+   ],
+   "functions": "negotiating; proposing; confirming"
+  },
+  {
+   "curriculum_id": "C-B1-06",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Practice calm persistence; teach escalation language lightly.",
+   "title": "Handling a Service Complaint Call",
+   "objective": "Calling customer service about a problem.",
+   "expressions": [
+    "I’m calling about ___ .",
+    "I was charged for ___ .",
+    "Could you check my account?",
+    "What are my options?",
+    "I’d like to resolve this today."
+   ],
+   "functions": "explaining problem; requesting; clarifying"
+  },
+  {
+   "curriculum_id": "C-B1-07",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Use STAR-lite structure; focus on clarity and relevance.",
+   "title": "Job Interview (Core)",
+   "objective": "Answering common interview questions.",
+   "expressions": [
+    "I have experience in ___ .",
+    "One strength of mine is ___ .",
+    "For example, I ___ .",
+    "I’m interested in this role because ___ .",
+    "Do you have any questions for me?"
+   ],
+   "functions": "describing experience; strengths; examples"
+  },
+  {
+   "curriculum_id": "C-B1-08",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Include budget, move-in date, and questions about utilities.",
+   "title": "Renting a Place (Inquiry)",
+   "objective": "Calling or meeting a landlord to ask about a rental.",
+   "expressions": [
+    "Is the apartment still available?",
+    "What’s included in the rent?",
+    "I’m looking for ___ .",
+    "Could I visit on ___?",
+    "What documents do you need?"
+   ],
+   "functions": "asking info; describing needs; negotiating"
+  },
+  {
+   "curriculum_id": "C-B1-09",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Encourage clear details (date, flight number, description).",
+   "title": "Travel Problem at the Airport",
+   "objective": "Reporting lost luggage or a missed connection.",
+   "expressions": [
+    "My luggage is missing.",
+    "My flight was delayed.",
+    "I need to file a report.",
+    "When will it arrive?",
+    "Can I get a replacement?"
+   ],
+   "functions": "reporting; requesting help; explaining details"
+  },
+  {
+   "curriculum_id": "C-B1-10",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Practice building on others’ ideas; avoid dominating talk.",
+   "title": "Making Suggestions in a Meeting",
+   "objective": "Team meeting to solve a problem.",
+   "expressions": [
+    "I suggest we ___ .",
+    "Why don’t we ___?",
+    "That could work, but ___ .",
+    "Another option is ___ .",
+    "Let’s decide on ___ ."
+   ],
+   "functions": "suggesting; responding; building ideas"
+  },
+  {
+   "curriculum_id": "C-B1-11",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Prepare for B2 argumentation; encourage balanced view.",
+   "title": "Discussing Social Media Impact",
+   "objective": "Talking about pros/cons of social media use.",
+   "expressions": [
+    "On the one hand, ___ .",
+    "On the other hand, ___ .",
+    "It can lead to ___ .",
+    "In my experience, ___ .",
+    "What’s your take on it?"
+   ],
+   "functions": "discussing; evaluating; giving examples"
+  },
+  {
+   "curriculum_id": "C-B1-12",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Avoid prescriptive tone; keep reflective and practical.",
+   "title": "Talking About Health Choices",
+   "objective": "Discussing routines (sleep, exercise, diet).",
+   "expressions": [
+    "I’ve been trying to ___ .",
+    "It helps me because ___ .",
+    "I used to ___, but now ___ .",
+    "I should probably ___ .",
+    "Have you ever tried ___?"
+   ],
+   "functions": "explaining; advising; describing changes"
+  },
+  {
+   "curriculum_id": "C-B1-13",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Use maps with landmarks; encourage confirmation checks.",
+   "title": "Giving Directions with Details",
+   "objective": "Explaining a route with landmarks and steps.",
+   "expressions": [
+    "Go past ___ .",
+    "It’s opposite ___ .",
+    "You’ll see ___ on your left.",
+    "If you reach ___, you’ve gone too far.",
+    "Does that help?"
+   ],
+   "functions": "explaining; sequencing; confirming understanding"
+  },
+  {
+   "curriculum_id": "C-B1-14",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Keep topic familiar; teach respectful turn-taking.",
+   "title": "Debating a Local Issue (Simple)",
+   "objective": "Discussing a community topic (public transport, recycling).",
+   "expressions": [
+    "I believe ___ because ___ .",
+    "A common argument is ___ .",
+    "However, ___ .",
+    "We should consider ___ .",
+    "What solution do you propose?"
+   ],
+   "functions": "arguing; giving reasons; countering"
+  },
+  {
+   "curriculum_id": "C-B1-15",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Link with modals; keep examples concrete.",
+   "title": "Explaining Rules and Procedures",
+   "objective": "Explaining a rule set (class, work, driving basics).",
+   "expressions": [
+    "You’re not allowed to ___ .",
+    "You have to ___ .",
+    "If you ___, you might ___ .",
+    "Make sure you ___ .",
+    "Any questions so far?"
+   ],
+   "functions": "explaining rules; giving warnings; clarifying"
+  },
+  {
+   "curriculum_id": "C-B1-16",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Practice openings, follow-ups, and polite closings.",
+   "title": "Networking and Introductions (Professional)",
+   "objective": "Meeting someone at an event and exchanging interests.",
+   "expressions": [
+    "I work in/with ___ .",
+    "What brings you here?",
+    "I’m currently working on ___ .",
+    "We should stay in touch.",
+    "Here’s my contact."
+   ],
+   "functions": "introducing; describing work; keeping conversation"
+  },
+  {
+   "curriculum_id": "C-B1-OPT-01",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Challenge: Requires diplomatic language and perspective-taking. Model negotiation strategies explicitly.",
+   "title": "Negotiating and Compromising (Optional Harder)",
+   "objective": "Resolving conflicts or reaching agreements in work or personal situations.",
+   "expressions": [
+    "What if we ___?",
+    "I see your point, but ___.",
+    "Can we agree on ___?",
+    "Let's compromise.",
+    "I'm willing to ___."
+   ],
+   "functions": "negotiating; compromising; persuading; reaching agreement"
+  },
+  {
+   "curriculum_id": "C-B1-OPT-02",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Challenge: Requires sustained discourse and turn management. Teach discourse markers and conversation strategies.",
+   "title": "Participating in Discussions and Debates (Optional Harder)",
+   "objective": "Contributing to group discussions on familiar topics with opinions and reasons.",
+   "expressions": [
+    "In my opinion ___.",
+    "I agree/disagree because ___.",
+    "What do you think about ___?",
+    "Could you explain ___?",
+    "That's an interesting point."
+   ],
+   "functions": "expressing opinions; agreeing/disagreeing; giving reasons; asking for clarification"
+  },
+  {
+   "curriculum_id": "C-B1-OPT-03",
+   "skill": "communication",
+   "level": "B1",
+   "notes": "Challenge: Second conditional structure and abstract thinking. Use engaging 'what if' scenarios.",
+   "title": "Describing Hypothetical Situations (Optional Harder)",
+   "objective": "Talking about imaginary scenarios and their consequences.",
+   "expressions": [
+    "If I had ___, I would ___.",
+    "What would you do if ___?",
+    "Imagine that ___.",
+    "It would be ___ if ___.",
+    "That would depend on ___."
+   ],
+   "functions": "hypothesizing; speculating; describing consequences"
+  }
+ ]
+}
