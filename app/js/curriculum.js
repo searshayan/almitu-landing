@@ -25,6 +25,22 @@ window.curriculumState = {
 /* Curriculum sessions are student-agnostic templates: no student, no
    country, and NO L1 support (tutors deliver L1 live, and pre-generated
    content can't know a student's first language). */
+/* The master curriculum names its speaking activity in free text (64 variants).
+   The app's speakingActivity field is a fixed list of seven; map to the nearest.
+   Order matters — the most specific cue wins. Anything unmatched (guided
+   dialogue, information gap, storytelling, interpretation, performance, …) is a
+   Role-play, the default interactive speaking task. */
+function normalizeSpeakingActivity(raw) {
+  const t = String(raw || '').toLowerCase();
+  if (/interview/.test(t)) return 'Interview';
+  if (/negotiat/.test(t)) return 'Negotiation';
+  if (/debate|parliamentary|cross-examination|testimony|advocacy|argumentative|persuasive speech/.test(t)) return 'Debate';
+  if (/presentation|keynote|speech|lecture|pitch|proposal|explain|explanation/.test(t)) return 'Presentation';
+  if (/problem|crisis|planning|troubleshoot/.test(t)) return 'Problem-solving';
+  if (/discussion|seminar|socratic|panel|facilitation|moderat|analysis|review|workshop|philosophical/.test(t)) return 'Guided Discussion';
+  return 'Role-play';
+}
+
 function curriculumFormData(rec) {
   const details = {};
 
@@ -46,13 +62,13 @@ function curriculumFormData(rec) {
     details.scenarioTitle    = rec.title;
     details.objective        = rec.objective || '';
     details.targetExpressions = (rec.expressions || []).join('\n');
-    // The curriculum's own "Speaking Activity Type" is free text with 60+
-    // variants; the app's field is a fixed list. Role-play covers the
-    // guided-dialogue shape used across Pre-A1.
-    details.speakingActivity = 'Role-play';
+    // The curriculum's "Speaking Activity Type" is free text (60+ variants);
+    // the app's field is a fixed list — map to the nearest of the seven, and
+    // keep the master's exact wording in the notes for the tutor.
+    details.speakingActivity = normalizeSpeakingActivity(rec.activity);
     details.roles            = '';
     details.culturalNotes    = '';
-    details.notes            = [rec.functions, rec.notes].filter(Boolean).join(' — ');
+    details.notes            = [rec.functions, rec.activity ? 'Activity: ' + rec.activity : '', rec.notes].filter(Boolean).join(' — ');
   }
 
   return {

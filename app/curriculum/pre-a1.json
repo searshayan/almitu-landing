@@ -443,7 +443,8 @@
     "I am from ___.",
     "Nice to meet you."
    ],
-   "functions": "greeting; introducing; basic personal info"
+   "functions": "greeting; introducing; basic personal info",
+   "activity": "Guided dialogue"
   },
   {
    "curriculum_id": "C-Pre-A1-02",
@@ -457,7 +458,8 @@
     "Repeat, please.",
     "Thank you."
    ],
-   "functions": "requesting; asking for repetition; thanking"
+   "functions": "requesting; asking for repetition; thanking",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-Pre-A1-03",
@@ -471,7 +473,8 @@
     "It’s __ dollars.",
     "Okay, thank you."
    ],
-   "functions": "asking price; giving number; confirming"
+   "functions": "asking price; giving number; confirming",
+   "activity": "Information gap"
   },
   {
    "curriculum_id": "C-Pre-A1-04",
@@ -485,7 +488,8 @@
     "It’s here/there.",
     "Thanks."
    ],
-   "functions": "asking location; understanding direction; thanking"
+   "functions": "asking location; understanding direction; thanking",
+   "activity": "Guided dialogue"
   },
   {
    "curriculum_id": "C-Pre-A1-05",
@@ -499,7 +503,8 @@
     "Small, please.",
     "That’s all, thanks."
    ],
-   "functions": "ordering; requesting; polite closing"
+   "functions": "ordering; requesting; polite closing",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-Pre-A1-06",
@@ -513,7 +518,8 @@
     "He/She is my ___.",
     "We are a family."
    ],
-   "functions": "naming; identifying; simple possession"
+   "functions": "naming; identifying; simple possession",
+   "activity": "Picture-based speaking"
   },
   {
    "curriculum_id": "C-Pre-A1-07",
@@ -527,7 +533,8 @@
     "I don’t like ___.",
     "Me too."
    ],
-   "functions": "expressing likes; simple preference"
+   "functions": "expressing likes; simple preference",
+   "activity": "Personal interview"
   },
   {
    "curriculum_id": "C-Pre-A1-08",
@@ -541,7 +548,8 @@
     "I’m fine/tired.",
     "I’m okay."
    ],
-   "functions": "greeting; expressing state; responding"
+   "functions": "greeting; expressing state; responding",
+   "activity": "Guided dialogue"
   },
   {
    "curriculum_id": "C-Pre-A1-OPT-01",
@@ -557,7 +565,8 @@
     "Please give me ___.",
     "Where is ___?"
    ],
-   "functions": "requesting; asking for help; expressing needs"
+   "functions": "requesting; asking for help; expressing needs",
+   "activity": "Role-play with props"
   },
   {
    "curriculum_id": "C-Pre-A1-OPT-02",
@@ -573,7 +582,8 @@
     "Yes, I do.",
     "No, I don't."
    ],
-   "functions": "expressing preference; agreeing; disagreeing"
+   "functions": "expressing preference; agreeing; disagreeing",
+   "activity": "Survey and pair sharing"
   },
   {
    "curriculum_id": "C-Pre-A1-OPT-03",
@@ -590,7 +600,8 @@
     "Here.",
     "There."
    ],
-   "functions": "describing location; giving simple directions"
+   "functions": "describing location; giving simple directions",
+   "activity": "Information gap with classroom objects"
   }
  ]
 }

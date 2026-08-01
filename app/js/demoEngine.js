@@ -872,12 +872,26 @@ const SKELETON_GEN = {
           { q: "You didn't catch it — you ask them to repeat → ___", a: items[2] || '' },
           { q: 'You give a reason → ___', a: items[3] || '' },
           { q: 'You finish politely → ___', a: items[items.length - 1] || '' } ].slice(0, f.short ? 3 : Math.min(5, items.length)) } };
-    const steps = (f.isFound ? ['Greet and start.', 'Make your request using a Toolkit phrase.', 'Thank them and finish.']
-      : f.isDev ? ['Open the conversation.', 'Make your request or suggestion and give a reason.', 'Handle one complication the tutor adds.', 'Agree on an outcome and close politely.']
-        : ['Open and frame your position.', 'Make your case using precise exponents.', 'Respond to a counter-point with a concession or rebuttal.', 'Summarize and close in an appropriate register.']).slice(0, f.short ? 3 : (f.isFound ? 3 : 4));
-    const criteria = f.isFound ? ['Use at least one Toolkit phrase.', 'Stay polite throughout.']
-      : f.isDev ? ['Give at least one reason.', 'Handle the complication and reach an outcome.']
-        : ['Sustain your position with reasons.', 'Respond to a counter-argument.', 'Close with an appropriate register.'];
+    // Activity-specific speaking task (one of the seven), scaffolded by tier.
+    const ACTIVITY_TASK = {
+      'Role-play': { steps: ['Greet and open the conversation.', 'Make your request or suggestion and give a reason.', 'Handle one complication the other person raises.', 'Agree an outcome and close politely.'],
+        criteria: ['Use at least two Toolkit expressions.', 'Handle the complication and reach an outcome.'] },
+      'Guided Discussion': { steps: ['Open the topic and give your first view.', 'Support it with a reason or example.', 'Respond to a different point of view.', 'Move the discussion toward a shared conclusion.'],
+        criteria: ['Give a clear opinion with a reason.', 'Respond to at least one other view.'] },
+      'Interview': { steps: ['Greet and settle into the interview.', 'Answer a question with a specific example.', 'Ask a relevant question of your own.', 'Close and thank the interviewer.'],
+        criteria: ['Answer with a concrete example.', 'Ask at least one relevant question.'] },
+      'Debate': { steps: ['State your position clearly.', 'Support it with your strongest argument.', 'Rebut the opposing point.', 'Summarise and restate your case.'],
+        criteria: ['Make one well-supported argument.', 'Rebut at least one counter-point.'] },
+      'Presentation': { steps: ['Open and preview what you will cover.', 'Present your main points clearly.', 'Highlight the key takeaway.', 'Invite and handle a question.'],
+        criteria: ['Signpost the structure clearly.', 'Deliver a clear key message.'] },
+      'Negotiation': { steps: ['Open and state your goal.', 'Make a clear proposal.', 'Trade a concession for a condition.', 'Confirm the agreement.'],
+        criteria: ['Make a proposal and one conditional concession.', 'Reach or clarify an agreement.'] },
+      'Problem-solving': { steps: ['Define the problem together.', 'Suggest options and weigh them.', 'Agree on the best option.', 'Plan the first next step.'],
+        criteria: ['Weigh at least two options.', 'Agree a concrete next step.'] }
+    };
+    const at = ACTIVITY_TASK[activity] || ACTIVITY_TASK['Role-play'];
+    const steps = f.isFound ? at.steps.slice(0, 3) : at.steps;
+    const criteria = f.isFound ? [at.criteria[0], 'Stay polite throughout.'] : at.criteria;
     const rolesRaw = (d.roles || 'Your tutor plays the other person').trim();
     const rolesText = /[.?!]$/.test(rolesRaw) ? rolesRaw : rolesRaw + '.';
     const scenario = `${title}. ${rolesText}${f.place ? ` Set it${f.place}.` : ''}`.trim();

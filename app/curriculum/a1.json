@@ -575,7 +575,8 @@
     "I live in ___.",
     "Nice to meet you."
    ],
-   "functions": "small talk; introducing; asking personal details"
+   "functions": "small talk; introducing; asking personal details",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A1-02",
@@ -589,7 +590,8 @@
     "What time do you ___?",
     "Then I ___."
    ],
-   "functions": "describing routines; sequencing; asking questions"
+   "functions": "describing routines; sequencing; asking questions",
+   "activity": "Personal interview"
   },
   {
    "curriculum_id": "C-A1-03",
@@ -603,7 +605,8 @@
     "Can I try it on?",
     "How much is it?"
    ],
-   "functions": "requesting; asking about size/price; choosing"
+   "functions": "requesting; asking about size/price; choosing",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A1-04",
@@ -617,7 +620,8 @@
     "Can I have the bill, please?",
     "Thank you."
    ],
-   "functions": "ordering; requesting; paying"
+   "functions": "ordering; requesting; paying",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A1-05",
@@ -631,7 +635,8 @@
     "Go straight.",
     "Turn left/right."
    ],
-   "functions": "asking for directions; understanding; confirming"
+   "functions": "asking for directions; understanding; confirming",
+   "activity": "Information gap"
   },
   {
    "curriculum_id": "C-A1-06",
@@ -645,7 +650,8 @@
     "I watched ___.",
     "It was fun."
    ],
-   "functions": "narrating (simple past); responding"
+   "functions": "narrating (simple past); responding",
+   "activity": "Guided dialogue"
   },
   {
    "curriculum_id": "C-A1-07",
@@ -659,7 +665,8 @@
     "Do you want to ___?",
     "Let’s ___."
    ],
-   "functions": "planning; suggesting; agreeing"
+   "functions": "planning; suggesting; agreeing",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A1-08",
@@ -673,7 +680,8 @@
     "Do you have something for ___?",
     "How many per day?"
    ],
-   "functions": "describing symptom; requesting; clarifying"
+   "functions": "describing symptom; requesting; clarifying",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A1-09",
@@ -687,7 +695,8 @@
     "I play/watch ___.",
     "What about you?"
    ],
-   "functions": "expressing likes; asking follow-up questions"
+   "functions": "expressing likes; asking follow-up questions",
+   "activity": "Personal interview"
   },
   {
    "curriculum_id": "C-A1-10",
@@ -701,7 +710,8 @@
     "There are two ___.",
     "It’s in the ___."
    ],
-   "functions": "describing; locating objects"
+   "functions": "describing; locating objects",
+   "activity": "Picture-based speaking"
   },
   {
    "curriculum_id": "C-A1-11",
@@ -715,7 +725,8 @@
     "What time do you open?",
     "Thank you, bye."
    ],
-   "functions": "requesting info; confirming; closing"
+   "functions": "requesting info; confirming; closing",
+   "activity": "Guided dialogue"
   },
   {
    "curriculum_id": "C-A1-12",
@@ -729,7 +740,8 @@
     "What time is it?",
     "Is this the right platform?"
    ],
-   "functions": "requesting; checking schedule; confirming"
+   "functions": "requesting; checking schedule; confirming",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A1-OPT-01",
@@ -745,7 +757,8 @@
     "That works for me.",
     "See you on ___."
    ],
-   "functions": "suggesting; arranging; confirming plans"
+   "functions": "suggesting; arranging; confirming plans",
+   "activity": "Dialogue building with calendars"
   },
   {
    "curriculum_id": "C-A1-OPT-02",
@@ -761,7 +774,8 @@
     "How do I get to ___?",
     "Is it far?"
    ],
-   "functions": "asking for directions; giving directions; clarifying location"
+   "functions": "asking for directions; giving directions; clarifying location",
+   "activity": "Map-based information gap"
   },
   {
    "curriculum_id": "C-A1-OPT-03",
@@ -777,7 +791,8 @@
     "Maybe you should ___.",
     "Try ___."
    ],
-   "functions": "describing problems; asking for help; suggesting solutions"
+   "functions": "describing problems; asking for help; suggesting solutions",
+   "activity": "Problem-solving role-plays"
   }
  ]
 }

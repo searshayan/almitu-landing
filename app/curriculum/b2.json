@@ -709,7 +709,8 @@
     "I’d qualify that by saying ___ .",
     "Ultimately, the key point is ___ ."
    ],
-   "functions": "arguing; supporting; qualifying"
+   "functions": "arguing; supporting; qualifying",
+   "activity": "Debate (structured)"
   },
   {
    "curriculum_id": "C-B2-02",
@@ -725,7 +726,8 @@
     "That’s acceptable as long as ___ .",
     "Let’s agree on ___ ."
    ],
-   "functions": "negotiating; proposing; compromising"
+   "functions": "negotiating; proposing; compromising",
+   "activity": "Problem solving"
   },
   {
    "curriculum_id": "C-B2-03",
@@ -741,7 +743,8 @@
     "I’d like to find a way forward.",
     "Can we agree on ___?"
    ],
-   "functions": "clarifying; apologizing; repairing"
+   "functions": "clarifying; apologizing; repairing",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B2-04",
@@ -757,7 +760,8 @@
     "The next step is ___ .",
     "Does anyone have concerns?"
    ],
-   "functions": "facilitating; summarizing; decision-making"
+   "functions": "facilitating; summarizing; decision-making",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B2-05",
@@ -773,7 +777,8 @@
     "However, we can mitigate that by ___ .",
     "I’m confident this will ___ ."
    ],
-   "functions": "persuading; emphasizing; addressing concerns"
+   "functions": "persuading; emphasizing; addressing concerns",
+   "activity": "Mini-presentation"
   },
   {
    "curriculum_id": "C-B2-06",
@@ -789,7 +794,8 @@
     "In the long term, ___ .",
     "What evidence supports that?"
    ],
-   "functions": "evaluating; hypothesizing; considering stakeholders"
+   "functions": "evaluating; hypothesizing; considering stakeholders",
+   "activity": "Guided discussion"
   },
   {
    "curriculum_id": "C-B2-07",
@@ -805,7 +811,8 @@
     "I don’t think we can justify ___ .",
     "What principle are we prioritizing?"
    ],
-   "functions": "evaluating; justifying; challenging respectfully"
+   "functions": "evaluating; justifying; challenging respectfully",
+   "activity": "Problem solving"
   },
   {
    "curriculum_id": "C-B2-08",
@@ -821,7 +828,8 @@
     "Overall, it seems more/less ___ .",
     "I’d verify this by ___ ."
    ],
-   "functions": "analyzing; comparing; evaluating sources"
+   "functions": "analyzing; comparing; evaluating sources",
+   "activity": "Information gap"
   },
   {
    "curriculum_id": "C-B2-09",
@@ -837,7 +845,8 @@
     "We can’t rule out ___ .",
     "The safest assumption is ___ ."
    ],
-   "functions": "speculating; predicting; qualifying"
+   "functions": "speculating; predicting; qualifying",
+   "activity": "Guided discussion"
   },
   {
    "curriculum_id": "C-B2-10",
@@ -853,7 +862,8 @@
     "On balance, I’d recommend ___ .",
     "Let’s set a timeline for ___ ."
    ],
-   "functions": "diagnosing; proposing; deciding"
+   "functions": "diagnosing; proposing; deciding",
+   "activity": "Problem solving"
   },
   {
    "curriculum_id": "C-B2-11",
@@ -869,7 +879,8 @@
     "It might be more effective to ___ .",
     "Let’s agree on next steps."
    ],
-   "functions": "giving feedback; softening; proposing improvement"
+   "functions": "giving feedback; softening; proposing improvement",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B2-12",
@@ -885,7 +896,8 @@
     "A key example is ___ .",
     "In summary, ___ ."
    ],
-   "functions": "responding; elaborating; referencing"
+   "functions": "responding; elaborating; referencing",
+   "activity": "Guided discussion"
   },
   {
    "curriculum_id": "C-B2-13",
@@ -901,7 +913,8 @@
     "I’m requesting ___ as a resolution.",
     "How can we finalize this today?"
    ],
-   "functions": "asserting; requesting escalation; negotiating"
+   "functions": "asserting; requesting escalation; negotiating",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B2-14",
@@ -917,7 +930,8 @@
     "Let’s define a realistic next step.",
     "How will you measure progress?"
    ],
-   "functions": "coaching; questioning; goal-setting"
+   "functions": "coaching; questioning; goal-setting",
+   "activity": "Coaching role-play"
   },
   {
    "curriculum_id": "C-B2-15",
@@ -933,7 +947,8 @@
     "Looking back, I would ___ .",
     "This experience taught me ___ ."
    ],
-   "functions": "narrating; justifying; reflecting"
+   "functions": "narrating; justifying; reflecting",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B2-16",
@@ -949,7 +964,8 @@
     "The lesson I learned is ___ .",
     "I’d invite you to ___ ."
    ],
-   "functions": "storytelling; emphasizing; connecting to audience"
+   "functions": "storytelling; emphasizing; connecting to audience",
+   "activity": "Mini-presentation"
   },
   {
    "curriculum_id": "C-B2-OPT-01",
@@ -965,7 +981,8 @@
     "To summarize ___.",
     "That's an excellent question."
    ],
-   "functions": "introducing topic; organizing content; presenting data; concluding; handling questions"
+   "functions": "introducing topic; organizing content; presenting data; concluding; handling questions",
+   "activity": "Formal presentation with Q&A"
   },
   {
    "curriculum_id": "C-B2-OPT-02",
@@ -981,7 +998,8 @@
     "According to the research ___.",
     "One possible explanation is ___."
    ],
-   "functions": "describing trends; comparing data; drawing conclusions; speculating on causes"
+   "functions": "describing trends; comparing data; drawing conclusions; speculating on causes",
+   "activity": "Data analysis with charts/graphs"
   },
   {
    "curriculum_id": "C-B2-OPT-03",
@@ -997,7 +1015,8 @@
     "It could be argued that ___.",
     "This raises the question of ___."
    ],
-   "functions": "presenting arguments; acknowledging counterarguments; evaluating evidence; reaching nuanced conclusions"
+   "functions": "presenting arguments; acknowledging counterarguments; evaluating evidence; reaching nuanced conclusions",
+   "activity": "Argumentative discussion or essay"
   }
  ]
 }

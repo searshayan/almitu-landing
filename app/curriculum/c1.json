@@ -709,7 +709,8 @@
     "To address your question...",
     "The implications of this are..."
    ],
-   "functions": "presenting; structuring; signposting; handling questions; defending positions"
+   "functions": "presenting; structuring; signposting; handling questions; defending positions",
+   "activity": "Extended presentation with critical Q&A"
   },
   {
    "curriculum_id": "C-C1-02",
@@ -725,7 +726,8 @@
     "We need to reach a decision on...",
     "Let's table this for now and..."
    ],
-   "functions": "facilitating; mediating; time-managing; summarizing; decision-making"
+   "functions": "facilitating; mediating; time-managing; summarizing; decision-making",
+   "activity": "Simulated meeting facilitation"
   },
   {
    "curriculum_id": "C-C1-03",
@@ -741,7 +743,8 @@
     "Perhaps we could consider...",
     "I'm not entirely convinced that..."
    ],
-   "functions": "disagreeing politely; acknowledging others; offering alternatives; softening criticism"
+   "functions": "disagreeing politely; acknowledging others; offering alternatives; softening criticism",
+   "activity": "Structured debates and discussions"
   },
   {
    "curriculum_id": "C-C1-04",
@@ -757,7 +760,8 @@
     "When we consider X in light of Y...",
     "The consensus appears to be..."
    ],
-   "functions": "synthesizing; comparing; evaluating; citing; concluding"
+   "functions": "synthesizing; comparing; evaluating; citing; concluding",
+   "activity": "Research presentation with multiple sources"
   },
   {
    "curriculum_id": "C-C1-05",
@@ -773,7 +777,8 @@
     "What would be appropriate here...?",
     "I'm still learning about..."
    ],
-   "functions": "clarifying; checking understanding; adapting communication; showing respect; navigating norms"
+   "functions": "clarifying; checking understanding; adapting communication; showing respect; navigating norms",
+   "activity": "Cross-cultural scenarios and discussions"
   },
   {
    "curriculum_id": "C-C1-06",
@@ -789,7 +794,8 @@
     "We will provide updates as...",
     "We understand your concerns about..."
    ],
-   "functions": "informing; reassuring; directing; updating; maintaining transparency"
+   "functions": "informing; reassuring; directing; updating; maintaining transparency",
+   "activity": "Simulated crisis scenarios"
   },
   {
    "curriculum_id": "C-C1-07",
@@ -805,7 +811,8 @@
     "What strategies might help you...?",
     "Let's set some goals for..."
    ],
-   "functions": "evaluating; encouraging; advising; critiquing constructively; goal-setting"
+   "functions": "evaluating; encouraging; advising; critiquing constructively; goal-setting",
+   "activity": "Feedback role-plays"
   },
   {
    "curriculum_id": "C-C1-08",
@@ -821,7 +828,8 @@
     "To sum up my thoughts...",
     "Building on what was just said..."
    ],
-   "functions": "organizing thoughts quickly; structuring spontaneously; buying time; concluding effectively"
+   "functions": "organizing thoughts quickly; structuring spontaneously; buying time; concluding effectively",
+   "activity": "Impromptu speeches with minimal prep time"
   },
   {
    "curriculum_id": "C-C1-09",
@@ -837,7 +845,8 @@
     "One limitation is...",
     "Further research is needed to..."
    ],
-   "functions": "describing methodology; presenting findings; analyzing implications; acknowledging limitations"
+   "functions": "describing methodology; presenting findings; analyzing implications; acknowledging limitations",
+   "activity": "Research discussion simulation"
   },
   {
    "curriculum_id": "C-C1-10",
@@ -853,7 +862,8 @@
     "The weight of evidence suggests...",
     "We cannot ignore the fact that..."
    ],
-   "functions": "arguing; providing evidence; anticipating objections; countering; concluding powerfully"
+   "functions": "arguing; providing evidence; anticipating objections; countering; concluding powerfully",
+   "activity": "Formal debate or persuasive speech"
   },
   {
    "curriculum_id": "C-C1-11",
@@ -869,7 +879,8 @@
     "May I respond to that?",
     "I'm glad you raised that because..."
    ],
-   "functions": "contributing; building on others' points; managing turns; engaging audience; responding to questions"
+   "functions": "contributing; building on others' points; managing turns; engaging audience; responding to questions",
+   "activity": "Panel simulation with moderator"
   },
   {
    "curriculum_id": "C-C1-12",
@@ -885,7 +896,8 @@
     "Does that make sense?",
     "Let me illustrate this with..."
    ],
-   "functions": "simplifying; analogizing; sequencing; checking understanding; visualizing"
+   "functions": "simplifying; analogizing; sequencing; checking understanding; visualizing",
+   "activity": "Process explanation with feedback"
   },
   {
    "curriculum_id": "C-C1-13",
@@ -901,7 +913,8 @@
     "Is there any way I can help with...?",
     "I was thinking about our conversation..."
    ],
-   "functions": "small talk; showing interest; following up; offering help; staying in touch"
+   "functions": "small talk; showing interest; following up; offering help; staying in touch",
+   "activity": "Networking simulation"
   },
   {
    "curriculum_id": "C-C1-14",
@@ -917,7 +930,8 @@
     "Please let me know if you'd rather not discuss...",
     "I appreciate you sharing that..."
    ],
-   "functions": "approaching carefully; showing sensitivity; using euphemisms; respecting boundaries; supporting"
+   "functions": "approaching carefully; showing sensitivity; using euphemisms; respecting boundaries; supporting",
+   "activity": "Sensitive scenario role-plays"
   },
   {
    "curriculum_id": "C-C1-15",
@@ -933,7 +947,8 @@
     "What we're really talking about is...",
     "I'd like to come back to..."
    ],
-   "functions": "staying on message; bridging; managing difficult questions; sound bites; clarity"
+   "functions": "staying on message; bridging; managing difficult questions; sound bites; clarity",
+   "activity": "Mock interview with tough questions"
   },
   {
    "curriculum_id": "C-C1-16",
@@ -949,7 +964,8 @@
     "The benefits would include...",
     "I urge you to consider..."
    ],
-   "functions": "proposing; justifying; addressing concerns; mobilizing support; maintaining momentum"
+   "functions": "proposing; justifying; addressing concerns; mobilizing support; maintaining momentum",
+   "activity": "Advocacy speech or proposal"
   },
   {
    "curriculum_id": "C-C1-OPT-01",
@@ -965,7 +981,8 @@
     "The main point was...",
     "Let me make sure I understood..."
    ],
-   "functions": "listening actively; note-taking; reproducing message; managing cognitive load"
+   "functions": "listening actively; note-taking; reproducing message; managing cognitive load",
+   "activity": "Consecutive interpretation exercises"
   },
   {
    "curriculum_id": "C-C1-OPT-02",
@@ -981,7 +998,8 @@
     "Is that always true?",
     "How does that follow from...?"
    ],
-   "functions": "questioning assumptions; probing; challenging; clarifying; seeking consistency"
+   "functions": "questioning assumptions; probing; challenging; clarifying; seeking consistency",
+   "activity": "Socratic seminar"
   },
   {
    "curriculum_id": "C-C1-OPT-03",
@@ -997,7 +1015,8 @@
     "This rhetorical strategy...",
     "By framing it as..."
    ],
-   "functions": "identifying rhetoric; analyzing effectiveness; critiquing; recognizing manipulation"
+   "functions": "identifying rhetoric; analyzing effectiveness; critiquing; recognizing manipulation",
+   "activity": "Rhetorical analysis presentation"
   }
  ]
 }

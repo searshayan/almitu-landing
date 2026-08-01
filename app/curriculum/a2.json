@@ -643,7 +643,8 @@
     "It was ___ .",
     "What about you?"
    ],
-   "functions": "narrating; sequencing; reacting"
+   "functions": "narrating; sequencing; reacting",
+   "activity": "Guided storytelling"
   },
   {
    "curriculum_id": "C-A2-02",
@@ -659,7 +660,8 @@
     "Let’s meet at ___.",
     "See you then."
    ],
-   "functions": "arranging; rescheduling; confirming"
+   "functions": "arranging; rescheduling; confirming",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A2-03",
@@ -675,7 +677,8 @@
     "Here is the receipt.",
     "Thank you for your help."
    ],
-   "functions": "complaining; requesting solution; explaining problem"
+   "functions": "complaining; requesting solution; explaining problem",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A2-04",
@@ -691,7 +694,8 @@
     "Why don’t you ___?",
     "That’s a good idea."
    ],
-   "functions": "asking advice; giving advice; responding"
+   "functions": "asking advice; giving advice; responding",
+   "activity": "Problem solving"
   },
   {
    "curriculum_id": "C-A2-05",
@@ -707,7 +711,8 @@
     "I need to ___ .",
     "I hope to ___ ."
    ],
-   "functions": "expressing goals; explaining reasons; planning"
+   "functions": "expressing goals; explaining reasons; planning",
+   "activity": "Mini-presentation"
   },
   {
    "curriculum_id": "C-A2-06",
@@ -723,7 +728,8 @@
     "In my opinion, ___ .",
     "I think ___ because ___ ."
    ],
-   "functions": "describing; giving examples; comparing"
+   "functions": "describing; giving examples; comparing",
+   "activity": "Picture-based speaking"
   },
   {
    "curriculum_id": "C-A2-07",
@@ -739,7 +745,8 @@
     "When can you come?",
     "Thank you for your help."
    ],
-   "functions": "explaining problem; requesting repair; arranging visit"
+   "functions": "explaining problem; requesting repair; arranging visit",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A2-08",
@@ -755,7 +762,8 @@
     "Do I need medicine?",
     "What should I do next?"
    ],
-   "functions": "describing symptoms; clarifying; following advice"
+   "functions": "describing symptoms; clarifying; following advice",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A2-09",
@@ -771,7 +779,8 @@
     "I prefer ___ because ___ .",
     "Let’s choose ___ ."
    ],
-   "functions": "comparing; giving reasons; deciding"
+   "functions": "comparing; giving reasons; deciding",
+   "activity": "Information gap"
   },
   {
    "curriculum_id": "C-A2-10",
@@ -787,7 +796,8 @@
     "What do you think?",
     "I think it’s ___ ."
    ],
-   "functions": "summarizing; reacting; asking opinions"
+   "functions": "summarizing; reacting; asking opinions",
+   "activity": "Guided discussion"
   },
   {
    "curriculum_id": "C-A2-11",
@@ -803,7 +813,8 @@
     "Thanks, I understand now.",
     "I’ll do it like this."
    ],
-   "functions": "requesting; clarifying; thanking"
+   "functions": "requesting; clarifying; thanking",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A2-12",
@@ -819,7 +830,8 @@
     "How about ___?",
     "Great, see you then."
    ],
-   "functions": "inviting; accepting/declining; suggesting alternative"
+   "functions": "inviting; accepting/declining; suggesting alternative",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-A2-13",
@@ -835,7 +847,8 @@
     "That’s a good idea.",
     "It helps because ___ ."
    ],
-   "functions": "describing habits; suggesting; agreeing"
+   "functions": "describing habits; suggesting; agreeing",
+   "activity": "Problem solving"
   },
   {
    "curriculum_id": "C-A2-14",
@@ -851,7 +864,8 @@
     "Finally, ___ .",
     "Does that make sense?"
    ],
-   "functions": "explaining steps; sequencing; checking understanding"
+   "functions": "explaining steps; sequencing; checking understanding",
+   "activity": "Mini-presentation"
   },
   {
    "curriculum_id": "C-A2-OPT-01",
@@ -867,7 +881,8 @@
     "That's okay.",
     "No problem."
    ],
-   "functions": "complaining politely; explaining problems; accepting/making apologies"
+   "functions": "complaining politely; explaining problems; accepting/making apologies",
+   "activity": "Service role-plays (restaurant, hotel, store)"
   },
   {
    "curriculum_id": "C-A2-OPT-02",
@@ -883,7 +898,8 @@
     "Finally, ___.",
     "It was ___."
    ],
-   "functions": "narrating; sequencing events; describing feelings about past"
+   "functions": "narrating; sequencing events; describing feelings about past",
+   "activity": "Story-telling with picture prompts"
   },
   {
    "curriculum_id": "C-A2-OPT-03",
@@ -899,7 +915,8 @@
     "I'd rather ___.",
     "Let's ___ instead."
    ],
-   "functions": "suggesting; agreeing/disagreeing; negotiating"
+   "functions": "suggesting; agreeing/disagreeing; negotiating",
+   "activity": "Collaborative planning task"
   }
  ]
 }

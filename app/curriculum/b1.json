@@ -709,7 +709,8 @@
     "I see your point, but ___ .",
     "Overall, I think ___ ."
    ],
-   "functions": "expressing opinion; giving reasons; giving examples"
+   "functions": "expressing opinion; giving reasons; giving examples",
+   "activity": "Guided discussion"
   },
   {
    "curriculum_id": "C-B1-02",
@@ -725,7 +726,8 @@
     "I understand, but…",
     "Let’s consider ___ ."
    ],
-   "functions": "agreeing; disagreeing; softening"
+   "functions": "agreeing; disagreeing; softening",
+   "activity": "Debate (structured)"
   },
   {
    "curriculum_id": "C-B1-03",
@@ -741,7 +743,8 @@
     "In the end, ___ .",
     "I felt ___ because ___ ."
    ],
-   "functions": "narrating; adding detail; reacting"
+   "functions": "narrating; adding detail; reacting",
+   "activity": "Guided storytelling"
   },
   {
    "curriculum_id": "C-B1-04",
@@ -757,7 +760,8 @@
     "I might need to ___ .",
     "Any suggestions?"
    ],
-   "functions": "explaining; sequencing; justifying"
+   "functions": "explaining; sequencing; justifying",
+   "activity": "Mini-presentation"
   },
   {
    "curriculum_id": "C-B1-05",
@@ -773,7 +777,8 @@
     "I’m flexible after ___ .",
     "Let’s confirm: ___ ."
    ],
-   "functions": "negotiating; proposing; confirming"
+   "functions": "negotiating; proposing; confirming",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B1-06",
@@ -789,7 +794,8 @@
     "What are my options?",
     "I’d like to resolve this today."
    ],
-   "functions": "explaining problem; requesting; clarifying"
+   "functions": "explaining problem; requesting; clarifying",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B1-07",
@@ -805,7 +811,8 @@
     "I’m interested in this role because ___ .",
     "Do you have any questions for me?"
    ],
-   "functions": "describing experience; strengths; examples"
+   "functions": "describing experience; strengths; examples",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B1-08",
@@ -821,7 +828,8 @@
     "Could I visit on ___?",
     "What documents do you need?"
    ],
-   "functions": "asking info; describing needs; negotiating"
+   "functions": "asking info; describing needs; negotiating",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B1-09",
@@ -837,7 +845,8 @@
     "When will it arrive?",
     "Can I get a replacement?"
    ],
-   "functions": "reporting; requesting help; explaining details"
+   "functions": "reporting; requesting help; explaining details",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B1-10",
@@ -853,7 +862,8 @@
     "Another option is ___ .",
     "Let’s decide on ___ ."
    ],
-   "functions": "suggesting; responding; building ideas"
+   "functions": "suggesting; responding; building ideas",
+   "activity": "Problem solving"
   },
   {
    "curriculum_id": "C-B1-11",
@@ -869,7 +879,8 @@
     "In my experience, ___ .",
     "What’s your take on it?"
    ],
-   "functions": "discussing; evaluating; giving examples"
+   "functions": "discussing; evaluating; giving examples",
+   "activity": "Guided discussion"
   },
   {
    "curriculum_id": "C-B1-12",
@@ -885,7 +896,8 @@
     "I should probably ___ .",
     "Have you ever tried ___?"
    ],
-   "functions": "explaining; advising; describing changes"
+   "functions": "explaining; advising; describing changes",
+   "activity": "Personal interview"
   },
   {
    "curriculum_id": "C-B1-13",
@@ -901,7 +913,8 @@
     "If you reach ___, you’ve gone too far.",
     "Does that help?"
    ],
-   "functions": "explaining; sequencing; confirming understanding"
+   "functions": "explaining; sequencing; confirming understanding",
+   "activity": "Information gap"
   },
   {
    "curriculum_id": "C-B1-14",
@@ -917,7 +930,8 @@
     "We should consider ___ .",
     "What solution do you propose?"
    ],
-   "functions": "arguing; giving reasons; countering"
+   "functions": "arguing; giving reasons; countering",
+   "activity": "Debate (structured)"
   },
   {
    "curriculum_id": "C-B1-15",
@@ -933,7 +947,8 @@
     "Make sure you ___ .",
     "Any questions so far?"
    ],
-   "functions": "explaining rules; giving warnings; clarifying"
+   "functions": "explaining rules; giving warnings; clarifying",
+   "activity": "Mini-presentation"
   },
   {
    "curriculum_id": "C-B1-16",
@@ -949,7 +964,8 @@
     "We should stay in touch.",
     "Here’s my contact."
    ],
-   "functions": "introducing; describing work; keeping conversation"
+   "functions": "introducing; describing work; keeping conversation",
+   "activity": "Role-play"
   },
   {
    "curriculum_id": "C-B1-OPT-01",
@@ -965,7 +981,8 @@
     "Let's compromise.",
     "I'm willing to ___."
    ],
-   "functions": "negotiating; compromising; persuading; reaching agreement"
+   "functions": "negotiating; compromising; persuading; reaching agreement",
+   "activity": "Structured negotiation tasks"
   },
   {
    "curriculum_id": "C-B1-OPT-02",
@@ -981,7 +998,8 @@
     "Could you explain ___?",
     "That's an interesting point."
    ],
-   "functions": "expressing opinions; agreeing/disagreeing; giving reasons; asking for clarification"
+   "functions": "expressing opinions; agreeing/disagreeing; giving reasons; asking for clarification",
+   "activity": "Structured debate or discussion"
   },
   {
    "curriculum_id": "C-B1-OPT-03",
@@ -997,7 +1015,8 @@
     "It would be ___ if ___.",
     "That would depend on ___."
    ],
-   "functions": "hypothesizing; speculating; describing consequences"
+   "functions": "hypothesizing; speculating; describing consequences",
+   "activity": "Hypothetical scenario discussions"
   }
  ]
 }
