@@ -18,7 +18,8 @@ LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any 
 - "text":      { "instruction": "Read the passage aloud with your tutor.", "paragraphs": ["... use **word** to bold target items ..."], "source_label": "label or empty", "note": "short note or empty" }
 - "table":     { "intro": "short line or empty", "headers": ["...","..."], "rows": [ ["cell","cell"] ] }
 - "compare":   { "intro": "short line or empty", "pairs": [ { "good": "correct version", "bad": "incorrect version", "note": "why" } ] }
-- "task":      { "scenario": "...", "steps": ["...","..."], "tip": "short tip or empty", "criteria": ["success criterion", "..."] }
+- "task":      { "scenario": "...", "steps": ["...","..."], "tip": "short tip or empty", "criteria": ["success criterion", "..."], "can_do": "(optional, for a combined speak+review slide) one Can-Do statement", "next_step": "(optional) post-session activity + tutor tracks metrics" }
+- "toolkit":   { "intro": "short line or empty", "groups": [ { "function": "Opening|Requesting|Responding|Clarifying|Closing", "items": [ { "phrase": "the expression", "use": "one-line when/why", "l1": "L1 gloss or empty" } ] } ] }
 - "checklist": { "intro": "warm reinforcement line", "style": "check|numbered", "items": [ { "text": "I can ... (Can-Do statement)", "hint": "small hint or empty" } ], "footer": "the Next Step: name the post-session activity + note the tutor tracks completion time and metrics" }
 - "bankmatch": { "intro": "instructions", "bank": ["word1","word2"], "prompts": [ { "q": "sentence with ___", "a": "answer from bank" } ] }
 - "practice":  { "partA": { "instruction": "Fill in the blanks with the correct words from the Word Bank to complete the sentences.", "bank": ["6 dialogue words"], "sentences": ["... ___ ..."] }, "partB": { "instruction": "Create sentences using the following words.", "words": ["the 6 passage words"] } }
@@ -226,12 +227,13 @@ const RENDER_SPECS_15 = {
 
 /* ═══════════════════════════════════════════════════════
    RENDER SKELETONS
-   Vocabulary and Grammar follow the emoji-free spec, each with a 25-min
-   and a distinct 15-min architecture (VOCAB_SKELETON_* / GRAMMAR_SKELETON_*).
-   Communication keeps its existing unified 6-slide shell (both durations)
-   until its own spec is defined. Slide TYPES are fixed; tier / level /
-   duration / L1 drive only CONTENT depth, scaffolding and density —
-   handled in buildSystemPrompt.
+   All three skills follow the emoji-free spec, each with a 25-min and a
+   distinct 15-min architecture:
+     Vocabulary    — VOCAB_SKELETON_25 (6) / _15 (4)
+     Grammar       — GRAMMAR_SKELETON_25 (7) / _15 (4)
+     Communication — COMM_SKELETON_25 (7) / _15 (4)
+   Slide TYPES are fixed; tier / level / duration / L1 drive only CONTENT
+   depth, scaffolding and density — handled in buildSystemPrompt.
    ═══════════════════════════════════════════════════════ */
 
 /* ── Vocabulary · 25-minute · 6 slides ── */
@@ -271,28 +273,37 @@ const GRAMMAR_SKELETON_15 = [
   { icon: '', label: 'Practice & Review', layout: 'applyreview', brief: 'application.instruction = a transform/gap-fill instruction; application.prompts = 3 rapid items (Pre-A1: 2) practising the target form; include application.bank (pattern pieces/verb forms) for Foundation only. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
 ];
 
-const RENDER_SKELETON = {
-  communication: [
-    { icon: '🎯', label: 'Objective', layout: 'hero', brief: 'Title + duration subtitle. Goal + "I can…" (e.g. "I can order food and ask the price"). 1-2 chips.' },
-    { icon: '💬', label: 'Key Phrases', layout: 'cards', brief: '4-8 functional phrases as cards, cols:2. Each card: emoji, the phrase (top), L1 (mid — only if L1 on), function / when-to-use (bottom). Complexity by tier: Foundation very short, Development phrase + reason, Proficiency discourse-level.' },
-    { icon: '🗣️', label: 'Practice Lines', layout: 'rows', brief: '4-6 lines the learner repeats (mini-dialogue turns), focused on politeness and clarity. main = the line; sub = L1 (if on); note = phonetic (Foundation, if helpful).' },
-    { icon: '🧩', label: 'Controlled Practice', layout: 'bankmatch', brief: 'Match phrases to situations. bank = the key phrases. 6-8 prompts: q = a situation ending with ___, a = the correct phrase. Fewer for 15-min.' },
-    { icon: '🎤', label: 'Scenario / Speak', layout: 'task', brief: 'Role-play anchored in the country where natural. 3-5 steps using the phrases, tip, tiered criteria (Foundation: use a phrase once; Proficiency: give a reason, respond to a counter, summarize).' },
-    { icon: '✅', label: 'Review & Homework', layout: 'checklist', brief: 'style:check. "I can…" review lines (L1 only if L1 on). footer = one small homework task.' }
-  ]
-};
+/* ── Communication & Speaking · 25-minute · 7 slides (Set up → Equip → Model → Refine → Drill → Perform → Review) ── */
+const COMM_SKELETON_25 = [
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the real-life scenario and what the learner will be able to DO in it. warmup = a SINGLE warm-up question that primes the situation (e.g. "When did you last have to make an appointment by phone?"). 1-2 short chips. No emojis.' },
+  { icon: '', label: 'Language Toolkit', layout: 'toolkit', brief: 'groups = 3-5 communicative functions relevant to the scenario (e.g. Opening, Requesting, Responding, Clarifying, Closing). For each group, items = the key expressions for that function, distributed from the tutor\'s target expressions. Each item: phrase; use = one line on when/why; l1 = gloss ONLY if L1 support is on, else "". Foundation: 4-6 fixed short phrases across 2-3 functions; Development: 6-8 with reasons; Proficiency: discourse-level exponents (hedging, concession, turn-taking) across more functions.' },
+  { icon: '', label: 'Model Dialogue', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." A realistic model exchange in the scenario that uses the toolkit expressions (bold each occurrence). Use the tutor\'s student/tutor roles if given. Turns/complexity by level. Student side = right.' },
+  { icon: '', label: 'Register & Delivery', layout: 'compare', brief: 'pairs = 3-4 register / politeness contrasts grounded in the cultural-context notes. good = the appropriate, polite version; bad = a too-blunt, too-informal or culturally off version; note = the pragmatic why (politeness, formality, tone). Keep realistic for the scenario and this culture.' },
+  { icon: '', label: 'Controlled Practice', layout: 'bankmatch', brief: 'bank = the key expressions. prompts = 6-8 situations (fewer at Foundation), each q ending with ___ where the learner supplies the right expression; a = the expression. Never reveal the answer in the situation.' },
+  { icon: '', label: 'Your Turn — Speaking Task', layout: 'task', brief: 'The main speaking activity (use the tutor\'s chosen activity type: role-play/discussion/interview/debate/presentation/negotiation/problem-solving) and roles. scenario = the situation. steps scaffolded by level: Foundation = 3 scripted steps with fixed sentence frames; Development = 3-4 situation prompts including ONE complication; Proficiency = 3-4 open stages. tip references the Toolkit. criteria = 2-4 success points by level.' },
+  { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm, specific tutor reinforcement line. items = EXACTLY 3 Can-Do statements ("I can …") about handling the situation, matched to the level. footer = the Next Step: name the level-appropriate post-session activity and note the tutor tracks completion time and practice metrics. Add an L1 line in items only if L1 support is on.' }
+];
 
-/* Vocabulary and Grammar switch architecture by duration (spec-based);
-   Communication still uses its unified 6-slide shell for both durations. */
+/* ── Communication & Speaking · 15-minute · 4 slides ── */
+const COMM_SKELETON_15 = [
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the scenario; warmup = a SINGLE warm-up question priming the situation. 1-2 short chips. No emojis.' },
+  { icon: '', label: 'Language Toolkit', layout: 'toolkit', brief: 'groups = 2-3 communicative functions with the 4-6 most essential expressions (from the tutor\'s target expressions). Each item: phrase + use (one line) + l1 only if L1 support is on.' },
+  { icon: '', label: 'Model Dialogue', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." A short realistic exchange (4-6 turns; Pre-A1: 2-3) using the toolkit expressions (bold each). Student side = right.' },
+  { icon: '', label: 'Speak & Review', layout: 'task', brief: 'The speaking activity, condensed: scenario + 3 steps (scaffolded by level) using the toolkit, tip, and 2-3 criteria. Then can_do = ONE core Can-Do statement for the level, and next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
+];
+
+const RENDER_SKELETON = {};   // all three skills are now spec-based (see *_SKELETON_* above)
+
+/* All three skills are spec-based and switch architecture by duration. */
 function getRenderSpec(skill, tier, duration) {
   const short = Number(duration) === 15;
   let slides;
-  if (skill === 'vocabulary') {
-    slides = short ? VOCAB_SKELETON_15 : VOCAB_SKELETON_25;
-  } else if (skill === 'grammar') {
+  if (skill === 'grammar') {
     slides = short ? GRAMMAR_SKELETON_15 : GRAMMAR_SKELETON_25;
+  } else if (skill === 'communication') {
+    slides = short ? COMM_SKELETON_15 : COMM_SKELETON_25;
   } else {
-    slides = RENDER_SKELETON[skill] || VOCAB_SKELETON_25;
+    slides = short ? VOCAB_SKELETON_15 : VOCAB_SKELETON_25;   // vocabulary (default)
   }
   return { id: renderIdFor(skill, tier), slides };
 }

@@ -181,6 +181,11 @@ const LAYOUT_BUILDERS = {
         <div class="p-3 rounded-xl" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12);">
           <p class="text-xs font-semibold mb-1.5" style="color:var(--secondary);">Success criteria</p>
           ${d.criteria.map(c => `<p class="text-xs flex items-start gap-1.5" style="color:var(--ink);"><span style="color:var(--secondary);">-</span> ${md(c)}</p>`).join('')}
+        </div>` : ''}
+      ${(d.can_do || d.next_step) ? `
+        <div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);">
+          ${d.can_do ? `<p class="text-sm font-medium" style="color:var(--ink);">"${md(d.can_do)}"</p>` : ''}
+          ${d.next_step ? `<p class="text-xs mt-2" style="color:var(--muted);"><span class="font-semibold" style="color:#059669;">Next Step:</span> ${md(d.next_step)}</p>` : ''}
         </div>` : ''}`;
   },
 
@@ -285,6 +290,30 @@ const LAYOUT_BUILDERS = {
       <div class="p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);">
         ${rev.can_do ? `<p class="text-sm font-medium" style="color:var(--ink);">"${md(rev.can_do)}"</p>` : ''}
         ${rev.next_step ? `<p class="text-xs mt-2" style="color:var(--muted);"><span class="font-semibold" style="color:#059669;">Next Step:</span> ${md(rev.next_step)}</p>` : ''}
+      </div>`;
+  },
+
+  /* ── Communication: Language Toolkit ── functional expressions grouped by
+     communicative function (Open / Ask / Respond / Clarify / Close). */
+  toolkit(d, ctx, slide) {
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="space-y-4">
+        ${(d.groups || []).map(g => `
+          <div>
+            <div class="inline-block text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-2" style="background:rgba(0,78,137,.08); color:var(--secondary);">${escapeHtml(g.function || '')}</div>
+            <div class="space-y-2">
+              ${(g.items || []).map(it => {
+                const phrase = typeof it === 'string' ? it : it.phrase;
+                return `
+                <div class="p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
+                  <p class="text-sm font-semibold" style="color:var(--navy);">${md(phrase)}</p>
+                  ${(it && it.use) ? `<p class="text-xs mt-0.5" style="color:var(--muted);">${md(it.use)}</p>` : ''}
+                  ${(it && it.l1) ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${escapeHtml(it.l1)}</p>` : ''}
+                </div>`; }).join('')}
+            </div>
+          </div>`).join('')}
       </div>`;
   },
 
