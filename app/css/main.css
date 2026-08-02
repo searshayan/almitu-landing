@@ -426,6 +426,35 @@
 }
 .sim-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(255,107,53,.04); }
 
+/* ── Tutor aids: collapsible Notes / Answer Keys / Feedback disclosures ── */
+.aid-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.aid { display: inline-flex; flex-direction: column; }
+.aid-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .15s ease;
+}
+.aid-btn:hover { filter: brightness(.97); }
+.aid-caret { font-size: 10px; opacity: .8; }
+.aid-panel {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: #fff;
+  font-size: 13px;
+  color: var(--ink);
+  max-width: 640px;
+}
+.aid-panel[hidden] { display: none; }
+.aid-list { margin: 0; padding-left: 20px; }
+.aid-list li { margin: 2px 0; }
+
 /* ═══════════════════════════════════════════════════════
    Presentation Mode — full-screen, large slide for screen sharing
    ═══════════════════════════════════════════════════════ */

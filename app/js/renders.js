@@ -112,7 +112,8 @@ const LAYOUT_BUILDERS = {
               <span class="text-[10px] font-semibold block mb-0.5">${escapeHtml(l.speaker)}</span>${md(l.line)}
             </div>
           </div>`).join('')}
-      </div>`;
+      </div>
+      ${aidBar([disclosure('Notes', 'notes', d.notes ? `<p class="text-sm" style="color:var(--ink);">${md(d.notes)}</p>` : '')])}`;
   },
 
   table(d, ctx, slide) {
@@ -238,6 +239,10 @@ const LAYOUT_BUILDERS = {
               <p class="text-sm flex-1" style="color:var(--ink);">${md(s)}</p>
             </div>`).join('')}
         </div>
+        ${aidBar([
+          disclosure('Answer Keys', 'answers', aidNumberedList((a.answers || []).map(x => (typeof x === 'string' ? x : x.answer)))),
+          disclosure('Feedback & Comment', 'feedback', aidNumberedList((a.answers || []).map(x => (x && x.feedback) || '').filter(Boolean)))
+        ])}
       </div>
       <div>
         <p class="text-sm font-semibold mb-2" style="color:var(--secondary);">Part B — Sentence Building</p>
@@ -245,6 +250,7 @@ const LAYOUT_BUILDERS = {
         <div class="flex flex-wrap gap-2">
           ${(b.words || []).map(w => `<span class="text-sm px-3 py-1.5 rounded-xl font-medium" style="background:white; border:1px solid var(--line); color:var(--navy);">${escapeHtml(w)}</span>`).join('')}
         </div>
+        ${aidBar([disclosure('Notes', 'notes', b.notes ? `<p class="text-sm" style="color:var(--ink);">${md(b.notes)}</p>` : '')])}
       </div>`;
   },
 
@@ -266,7 +272,8 @@ const LAYOUT_BUILDERS = {
       </div>
       <div class="p-5 rounded-2xl space-y-3" style="background:#F8F9FD; border:1px solid var(--line);">
         ${(ps.paragraphs || []).map(p => `<p class="text-sm leading-relaxed" style="color:var(--ink);">${md(p)}</p>`).join('')}
-      </div>`;
+      </div>
+      ${aidBar([disclosure('Notes', 'notes', d.notes ? `<p class="text-sm" style="color:var(--ink);">${md(d.notes)}</p>` : '')])}`;
   },
 
   /* ── Slide 4 (Vocabulary, 15-min): Application + one-line Review ── */
@@ -286,6 +293,11 @@ const LAYOUT_BUILDERS = {
               <p class="text-sm flex-1" style="color:var(--ink);">${md(typeof p === 'string' ? p : p.q)}</p>
             </div>`).join('')}
         </div>
+        ${aidBar([
+          disclosure('Answer Keys', 'answers', aidNumberedList((app.answers || []).map(x => (typeof x === 'string' ? x : x.answer)))),
+          disclosure('Feedback & Comment', 'feedback', aidNumberedList((app.answers || []).map(x => (x && x.feedback) || '').filter(Boolean))),
+          disclosure('Notes', 'notes', app.notes ? `<p class="text-sm" style="color:var(--ink);">${md(app.notes)}</p>` : '')
+        ])}
       </div>
       <div class="p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);">
         ${rev.can_do ? `<p class="text-sm font-medium" style="color:var(--ink);">"${md(rev.can_do)}"</p>` : ''}
@@ -345,6 +357,41 @@ const LAYOUT_BUILDERS = {
       ${d.note ? `<div class="mt-3 p-3 rounded-xl text-xs" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);"><span class="font-semibold text-red-500">Watch out:</span> <span style="color:var(--ink);">${md(d.note)}</span></div>` : ''}`;
   }
 };
+
+/* ── Tutor aids: collapsible colour-coded disclosures (Notes / Answer Keys /
+   Feedback & Comment). Visible to all; expand on click. Render only when the
+   panel has content. The toggle works on the sibling panel, so duplicated
+   slide HTML (e.g. the presentation overlay) never collides on ids. ── */
+const AID_COLORS = {
+  notes:    ['var(--secondary)', 'rgba(0,78,137,.08)',  'rgba(0,78,137,.22)'],
+  answers:  ['#059669',          'rgba(6,214,160,.10)',  'rgba(6,214,160,.30)'],
+  feedback: ['#B45309',          'rgba(255,210,63,.16)', 'rgba(255,210,63,.5)']
+};
+function disclosure(label, colorKey, innerHtml) {
+  if (!innerHtml) return '';
+  const [fg, bg, br] = AID_COLORS[colorKey] || AID_COLORS.notes;
+  return `<div class="aid">
+      <button type="button" class="aid-btn" onclick="toggleAid(this)" style="color:${fg};background:${bg};border:1px solid ${br};">
+        <span>${escapeHtml(label)}</span><span class="aid-caret">▾</span>
+      </button>
+      <div class="aid-panel" hidden style="border:1px solid ${br};">${innerHtml}</div>
+    </div>`;
+}
+function aidBar(items) {
+  const shown = items.filter(Boolean);
+  return shown.length ? `<div class="aid-bar">${shown.join('')}</div>` : '';
+}
+function aidNumberedList(arr) {
+  if (!arr || !arr.length) return '';
+  return `<ol class="aid-list">${arr.map(x => `<li>${md(String(x))}</li>`).join('')}</ol>`;
+}
+/* Global: toggle the panel that follows the clicked button. */
+function toggleAid(btn) {
+  const panel = btn && btn.nextElementSibling;
+  if (panel) panel.hidden = !panel.hidden;
+  const caret = btn && btn.querySelector('.aid-caret');
+  if (caret) caret.textContent = panel && panel.hidden ? '▾' : '▴';
+}
 
 /* Shared: a "Word Bank" chip strip (used by bankmatch, practice, applyreview). */
 function bankChips(bank) {

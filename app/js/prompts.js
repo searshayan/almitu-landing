@@ -14,7 +14,7 @@ LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any 
 - "wordlist":  { "intro": "short line or empty", "words": [ { "word": "Book", "pron": "/bʊk/  (IPA for A2-C2; a simple phonetic hint like 'say: buk' for Pre-A1/A1)", "pos": "Noun", "definition": "contextual meaning", "example": "sentence with the **Book** in bold", "l1": "L1 gloss or empty" } ], "collocations": ["read a book","..."] }
 - "cards":     { "intro": "short line or empty", "cols": 3, "items": [ { "top": "main text", "mid": "secondary text or empty", "bottom": "small text or empty" } ] }
 - "rows":      { "intro": "short line or empty", "rows": [ { "main": "primary text", "sub": "secondary text or empty", "note": "small colored note or empty" } ] }
-- "dialogue":  { "instruction": "Read the dialogue aloud with your tutor.", "setting": "one line scene description", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }
+- "dialogue":  { "instruction": "Read the dialogue aloud with your tutor.", "setting": "one line scene description", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ], "notes": "tutor-aid text: comprehension-check questions + a pronunciation focus, or empty" }
 - "text":      { "instruction": "Read the passage aloud with your tutor.", "paragraphs": ["... use **word** to bold target items ..."], "source_label": "label or empty", "note": "short note or empty" }
 - "table":     { "intro": "short line or empty", "headers": ["...","..."], "rows": [ ["cell","cell"] ] }
 - "compare":   { "intro": "short line or empty", "pairs": [ { "good": "correct version", "bad": "incorrect version", "note": "why" } ] }
@@ -22,9 +22,9 @@ LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any 
 - "toolkit":   { "intro": "short line or empty", "groups": [ { "function": "Opening|Requesting|Responding|Clarifying|Closing", "items": [ { "phrase": "the expression", "use": "one-line when/why", "l1": "L1 gloss or empty" } ] } ] }
 - "checklist": { "intro": "warm reinforcement line", "style": "check|numbered", "items": [ { "text": "I can ... (Can-Do statement)", "hint": "small hint or empty" } ], "footer": "the Next Step: name the post-session activity + note the tutor tracks completion time and metrics" }
 - "bankmatch": { "intro": "instructions", "bank": ["word1","word2"], "prompts": [ { "q": "sentence with ___", "a": "answer from bank" } ] }
-- "practice":  { "partA": { "instruction": "Fill in the blanks with the correct words from the Word Bank to complete the sentences.", "bank": ["6 dialogue words"], "sentences": ["... ___ ..."] }, "partB": { "instruction": "Create sentences using the following words.", "words": ["the 6 passage words"] } }
-- "integrated":{ "instruction": "Read the dialogue and text aloud with your tutor.", "dialogue": { "setting": "or empty", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }, "passage": { "paragraphs": ["... **word** ..."] } }
-- "applyreview":{ "application": { "instruction": "...", "bank": ["or omit"], "prompts": ["... ___ ..."] }, "review": { "can_do": "one core Can-Do statement", "next_step": "post-session activity + tutor tracks metrics" } }
+- "practice":  { "partA": { "instruction": "Fill in the blanks with the correct words from the Word Bank to complete the sentences.", "bank": ["target items = answer pool"], "sentences": ["... ___ ..."], "answers": [ { "answer": "item for blank 1", "feedback": "short feedback phrase" } ] }, "partB": { "instruction": "Create sentences using the following words.", "words": ["items to build with"], "notes": "tutor-aid: eliciting corrections / elaboration / difficulty, or empty" } }
+- "integrated":{ "instruction": "Read the dialogue and text aloud with your tutor.", "dialogue": { "setting": "or empty", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }, "passage": { "paragraphs": ["... **word** ..."] }, "notes": "tutor-aid: comprehension questions + a pronunciation focus, or empty" }
+- "applyreview":{ "application": { "instruction": "...", "bank": ["target items = answer pool"], "prompts": ["... ___ ..."], "answers": [ { "answer": "item for prompt 1", "feedback": "short feedback phrase" } ], "notes": "tutor-aid or empty" }, "review": { "can_do": "one core Can-Do statement", "next_step": "post-session activity + tutor tracks metrics" } }
 - "form":       { "intro": "short line or empty", "formula": "Subject + have/has + past participle", "forms": [ { "label": "Positive|Negative|Question", "example": "sentence with the target parts in **bold**" } ], "use": "one line: when/why to use it", "examples": [ "model sentence with target parts in **bold**" ], "l1": "L1 note on the pattern or empty", "note": "a short common-error / watch-out line or empty" }`;
 
 /* ── Tier rule blocks (CEFR alignment contract) ──
@@ -239,19 +239,19 @@ const RENDER_SPECS_15 = {
 /* ── Vocabulary · 25-minute · 6 slides ── */
 const VOCAB_SKELETON_25 = [
   { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the number of target words and the lexical domain. warmup = a SINGLE engaging warm-up question tied directly to the topic (this replaces the can-do here). 1-2 short chips. No emojis.' },
-  { icon: '', label: 'New Words', layout: 'wordlist', brief: 'words = EXACTLY 12 items (Pre-A1: EXACTLY 6). Each: word; pron = IPA in slashes for A2-C2, but a simple learner phonetic hint (e.g. "say: buk") for Pre-A1/A1 — NEVER IPA at Pre-A1/A1; pos = part of speech (label phrasal verbs as such from A2); definition = contextual meaning at the exact level; example = a level-appropriate sentence with the target word in **bold**; l1 = gloss ONLY if L1 support is on, else "". collocations = 4-5 topic collocations (Pre-A1: 2-3; B2/C1/C2: 5).' },
-  { icon: '', label: 'Dialogue Practice', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." Title the dialogue after the topic (put it in the slide title). Incorporate the FIRST 6 target words (Pre-A1: first 3) in a realistic exchange. Turns by level: Pre-A1 2-3 lines; A1 4; A2 6 service/workplace; B1 opinion + polite interruptions; B2 high-stakes sync-up; C1 sophisticated multi-turn; C2 register-shifting. Student side = right.' },
-  { icon: '', label: 'Article & Story', layout: 'text', brief: 'instruction EXACTLY "Read the passage aloud with your tutor." Title the passage after the topic. Incorporate the OTHER 6 target words (Pre-A1: other 3) with ZERO overlap with the dialogue words. Length by level: Pre-A1 30w micro-story, A1 40w, A2 60w, B1 70w, B2 80w, C1 90w, C2 100w. Bold each target word.' },
-  { icon: '', label: 'Fill in the Blanks & Sentence Building', layout: 'practice', brief: 'partA.instruction EXACTLY "Fill in the blanks with the correct words from the Word Bank to complete the sentences." partA.bank = the 6 dialogue words (Pre-A1: 3). partA.sentences = level-appropriate sentences each with ___ (Pre-A1 2, A1 3, A2-C2 3-5). Never reveal the answer in the sentence. partB.instruction EXACTLY "Create sentences using the following words." partB.words = the 6 passage words (Pre-A1: 3).' },
+  { icon: '', label: 'New Words', layout: 'wordlist', brief: 'words = ONE card for EVERY item in the tutor\'s Target Vocabulary, in the SAME order, exactly as many cards as items — never add, drop, reorder or substitute (a multi-word phrase counts as one item). Each card: word; pron = IPA in slashes for A2-C2, a simple learner phonetic hint (e.g. "say: buk") for Pre-A1/A1 (NEVER IPA below A2); pos = part of speech; definition = one clear one-sentence contextual meaning at this level; example = one natural sentence with the item in **bold**, set in a context relevant to the Learner Profile and topic; l1 = gloss ONLY if L1 support is on, else "". collocations = topic collocations (Pre-A1: 2-3; A1-B1: 4; B2-C2: 5).' },
+  { icon: '', label: 'Dialogue Practice', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." Title the dialogue after the topic. Write a CONNECTED dialogue between two named people/roles in a real situation relevant to the Learner Profile and topic, with a clear goal and a natural beginning-middle-resolution where EACH line answers the previous one. Naturally use EVERY target item at least once (bold each on first use) — only where it genuinely fits, never forced. Obey the exact line count for this level given in LENGTH TARGETS. Student side = right. notes = 1-2 short comprehension-check questions plus one pronunciation focus (a sound or stress to watch).' },
+  { icon: '', label: 'Short Story / Article', layout: 'text', brief: 'instruction EXACTLY "Read the passage aloud with your tutor." Title the passage after the topic. Write ONE cohesive text with a single throughline: a STORY (a character + a situation + a small arc) at Pre-A1-B1, or a short informational/opinion ARTICLE (topic sentence -> support -> close) at B2-C2. Use EVERY target item at natural points (bold each); reinforce meaning through context, NOT dictionary-style explanation. Obey the exact paragraph count for this level given in LENGTH TARGETS. Reading level = this level, relevant to the Learner Profile. Optional short tutor tip in note.' },
+  { icon: '', label: 'Fill in the Blanks & Sentence Building', layout: 'practice', brief: 'partA.instruction EXACTLY "Fill in the blanks with the correct words from the Word Bank to complete the sentences." partA.bank = the target vocabulary (the answer pool). partA.sentences = numbered items each with ONE blank (___) for Pre-A1-B1, OR a short connected dialogue with numbered blanks for B2-C2; obey the exact item count in LENGTH TARGETS; every blank has ONE unambiguous answer; use each item where possible. partA.answers = for each blank in order { answer: the correct item, feedback: a short interactive-checking feedback phrase }. partB.instruction EXACTLY "Create sentences using the following words." partB.words = items for the learner to build their own sentences, PRIORITISING items not used in Part A (not limited to them). partB.notes = brief tutor notes on eliciting corrections, encouraging elaboration and adapting difficulty.' },
   { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm, specific tutor reinforcement line. items = EXACTLY 3 Can-Do statements ("I can …") matched to the level. footer = the Next Step: name the level-appropriate post-session activity the student completes on the platform and note the tutor tracks completion time and practice metrics. Add an L1 line in items only if L1 support is on.' }
 ];
 
 /* ── Vocabulary · 15-minute · 4 slides (distinct architecture, not a trimmed 25-min) ── */
 const VOCAB_SKELETON_15 = [
   { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective; warmup = a SINGLE engaging warm-up question tied to the topic. 1-2 short chips. No emojis.' },
-  { icon: '', label: 'New Words & Collocations', layout: 'wordlist', brief: 'words = EXACTLY 6 high-impact items (Pre-A1: EXACTLY 4). Same fields as the 25-min word list (pron = IPA for A2-C2, phonetic hint for Pre-A1/A1; pos; definition; example with target in **bold**; l1 only if on). collocations = 3 key collocations (Pre-A1: 2).' },
-  { icon: '', label: 'Integrated Practice', layout: 'integrated', brief: 'instruction EXACTLY "Read the dialogue and text aloud with your tutor." dialogue.lines = a short exchange (3-4 lines; Pre-A1: 2) and passage.paragraphs = a micro-passage (Pre-A1 20w, A1 30w, A2 40w, B1 45w, B2 50w, C1 55w, C2 60w). Together they integrate ALL target words with zero redundancy; bold each target word where it appears in the passage.' },
-  { icon: '', label: 'Application & Review', layout: 'applyreview', brief: 'application.prompts = 3 rapid gap-fill or sentence-building tasks (Pre-A1: 2) using the target words; include application.bank (the target words) for Foundation levels only, omit for others. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
+  { icon: '', label: 'New Words & Collocations', layout: 'wordlist', brief: 'words = ONE card for EVERY item in the tutor\'s Target Vocabulary, in the SAME order, exactly as many cards as items — never add, drop, reorder or substitute (a multi-word phrase counts as one item). Fields as the 25-min word list: pron = IPA for A2-C2, a phonetic hint (e.g. "say: buk") for Pre-A1/A1 (never IPA below A2); pos; one-sentence contextual definition at this level; example with the item in **bold** in a context relevant to the Learner Profile; l1 gloss only if L1 support is on. collocations = 3 topic collocations (Pre-A1: 2).' },
+  { icon: '', label: 'Integrated Practice', layout: 'integrated', brief: 'instruction EXACTLY "Read the dialogue and text aloud with your tutor." Write a CONNECTED dialogue between two named roles in a real situation relevant to the Learner Profile and topic (each line answers the previous), then a cohesive mini-passage on the same topic. Together the dialogue and passage use EVERY target item at least once, naturally (bold each item on first use) — never forced. Obey the exact dialogue line count and passage length in LENGTH TARGETS. Student side = right. notes = 1-2 short comprehension-check questions plus one pronunciation focus.' },
+  { icon: '', label: 'Application & Review', layout: 'applyreview', brief: 'application.instruction = a clear gap-fill / sentence-building instruction. application.bank = the target vocabulary (answer pool). application.prompts = rapid items each with ONE blank (___); obey the exact count in LENGTH TARGETS; every blank has ONE unambiguous answer. application.answers = for each prompt in order { answer: the correct item, feedback: a short interactive-checking phrase }. application.notes = brief tutor notes on eliciting corrections and adapting difficulty. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
 ];
 
 /* ── Grammar · 25-minute · 7 slides (Present → Expose → Correct → Practice → Produce → Review) ── */
@@ -350,6 +350,40 @@ Each slide object: { "icon": "<given>", "label": "<given>", "title": "a brief, d
 ${LAYOUT_DOCS}`;
 }
 
+/* Strict, level-resolved length targets for the Vocabulary practice slides.
+   Injected as exact requirements so counts are not left to the model. */
+function vocabTargets(level) {
+  const band = ['Pre-A1', 'A1'].includes(level) ? 'low'
+    : ['A2', 'B1'].includes(level) ? 'mid' : 'high';
+  return {
+    // 25-minute deck
+    dialogueLines: band === 'low' ? '6 to 8' : band === 'mid' ? '8 to 10' : '10 to 14',
+    storyGenre: band === 'high' ? 'a short informational/opinion ARTICLE' : 'a STORY',
+    storyParagraphs: band === 'low' ? '1 paragraph' : band === 'mid' ? '2 paragraphs' : '3 paragraphs',
+    fillItems: band === 'low' ? '6 numbered sentences (one blank each)'
+      : band === 'mid' ? '8 numbered sentences (one blank each)'
+        : 'a short connected dialogue with 8-10 numbered blanks',
+    // 15-minute micro-session
+    intDialogueLines: band === 'low' ? '4 to 6' : band === 'mid' ? '6 to 8' : '8 to 10',
+    intPassage: band === 'low' ? '2-3 sentences' : band === 'mid' ? '3-4 sentences' : '4-6 sentences',
+    applyItems: band === 'low' ? '3' : band === 'mid' ? '4' : '4-5'
+  };
+}
+
+/* Resolve a Student Profile string for personalization. Live sessions use the
+   tutor's real inputs; curriculum/empty falls back to a neutral adult learner
+   grounded only in the topic/context (no invented personal facts). */
+function resolveStudentProfile(formData) {
+  const d = formData.details || {};
+  const bits = [];
+  if (formData.countryOfResident) bits.push('living in ' + formData.countryOfResident);
+  if (d.personalization) bits.push(d.personalization);
+  if (d.realWorldContext) bits.push('will use this English for: ' + d.realWorldContext);
+  return bits.length
+    ? 'An adult learner ' + bits.join('; ') + '.'
+    : 'A general adult learner — ground examples only in the topic and context above; invent no personal facts.';
+}
+
 function buildUserPrompt(formData) {
   const spec = getRenderSpec(formData.sessionType, formData.tier, formData.duration);
   const st = getSessionType(formData.sessionType);
@@ -365,10 +399,25 @@ function buildUserPrompt(formData) {
     `Slide ${i + 1} [Icon: "${s.icon}" | Label: "${s.label}" | Layout: "${s.layout}"]\n   Linguistic Brief: ${s.brief}`
   ).join('\n');
 
+  // Vocabulary-only: strict, level-resolved length targets the briefs refer to.
+  let lengthTargets = '';
+  if (formData.sessionType === 'vocabulary') {
+    const t = vocabTargets(formData.level);
+    lengthTargets = Number(formData.duration) === 15
+      ? `\nLENGTH TARGETS for ${formData.level} (STRICT — obey exactly):
+- Integrated Practice: a dialogue of ${t.intDialogueLines} lines PLUS a mini-passage of ${t.intPassage}; together they use EVERY target item.
+- Application: ${t.applyItems} items.\n`
+      : `\nLENGTH TARGETS for ${formData.level} (STRICT — obey exactly):
+- Dialogue Practice: ${t.dialogueLines} lines.
+- Short Story / Article: ${t.storyGenre}, ${t.storyParagraphs}.
+- Fill in the Blanks (Part A): ${t.fillItems}.\n`;
+  }
+
   return `Generate the complete instructional slide deck for a ${formData.duration}-minute live interactive session, complying fully with render template ${spec.id} and the ${formData.duration}-minute format rules.
 
 LEARNER PROFILE:
 - Name: ${formData.studentName}
+- Profile (personalize content to this): ${resolveStudentProfile(formData)}
 - Native Language / Culture: ${formData.language}
 - Country of Residence: ${formData.countryOfResident || 'not specified'} — ground examples, settings, and scenarios in this real-world context where natural (currency, places, services, everyday situations). Improve realism only; never stereotype the learner.
 - L1 Translation Support: ${formData.l1Support ? 'ENABLED — populate all L1 data slots with ' + l1Lang + ' terms.' : 'DISABLED — all L1 strings must remain empty ("").'}
@@ -378,7 +427,7 @@ LEARNER PROFILE:
 SESSION FOCUS: ${st.label}
 
 INPUT SOURCE DATA (the tutor's target items — treat as inviolable):
-${detailLines}
+${detailLines}${lengthTargets}
 REQUIRED SLIDE SEQUENCE (output exactly these ${spec.slides.length} slides in linear progression, respecting every icon, label, and layout framework):
 ${slideSpec}
 

@@ -666,8 +666,10 @@ const SKELETON_GEN = {
     const d = fd.details; const f = tierFlags(fd);
     const theme = d.vocabTheme || 'New words';
     const isPreA1 = fd.level === 'Pre-A1';
+    // Use EXACTLY the tutor's target vocabulary — every item, no fixed cap,
+    // for BOTH durations (the word list must match the Target Vocabulary field).
     let terms = parseVocabList(d.targetVocab);
-    terms = terms.slice(0, f.short ? (isPreA1 ? 4 : 6) : (isPreA1 ? 6 : 12));
+    if (!terms.length) terms = ['word'];
     const ex = t => vExample(t, f).replace(/\*\*/g, '');
     const goal = f.isFound ? `Learn ${terms.length} core ${theme.toLowerCase()} words and use them right away.`
       : f.isDev ? `Learn ${terms.length} ${theme.toLowerCase()} words and use them in real, connected sentences.`
@@ -686,21 +688,24 @@ const SKELETON_GEN = {
         { icon: '', label: 'Integrated Practice', title: `${theme} in Use`, layout: 'integrated',
           data: { instruction: 'Read the dialogue and text aloud with your tutor.',
             dialogue: { setting: (d.realWorldContext || `Talking about ${theme.toLowerCase()}${f.place}.`).trim(),
-              lines: vDialogueLines(terms.slice(0, 2)) },
-            passage: { paragraphs: [terms.map(t => `You see the **${t}** here.`).join(' ')] } } },
+              lines: vDialogueLines(terms.slice(0, Math.min(4, terms.length))) },
+            passage: { paragraphs: [terms.map(t => `You see the **${t}** here.`).join(' ')] },
+            notes: `Comprehension: check the student can retell the situation. Pronunciation: focus on "${terms[0] || 'the target words'}".` } },
         { icon: '', label: 'Application & Review', title: 'Application & Review', layout: 'applyreview',
           data: { application: { instruction: 'Complete each sentence using the target words.',
-              bank: f.isFound ? terms : undefined, prompts: vBlankSentences(terms.slice(0, isPreA1 ? 2 : 3)) },
+              bank: terms, prompts: vBlankSentences(terms),
+              answers: terms.map(t => ({ answer: t, feedback: `Correct — "${t}" fits here.` })),
+              notes: 'Elicit a full sentence for each answer; adjust difficulty to the learner.' },
             review: { can_do: vCanDo(fd, theme)[0], next_step: vNextStep(fd, theme) } } }
       ];
       return { slides, practice_bank: practiceBank(terms, fd, ex) };
     }
 
-    // ── 25-minute · 6 slides ──
-    const half = Math.ceil(terms.length / 2);
-    const dWords = terms.slice(0, half);   // dialogue words
-    const pWords = terms.slice(half);      // passage words (zero overlap)
+    // ── 25-minute · 6 slides (all target words recycled across every slide) ──
     const collN = f.isFound ? 3 : 5;
+    const passage = f.isFound ? [terms.map(t => `I see the **${t}** every day.`).join(' ')]
+      : [terms.slice(0, Math.ceil(terms.length / 2)).map(t => `The **${t}** is part of it.`).join(' '),
+         terms.slice(Math.ceil(terms.length / 2)).map(t => `Later, the **${t}** matters too.`).join(' ')];
     const slides = [
       vHero(fd, theme, goal, warmup),
       { icon: '', label: 'New Words', title: `New Words — ${theme}`, layout: 'wordlist',
@@ -708,15 +713,17 @@ const SKELETON_GEN = {
       { icon: '', label: 'Dialogue Practice', title: `Dialogue — ${theme}`, layout: 'dialogue',
         data: { instruction: 'Read the dialogue aloud with your tutor.',
           setting: (d.realWorldContext || `A short exchange about ${theme.toLowerCase()}${f.place}.`).trim(),
-          lines: vDialogueLines(dWords) } },
-      { icon: '', label: 'Article & Story', title: `Reading — ${theme}`, layout: 'text',
-        data: { instruction: 'Read the passage aloud with your tutor.',
-          paragraphs: [pWords.map(t => `The **${t}** matters here.`).join(' ')],
-          note: `This passage uses ${pWords.length} of today's words; the other ${dWords.length} are in the dialogue.` } },
+          lines: vDialogueLines(terms),
+          notes: `Comprehension: ask what each speaker wants and why. Pronunciation: check word stress on "${terms[0] || 'the target words'}".` } },
+      { icon: '', label: 'Short Story / Article', title: `Reading — ${theme}`, layout: 'text',
+        data: { instruction: 'Read the passage aloud with your tutor.', paragraphs: passage,
+          note: 'Read for meaning first, then find each target word in context.' } },
       { icon: '', label: 'Fill in the Blanks & Sentence Building', title: 'Practice', layout: 'practice',
         data: { partA: { instruction: 'Fill in the blanks with the correct words from the Word Bank to complete the sentences.',
-            bank: dWords, sentences: vBlankSentences(dWords) },
-          partB: { instruction: 'Create sentences using the following words.', words: pWords } } },
+            bank: terms, sentences: vBlankSentences(terms),
+            answers: terms.map(t => ({ answer: t, feedback: `Correct — "${t}" fits here.` })) },
+          partB: { instruction: 'Create sentences using the following words.', words: terms,
+            notes: 'Elicit a full sentence for each word; ask a follow-up question to extend it; simplify or stretch the context to match the learner.' } } },
       { icon: '', label: 'Review & Next Step', title: 'Review & Next Step', layout: 'checklist',
         data: { intro: 'Great work today — here is what you can now do:', style: 'check',
           items: vCanDo(fd, theme).map(t => ({ text: t, hint: '' })), footer: vNextStep(fd, theme) } }
