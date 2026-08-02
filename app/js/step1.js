@@ -406,6 +406,13 @@ function stopLoadingAnim() {
 }
 
 async function generatePlan() {
+  // A session must be tied to a selected student before it can be generated.
+  if (window.tutorState && !tutorState.selectedStudent) {
+    showToast('Select a student first — choose one from the Student dropdown before generating.', 'warn');
+    const picker = document.getElementById('tutorStudentSelect');
+    if (picker) { picker.style.borderColor = '#EF4444'; picker.focus(); }
+    return;
+  }
   const formData = collectFormData();
   if (!formData) return;
 

@@ -342,6 +342,7 @@ ANTI-HALLUCINATION & LINGUISTIC CONTRACT (non-negotiable):
 4. Minimalist Data Sourcing: when tutor input is sparse, generate sparse, concrete, tightly-focused content. Never invent biographical facts about the learner.
 5. Schema as Absolute Boundary: treat every JSON field as a hard boundary. Content strings must never break or restructure the layout fields. Return exactly one valid JSON object — no markdown fences, no preamble, no trailing comments, no unescaped characters.
 6. No Emojis: never output an emoji or pictographic character in ANY field (titles, text, examples, chips, icons). Keep every "icon" field an empty string. Use plain professional typography only.
+7. Naming & Address: NEVER write the learner's personal name in any slide. Address the learner directly as "you". In dialogues, role-plays and examples, use common first names or role pairs that fit the topic (e.g. Tutor/Student, Manager/Employee, Customer/Assistant, Doctor/Patient, Neighbour/Neighbour). The content must read naturally for ANY student so the session can be reused.
 
 OUTPUT SCHEMA (slides only — post-session practice is generated in a later, separate call):
 { "slides": [ ...exactly the slides specified, in order... ] }
@@ -416,7 +417,7 @@ function buildUserPrompt(formData) {
   return `Generate the complete instructional slide deck for a ${formData.duration}-minute live interactive session, complying fully with render template ${spec.id} and the ${formData.duration}-minute format rules.
 
 LEARNER PROFILE:
-- Name: ${formData.studentName}
+- Addressing: refer to the learner ONLY as "you"; NEVER write a personal name in slide content (see Naming & Address rule). Use generic names or role pairs in dialogues.
 - Profile (personalize content to this): ${resolveStudentProfile(formData)}
 - Native Language / Culture: ${formData.language}
 - Country of Residence: ${formData.countryOfResident || 'not specified'} — ground examples, settings, and scenarios in this real-world context where natural (currency, places, services, everyday situations). Improve realism only; never stereotype the learner.
