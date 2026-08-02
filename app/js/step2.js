@@ -215,8 +215,8 @@ function renderPresentation() {
      - too long to fit at MIN   → hold MIN and SCROLL inside the frame
    So short slides never scroll and only genuinely lengthy slides do. `zoom`
    scales layout (unlike transform), so the frame scrolls naturally. */
-const PRESENT_MIN_ZOOM = 1.2;   // readable floor for long, scrolling slides
-const PRESENT_MAX_ZOOM = 1.6;   // cap so short slides don't get oversized / lines too long
+const PRESENT_MIN_ZOOM = 1.2;   // (unused with fill-width fit; kept for reference)
+const PRESENT_MAX_ZOOM = 2.4;   // cap so text stays sane on very wide screens
 function fitPresent() {
   const stage = document.getElementById('presentStage');
   const frame = document.getElementById('presentScaler');
@@ -231,9 +231,9 @@ function fitPresent() {
   const PADX = 48, PADY = 40;              // must match .present-scaler padding
   const innerW = availW - 2 * PADX;
   const innerH = availH - 2 * PADY;
-  let k = Math.min(innerW / w, innerH / h);      // largest scale that contains the slide
-  k = Math.max(PRESENT_MIN_ZOOM, Math.min(k, PRESENT_MAX_ZOOM));
-  k = Math.min(k, innerW / w);                   // never overflow width (narrow screens)
+  // Fill the frame's WIDTH so the content optimizes the whole card (single
+  // surface, no inner-box look). Taller-than-frame content scrolls inside.
+  let k = Math.min(innerW / w, PRESENT_MAX_ZOOM);
   content.style.zoom = k;
   // Fixed frame — same on every slide.
   frame.style.width = availW + 'px';
