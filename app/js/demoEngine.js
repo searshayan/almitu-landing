@@ -93,7 +93,7 @@ function autofillVocabList(theme, tier) {
 
 function demoAutofill(meta) {
   const t = meta.title;
-  const name = meta.studentName;
+  const name = 'You';   // name-neutral: address the learner as "you" (reusable across students)
   const tier = meta.tier;
   const place = meta.countryOfResident ? ` in ${meta.countryOfResident}` : '';
   const short = Number(meta.duration) === 15;   // tighter scope for micro sessions
@@ -109,9 +109,9 @@ function demoAutofill(meta) {
           ? `${name} can use ${t.toLowerCase()} vocabulary in connected sentences and common collocations about real situations.`
           : `${name} can deploy ${t.toLowerCase()} lexis with precise register and connotation in extended discussion.`,
       realWorldContext: tier === 'foundation'
-        ? `${name} meets this situation in daily life${place} and needs survival phrases that work immediately.`
-        : `Connected to ${name}'s weekly routine${place} — real situations where this vocabulary is actively needed.`,
-      personalization: `Adapt examples to ${name}'s daily life${place}; keep references concrete and relevant, never stereotyped.`,
+        ? `You meet this situation in daily life${place} and need survival phrases that work immediately.`
+        : `Connected to your weekly routine${place} — real situations where this vocabulary is actively needed.`,
+      personalization: `Adapt examples to your daily life${place}; keep references concrete and relevant, never stereotyped.`,
       notes: (short ? 'Micro session: one tight focus, minimal explanation. ' : '') + (tier === 'proficiency' ? 'Push for nuance — challenge near-synonym choices.' : 'Recycle previous session vocabulary where natural.')
     };
   }
@@ -159,7 +159,7 @@ function demoAutofill(meta) {
         : `${name} can navigate "${t}" with register control, strategic hedging and a persuasive arc.`,
     targetExpressions: exprByTier[tier],
     speakingActivity: actByTier[tier],
-    roles: `${name} = themselves; Tutor = the other party in "${t}"`,
+    roles: `You = the main speaker; Tutor = the other party in "${t}"`,
     culturalNotes: `Ground the scenario${place || ' in the learner\'s locale'}; flag politeness conventions that differ from ${meta.language}-speaking culture.`,
     notes: (short ? 'Micro session: one production task, protect speaking time. ' : '') + (tier === 'proficiency' ? 'Do not simplify language — authentic pace and pushback.' : 'Keep success rate high; recast rather than interrupt.')
   };

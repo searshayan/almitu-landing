@@ -231,7 +231,6 @@ async function autofillForm() {
 
   const level = document.getElementById('inputLevel').value;
   const meta = {
-    studentName: document.getElementById('inputName').value.trim() || 'the student',
     language: document.getElementById('inputLang').value,
     countryOfResident: (document.getElementById('inputCountry')?.value || '').trim(),
     l1Support: s.studentProfile.l1Support,

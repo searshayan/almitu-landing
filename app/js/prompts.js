@@ -529,15 +529,18 @@ function buildAutofillSystemPrompt(meta) {
   const dur = getDuration(meta.duration);
   return `You are the almitu Session Planner assistant. A tutor has chosen a session type and written only the title/theme. Fill in the remaining planning fields with realistic, high-quality suggestions a busy ESL tutor would write themselves.
 
-CALIBRATION (strict):
+CALIBRATION — base every suggestion ONLY on: the level, the session duration, the topic/theme/scenario the tutor wrote, the country of residence, and L1 support. Never calibrate on, or invent, a student's identity.
+- NAMING: never use a personal name. Address the learner as "you" and phrase objectives as "You can …" (e.g. "You can order confidently at a café."). Communication roles read like "You = the customer; Tutor = the waiter." Every fill must read naturally for ANY student so the session is reusable.
 - Student level: ${meta.level} (tier: ${tier.label}) — ${levelDescriptor(meta.level)}
 - Tier characteristics: ${tier.rules.join('; ')}
 - Session duration: ${dur.label} — ${dur.key === 15 ? 'keep scope TIGHT: fewer targets, one focus, shorter outputs' : 'fuller scope with room for guided practice plus production'}.
 - Difficulty lock: all suggestions (vocabulary, expressions, structures, objectives) must sit EXACTLY at ${meta.level} — an A1 fill and a C1 fill for the same theme must look genuinely different in difficulty and ambition.
 - For 15-minute sessions suggest fewer target items than for 25-minute sessions.
-- Vocabulary suggestions: 6-12 comma-separated items, all genuinely ${meta.level}-level, all tightly related to the theme.
+- VOCABULARY fills: 6-12 comma-separated target items, all genuinely ${meta.level}-level and tightly related to the theme (all of them are taught); objective + real-world context phrased with "you".
+- GRAMMAR fills: a clear grammar structure/pattern; exampleSentences = THREE model sentences (one affirmative, one negative, one question) at ${meta.level} — they seed the Form & Use and exercise slides; commonErrors = 3-5 realistic mistakes a ${meta.language || 'learner'} at this level tends to make — they feed the Common Errors slide.
+- COMMUNICATION fills: targetExpressions = 6-8 functional phrases the learner needs for the scenario (feed the Toolkit, Language Focus and Conversation Questions); pick a speakingActivity that fits the scenario and level; roles phrased with "you" (e.g. "You = the customer; Tutor = the receptionist").
 - Country of residence (${meta.countryOfResident || 'unspecified'}): make examples, scenarios and settings locally relevant where natural — never stereotype.
-- L1 support is ${meta.l1Support ? 'ON' : 'OFF'}: ${meta.l1Support ? 'brief bilingual scaffolding is acceptable in objectives/notes' : 'do NOT mention translation, bilingual prompts, or first-language mediation'}.
+- L1 support is ${meta.l1Support ? 'ON' : 'OFF'}: ${meta.l1Support ? 'brief bilingual scaffolding is acceptable in notes' : 'do NOT mention translation, bilingual prompts, or first-language mediation'}.
 - Keep every field concise — these are form inputs, not essays.
 
 Return ONLY a valid JSON object mapping field ids to string values. No markdown, no commentary.`;
@@ -546,7 +549,7 @@ Return ONLY a valid JSON object mapping field ids to string values. No markdown,
 function buildAutofillUserPrompt(meta, fieldsToFill) {
   const fieldSpec = fieldsToFill.map(f => `- "${f.id}": ${f.label}${f.hint ? ' — ' + f.hint : ''}`).join('\n');
   return `Session type: ${getSessionType(meta.sessionType).label}
-Student: ${meta.studentName} · First language: ${meta.language} · Country of residence: ${meta.countryOfResident || 'unspecified'} · L1 support: ${meta.l1Support ? 'yes' : 'no'} · Level: ${meta.level} (${meta.tier} tier) · Duration: ${meta.duration} min
+Calibration — First language: ${meta.language || 'unspecified'} · Country of residence: ${meta.countryOfResident || 'unspecified'} · L1 support: ${meta.l1Support ? 'yes' : 'no'} · Level: ${meta.level} (${meta.tier} tier) · Duration: ${meta.duration} min
 The tutor wrote — ${meta.firstFieldLabel}: "${meta.title}"
 
 Fill these fields (JSON keys must match the ids exactly):
