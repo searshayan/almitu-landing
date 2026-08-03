@@ -10,7 +10,7 @@
 /* ── Layout data shapes the model must follow ── */
 const LAYOUT_DOCS = `
 LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any field:
-- "hero":      { "heading": "...", "goal": "objective statement (one sentence)", "warmup": "a single engaging warm-up question tied to the topic", "badges": ["short chip","..."] }
+- "hero":      { "heading": "...", "goal": "objective statement (one sentence)", "warmup": "a single engaging warm-up question tied to the topic", "badges": ["short chip","..."], "diagnostic": { "prompt": "quick-check question", "options": [ { "text": "...", "correct": true, "feedback": "why" } ] } (Grammar only; omit otherwise) }
 - "wordlist":  { "intro": "short line or empty", "words": [ { "word": "Book", "pron": "/bʊk/  (IPA for A2-C2; a simple phonetic hint like 'say: buk' for Pre-A1/A1)", "pos": "Noun", "definition": "contextual meaning", "example": "sentence with the **Book** in bold", "l1": "L1 gloss or empty" } ], "collocations": ["read a book","..."] }
 - "cards":     { "intro": "short line or empty", "cols": 3, "items": [ { "top": "main text", "mid": "secondary text or empty", "bottom": "small text or empty" } ] }
 - "rows":      { "intro": "short line or empty", "rows": [ { "main": "primary text", "sub": "secondary text or empty", "note": "small colored note or empty" } ] }
@@ -25,7 +25,11 @@ LAYOUT DATA SHAPES (the "data" object for each layout). NEVER use emojis in any 
 - "practice":  { "partA": { "instruction": "Fill in the blanks with the correct words from the Word Bank to complete the sentences.", "bank": ["target items = answer pool"], "sentences": ["... ___ ..."], "answers": [ { "answer": "item for blank 1", "feedback": "short feedback phrase" } ] }, "partB": { "instruction": "Create sentences using the following words.", "words": ["items to build with"], "notes": "tutor-aid: eliciting corrections / elaboration / difficulty, or empty" } }
 - "integrated":{ "instruction": "Read the dialogue and text aloud with your tutor.", "dialogue": { "setting": "or empty", "lines": [ { "speaker": "name", "side": "left|right", "line": "..." } ] }, "passage": { "paragraphs": ["... **word** ..."] }, "notes": "tutor-aid: comprehension questions + a pronunciation focus, or empty" }
 - "applyreview":{ "application": { "instruction": "...", "bank": ["target items = answer pool"], "prompts": ["... ___ ..."], "answers": [ { "answer": "item for prompt 1", "feedback": "short feedback phrase" } ], "notes": "tutor-aid or empty" }, "review": { "can_do": "one core Can-Do statement", "next_step": "post-session activity + tutor tracks metrics" } }
-- "form":       { "intro": "short line or empty", "formula": "Subject + have/has + past participle", "forms": [ { "label": "Positive|Negative|Question", "example": "sentence with the target parts in **bold**" } ], "use": "one line: when/why to use it", "examples": [ "model sentence with target parts in **bold**" ], "l1": "L1 note on the pattern or empty", "note": "a short common-error / watch-out line or empty" }`;
+- "form":       { "intro": "short line or empty", "formula": "Subject + have/has + past participle", "forms": [ { "label": "Positive|Negative|Question", "example": "sentence with the target parts in **bold**" } ], "use": "one line: when/why to use it", "examples": [ "model sentence with target parts in **bold**" ], "l1": "L1 note on the pattern or empty", "note": "a short contrast/nuance (B2-C2) or common-error line, or empty" }
+- "exercise":   { "intro": "one-line instruction", "type": "mcq|gap|judgment", "items": [ (mcq) { "prompt": "...", "options": [ { "text": "...", "correct": true, "feedback": "..." } ] } | (gap) { "sentence": "... ___ ...", "answer": "...", "feedback": "..." } | (judgment) { "statement": "...", "correct": true, "feedback": "..." } ] }
+- "truefalse":  { "intro": "one-line instruction", "items": [ { "statement": "...", "isTrue": true, "feedback": "why it is true or false" } ] }
+- "errors":     { "intro": "one-line instruction", "items": [ { "wrong": "the mistaken sentence", "correct": "the corrected sentence", "why": "one short reason" } ] }
+- "production": { "instruction": "one-line prompt-setter", "prompts": [ "open prompt to use the grammar" ], "answerKey": [ "sample strong answer" ], "comment": "what to praise / watch", "notes": "follow-up questions + correction strategies" }`;
 
 /* ── Tier rule blocks (CEFR alignment contract) ──
    {{L1_RULE}} is substituted per request in buildSystemPrompt. */
@@ -230,7 +234,7 @@ const RENDER_SPECS_15 = {
    All three skills follow the emoji-free spec, each with a 25-min and a
    distinct 15-min architecture:
      Vocabulary    — VOCAB_SKELETON_25 (6) / _15 (4)
-     Grammar       — GRAMMAR_SKELETON_25 (7) / _15 (4)
+     Grammar       — GRAMMAR_SKELETON_25 (7) / _15 (5)
      Communication — COMM_SKELETON_25 (7) / _15 (4)
    Slide TYPES are fixed; tier / level / duration / L1 drive only CONTENT
    depth, scaffolding and density — handled in buildSystemPrompt.
@@ -254,23 +258,24 @@ const VOCAB_SKELETON_15 = [
   { icon: '', label: 'Application & Review', layout: 'applyreview', brief: 'application.instruction = a clear gap-fill / sentence-building instruction. application.bank = the target vocabulary (answer pool). application.prompts = rapid items each with ONE blank (___); obey the exact count in LENGTH TARGETS; every blank has ONE unambiguous answer. application.answers = for each prompt in order { answer: the correct item, feedback: a short interactive-checking phrase }. application.notes = brief tutor notes on eliciting corrections and adapting difficulty. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
 ];
 
-/* ── Grammar · 25-minute · 7 slides (Present → Expose → Correct → Practice → Produce → Review) ── */
+/* ── Grammar · 25-minute · 7 slides (Diagnose → Form → Controlled → Produce → Errors → Recall → Review) ── */
 const GRAMMAR_SKELETON_25 = [
-  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the target structure and what the learner will be able to DO with it. warmup = a SINGLE warm-up question engineered to naturally pull the target structure out of the learner (e.g. "What have you done today?" for present perfect). 1-2 short chips. No emojis.' },
-  { icon: '', label: 'Form & Use', layout: 'form', brief: 'formula = the pattern (e.g. "Subject + have/has + past participle"). forms = the Positive / Negative / Question forms, each a model sentence with the target parts in **bold**. use = one line on when/why to use it. examples = 2-4 model sentences with target parts **bold**. l1 = a short L1 note on the pattern ONLY if L1 support is on, else "". note = a brief common-error watch-out or "". Foundation: present the structure as fixed memorised chunks, minimal metalanguage; Proficiency: precise, include aspect/register nuance.' },
-  { icon: '', label: 'In Context — Dialogue', layout: 'dialogue', brief: 'instruction EXACTLY "Read the dialogue aloud with your tutor." Title the dialogue after the topic. A natural exchange where the target structure recurs several times (bold each occurrence). Anchor in the learner\'s real-world context. Turns/complexity by level. Student side = right.' },
-  { icon: '', label: 'In Context — Passage', layout: 'text', brief: 'instruction EXACTLY "Read the passage aloud with your tutor." A short passage that uses the target structure naturally (bold each occurrence). Length by level: Pre-A1 30w, A1 40w, A2 60w, B1 70w, B2 80w, C1 90w, C2 100w.' },
-  { icon: '', label: 'Watch Out — Correct vs Incorrect', layout: 'compare', brief: 'pairs = 3-4 common errors with the target structure (draw on the tutor\'s common-errors / L1-interference input where given). good = the correct form; bad = the typical mistake; note = a one-line why. Keep the error realistic for the level and this L1.' },
-  { icon: '', label: 'Practice', layout: 'practice', brief: 'partA.instruction = a gap-fill / transformation instruction for the target form (accuracy). partA.bank = the pattern pieces or verb forms (include for Foundation/Development; may omit for Proficiency). partA.sentences = level-appropriate items each with ___ where the target form goes. partB.instruction EXACTLY "Create sentences using the following words." partB.words = 4-6 prompts/cues for the learner to build their OWN sentences using the structure (personalization).' },
-  { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm, specific tutor reinforcement line. items = EXACTLY 3 Can-Do statements ("I can …") about using the structure, matched to the level. footer = the Next Step: name the level-appropriate post-session activity and note the tutor tracks completion time and practice metrics. Add an L1 line in items only if L1 support is on.' }
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the grammar point and what the learner will be able to DO. warmup = a short friendly warm-up question that activates prior knowledge (address the learner as "you"). diagnostic = ONE quick check that reveals prior knowledge — see GRAMMAR TARGETS for the type: { prompt, options:[{ text, correct (boolean), feedback }] } (for a judgment, use two options: Correct / Incorrect). 1-2 short chips. No emojis; no personal names.' },
+  { icon: '', label: 'Form & Use', layout: 'form', brief: 'Explain the grammar point in clear, simple language (put a short one-line summary in intro). formula = the pattern. forms = the Positive / Negative / Question forms, each a model sentence with the target parts in **bold**. use = one line on when/why to use it. examples = 2-4 model sentences with target parts **bold**. For B2-C2 put ONE contrast/nuance (difference from another tense/form) in note. l1 = a short L1 note ONLY if L1 support is on, else "". Keep to max 3 short paragraphs of explanation total.' },
+  { icon: '', label: 'Exercise 1', layout: 'exercise', brief: 'intro = a one-line instruction. type = see GRAMMAR TARGETS (mcq for Pre-A1-A2, gap for B1-B2, judgment for C1-C2). items = EXACTLY the count in GRAMMAR TARGETS, each directly testing the target pattern. mcq item = { prompt, options:[{text, correct(boolean), feedback}] } with ONE correct option and clear feedback on each. gap item = { sentence (with ___ where the target form goes), answer, feedback }. judgment item = { statement, correct(boolean), feedback }. Vocabulary/contexts relevant to the Learner Profile.' },
+  { icon: '', label: 'Communicative Practice', layout: 'production', brief: 'instruction = a one-line prompt-setter. prompts = 2-3 OPEN prompts that require the learner to USE the target grammar in meaningful sentences about their real-life context (Learner Profile). answerKey = 2-3 strong sample answers. comment = what to praise / watch for. notes = follow-up questions and correction strategies for the tutor.' },
+  { icon: '', label: 'Common Errors', layout: 'errors', brief: 'intro = a one-line instruction. items = 3-5 common errors learners make with this grammar point (draw on the tutor common-errors input where given). Each item = { wrong: the mistaken sentence, correct: the fixed version, why: one short reason }. Realistic for the level and Learner Profile.' },
+  { icon: '', label: 'Exercise 2', layout: 'truefalse', brief: 'intro = a one-line instruction. items = EXACTLY the True/False count in GRAMMAR TARGETS, each a statement strictly about the grammar point that helps the learner recognise the pattern. item = { statement, isTrue (boolean), feedback: one short line on why it is true or false }.' },
+  { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm, specific tutor reinforcement line. items = EXACTLY 3 Can-Do statements ("I can …") about using the grammar point, matched to the level. footer = the Next Step: name the level-appropriate post-session activity and note the tutor tracks completion time and practice metrics. Add an L1 line in items only if L1 support is on.' }
 ];
 
-/* ── Grammar · 15-minute · 4 slides ── */
+/* ── Grammar · 15-minute · 5 slides (condensed: Diagnose → Form → Controlled → Recall → Review) ── */
 const GRAMMAR_SKELETON_15 = [
-  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the structure; warmup = a SINGLE warm-up question that pulls the target structure. 1-2 short chips. No emojis.' },
-  { icon: '', label: 'Form & Use', layout: 'form', brief: 'formula + the Positive/Negative/Question forms (model sentences, target parts **bold**) + use (one line) + 1-2 examples. note = a one-line common-error watch-out (this carries the error-contrast in the short session). l1 only if L1 support is on.' },
-  { icon: '', label: 'In Context', layout: 'integrated', brief: 'instruction EXACTLY "Read the dialogue and text aloud with your tutor." dialogue.lines = a short exchange (3-4 lines; Pre-A1: 2) using the structure, and passage.paragraphs = a 2-3 sentence micro-passage using it. Bold every occurrence of the target structure.' },
-  { icon: '', label: 'Practice & Review', layout: 'applyreview', brief: 'application.instruction = a transform/gap-fill instruction; application.prompts = 3 rapid items (Pre-A1: 2) practising the target form; include application.bank (pattern pieces/verb forms) for Foundation only. review.can_do = ONE core Can-Do statement for the level; review.next_step = the post-session activity + a note that the tutor tracks completion time and metrics.' }
+  { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the grammar point. warmup = a short warm-up question that activates prior knowledge (address the learner as "you"). diagnostic = ONE quick check per GRAMMAR TARGETS: { prompt, options:[{text, correct(boolean), feedback}] }. 1-2 short chips. No emojis; no names.' },
+  { icon: '', label: 'Form & Use', layout: 'form', brief: 'formula + the Positive/Negative/Question forms (model sentences, target parts **bold**) + use (one line) + 1-2 examples. For B2-C2 add ONE contrast/nuance in note. l1 only if L1 support is on. Keep explanation very tight.' },
+  { icon: '', label: 'Exercise 1', layout: 'exercise', brief: 'intro + type per GRAMMAR TARGETS (mcq Pre-A1-A2 / gap B1-B2 / judgment C1-C2). items = the count in GRAMMAR TARGETS, each testing the target pattern, with correct + incorrect feedback (same item shapes as the 25-min Exercise 1).' },
+  { icon: '', label: 'Exercise 2', layout: 'truefalse', brief: 'intro + items = the True/False count in GRAMMAR TARGETS. item = { statement, isTrue (boolean), feedback }. Statements strictly about the grammar point.' },
+  { icon: '', label: 'Review & Next Step', layout: 'checklist', brief: 'style:check. intro = one warm reinforcement line. items = EXACTLY 3 Can-Do statements for the level. footer = the Next Step: post-session activity + tutor tracks completion time and metrics. L1 line only if on.' }
 ];
 
 /* ── Communication & Speaking · 25-minute · 7 slides (Set up → Equip → Model → Refine → Drill → Perform → Review) ── */
@@ -371,6 +376,18 @@ function vocabTargets(level) {
   };
 }
 
+/* Strict, level-resolved exercise types + counts for Grammar. */
+function grammarTargets(level, duration) {
+  const exType = ['Pre-A1', 'A1', 'A2'].includes(level) ? 'multiple-choice (MCQ, one correct option)'
+    : ['B1', 'B2'].includes(level) ? 'gap-fill (one blank each)'
+      : 'sentence-judgment (Correct / Incorrect)';
+  const diagType = ['Pre-A1', 'A1', 'A2', 'B1'].includes(level)
+    ? 'a multiple-choice question (MCQ)'
+    : 'a short correct/incorrect judgment';
+  const short = Number(duration) === 15;
+  return { exType, diagType, exCount: short ? 3 : 5, tfCount: short ? 4 : 5 };
+}
+
 /* Resolve a Student Profile string for personalization. Live sessions use the
    tutor's real inputs; curriculum/empty falls back to a neutral adult learner
    grounded only in the topic/context (no invented personal facts). */
@@ -412,6 +429,12 @@ function buildUserPrompt(formData) {
 - Dialogue Practice: ${t.dialogueLines} lines.
 - Short Story / Article: ${t.storyGenre}, ${t.storyParagraphs}.
 - Fill in the Blanks (Part A): ${t.fillItems}.\n`;
+  } else if (formData.sessionType === 'grammar') {
+    const g = grammarTargets(formData.level, formData.duration);
+    lengthTargets = `\nGRAMMAR TARGETS for ${formData.level} (STRICT — obey exactly):
+- Warm-up diagnostic: ${g.diagType}.
+- Exercise 1: EXACTLY ${g.exCount} ${g.exType} items, each with correct + incorrect feedback.
+- Exercise 2 (True/False): EXACTLY ${g.tfCount} statements.\n`;
   }
 
   return `Generate the complete instructional slide deck for a ${formData.duration}-minute live interactive session, complying fully with render template ${spec.id} and the ${formData.duration}-minute format rules.

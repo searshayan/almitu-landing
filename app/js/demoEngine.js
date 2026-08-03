@@ -752,74 +752,92 @@ const SKELETON_GEN = {
     const l1note = f.l1on ? `${resolveL1Language(fd.language)} note on this pattern — via API` : '';
     const errNote = String(d.commonErrors || '').trim() || (f.isFound ? 'Keep the pattern fixed — do not change the ending.' : 'Watch the form: this is where learners often slip.');
 
+    // Interactive helpers ─ level-resolved exercise type + a crude "wrong form".
+    const level = fd.level;
+    const exType = ['Pre-A1', 'A1', 'A2'].includes(level) ? 'mcq' : ['B1', 'B2'].includes(level) ? 'gap' : 'judgment';
+    const diagMcq = ['Pre-A1', 'A1', 'A2', 'B1'].includes(level);
+    const exCount = f.short ? 3 : 5;
+    const tfCount = f.short ? 4 : 5;
+    const SWAP = { have: 'has', has: 'have', am: 'is', is: 'are', are: 'is', do: 'does', does: 'do', did: 'do', will: 'would', had: 'have', was: 'were', were: 'was' };
+    const distort = s => s.replace(/\b(have|has|am|is|are|do|does|did|will|had|was|were)\b/i, m => SWAP[m.toLowerCase()] || m);
+
+    const diagnostic = diagMcq
+      ? { prompt: 'Which sentence is correct?', options: [
+          { text: formEx[0], correct: true, feedback: 'Correct — it follows the pattern.' },
+          { text: distort(formEx[0]), correct: false, feedback: 'Not quite — check the verb form.' } ] }
+      : { prompt: `Is this correct? "${formEx[0]}"`, options: [
+          { text: 'Correct', correct: true, feedback: 'Yes — the form is right.' },
+          { text: 'Incorrect', correct: false, feedback: 'Actually, this one is correct.' } ] };
+
     const hero = { icon: '', label: 'Objective & Warm-up', title, layout: 'hero',
-      data: { heading: title, goal, warmup, badges: [fd.level, `${dur.key} min`, 'Grammar'], duration_label: `${fd.duration}-Minute Live Micro-Session` } };
+      data: { heading: title, goal, warmup, diagnostic, badges: [fd.level, `${dur.key} min`, 'Grammar'], duration_label: `${fd.duration}-Minute Live Micro-Session` } };
     const formSlide = { icon: '', label: 'Form & Use', title: `Form & Use — ${title}`, layout: 'form',
       data: { formula: structure,
         forms: [ { label: 'Positive', example: formEx[0] }, { label: 'Negative', example: formEx[1] }, { label: 'Question', example: formEx[2] } ],
         use: f.isFound ? 'you talk about simple, true facts.' : f.isDev ? 'you connect a past action to now, or talk about experience.' : 'you want to foreground stance, emphasis or nuance.',
-        examples: formEx.slice(0, 2), l1: l1note, note: errNote } };
+        examples: formEx.slice(0, 2), l1: l1note, note: f.isProf ? `Contrast: unlike the simple past, ${title.toLowerCase()} links the action to now.` : errNote } };
 
-    const dialogueLines = (() => {
-      const lines = [ { speaker: 'Tutor', side: 'left', line: 'Tell me a little about your week.' },
-        { speaker: 'Student', side: 'right', line: `**${formEx[0]}**` },
-        { speaker: 'Tutor', side: 'left', line: 'And is there anything you have not done yet?' },
-        { speaker: 'Student', side: 'right', line: `**${formEx[1]}**` } ];
-      return f.short ? lines.slice(0, 3) : lines;
+    const exerciseItems = (() => {
+      if (exType === 'gap') return Array.from({ length: exCount }, (_, i) => {
+        const src = formEx[i % formEx.length];
+        const m = src.match(/\b([A-Za-z]{3,})\b/);
+        return { sentence: src.replace(/\b([A-Za-z]{3,})\b/, '___'), answer: m ? m[1] : 'form', feedback: 'This is the target form.' };
+      });
+      if (exType === 'judgment') return Array.from({ length: exCount }, (_, i) => {
+        const correct = i % 2 === 0; const s = correct ? formEx[i % formEx.length] : distort(formEx[i % formEx.length]);
+        return { statement: s, correct, feedback: correct ? 'Correct — the form is right.' : 'Incorrect — the form is wrong here.' };
+      });
+      return Array.from({ length: exCount }, (_, i) => {
+        const good = formEx[i % formEx.length];
+        return { prompt: 'Choose the correct sentence.', options: [
+          { text: good, correct: true, feedback: 'Correct — it matches the pattern.' },
+          { text: distort(good), correct: false, feedback: 'Check the verb form.' } ] };
+      });
     })();
-    const passage = [ `Here is ${title.toLowerCase()} in everyday use. **${formEx[0]}** We hear sentences like this all the time.`,
-      `We can also make it negative or turn it into a question: **${formEx[1]}** **${formEx[2]}**` ];
-    const errorPairs = (() => {
-      const raw = String(d.commonErrors || '').trim();
-      const pairs = [];
-      if (raw) pairs.push({ good: 'Use the correct target form.', bad: raw, note: 'A frequent slip — fix the form.' });
-      pairs.push({ good: 'I have seen that film.', bad: 'I have saw that film.', note: 'Use the past participle, not the past simple.' });
-      pairs.push({ good: 'She has lived here since 2020.', bad: 'She has lived here for 2020.', note: 'Use "since" with a point in time.' });
-      return pairs.slice(0, 3);
-    })();
-    const gapBank = structure.split(/[+/]/).map(x => x.trim()).filter(Boolean);
-    const gapSentences = formEx.map(e => e.replace(/\b([A-Za-z]{3,})\b/, '___'));
-    const buildPrompts = f.isFound ? ['about you', 'about your family', 'a question']
-      : f.isDev ? ['about your weekend', 'about a past experience', 'a question for your tutor', 'a negative sentence']
-        : ['to make a concession', 'to emphasise a point', 'to hedge a claim', 'to open an argument'];
+    const exerciseSlide = { icon: '', label: 'Exercise 1', title: `Exercise 1 — ${title}`, layout: 'exercise',
+      data: { intro: exType === 'gap' ? 'Complete each sentence with the correct form.' : exType === 'judgment' ? 'Correct or incorrect? Decide, then reveal.' : 'Choose the correct sentence.', type: exType, items: exerciseItems } };
+
+    const tfItems = Array.from({ length: tfCount }, (_, i) => {
+      const isTrue = i % 2 === 0;
+      return { statement: isTrue ? `"${formEx[i % formEx.length]}" is a correct use of ${title.toLowerCase()}.`
+        : `"${distort(formEx[i % formEx.length])}" is a correct use of ${title.toLowerCase()}.`,
+        isTrue, feedback: isTrue ? 'True — the form is correct.' : 'False — the form is incorrect.' };
+    });
+    const tfSlide = { icon: '', label: 'Exercise 2', title: 'Exercise 2 — True or False', layout: 'truefalse',
+      data: { intro: 'True or False?', items: tfItems } };
+
     const canDo = f.isFound ? ['I can say a few true sentences with the pattern.', 'I can keep the form correct.', 'I can answer a simple question with it.']
       : f.isDev ? [`I can form, negate and question ${title.toLowerCase()}.`, 'I can describe real experiences with it.', 'I can correct my own common mistake.']
         : [`I can deploy ${title.toLowerCase()} for stance and nuance.`, 'I can shift register deliberately.', 'I can sustain a precise, extended turn.'];
     const nextStep = `Complete your post-session activity on the platform: ${f.isFound ? `say five true sentences using "${structure}" and record them` : f.isDev ? `write five sentences using ${title.toLowerCase()} about your week, including one question` : `write a short paragraph that uses ${title.toLowerCase()} at least three times for deliberate effect`}. Your tutor tracks your completion time and practice metrics before the next session.`;
+    const reviewSlide = { icon: '', label: 'Review & Next Step', title: 'Review & Next Step', layout: 'checklist',
+      data: { intro: 'Great work — here is what you can now do:', style: 'check', items: canDo.map(t => ({ text: t, hint: '' })), footer: nextStep } };
 
     if (f.short) {
-      // ── 15-minute · 4 slides ──
-      const slides = [
-        hero,
-        formSlide,
-        { icon: '', label: 'In Context', title: `${title} in Use`, layout: 'integrated',
-          data: { instruction: 'Read the dialogue and text aloud with your tutor.',
-            dialogue: { setting: (d.objective || `Talking about real life${f.place}.`).trim(), lines: dialogueLines },
-            passage: { paragraphs: [passage[0]] } } },
-        { icon: '', label: 'Practice & Review', title: 'Practice & Review', layout: 'applyreview',
-          data: { application: { instruction: 'Complete each sentence with the correct form.', bank: f.isFound ? gapBank : undefined, prompts: gapSentences.slice(0, f.isFound ? 2 : 3) },
-            review: { can_do: canDo[0], next_step: nextStep } } }
-      ];
-      return { slides, practice_bank: practiceBank(formEx, fd, ex) };
+      // ── 15-minute · 5 slides ──
+      return { slides: [hero, formSlide, exerciseSlide, tfSlide, reviewSlide], practice_bank: practiceBank(formEx, fd, ex) };
     }
 
     // ── 25-minute · 7 slides ──
-    const slides = [
-      hero,
-      formSlide,
-      { icon: '', label: 'In Context — Dialogue', title: `Dialogue — ${title}`, layout: 'dialogue',
-        data: { instruction: 'Read the dialogue aloud with your tutor.', setting: (d.objective || `A short exchange${f.place}.`).trim(), lines: dialogueLines } },
-      { icon: '', label: 'In Context — Passage', title: `Reading — ${title}`, layout: 'text',
-        data: { instruction: 'Read the passage aloud with your tutor.', paragraphs: passage, note: '' } },
-      { icon: '', label: 'Watch Out — Correct vs Incorrect', title: 'Correct vs Incorrect', layout: 'compare',
-        data: { intro: 'Spot the difference, then say the correct version aloud.', pairs: errorPairs } },
-      { icon: '', label: 'Practice', title: 'Practice', layout: 'practice',
-        data: { partA: { instruction: 'Complete each sentence with the correct form.', bank: gapBank, sentences: gapSentences },
-          partB: { instruction: 'Create sentences using the following words.', words: buildPrompts } } },
-      { icon: '', label: 'Review & Next Step', title: 'Review & Next Step', layout: 'checklist',
-        data: { intro: 'Great work — here is what you can now do:', style: 'check', items: canDo.map(t => ({ text: t, hint: '' })), footer: nextStep } }
-    ];
-    return { slides, practice_bank: practiceBank(formEx, fd, ex) };
+    const production = { icon: '', label: 'Communicative Practice', title: 'Communicative Practice', layout: 'production',
+      data: { instruction: 'Answer in full sentences using the target grammar.',
+        prompts: (f.isFound ? ['Say something true about you.', 'Ask your tutor a question.']
+          : f.isDev ? ['Describe something from your week.', 'Ask about a past experience.', 'Say what you have not done yet.']
+            : ['State a position and support it.', 'Concede a point, then counter it.', 'Rephrase for a more formal register.']).slice(0, 3),
+        answerKey: formEx.slice(0, 2), comment: 'Praise correct form; gently recast word-order slips.',
+        notes: 'Follow up with "Why?" or "Tell me more." to extend the turn.' } };
+    const errorItems = (() => {
+      const raw = String(d.commonErrors || '').trim(); const items = [];
+      if (raw) items.push({ wrong: raw, correct: formEx[0], why: 'Use the correct target form.' });
+      items.push({ wrong: 'I have saw that film.', correct: 'I have seen that film.', why: 'Use the past participle, not the past simple.' });
+      items.push({ wrong: 'She has lived here for 2020.', correct: 'She has lived here since 2020.', why: 'Use "since" with a point in time.' });
+      items.push({ wrong: 'Did you have finished?', correct: 'Have you finished?', why: 'Do not mix "did" with the present perfect.' });
+      return items.slice(0, 4);
+    })();
+    const errorsSlide = { icon: '', label: 'Common Errors', title: 'Common Errors', layout: 'errors',
+      data: { intro: 'Spot the mistake, then reveal the correction.', items: errorItems } };
+
+    return { slides: [hero, formSlide, exerciseSlide, production, errorsSlide, tfSlide, reviewSlide], practice_bank: practiceBank(formEx, fd, ex) };
   },
 
   communication(fd) {

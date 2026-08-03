@@ -27,6 +27,12 @@ const LAYOUT_BUILDERS = {
           <span class="text-sm font-semibold" style="color:var(--primary);">Today's Objective</span>
         </div>
         <p class="font-medium" style="color:var(--ink);">${md(d.goal)}</p>
+        ${d.diagnostic ? `
+          <div class="mt-4 mx-auto max-w-lg p-4 rounded-2xl text-left" style="background:rgba(6,214,160,.06); border:1px solid rgba(6,214,160,.18);">
+            <p class="text-[11px] uppercase tracking-wider font-semibold mb-2" style="color:#059669;">Quick Check</p>
+            <p class="text-sm mb-2" style="color:var(--ink);">${md(d.diagnostic.prompt)}</p>
+            ${quizChoices(d.diagnostic.options)}
+          </div>` : ''}
         ${d.warmup ? `
           <div class="mt-5 mx-auto max-w-md p-4 rounded-2xl text-left" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.14);">
             <p class="text-[11px] uppercase tracking-wider font-semibold mb-1" style="color:var(--secondary);">Warm-up</p>
@@ -355,6 +361,76 @@ const LAYOUT_BUILDERS = {
         </div>` : ''}
       ${d.l1 ? `<p class="text-[11px] mt-3" style="color:var(--secondary);">${escapeHtml(d.l1)}</p>` : ''}
       ${d.note ? `<div class="mt-3 p-3 rounded-xl text-xs" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);"><span class="font-semibold text-red-500">Watch out:</span> <span style="color:var(--ink);">${md(d.note)}</span></div>` : ''}`;
+  },
+
+  /* ── Grammar Exercise 1: controlled practice — MCQ / gap-fill / judgment.
+     Tutor clicks the learner's answer to reveal correct/incorrect + feedback. */
+  exercise(d, ctx, slide) {
+    const type = d.type || 'mcq';
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="space-y-3">
+        ${(d.items || []).map((it, i) => {
+          const q = `<p class="quiz-q"><span class="quiz-n">${i + 1}.</span> ${md(it.prompt || it.statement || it.sentence || '')}</p>`;
+          if (type === 'gap') {
+            return `<div class="quiz-item">${q}${revealInline('Reveal answer', `<strong style="color:#059669;">${md(it.answer || '')}</strong>${it.feedback ? ` — ${md(it.feedback)}` : ''}`)}</div>`;
+          }
+          const opts = it.options || (type === 'judgment'
+            ? [ { text: 'Correct', correct: it.correct === true, feedback: it.feedback },
+                { text: 'Incorrect', correct: it.correct === false, feedback: it.feedback } ]
+            : []);
+          return `<div class="quiz-item">${q}${quizChoices(opts)}</div>`;
+        }).join('')}
+      </div>`;
+  },
+
+  /* ── Grammar Exercise 2: True / False with instant per-answer feedback. ── */
+  truefalse(d, ctx, slide) {
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="space-y-3">
+        ${(d.items || []).map((it, i) => `
+          <div class="quiz-item">
+            <p class="quiz-q"><span class="quiz-n">${i + 1}.</span> ${md(it.statement || '')}</p>
+            ${quizChoices([
+              { text: 'True', correct: it.isTrue === true, feedback: it.feedback },
+              { text: 'False', correct: it.isTrue === false, feedback: it.feedback }
+            ], true)}
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Grammar Common Errors: wrong sentence, click to reveal the correction. ── */
+  errors(d, ctx, slide) {
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="space-y-3">
+        ${(d.items || []).map((it, i) => `
+          <div class="quiz-item">
+            <p class="text-sm"><span class="quiz-n">${i + 1}.</span> <span class="err-wrong">${md(it.wrong || '')}</span></p>
+            ${revealInline('Reveal correction', `<span class="err-correct">${md(it.correct || '')}</span>${it.why ? ` — <span style="color:var(--muted);">${md(it.why)}</span>` : ''}`)}
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Grammar Communicative Practice: open production prompts + tutor aids. ── */
+  production(d, ctx, slide) {
+    const key = Array.isArray(d.answerKey) ? aidNumberedList(d.answerKey)
+      : (d.answerKey ? `<p class="text-sm" style="color:var(--ink);">${md(d.answerKey)}</p>` : '');
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.instruction ? `<p class="text-sm mb-3 font-medium" style="color:var(--primary);">${md(d.instruction)}</p>` : ''}
+      <div class="space-y-2 mb-2">
+        ${(d.prompts || []).map((p, i) => `<div class="flex items-start gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);"><span class="quiz-n">${i + 1}.</span><p class="text-sm flex-1" style="color:var(--ink);">${md(p)}</p></div>`).join('')}
+      </div>
+      ${aidBar([
+        disclosure('Answer Keys', 'answers', key),
+        disclosure('Feedback & Comment', 'feedback', d.comment ? `<p class="text-sm" style="color:var(--ink);">${md(d.comment)}</p>` : ''),
+        disclosure('Notes', 'notes', d.notes ? `<p class="text-sm" style="color:var(--ink);">${md(d.notes)}</p>` : '')
+      ])}`;
   }
 };
 
@@ -391,6 +467,33 @@ function toggleAid(btn) {
   if (panel) panel.hidden = !panel.hidden;
   const caret = btn && btn.querySelector('.aid-caret');
   if (caret) caret.textContent = panel && panel.hidden ? '▾' : '▴';
+}
+
+/* ── Interactive quiz choices (MCQ / True-False / judgment) ──
+   Each choice reveals its own feedback and marks itself correct/incorrect on
+   click. Tutor-driven: the tutor clicks the option the learner chose. Uses no
+   ids, so duplicated slide HTML (presentation overlay) never collides. */
+function quizChoices(options, row) {
+  if (!options || !options.length) return '';
+  return `<div class="quiz-choices${row ? ' row' : ''}">${options.map(o => {
+    const text = typeof o === 'string' ? o : o.text;
+    const fb = (o && o.feedback) ? o.feedback : '';
+    return `<button type="button" class="quiz-choice" data-correct="${!!(o && o.correct)}" onclick="revealChoice(this)">
+      <span class="quiz-choice-text">${md(text)}</span>
+      ${fb ? `<span class="quiz-choice-fb" hidden>${md(fb)}</span>` : ''}
+    </button>`; }).join('')}</div>`;
+}
+function revealChoice(btn) {
+  const correct = btn.getAttribute('data-correct') === 'true';
+  btn.classList.remove('is-correct', 'is-wrong');
+  btn.classList.add(correct ? 'is-correct' : 'is-wrong');
+  const fb = btn.querySelector('.quiz-choice-fb');
+  if (fb) fb.hidden = false;
+}
+/* Inline click-to-reveal (gap-fill answers, common-error corrections). */
+function revealInline(label, innerHtml) {
+  return `<button type="button" class="reveal-btn" onclick="toggleAid(this)">${escapeHtml(label)}</button>
+    <div class="aid-panel reveal-panel" hidden>${innerHtml}</div>`;
 }
 
 /* Shared: a "Word Bank" chip strip (used by bankmatch, practice, applyreview). */
