@@ -844,9 +844,12 @@ const SKELETON_GEN = {
     const d = fd.details; const f = tierFlags(fd);
     const title = d.scenarioTitle || 'Real conversation';
     const activity = d.speakingActivity || 'Role-play';
+    const level = fd.level;
+    const low = ['Pre-A1', 'A1', 'A2'].includes(level);
+    const mid = ['B1', 'B2'].includes(level);
     const exprs = parseVocabList(d.targetExpressions);
-    const cap = f.short ? (fd.level === 'Pre-A1' ? 4 : 6) : 8;
-    const items = (exprs.length ? exprs : ['Hello', 'Could I have…?', 'Could you repeat that?', 'How much is it?', "I'd like to…", 'Thank you']).slice(0, cap);
+    const cap = f.short ? 6 : (low ? 6 : 8);
+    const items = (exprs.length ? exprs : ['Hello', 'Could I have…?', 'Could you repeat that?', 'How much is it?', "I'd like to…", 'Thank you', 'That sounds good', 'See you soon']).slice(0, cap);
     const ex = t => t;
     const dur = getDuration(fd.duration);
     const goal = f.isFound ? `Handle "${title.toLowerCase()}" using a few fixed phrases.`
@@ -857,46 +860,52 @@ const SKELETON_GEN = {
         : `What makes someone effective in "${title.toLowerCase()}"?`;
     const use = f.isFound ? 'use it exactly' : f.isDev ? 'add a reason' : 'a discourse move';
 
-    // Distribute the expressions across communicative functions.
+    // Distribute the expressions across communicative functions (with examples).
     const funcs = f.isFound ? ['Start', 'Ask', 'Finish']
       : f.isDev ? ['Opening', 'Requesting', 'Responding', 'Closing']
         : ['Opening', 'Making your case', 'Handling pushback', 'Closing'];
     const groups = funcs.map(fn => ({ function: fn, items: [] }));
-    items.forEach((it, i) => groups[i % groups.length].items.push({ phrase: `"${it}"`, use, l1: f.l1on ? demoL1(it, fd) : '' }));
+    items.forEach((it, i) => groups[i % groups.length].items.push({ phrase: `"${it}"`, use, example: `e.g. you can say: ${it}`, l1: f.l1on ? demoL1(it, fd) : '' }));
     const toolkitGroups = groups.filter(g => g.items.length);
 
     const hero = { icon: '', label: 'Objective & Warm-up', title, layout: 'hero',
       data: { heading: title, goal, warmup, badges: [fd.level, `${dur.key} min`, activity], duration_label: `${fd.duration}-Minute Live Micro-Session` } };
     const toolkit = { icon: '', label: 'Language Toolkit', title: `Toolkit — ${title}`, layout: 'toolkit',
-      data: { intro: 'Expressions grouped by what they do.', groups: toolkitGroups } };
+      data: { intro: 'Key phrases grouped by what they do.', groups: toolkitGroups, repeat: 'Repeat each phrase aloud twice after your tutor.' } };
+    const focus = { icon: '', label: 'Language Focus', title: 'Language Focus', layout: 'focus',
+      data: { intro: 'Core frames you will use — practise them aloud.',
+        frames: items.slice(0, f.isFound ? 3 : 4).map(it => ({ frame: it, use: f.isFound ? 'Use this to get what you need.' : 'Use this to move the conversation forward.' })),
+        examples: [`Tutor: How can I help? — You: ${items[0] || 'Hello.'}`, `Tutor: Anything else? — You: ${items[1] || items[0] || 'That is all, thanks.'}`],
+        drills: [{ prompt: 'Greet and open.', response: items[0] || 'Hello.' },
+          { prompt: 'Ask for what you need.', response: items[1] || items[0] || 'Could I have…?' },
+          { prompt: 'Close politely.', response: items[items.length - 1] || 'Thank you.' }].slice(0, f.isFound ? 3 : 4),
+        variations: f.isProf ? ['Add a reason with "because…".', 'Add your opinion with "I think…".'] : [] } };
+    const turns = f.short ? (low ? 4 : 6) : (low ? 6 : mid ? 8 : 10);
     const dialogueLines = (() => {
-      const lines = [ { speaker: 'Tutor', side: 'left', line: 'Hello — how can I help you today?' },
-        { speaker: 'Student', side: 'right', line: `**${items[0] || 'Hello.'}**` },
-        { speaker: 'Tutor', side: 'left', line: 'Of course. Is there anything else?' },
-        { speaker: 'Student', side: 'right', line: `**${items[1] || 'Thank you.'}**` },
-        { speaker: 'Tutor', side: 'left', line: 'All done. Have a good day!' },
-        { speaker: 'Student', side: 'right', line: `**${items[items.length - 1] || 'Goodbye.'}**` } ];
-      return f.short ? lines.slice(0, 4) : lines;
+      const lines = [];
+      for (let i = 0; i < 10; i++) {
+        lines.push(i % 2 === 0
+          ? { speaker: 'Tutor', side: 'left', line: i === 0 ? 'Hello — how can I help you today?' : i === 8 ? 'All done. Have a good day!' : 'Of course. Is there anything else?' }
+          : { speaker: 'Student', side: 'right', line: `**${items[(Math.floor(i / 2)) % items.length]}**` });
+      }
+      return lines.slice(0, turns);
     })();
     const dialogue = { icon: '', label: 'Model Dialogue', title: `Dialogue — ${title}`, layout: 'dialogue',
-      data: { instruction: 'Read the dialogue aloud with your tutor.', setting: (d.roles || `Your tutor plays the other person${f.place}.`).trim(), lines: dialogueLines } };
-    const cultural = String(d.culturalNotes || '').trim();
-    const registerPairs = (() => {
-      const pairs = [];
-      if (cultural) pairs.push({ good: 'A version that fits the local norms.', bad: `A version that ignores: ${cultural}`, note: 'Match the politeness expected here.' });
-      pairs.push({ good: 'Could you help me, please?', bad: 'Give me that.', note: 'Use "could" and "please" to sound polite, not demanding.' });
-      pairs.push({ good: "I'm afraid I can't make it.", bad: "No. I don't want to.", note: 'Soften a refusal to keep it polite.' });
-      return pairs.slice(0, 3);
-    })();
-    const register = { icon: '', label: 'Register & Delivery', title: 'Register & Delivery', layout: 'compare',
-      data: { intro: 'Same message, different tone — choose the appropriate one.', pairs: registerPairs } };
-    const controlled = { icon: '', label: 'Controlled Practice', title: 'Match the Expression', layout: 'bankmatch',
-      data: { intro: 'Which expression fits each moment?', bank: items,
-        prompts: [ { q: 'You start the conversation → ___', a: items[0] || '' },
-          { q: 'You ask for something → ___', a: items[1] || '' },
-          { q: "You didn't catch it — you ask them to repeat → ___", a: items[2] || '' },
-          { q: 'You give a reason → ___', a: items[3] || '' },
-          { q: 'You finish politely → ___', a: items[items.length - 1] || '' } ].slice(0, f.short ? 3 : Math.min(5, items.length)) } };
+      data: { instruction: 'Read together, swap roles, then adapt it to talk about your own real situation.',
+        setting: (d.roles || `Your tutor plays the other person${f.place}.`).trim(), lines: dialogueLines,
+        notes: 'Swap roles and repeat, then change the details to fit your own life.' } };
+    const qCount = low ? 4 : mid ? 5 : 6;
+    const questionItems = [
+      { question: `Have you experienced "${title.toLowerCase()}" before?`, frames: ['Yes, I have. Once I ___.', "No, I haven't, but ___."] },
+      { question: 'What do you usually say first?', frames: [`I usually say: "${items[0] || '...'}"`] },
+      { question: 'What is the hardest part for you?', frames: ['The hardest part is ___ because ___.'] },
+      { question: 'How do you feel in this situation?', frames: ['I feel ___ because ___.'] },
+      { question: 'What would you do differently next time?', frames: ['Next time I would ___.'] },
+      { question: 'Why is this important to you?', frames: ['It matters to me because ___.'] }
+    ].slice(0, f.short ? 3 : qCount);
+    const questions = { icon: '', label: 'Conversation Questions', title: 'Conversation Questions', layout: 'questions',
+      data: { intro: 'Ask and answer. Click a question to see an answer frame.', items: questionItems,
+        notes: 'Start with the factual questions, then move to the opinion and feeling questions as the learner warms up.' } };
     // Activity-specific speaking task (one of the seven), scaffolded by tier.
     const ACTIVITY_TASK = {
       'Role-play': { steps: ['Greet and open the conversation.', 'Make your request or suggestion and give a reason.', 'Handle one complication the other person raises.', 'Agree an outcome and close politely.'],
@@ -924,19 +933,23 @@ const SKELETON_GEN = {
       : f.isDev ? [`I can manage "${title.toLowerCase()}", including one complication.`, 'I can give reasons for what I say.', 'I can keep an appropriate, polite tone.']
         : [`I can navigate "${title.toLowerCase()}" with register control.`, 'I can hedge, concede and rebut.', 'I can drive the exchange to a clear outcome.'];
     const nextStep = `Complete your post-session activity on the platform: ${f.isFound ? 'record yourself doing the dialogue once' : f.isDev ? 'use one expression in a real conversation this week and note how it went' : `prepare and record a 1-2 minute ${activity.toLowerCase()} turn for this scenario`}. Your tutor tracks your completion time and practice metrics before the next session.`;
+    const starters = [ items[0] ? `Open with: "${items[0]}"` : 'Open the conversation.',
+      f.isFound ? 'Say what you need.' : 'Give a reason: "… because …".',
+      items[1] ? `Ask: "${items[1]}"` : 'Ask a question.' ];
+    const taskNotes = 'Keep the learner talking: prompt with "Why?", "What happened next?" and "How did you feel?" to add detail.';
 
     if (f.short) {
-      // ── 15-minute · 4 slides ──
-      const slides = [ hero, toolkit, dialogue,
-        { icon: '', label: 'Speak & Review', title: `${activity} — Your Turn`, layout: 'task',
-          data: { scenario, steps, tip: 'Use the expressions from the Toolkit (Slide 2).', criteria, can_do: canDo[0], next_step: nextStep } } ];
+      // ── 15-minute · 5 slides ──
+      const slides = [ hero, toolkit, dialogue, questions,
+        { icon: '', label: 'Main Speaking Task', title: `${activity} — Your Turn`, layout: 'task',
+          data: { scenario, steps: steps.slice(0, 3), starters, tip: 'Use the Toolkit phrases (Slide 2).', criteria: criteria.slice(0, 2), notes: taskNotes, can_do: canDo[0], next_step: nextStep } } ];
       return { slides, practice_bank: practiceBank(items, fd, ex) };
     }
 
     // ── 25-minute · 7 slides ──
-    const slides = [ hero, toolkit, dialogue, register, controlled,
-      { icon: '', label: 'Your Turn — Speaking Task', title: `${activity} — Your Turn`, layout: 'task',
-        data: { scenario, steps, tip: 'Use the expressions from the Toolkit (Slide 2).', criteria } },
+    const slides = [ hero, toolkit, focus, dialogue, questions,
+      { icon: '', label: 'Main Speaking Task', title: `${activity} — Your Turn`, layout: 'task',
+        data: { scenario, steps, starters, tip: 'Use the Toolkit phrases (Slide 2).', criteria, notes: taskNotes } },
       { icon: '', label: 'Review & Next Step', title: 'Review & Next Step', layout: 'checklist',
         data: { intro: 'Great speaking today — here is what you can now do:', style: 'check', items: canDo.map(t => ({ text: t, hint: '' })), footer: nextStep } } ];
     return { slides, practice_bank: practiceBank(items, fd, ex) };

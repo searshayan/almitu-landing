@@ -183,12 +183,18 @@ const LAYOUT_BUILDERS = {
             <p class="text-sm pt-0.5" style="color:var(--ink);">${md(s)}</p>
           </div>`).join('')}
       </div>
+      ${(d.starters && d.starters.length) ? `
+        <div class="p-3 rounded-xl mb-3" style="background:#F8F9FD; border:1px solid var(--line);">
+          <p class="text-xs font-semibold mb-1.5" style="color:var(--secondary);">Sentence starters</p>
+          ${d.starters.map(s => `<p class="text-sm" style="color:var(--navy);">${md(s)}</p>`).join('')}
+        </div>` : ''}
       ${d.tip ? `<div class="p-3 rounded-xl text-xs mb-3" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.15);"><span class="font-semibold" style="color:#059669;">Tip:</span> <span style="color:var(--ink);">${md(d.tip)}</span></div>` : ''}
       ${(d.criteria && d.criteria.length) ? `
         <div class="p-3 rounded-xl" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12);">
           <p class="text-xs font-semibold mb-1.5" style="color:var(--secondary);">Success criteria</p>
           ${d.criteria.map(c => `<p class="text-xs flex items-start gap-1.5" style="color:var(--ink);"><span style="color:var(--secondary);">-</span> ${md(c)}</p>`).join('')}
         </div>` : ''}
+      ${d.notes ? aidBar([disclosure('Notes', 'notes', `<p class="text-sm" style="color:var(--ink);">${md(d.notes)}</p>`)]) : ''}
       ${(d.can_do || d.next_step) ? `
         <div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);">
           ${d.can_do ? `<p class="text-sm font-medium" style="color:var(--ink);">"${md(d.can_do)}"</p>` : ''}
@@ -328,11 +334,13 @@ const LAYOUT_BUILDERS = {
                 <div class="p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
                   <p class="text-sm font-semibold" style="color:var(--navy);">${md(phrase)}</p>
                   ${(it && it.use) ? `<p class="text-xs mt-0.5" style="color:var(--muted);">${md(it.use)}</p>` : ''}
+                  ${(it && it.example) ? `<p class="text-xs mt-1 italic" style="color:var(--navy);">${md(it.example)}</p>` : ''}
                   ${(it && it.l1) ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${escapeHtml(it.l1)}</p>` : ''}
                 </div>`; }).join('')}
             </div>
           </div>`).join('')}
-      </div>`;
+      </div>
+      ${d.repeat ? `<div class="mt-4 p-3 rounded-xl" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);"><span class="text-xs font-semibold" style="color:var(--primary);">Say it aloud:</span> <span class="text-xs" style="color:var(--ink);">${md(d.repeat)}</span></div>` : ''}`;
   },
 
   /* ── Grammar: Form & Use ── formula banner + positive/negative/question forms
@@ -431,6 +439,53 @@ const LAYOUT_BUILDERS = {
         disclosure('Feedback & Comment', 'feedback', d.comment ? `<p class="text-sm" style="color:var(--ink);">${md(d.comment)}</p>` : ''),
         disclosure('Notes', 'notes', d.notes ? `<p class="text-sm" style="color:var(--ink);">${md(d.notes)}</p>` : '')
       ])}`;
+  },
+
+  /* ── Communication: Language Focus ── core sentence frames + mini-examples +
+     call-and-response drills + (higher-level) richer variations. */
+  focus(d, ctx, slide) {
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      ${(d.frames && d.frames.length) ? `
+        <div class="space-y-2 mb-4">
+          ${d.frames.map(fr => `
+            <div class="p-3 rounded-xl" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.14);">
+              <p class="text-sm font-semibold" style="color:var(--navy);">${md(typeof fr === 'string' ? fr : fr.frame)}</p>
+              ${(fr && fr.use) ? `<p class="text-xs mt-0.5" style="color:var(--muted);">${md(fr.use)}</p>` : ''}
+            </div>`).join('')}
+        </div>` : ''}
+      ${(d.examples && d.examples.length) ? `
+        <div class="p-4 rounded-2xl mb-4 space-y-1.5" style="background:#F8F9FD; border:1px solid var(--line);">
+          ${d.examples.map(e => `<p class="text-sm" style="color:var(--ink);">${md(e)}</p>`).join('')}
+        </div>` : ''}
+      ${(d.drills && d.drills.length) ? `
+        <p class="text-xs font-semibold mb-1.5" style="color:var(--secondary);">Say it: call &amp; response</p>
+        <div class="space-y-2 mb-3">
+          ${d.drills.map(dr => `
+            <div class="p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
+              <p class="text-sm" style="color:var(--muted);">Tutor: ${md(dr.prompt || '')}</p>
+              <p class="text-sm font-medium" style="color:var(--navy);">You: ${md(dr.response || '')}</p>
+            </div>`).join('')}
+        </div>` : ''}
+      ${(d.variations && d.variations.length) ? aidBar([disclosure('Notes', 'notes', `<p class="text-xs font-semibold mb-1" style="color:var(--secondary);">Richer variations</p>${aidNumberedList(d.variations)}`)]) : ''}`;
+  },
+
+  /* ── Communication: Conversation Questions ── each question reveals answer
+     frame(s) on click; a tutor note on sequencing at the bottom. */
+  questions(d, ctx, slide) {
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="space-y-2">
+        ${(d.items || []).map((it, i) => {
+          const frames = (it.frames || []).map(fr => `${md(fr)}`).join('<br>');
+          return `<div class="quiz-item">
+            <p class="text-sm font-medium" style="color:var(--navy);"><span class="quiz-n">${i + 1}.</span> ${md(it.question || '')}</p>
+            ${frames ? revealInline('Show answer frame', `<span style="color:var(--ink);">${frames}</span>`) : ''}
+          </div>`; }).join('')}
+      </div>
+      ${d.notes ? aidBar([disclosure('Notes', 'notes', `<p class="text-sm" style="color:var(--ink);">${md(d.notes)}</p>`)]) : ''}`;
   }
 };
 
