@@ -27,27 +27,26 @@ function showPracticeContent(html) {
   const content = document.getElementById('practiceContent');
   content.innerHTML = html;
   content.classList.remove('hidden');
-  svEnterDetail('activity');
+  scrollActivityIntoView();   // mobile: bring the activity content into view after a tile tap
 }
 
-/* ── Mobile drill-in (master → detail) ──
-   On phones the dashboard stacks, so a tapped activity/objective renders far
-   below the fold and looks like nothing happened. Below the lg breakpoint we
-   swap to a focused detail view (via data-mview on #step3, styled in main.css)
-   with a back bar; on desktop the side-by-side layout is untouched. */
+/* ── Mobile: per-session detail (master → detail) ──
+   Below the lg breakpoint the dashboard stacks, so we split it into a list of
+   sessions and a per-session detail page — objective on top, the activity tiles
+   below it, and the activity area under those — driven by data-mview on #step3
+   and styled in main.css. Tapping a tile renders its activity below the tiles
+   and scrolls to it, so the content is never left below the fold. Desktop keeps
+   its side-by-side layout untouched. */
 let _svScrollY = 0;
 function _svIsMobile() { return window.matchMedia('(max-width: 1023px)').matches; }
 function _svReduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-function svEnterDetail(mode) {
+function svEnterDetail() {
   const step3 = document.getElementById('step3');
   if (!step3) return;
-  const prev = step3.getAttribute('data-mview') || 'list';
-  if (_svIsMobile() && prev === 'list') _svScrollY = window.scrollY;   // remember list position
-  step3.setAttribute('data-mview', mode);
-  const lbl = document.getElementById('svBackLabel');
-  if (lbl) lbl.textContent = mode === 'objective' ? 'My notebook' : 'Activities';
-  if (_svIsMobile()) window.scrollTo({ top: 0, behavior: _svReduceMotion() ? 'auto' : 'smooth' });
+  if (_svIsMobile() && step3.getAttribute('data-mview') !== 'detail') _svScrollY = window.scrollY;   // remember list position
+  step3.setAttribute('data-mview', 'detail');
+  if (_svIsMobile()) window.scrollTo({ top: 0, behavior: _svReduceMotion() ? 'auto' : 'smooth' });   // land on the objective
 }
 
 function svExitDetail() {
@@ -57,6 +56,22 @@ function svExitDetail() {
   if (exp) exp.classList.add('hidden');
   if (step3) step3.setAttribute('data-mview', 'list');
   if (_svIsMobile()) window.scrollTo({ top: _svScrollY || 0, behavior: 'auto' });   // restore list position
+}
+
+/* Reset the activity area to its empty "pick an activity" prompt. */
+function resetActivityArea() {
+  const pc = document.getElementById('practiceContent');
+  if (pc) { pc.innerHTML = ''; pc.classList.add('hidden'); }
+  const pe = document.getElementById('practiceEmpty');
+  if (pe) pe.classList.remove('hidden');
+}
+
+/* Mobile: after a tile renders its activity, scroll the activity card into view
+   (it sits below the objective + tiles, so it would otherwise be below the fold). */
+function scrollActivityIntoView() {
+  if (!_svIsMobile()) return;
+  const el = document.querySelector('#step3 .sv-activity-detail') || document.getElementById('practiceContent');
+  if (el) el.scrollIntoView({ behavior: _svReduceMotion() ? 'auto' : 'smooth', block: 'start' });
 }
 
 function shuffled(arr) {
@@ -193,10 +208,17 @@ function selectSession(id) {
   if (!s.savedNotebooks.some(n => n.id === id)) return;
   s.selectedNotebookId = id;
   persistNotebooks();
-  document.getElementById('notebookExpanded').classList.add('hidden');
   renderNotebooks();
   if (typeof renderStudentXpBadge === 'function') renderStudentXpBadge();
-  actOverview();               // Overview is the default display for a selected session
+  if (_svIsMobile()) {
+    // Mobile: open the session's detail page — objective on top, activity tiles
+    // below, activity area empty until the student picks a tile.
+    resetActivityArea();
+    showSessionObjective(id);   // renders the objective and enters detail mode
+  } else {
+    document.getElementById('notebookExpanded').classList.add('hidden');
+    actOverview();              // Desktop: unchanged — Overview auto-shows on select
+  }
 }
 
 /* Manual deletion — sessions are stored until removed here (or via a future admin panel). */
@@ -270,7 +292,7 @@ function showSessionObjective(id) {
       <p class="text-sm italic leading-snug" style="color:var(--ink);">"${escapeHtml(ov.canDo)}"</p>
     </div>` : ''}`;
   document.getElementById('notebookExpanded').classList.remove('hidden');
-  svEnterDetail('objective');
+  svEnterDetail();
 }
 
 /* ═══════════ 0. OVERVIEW (default view for a selected session) ═══════════
