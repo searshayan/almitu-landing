@@ -102,7 +102,10 @@ function renderIdFor(skill, tier) {
    sees the resolved name. */
 const L1_LANGUAGE_MAP = {
   'Farsi Afghanistan': 'Dari (Afghan Persian — the Persian variety spoken in Afghanistan, in Perso-Arabic script)',
-  'Farsi Iran': 'Farsi (Iranian Persian, in Perso-Arabic script)'
+  'Farsi Iran': 'Farsi (Iranian Persian, in Perso-Arabic script)',
+  'Mandarin Chinese': 'Mandarin Chinese (Putonghua / Standard Mandarin, written in Simplified Chinese characters)',
+  'Korean': 'Korean (in Hangul script)',
+  'Japanese': 'Japanese (standard orthography — kanji with hiragana/katakana as appropriate)'
 };
 
 function resolveL1Language(value) {
