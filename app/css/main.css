@@ -817,11 +817,13 @@ textarea:focus-visible,
 #outputPanel { scroll-margin-top: 76px; }
 
 /* ═══════════════════════════════════════════════════════
-   Student dashboard — mobile drill-in (master → detail)
-   Below the lg breakpoint the columns stack, so a tapped activity/objective
-   renders below the fold. We swap to a focused detail view driven by
-   data-mview on #step3. Desktop (≥1024px) is untouched — every rule here is
-   inside the mobile query, and the back bar is hidden by default.
+   Student dashboard — mobile session detail (master → detail)
+   Below the lg breakpoint the columns stack. We split the dashboard into a list
+   of sessions and a per-session detail page: objective on top, activity tiles
+   below it, activity area under those. Tapping a tile renders the activity and
+   scrolls to it (JS). Driven by data-mview on #step3. Desktop (≥1024px) is
+   untouched — every reflow rule is inside the mobile query, and the back bar is
+   hidden by default.
    ═══════════════════════════════════════════════════════ */
 .sv-back-bar {
   display: none;
@@ -841,25 +843,25 @@ textarea:focus-visible,
 }
 .sv-back-bar:hover { border-color: var(--secondary); }
 
+/* Tapped-activity scroll target: keep its top clear of the sticky header. */
+.sv-activity-detail { scroll-margin-top: 76px; }
+
 @media (max-width: 1023px) {
-  /* LIST view (default): hide the detail panels, show the selectors */
-  #step3[data-mview="list"] .sv-activity-detail,
-  #step3[data-mview="list"] #notebookExpanded { display: none !important; }
+  /* LIST view (default): session cards only — hide the objective, the
+     practice-ground intro, the tiles, and the activity area. */
+  #step3[data-mview="list"] #notebookExpanded,
+  #step3[data-mview="list"] .sv-practice-intro,
+  #step3[data-mview="list"] .sv-activity-tiles,
+  #step3[data-mview="list"] .sv-activity-detail { display: none !important; }
 
-  /* ACTIVITY detail: show only the activity render + back bar */
-  #step3[data-mview="activity"] .sv-header,
-  #step3[data-mview="activity"] .sv-col-notebooks,
-  #step3[data-mview="activity"] .sv-practice-intro,
-  #step3[data-mview="activity"] .sv-activity-tiles { display: none !important; }
+  /* DETAIL view: objective (context) + tiles + activity area, with a back bar.
+     Hide the page header, the sessions list, and the intro card. */
+  #step3[data-mview="detail"] .sv-header,
+  #step3[data-mview="detail"] .sv-notebook-list,
+  #step3[data-mview="detail"] .sv-practice-intro { display: none !important; }
 
-  /* OBJECTIVE detail: show only the objective panel + back bar */
-  #step3[data-mview="objective"] .sv-header,
-  #step3[data-mview="objective"] .sv-col-practice,
-  #step3[data-mview="objective"] .sv-notebook-list { display: none !important; }
-
-  /* Back bar appears only inside a detail view */
-  #step3[data-mview="activity"] .sv-back-bar,
-  #step3[data-mview="objective"] .sv-back-bar { display: inline-flex; }
+  /* Back bar appears only inside the detail view */
+  #step3[data-mview="detail"] .sv-back-bar { display: inline-flex; }
 }
 
 /* ── Accessibility: respect prefers-reduced-motion ──
