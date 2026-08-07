@@ -704,6 +704,36 @@ textarea:focus-visible,
   .present-nav-btn { width: 46px; height: 46px; }
 }
 
+/* ═══════════════════════════════════════════════════════
+   Mobile (≤640px) — tutor & student app shell
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Header: keep the logo + sign-out on the top row and drop the role nav onto
+     its own full-width, horizontally-scrollable strip below — instead of
+     wrapping into a tall 3-row stack that desynced the old fixed spacer. */
+  #headerNav {
+    order: 3;
+    flex-basis: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 4px;
+    margin-top: 4px;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  #headerNav::-webkit-scrollbar { display: none; }
+  #headerNav > * { flex-shrink: 0; }
+
+  /* Live-session slide controls: raise to a 44px minimum tap target on touch. */
+  .slide-nav-btn { width: 44px; height: 44px; }
+
+  /* Live-session split stacks (grid-cols-1); let the slide viewer breathe and
+     keep the notes textarea usable without a fixed desktop min-height. */
+  #slideContent { min-height: 300px; }
+}
+
 /* ── Accessibility: respect prefers-reduced-motion ──
    Neutralizes the typing dots, live pulse, flashcard flip, chat slide-in,
    card hover-lifts and toast transitions without changing any layout. */
