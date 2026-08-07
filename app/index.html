@@ -23,7 +23,7 @@
             secondary: { DEFAULT:'#004E89', dark:'#003D6B' },
             accent: { DEFAULT:'#FFD23F' },
             success: { DEFAULT:'#06D6A0' },
-            navy: '#1A1D29', ink: '#2D3142', muted: '#6C7489', surface: '#F8F9FD',
+            navy: '#1A1D29', ink: '#2D3142', muted: '#646B80', surface: '#F8F9FD',
           },
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
@@ -102,7 +102,7 @@
   <!-- ═══════════════════════ APP SHELL ═══════════════════════ -->
   <div id="appShell" class="hidden">
     <!-- GLOBAL TOP BAR (role-aware) -->
-    <header class="fixed top-0 inset-x-0 z-50 header-glass">
+    <header class="sticky top-0 z-50 header-glass">
       <div class="max-w-[1440px] mx-auto px-4 sm:px-6 min-h-16 py-2 flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
         <div class="flex items-center gap-2 flex-shrink-0">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white text-sm" style="background:linear-gradient(135deg, #004E89, #FF6B35);">A</div>
@@ -128,8 +128,6 @@
         <div id="progressBar" class="h-full transition-all duration-700 ease-out" style="width:33%; background:linear-gradient(90deg, #FF6B35, #FFD23F);"></div>
       </div>
     </header>
-
-    <div class="h-[68px]"></div>
 
     <!-- Admin "View as" banner -->
     <div id="viewAsBanner" class="hidden max-w-[1440px] mx-auto px-4 sm:px-6 mt-2">
@@ -205,7 +203,7 @@
             <!-- 1. Student -->
             <!-- Hidden field kept so existing code can read the chosen student's name -->
             <input id="inputName" type="hidden" value="">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div id="tutorStudentPicker"></div>
               <div>
                 <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">First Language <span style="color:var(--primary);">*</span></label>
@@ -236,7 +234,7 @@
             </div>
 
             <!-- 3. L1 support + duration -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-medium mb-1.5" style="color:var(--muted);">First Language Support <span style="color:var(--primary);">*</span></label>
                 <div class="flex gap-2">
@@ -264,7 +262,7 @@
             <!-- 4. Session Type -->
             <div>
               <label class="block text-xs font-medium mb-2" style="color:var(--muted);">Session Type <span style="color:var(--primary);">*</span></label>
-              <div id="sessionTypeGrid" class="grid grid-cols-3 gap-2"></div>
+              <div id="sessionTypeGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
             </div>
 
             <!-- 5. Dynamic session detail fields -->

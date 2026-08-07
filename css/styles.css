@@ -15,7 +15,7 @@
   --success: #06D6A0;
   --navy: #1A1D29;
   --ink: #2D3142;
-  --muted: #6C7489;
+  --muted: #646B80; /* darkened from #6C7489 → 5.04:1 on --bg, passes WCAG AA */
   --bg: #F8F9FD;
   --card: #FFFFFF;
   --line: rgba(29, 33, 41, .08);
@@ -27,6 +27,8 @@
   --radius-md: 16px;
   --radius-pill: 999px;
   --container: 1200px;
+  /* Keyboard focus ring — visible for keyboard/AT users, invisible on mouse click */
+  --focus-ring: 0 0 0 3px rgba(0, 78, 137, .45), 0 0 0 5px rgba(255, 255, 255, .9);
 }
 
 * {
@@ -63,6 +65,29 @@ a {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Accessibility: visible keyboard-focus ring (does not affect mouse users) */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.nav-links a:focus-visible,
+.footer-links a:focus-visible,
+.faq-question:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-md);
+}
+
+/* Pill-shaped controls keep their pill radius on focus */
+.btn:focus-visible,
+.nav-links a:focus-visible,
+.footer-links a:focus-visible {
+  border-radius: var(--radius-pill);
 }
 
 /* almitu brand name styling */
@@ -323,12 +348,14 @@ section {
   background-clip: text;
 }
 
-/* change the hero font color if the system prefers dark mode */
+/* Dark-mode fallback: the page stays light, so render the gradient headline as
+   a solid on-brand color instead of clipping it to a white background (which
+   made the text invisible). */
 @media (prefers-color-scheme: dark) {
   .hero h1 {
-    background-color: white;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: none;
+    -webkit-text-fill-color: var(--secondary);
+    color: var(--secondary);
   }
 }
 
@@ -880,12 +907,12 @@ footer {
   background-clip: text;
 }
 
-/* if the system is dark mode */
+/* Dark-mode fallback: solid on-brand wordmark instead of invisible clipped text. */
 @media (prefers-color-scheme: dark) {
   .footer-brand-text {
-    background-color: white;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: none;
+    -webkit-text-fill-color: var(--secondary);
+    color: var(--secondary);
   }
 }
 
@@ -1056,5 +1083,35 @@ footer {
 
   .btn {
     width: 100%;
+  }
+}
+
+/* Accessibility: respect users who ask for reduced motion.
+   Neutralizes hover-lifts, the launch-badge pulse, smooth scroll, and card/FAQ
+   transitions while keeping all layout and color intact. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Cancel translate-based hover lifts so nothing shifts on focus/hover */
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-primary:active,
+  .nav-cta:hover,
+  .card:hover,
+  .cta-card:hover,
+  .testimonial:hover {
+    transform: none !important;
   }
 }
