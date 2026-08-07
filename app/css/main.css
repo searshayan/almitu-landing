@@ -48,11 +48,89 @@ textarea:focus-visible,
   box-shadow: var(--focus-ring) !important;
 }
 
+/* ═══════════════════════════════════════════════════════
+   Dark theme — activated by data-theme="dark" on <html>.
+   Most of the app already paints through these CSS variables, so flipping them
+   here re-themes the shell, forms, cards and text in one place. A handful of
+   component + literal-color overrides below catch the parts that don't.
+   ═══════════════════════════════════════════════════════ */
+:root[data-theme="dark"] {
+  --primary: #FF7D4D;          /* nudged lighter so it reads on dark */
+  --primary-dark: #E85A2A;
+  --primary-light: #FF8C66;
+  --secondary: #4F97D8;        /* lightened: used as text/accent on dark */
+  --secondary-dark: #3B7CB8;
+  --accent: #FFD23F;
+  --success: #2DE0B0;
+  --navy: #EDF0F6;             /* was near-black — now heading/"dark" text */
+  --ink: #C7CCD8;             /* body text */
+  --muted: #949BB0;           /* muted text — passes AA on dark surfaces */
+  --bg: #0F1117;              /* page */
+  --card: #1A1E2B;            /* elevated surface */
+  --surface-2: #232838;       /* inset fills (replaces the light greys) */
+  --line: rgba(255, 255, 255, .10);
+  --shadow: 0 8px 32px rgba(0, 0, 0, .45);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, .55);
+}
+/* Light theme names the inset var too, so overrides below resolve in both. */
+:root { --surface-2: #F8F9FD; }
+
+:root[data-theme="dark"] body { background: var(--bg); }
+
+/* ── Component surfaces (dark) ── */
+:root[data-theme="dark"] .header-glass { background: rgba(15, 17, 23, .85); }
+:root[data-theme="dark"] .card-surface { background: var(--card); }
+:root[data-theme="dark"] .field-input { background: var(--surface-2); color: var(--ink); }
+:root[data-theme="dark"] .slide-viewer { background: var(--surface-2); }
+:root[data-theme="dark"] .slide-card,
+:root[data-theme="dark"] .slide-thumb,
+:root[data-theme="dark"] .chat-compact,
+:root[data-theme="dark"] .modal-card,
+:root[data-theme="dark"] .reorder-token,
+:root[data-theme="dark"] .match-token,
+:root[data-theme="dark"] .sim-btn,
+:root[data-theme="dark"] .quiz-choice,
+:root[data-theme="dark"] .slide-nav-btn { background: var(--card); }
+:root[data-theme="dark"] .vocab-card,
+:root[data-theme="dark"] .phrase-row,
+:root[data-theme="dark"] .reorder-zone,
+:root[data-theme="dark"] .sim-bar,
+:root[data-theme="dark"] .quiz-item,
+:root[data-theme="dark"] .aid-panel,
+:root[data-theme="dark"] .dialogue-bubble.left { background: var(--surface-2); }
+:root[data-theme="dark"] .video-feed { background: #0A0C12; }   /* stays dark (—navy now light) */
+:root[data-theme="dark"] .modal-backdrop { background: rgba(0, 0, 0, .6); }
+:root[data-theme="dark"] .toast { background: var(--card); color: var(--ink); }
+
+/* Presentation mode: dark stage; slide frame becomes a dark card so the
+   variable-driven slide text (now light) stays readable. */
+:root[data-theme="dark"] .present-mode {
+  background: radial-gradient(120% 120% at 50% 0%, #171B26 0%, #12141C 60%, #0C0E14 100%);
+}
+:root[data-theme="dark"] .present-scaler { background: var(--card); border-color: var(--line); }
+
+/* ── Literal-color long tail (elements not using the variables) ── */
+:root[data-theme="dark"] [style*="background:white"],
+:root[data-theme="dark"] [style*="background: white"],
+:root[data-theme="dark"] [style*="background:#fff"],
+:root[data-theme="dark"] [style*="background:#F8F9FD"],
+:root[data-theme="dark"] [style*="background:#F1F2F6"] { background: var(--card) !important; }
+:root[data-theme="dark"] .bg-white { background: var(--card) !important; }
+:root[data-theme="dark"] .text-gray-400 { color: var(--muted) !important; }
+
+/* Theme toggle: show the moon in light mode (tap → dark), sun in dark mode. */
+.theme-icon-dark { display: none; }
+:root[data-theme="dark"] .theme-icon-light { display: none; }
+:root[data-theme="dark"] .theme-icon-dark { display: inline; }
+#themeToggle:hover { border-color: var(--primary) !important; color: var(--primary) !important; }
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #F1F2F6; }
+::-webkit-scrollbar-track { background: var(--surface-2); }
 ::-webkit-scrollbar-thumb { background: #C8CBD4; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #9BA0AE; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #3A4055; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #4C5470; }
 
 /* ── Glass / Card Surfaces ── */
 .card-surface {

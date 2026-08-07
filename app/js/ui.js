@@ -2,6 +2,15 @@
    Almitu Pro — Shared UI Utilities
    ═══════════════════════════════════════════════════════ */
 
+/* Flip between light/dark and remember the choice. The pre-paint script in
+   <head> applies the saved value on load; this just toggles + persists. */
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('almitu-theme', next); } catch (e) {}
+}
+
 function updateProgress() {
   const s = getState();
   const pct = s.currentStep === 1 ? 33 : s.currentStep === 2 ? 66 : 100;
