@@ -366,6 +366,18 @@ function showFullDeck() {
 
 let _loadingTimer = null;
 
+/* On a phone the prep form sits above the AI output column, so the loading
+   state (and the deck that follows) renders below the fold — tapping Generate
+   looks like nothing happened. Bring the output panel into view so the tutor
+   sees the progress, mirroring the student dashboard's tap → focused-detail. */
+function revealOutputOnMobile() {
+  if (!window.matchMedia('(max-width: 1023px)').matches) return;   // desktop: side-by-side, no scroll
+  const panel = document.getElementById('outputPanel');
+  if (!panel) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  panel.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
 function startLoadingAnim(engineLabel) {
   document.getElementById('outputPlaceholder').classList.add('hidden');
   document.getElementById('outputPlan').classList.add('hidden');
@@ -374,6 +386,7 @@ function startLoadingAnim(engineLabel) {
   document.getElementById('btnGenerate').disabled = true;
   document.getElementById('btnGenerate').classList.add('opacity-50', 'cursor-not-allowed');
   document.getElementById('loadingEngine').textContent = engineLabel;
+  revealOutputOnMobile();
 
   const steps = ['ls1', 'ls2', 'ls3', 'ls4'];
   steps.forEach(id => {

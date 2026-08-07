@@ -812,6 +812,10 @@ textarea:focus-visible,
   #slideContent { min-height: 300px; }
 }
 
+/* Tutor prep: when the AI output panel is scrolled into view on Generate
+   (revealOutputOnMobile), keep its top clear of the sticky header. */
+#outputPanel { scroll-margin-top: 76px; }
+
 /* ── Accessibility: respect prefers-reduced-motion ──
    Neutralizes the typing dots, live pulse, flashcard flip, chat slide-in,
    card hover-lifts and toast transitions without changing any layout. */
