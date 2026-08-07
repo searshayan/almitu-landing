@@ -35,19 +35,59 @@ async function generateSlides(formData) {
 
 /* PHASE 2 — post-session practice bank (deferred; runs in the background
    after the tutor launches, so it's ready by the student dashboard). */
+/* An "activity-ready" bank needs enough vocabulary items — quiz and matching
+   each need ≥3, and flashcards/gap-fill build off the same list. Below this we
+   treat the generation as failed and fall back, rather than archive a session
+   with no activities. */
+function isPracticeBankUsable(bank) {
+  return !!bank && Array.isArray(bank.items) && bank.items.filter(i => i && i.term).length >= 4;
+}
+
+/* Guarantee the structural + L1 fields a saved session relies on: a sentences
+   array (for reorder), and — for L1-support foundation sessions — an
+   l1_explanation on every item so first-language help is never blank even when
+   the model omits it. */
+function fillPracticeL1(bank, formData) {
+  if (!bank || !Array.isArray(bank.items)) return bank;
+  bank.sentences = Array.isArray(bank.sentences) ? bank.sentences : [];
+  if (formData && formData.l1Support && formData.tier === 'foundation') {
+    const lang = (typeof resolveL1Language === 'function') ? resolveL1Language(formData.language) : (formData.language || 'First language');
+    bank.items = bank.items.map(it => {
+      if (it && it.term && !it.l1_explanation) {
+        it.l1_explanation = it.meaning ? `${lang}: "${it.term}" — ${it.meaning}` : '';
+      }
+      return it;
+    });
+  }
+  return bank;
+}
+
 async function generatePracticeBank(formData, slides) {
   const cfg = getConfig();
+  const usesApi = (cfg.engine === 'claude' && cfg.claudeKey) ||
+                  (cfg.engine === 'custom' && cfg.customUrl && cfg.customKey);
 
-  if (cfg.engine === 'claude' && cfg.claudeKey) {
-    try { return await callClaudePractice(formData, slides, cfg); }
-    catch (e) { console.error('Practice API error:', e); return demoPracticeBank(formData); }
+  if (usesApi) {
+    const call = () => (cfg.engine === 'claude')
+      ? callClaudePractice(formData, slides, cfg)
+      : callCustomPractice(formData, slides, cfg);
+    // Try once; if the model returns an empty/short bank (valid JSON but no
+    // usable items) retry once, and only then fall back to the always-populated
+    // demo bank — so we never persist a content-less session.
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const bank = await call();
+        if (isPracticeBankUsable(bank)) return fillPracticeL1(bank, formData);
+        console.warn(`Practice bank empty/short on attempt ${attempt} — ${attempt < 2 ? 'retrying' : 'using demo fallback'}.`);
+      } catch (e) {
+        console.error(`Practice API error on attempt ${attempt}:`, e);
+      }
+    }
+    return fillPracticeL1(demoPracticeBank(formData), formData);
   }
-  if (cfg.engine === 'custom' && cfg.customUrl && cfg.customKey) {
-    try { return await callCustomPractice(formData, slides, cfg); }
-    catch (e) { console.error('Practice API error:', e); return demoPracticeBank(formData); }
-  }
+
   await new Promise(r => setTimeout(r, 1000));
-  return demoPracticeBank(formData);
+  return fillPracticeL1(demoPracticeBank(formData), formData);
 }
 
 async function callClaudePractice(formData, slides, cfg) {
@@ -61,7 +101,7 @@ async function callClaudePractice(formData, slides, cfg) {
     },
     body: JSON.stringify({
       model: cfg.claudeModel || 'claude-sonnet-4-6',
-      max_tokens: 3000,
+      max_tokens: 4096,
       system: [{ type: 'text', text: buildPracticeBankSystemPrompt(formData), cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: buildPracticeBankUserPrompt(formData, slides) }]
     })
@@ -85,7 +125,7 @@ async function callCustomPractice(formData, slides, cfg) {
         { role: 'system', content: buildPracticeBankSystemPrompt(formData) },
         { role: 'user', content: buildPracticeBankUserPrompt(formData, slides) }
       ],
-      max_tokens: 3000
+      max_tokens: 4096
     })
   });
   if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
