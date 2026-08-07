@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Almitu Pro — MVP Prototype</title>
 
+  <!-- Theme init: set data-theme before paint (no flash). Saved choice wins,
+       otherwise follow the OS preference. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('almitu-theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Fonts (matches almitu.com) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +37,7 @@
             secondary: { DEFAULT:'#004E89', dark:'#003D6B' },
             accent: { DEFAULT:'#FFD23F' },
             success: { DEFAULT:'#06D6A0' },
-            navy: '#1A1D29', ink: '#2D3142', muted: '#646B80', surface: '#F8F9FD',
+            navy: 'var(--navy)', ink: 'var(--ink)', muted: 'var(--muted)', surface: 'var(--bg)',
           },
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
@@ -117,7 +131,12 @@
             <span id="userNameLabel" class="text-sm font-semibold" style="color:var(--navy);"></span>
             <span id="userEmailLabel" class="text-[10px]" style="color:var(--muted);"></span>
           </div>
-          <button onclick="authSignOut()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style="background:white; border:1px solid var(--line); color:var(--muted);"
+          <button onclick="toggleTheme()" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"
+            class="flex items-center justify-center w-9 h-9 rounded-lg transition-all" style="background:var(--card); border:1px solid var(--line); color:var(--muted);">
+            <svg class="theme-icon-light w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            <svg class="theme-icon-dark w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </button>
+          <button onclick="authSignOut()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style="background:var(--card); border:1px solid var(--line); color:var(--muted);"
             onmouseover="this.style.borderColor='#EF4444'; this.style.color='#EF4444';" onmouseout="this.style.borderColor='var(--line)'; this.style.color='var(--muted)';">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             Sign out
