@@ -124,7 +124,8 @@ function setGenStatus(kind) {
   const map = {
     ready:   { text: 'Ready for autofill', bg: 'rgba(0,78,137,.06)', color: 'var(--secondary)', border: 'rgba(0,78,137,.15)', btn: false },
     current: { text: '● Generated content is current', bg: 'rgba(6,214,160,.1)', color: '#059669', border: 'rgba(6,214,160,.25)', btn: false },
-    stale:   { text: '▲ Generated content is stale — core inputs changed', bg: 'rgba(255,107,53,.1)', color: 'var(--primary)', border: 'rgba(255,107,53,.3)', btn: true }
+    stale:   { text: '▲ Generated content is stale — core inputs changed', bg: 'rgba(255,107,53,.1)', color: 'var(--primary)', border: 'rgba(255,107,53,.3)', btn: true },
+    error:   { text: '✕ Generation failed — try again', bg: 'rgba(239,68,68,.08)', color: '#DC2626', border: 'rgba(239,68,68,.25)', btn: false }
   };
   const s = map[kind] || map.ready;
   el.innerHTML = `<span class="text-[11px] font-semibold" style="color:${s.color};">${s.text}</span>` +
@@ -368,6 +369,7 @@ let _loadingTimer = null;
 function startLoadingAnim(engineLabel) {
   document.getElementById('outputPlaceholder').classList.add('hidden');
   document.getElementById('outputPlan').classList.add('hidden');
+  document.getElementById('outputError').classList.add('hidden');
   document.getElementById('outputLoading').classList.remove('hidden');
   document.getElementById('btnGenerate').disabled = true;
   document.getElementById('btnGenerate').classList.add('opacity-50', 'cursor-not-allowed');
@@ -479,9 +481,39 @@ async function generatePlan() {
     }, 380);
   } catch (e) {
     stopLoadingAnim();
-    showToast('Generation failed: ' + e.message, 'error');
-    setTimeout(() => document.getElementById('outputPlaceholder').classList.remove('hidden'), 380);
+    setTimeout(() => showGenError(e), 380);
   }
+}
+
+/* Map a raw generation error to a short, plain-language message a tutor can act
+   on, and surface it as a persistent inline state with a Retry button — instead
+   of a toast that disappears and leaves the empty "Awaiting Form Input" panel,
+   which made a failed (and billed) run look like it never happened. */
+function friendlyGenError(e) {
+  const raw = ((e && e.message) || String(e || '')).toLowerCase();
+  if (/failed to fetch|networkerror|network error|err_internet|offline|dns/.test(raw))
+    return 'We couldn’t reach the AI engine. Check your internet connection and try again.';
+  if (/429|rate limit|too many requests|overloaded|capacity/.test(raw))
+    return 'The AI engine is busy right now. Wait a few seconds, then try again.';
+  if (/abort|timeout|timed out|deadline/.test(raw))
+    return 'That took too long to generate. Please try again.';
+  if (/401|403|unauthor|invalid.*key|api key|forbidden/.test(raw))
+    return 'The AI engine rejected the request. An admin may need to check the API key in Settings.';
+  if (/json|unexpected token|parse|malformed|schema/.test(raw))
+    return 'The AI engine returned something we couldn’t read. Try again — this usually clears on a second run.';
+  return 'Something went wrong while building the session. Please try again.';
+}
+
+function showGenError(e) {
+  document.getElementById('outputPlaceholder').classList.add('hidden');
+  document.getElementById('outputLoading').classList.add('hidden');
+  document.getElementById('outputPlan').classList.add('hidden');
+  document.getElementById('outputErrorMsg').textContent = friendlyGenError(e);
+  const detail = document.getElementById('outputErrorDetail');
+  const raw = (e && e.message) ? e.message : '';
+  detail.textContent = raw ? 'Details: ' + raw : '';
+  document.getElementById('outputError').classList.remove('hidden');
+  setGenStatus('error');
 }
 
 /* ─── Review & Edit carousel ─── */
