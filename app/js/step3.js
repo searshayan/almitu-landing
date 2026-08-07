@@ -27,6 +27,36 @@ function showPracticeContent(html) {
   const content = document.getElementById('practiceContent');
   content.innerHTML = html;
   content.classList.remove('hidden');
+  svEnterDetail('activity');
+}
+
+/* ── Mobile drill-in (master → detail) ──
+   On phones the dashboard stacks, so a tapped activity/objective renders far
+   below the fold and looks like nothing happened. Below the lg breakpoint we
+   swap to a focused detail view (via data-mview on #step3, styled in main.css)
+   with a back bar; on desktop the side-by-side layout is untouched. */
+let _svScrollY = 0;
+function _svIsMobile() { return window.matchMedia('(max-width: 1023px)').matches; }
+function _svReduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+function svEnterDetail(mode) {
+  const step3 = document.getElementById('step3');
+  if (!step3) return;
+  const prev = step3.getAttribute('data-mview') || 'list';
+  if (_svIsMobile() && prev === 'list') _svScrollY = window.scrollY;   // remember list position
+  step3.setAttribute('data-mview', mode);
+  const lbl = document.getElementById('svBackLabel');
+  if (lbl) lbl.textContent = mode === 'objective' ? 'My notebook' : 'Activities';
+  if (_svIsMobile()) window.scrollTo({ top: 0, behavior: _svReduceMotion() ? 'auto' : 'smooth' });
+}
+
+function svExitDetail() {
+  const step3 = document.getElementById('step3');
+  // Leaving the objective panel: hide it so desktop "Close" still works too.
+  const exp = document.getElementById('notebookExpanded');
+  if (exp) exp.classList.add('hidden');
+  if (step3) step3.setAttribute('data-mview', 'list');
+  if (_svIsMobile()) window.scrollTo({ top: _svScrollY || 0, behavior: 'auto' });   // restore list position
 }
 
 function shuffled(arr) {
@@ -240,6 +270,7 @@ function showSessionObjective(id) {
       <p class="text-sm italic leading-snug" style="color:var(--ink);">"${escapeHtml(ov.canDo)}"</p>
     </div>` : ''}`;
   document.getElementById('notebookExpanded').classList.remove('hidden');
+  svEnterDetail('objective');
 }
 
 /* ═══════════ 0. OVERVIEW (default view for a selected session) ═══════════
