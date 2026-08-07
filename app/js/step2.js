@@ -48,7 +48,7 @@ function kickoffPracticeBank() {
       plan.content.practice_bank = await generatePracticeBank(plan.formData, plan.slides);
     } catch (e) {
       console.error('practice bank generation failed:', e);
-      plan.content.practice_bank = demoPracticeBank(plan.formData);
+      plan.content.practice_bank = fillPracticeL1(demoPracticeBank(plan.formData), plan.formData);
     } finally {
       plan.practiceReady = true;
       plan.practiceGenerating = false;
@@ -157,8 +157,14 @@ function endSession() {
     const notes = (document.getElementById('tutorNotes') || {}).value || '';
 
     try {
-      // Ensure the deferred post-session practice has finished before archiving.
-      await ensurePracticeBank();
+      // Wait for the deferred practice generation, but cap the wait so a stuck
+      // API can't hang the save; then guarantee the bank is usable, so we never
+      // archive a session with no activities / no L1.
+      await Promise.race([ ensurePracticeBank(), new Promise(r => setTimeout(r, 25000)) ]);
+      if (!isPracticeBankUsable(plan.content && plan.content.practice_bank)) {
+        plan.content = plan.content || {};
+        plan.content.practice_bank = fillPracticeL1(demoPracticeBank(plan.formData), plan.formData);
+      }
       const planClone = JSON.parse(JSON.stringify({ ...plan, _practicePromise: undefined }));
       const row = buildSessionRow(planClone, student, 'completed', notes);
 
