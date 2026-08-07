@@ -329,6 +329,25 @@
             </div>
           </div>
 
+          <!-- Generation failed — inline, persistent error + retry (replaces the
+               old vanishing toast so a failed, billed run is never silent) -->
+          <div id="outputError" class="hidden">
+            <div class="flex flex-col items-center justify-center py-12 text-center">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.2);">
+                <svg class="w-8 h-8" style="color:#EF4444;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+              </div>
+              <p class="font-semibold text-sm mb-1" style="color:var(--navy);">Generation didn’t finish</p>
+              <p id="outputErrorMsg" class="text-xs mb-5 max-w-xs" style="color:var(--muted);">Something went wrong while building the session. Please try again.</p>
+              <button onclick="generatePlan()"
+                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold glow-primary transition-all"
+                style="background:linear-gradient(135deg, var(--primary), var(--primary-dark));">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Try again
+              </button>
+              <p id="outputErrorDetail" class="text-[10px] mt-4 font-mono break-words max-w-xs" style="color:#C8CBD4;"></p>
+            </div>
+          </div>
+
           <!-- Review & Edit Deck -->
           <div id="outputPlan" class="hidden">
             <div class="flex items-center justify-between mb-3" id="pvHeader"></div>

@@ -50,5 +50,7 @@ function resetPrepForm() {
   document.getElementById('outputPlaceholder').classList.remove('hidden');
   document.getElementById('outputLoading').classList.add('hidden');
   document.getElementById('outputPlan').classList.add('hidden');
+  const errEl = document.getElementById('outputError');
+  if (errEl) errEl.classList.add('hidden');
   setGenStatus('ready');
 }
