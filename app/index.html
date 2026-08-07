@@ -579,8 +579,13 @@
     <div id="studentXpBadge" class="hidden"></div>
 
     <!-- ─── STEP 3: STUDENT DASHBOARD ─── -->
-    <section id="step3" class="hidden animate-fade-in">
-      <div class="mb-6">
+    <section id="step3" class="hidden animate-fade-in" data-mview="list">
+      <!-- Mobile drill-in: back bar (shown only inside a detail view on phones) -->
+      <button type="button" class="sv-back-bar" onclick="svExitDetail()">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <span id="svBackLabel">Back</span>
+      </button>
+      <div class="mb-6 sv-header">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(0,78,137,.08); border:1px solid rgba(0,78,137,.15);">
             <span class="font-bold text-sm" style="color:var(--secondary);">03</span>
@@ -594,8 +599,8 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Left: Notebooks -->
-        <div class="lg:col-span-4">
-          <div class="card-surface rounded-2xl p-5">
+        <div class="lg:col-span-4 sv-col-notebooks">
+          <div class="card-surface rounded-2xl p-5 sv-notebook-list">
             <h2 class="text-sm font-semibold mb-4 flex items-center gap-2" style="color:var(--navy);">
               <svg class="w-4 h-4" style="color:var(--secondary);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
               My Notebook Archives
@@ -607,15 +612,15 @@
           <div id="notebookExpanded" class="hidden mt-4 card-surface rounded-2xl p-5 max-h-[500px] overflow-y-auto">
             <div class="flex items-center justify-between mb-3">
               <h3 id="notebookExpandedTitle" class="text-sm font-semibold" style="color:var(--navy);">Session Objective</h3>
-              <button onclick="document.getElementById('notebookExpanded').classList.add('hidden')" class="text-xs" style="color:var(--muted);">Close</button>
+              <button onclick="svExitDetail()" class="text-xs" style="color:var(--muted);">Close</button>
             </div>
             <div id="notebookRawData" class="text-xs font-mono space-y-3"></div>
           </div>
         </div>
 
         <!-- Right: 5 Practice Activities -->
-        <div class="lg:col-span-8">
-          <div class="card-surface rounded-2xl p-5 mb-4">
+        <div class="lg:col-span-8 sv-col-practice">
+          <div class="card-surface rounded-2xl p-5 mb-4 sv-practice-intro">
             <h2 class="text-sm font-semibold mb-1 flex items-center gap-2" style="color:var(--navy);">
               <svg class="w-4 h-4" style="color:var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
               AI Studio Practice Ground
@@ -623,7 +628,7 @@
             <p class="text-xs" style="color:var(--muted);">Start with the Overview, then 5 activity types — each generated from the selected session's practice bank.</p>
           </div>
 
-          <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6 sv-activity-tiles">
             <button onclick="actOverview()" class="card-hover card-surface rounded-2xl p-4 text-center group">
               <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📋</div>
               <h3 class="text-xs font-semibold" style="color:var(--navy);">Overview</h3>
@@ -656,7 +661,7 @@
             </button>
           </div>
 
-          <div class="card-surface rounded-2xl p-6 min-h-[300px]">
+          <div class="card-surface rounded-2xl p-6 min-h-[300px] sv-activity-detail">
             <div id="practiceEmpty" class="flex flex-col items-center justify-center py-12 text-center">
               <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-3" style="background:#F1F2F6; border:1px solid var(--line);">
                 <svg class="w-8 h-8" style="color:#D1D5DB;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
