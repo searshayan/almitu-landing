@@ -812,6 +812,10 @@ textarea:focus-visible,
   #slideContent { min-height: 300px; }
 }
 
+/* Tutor prep: when the AI output panel is scrolled into view on Generate
+   (revealOutputOnMobile), keep its top clear of the sticky header. */
+#outputPanel { scroll-margin-top: 76px; }
+
 /* ═══════════════════════════════════════════════════════
    Student dashboard — mobile drill-in (master → detail)
    Below the lg breakpoint the columns stack, so a tapped activity/objective
