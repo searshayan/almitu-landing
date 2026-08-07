@@ -13,7 +13,7 @@
   --success: #06D6A0;
   --navy: #1A1D29;
   --ink: #2D3142;
-  --muted: #6C7489;
+  --muted: #646B80; /* darkened from #6C7489 → passes WCAG AA on --bg and white */
   --bg: #F8F9FD;
   --card: #FFFFFF;
   --line: rgba(29, 33, 41, .08);
@@ -23,6 +23,29 @@
   --radius-lg: 20px;
   --radius-md: 16px;
   --radius-pill: 999px;
+  /* Keyboard focus ring — box-shadow based so Tailwind's focus:outline-none can't suppress it */
+  --focus-ring: 0 0 0 3px rgba(0, 78, 137, .45), 0 0 0 5px rgba(255, 255, 255, .9);
+}
+
+/* ── Accessibility: visible keyboard-focus ring (keyboard/AT only, not mouse) ── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible,
+.slide-nav-btn:focus-visible,
+.present-nav-btn:focus-visible,
+.present-icon-btn:focus-visible,
+.session-type-btn:focus-visible,
+.quiz-option:focus-visible,
+.quiz-choice:focus-visible,
+.aid-btn:focus-visible,
+.reveal-btn:focus-visible,
+.field-input:focus-visible {
+  outline: none !important;
+  box-shadow: var(--focus-ring) !important;
 }
 
 /* ── Scrollbar ── */
@@ -679,4 +702,31 @@
   .present-timer { font-size: 18px; }
   .present-slide { padding: 28px 24px; }
   .present-nav-btn { width: 46px; height: 46px; }
+}
+
+/* ── Accessibility: respect prefers-reduced-motion ──
+   Neutralizes the typing dots, live pulse, flashcard flip, chat slide-in,
+   card hover-lifts and toast transitions without changing any layout. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+
+  /* Cancel hover-lift translations (keep intentional layout transforms intact) */
+  .card-hover:hover,
+  .present-nav-btn:hover,
+  .present-icon-btn:hover,
+  .present-btn:hover,
+  .vocab-card:hover,
+  .reorder-token:hover,
+  .slide-nav-btn:hover {
+    transform: none !important;
+  }
+
+  /* Flashcard: skip the 3D flip animation but preserve the flipped state */
+  .flashcard-inner { transition: none !important; }
 }
