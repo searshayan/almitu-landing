@@ -816,6 +816,52 @@ textarea:focus-visible,
    (revealOutputOnMobile), keep its top clear of the sticky header. */
 #outputPanel { scroll-margin-top: 76px; }
 
+/* ═══════════════════════════════════════════════════════
+   Student dashboard — mobile drill-in (master → detail)
+   Below the lg breakpoint the columns stack, so a tapped activity/objective
+   renders below the fold. We swap to a focused detail view driven by
+   data-mview on #step3. Desktop (≥1024px) is untouched — every rule here is
+   inside the mobile query, and the back bar is hidden by default.
+   ═══════════════════════════════════════════════════════ */
+.sv-back-bar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--secondary);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sv-back-bar:hover { border-color: var(--secondary); }
+
+@media (max-width: 1023px) {
+  /* LIST view (default): hide the detail panels, show the selectors */
+  #step3[data-mview="list"] .sv-activity-detail,
+  #step3[data-mview="list"] #notebookExpanded { display: none !important; }
+
+  /* ACTIVITY detail: show only the activity render + back bar */
+  #step3[data-mview="activity"] .sv-header,
+  #step3[data-mview="activity"] .sv-col-notebooks,
+  #step3[data-mview="activity"] .sv-practice-intro,
+  #step3[data-mview="activity"] .sv-activity-tiles { display: none !important; }
+
+  /* OBJECTIVE detail: show only the objective panel + back bar */
+  #step3[data-mview="objective"] .sv-header,
+  #step3[data-mview="objective"] .sv-col-practice,
+  #step3[data-mview="objective"] .sv-notebook-list { display: none !important; }
+
+  /* Back bar appears only inside a detail view */
+  #step3[data-mview="activity"] .sv-back-bar,
+  #step3[data-mview="objective"] .sv-back-bar { display: inline-flex; }
+}
+
 /* ── Accessibility: respect prefers-reduced-motion ──
    Neutralizes the typing dots, live pulse, flashcard flip, chat slide-in,
    card hover-lifts and toast transitions without changing any layout. */
