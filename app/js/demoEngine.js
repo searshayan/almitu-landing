@@ -772,10 +772,18 @@ const SKELETON_GEN = {
     const hero = { icon: '', label: 'Objective & Warm-up', title, layout: 'hero',
       data: { heading: title, goal, warmup, diagnostic, badges: [fd.level, `${dur.key} min`, 'Grammar'], duration_label: `${fd.duration}-Minute Live Micro-Session` } };
     const formSlide = { icon: '', label: 'Form & Use', title: `Form & Use — ${title}`, layout: 'form',
-      data: { formula: structure,
-        forms: [ { label: 'Positive', example: formEx[0] }, { label: 'Negative', example: formEx[1] }, { label: 'Question', example: formEx[2] } ],
-        use: f.isFound ? 'you talk about simple, true facts.' : f.isDev ? 'you connect a past action to now, or talk about experience.' : 'you want to foreground stance, emphasis or nuance.',
-        examples: formEx.slice(0, 2), l1: l1note, note: f.isProf ? `Contrast: unlike the simple past, ${title.toLowerCase()} links the action to now.` : errNote } };
+      data: {
+        meaning: d.objective || goal,
+        formula: structure,
+        // The demo is rule-based and can't infer a point's true breakdown, so it
+        // labels the tutor's model sentences neutrally rather than forcing
+        // Positive / Negative / Question. The API engines produce the real,
+        // point-appropriate breakdown.
+        forms: formEx.slice(0, 3).map((ex, i) => ({ label: `Example ${i + 1}`, example: ex, note: '' })),
+        uses: [ { use: f.isFound ? 'you talk about simple, true facts.' : f.isDev ? 'you connect a past action to now, or talk about experience.' : 'you want to foreground stance, emphasis or nuance.', example: formEx[0] || '' } ],
+        exceptions: errNote ? [ { point: errNote, example: '' } ] : [],
+        l1: l1note,
+        note: f.isProf ? `Contrast: unlike the simple past, ${title.toLowerCase()} links the action to now.` : '' } };
 
     const exerciseItems = (() => {
       if (exType === 'gap') return Array.from({ length: exCount }, (_, i) => {

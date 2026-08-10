@@ -343,32 +343,70 @@ const LAYOUT_BUILDERS = {
       ${d.repeat ? `<div class="mt-4 p-3 rounded-xl" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);"><span class="text-xs font-semibold" style="color:var(--primary);">Say it aloud:</span> <span class="text-xs" style="color:var(--ink);">${md(d.repeat)}</span></div>` : ''}`;
   },
 
-  /* ── Grammar: Form & Use ── formula banner + positive/negative/question forms
-     + a "use it when" line + model example sentences (target parts in **bold**). */
+  /* ── Grammar: Form & Use ── the core teaching slide, taught Meaning → Form →
+     Use, adapted per grammar point. Renders (all optional, so older saved
+     sessions with just formula/forms/use/examples still display):
+       meaning → formula banner → forms (adaptive breakdown) →
+       uses[] (or legacy `use` string) → legacy examples[] → exceptions[] →
+       l1 → note (nuance). Target parts come **bold** from the model. */
   form(d, ctx, slide) {
+    const sectionLabel = (text, color) =>
+      `<p class="text-[10px] font-bold uppercase tracking-wide mb-2 mt-1" style="color:${color};">${text}</p>`;
+    // USE: new uses[] array of {use, example}, or fall back to the old single `use` string.
+    const uses = Array.isArray(d.uses) ? d.uses.filter(u => u && (u.use || u.example))
+      : (d.use ? [{ use: d.use }] : []);
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
       ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+      ${d.meaning ? `
+        <div class="p-3 rounded-xl mb-4" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12);">
+          ${sectionLabel('Meaning', 'var(--secondary)')}
+          <p class="text-sm" style="color:var(--ink);">${md(d.meaning)}</p>
+        </div>` : ''}
       ${d.formula ? `
-        <div class="p-4 rounded-2xl mb-4 text-center" style="background:rgba(0,78,137,.06); border:1px solid rgba(0,78,137,.15);">
+        <div class="p-4 rounded-2xl mb-3 text-center" style="background:rgba(0,78,137,.06); border:1px solid rgba(0,78,137,.15);">
           <p class="text-[10px] font-bold uppercase tracking-wide mb-1" style="color:var(--secondary);">The Pattern</p>
           <p class="text-base font-bold" style="color:var(--navy);">${md(d.formula)}</p>
         </div>` : ''}
       ${(d.forms && d.forms.length) ? `
         <div class="space-y-2 mb-4">
           ${d.forms.map(f => `
-            <div class="flex items-start gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
-              <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full" style="background:rgba(0,78,137,.08); color:var(--secondary);">${escapeHtml(f.label || '')}</span>
-              <p class="text-sm pt-0.5" style="color:var(--ink);">${md(f.example)}</p>
+            <div class="p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
+              <div class="flex items-start gap-3">
+                <span class="flex-shrink-0 text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full" style="background:rgba(0,78,137,.08); color:var(--secondary);">${escapeHtml(f.label || '')}</span>
+                <p class="text-sm pt-0.5" style="color:var(--ink);">${md(f.example)}</p>
+              </div>
+              ${f.note ? `<p class="text-[11px] mt-1.5 ml-1" style="color:var(--muted);">${md(f.note)}</p>` : ''}
             </div>`).join('')}
         </div>` : ''}
-      ${d.use ? `<div class="p-3 rounded-xl mb-4 text-sm" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);"><span class="font-semibold" style="color:var(--primary);">Use it when:</span> <span style="color:var(--ink);">${md(d.use)}</span></div>` : ''}
+      ${uses.length ? `
+        <div class="mb-4">
+          ${sectionLabel('Use it when', 'var(--primary)')}
+          <div class="space-y-2">
+            ${uses.map(u => `
+              <div class="p-3 rounded-xl text-sm" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);">
+                <span style="color:var(--ink);">${md(u.use || '')}</span>
+                ${u.example ? `<p class="text-sm mt-1" style="color:var(--navy);">${md(u.example)}</p>` : ''}
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
       ${(d.examples && d.examples.length) ? `
-        <div class="space-y-1.5">
+        <div class="space-y-1.5 mb-4">
           ${d.examples.map(ex => `<p class="text-sm" style="color:var(--navy);">${md(ex)}</p>`).join('')}
         </div>` : ''}
-      ${d.l1 ? `<p class="text-[11px] mt-3" style="color:var(--secondary);">${escapeHtml(d.l1)}</p>` : ''}
-      ${d.note ? `<div class="mt-3 p-3 rounded-xl text-xs" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);"><span class="font-semibold text-red-500">Watch out:</span> <span style="color:var(--ink);">${md(d.note)}</span></div>` : ''}`;
+      ${(d.exceptions && d.exceptions.length) ? `
+        <div class="mb-3">
+          ${sectionLabel('Watch out / Exceptions', '#B45309')}
+          <div class="space-y-1.5">
+            ${d.exceptions.map(x => `
+              <div class="p-3 rounded-xl text-sm" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.30);">
+                <span style="color:var(--ink);">${md(x.point || '')}</span>
+                ${x.example ? `<p class="text-sm mt-1" style="color:var(--navy);">${md(x.example)}</p>` : ''}
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+      ${d.l1 ? `<p class="text-[11px] mt-2" style="color:var(--secondary);">${escapeHtml(d.l1)}</p>` : ''}
+      ${d.note ? `<div class="mt-3 p-3 rounded-xl text-xs" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);"><span class="font-semibold text-red-500">Nuance:</span> <span style="color:var(--ink);">${md(d.note)}</span></div>` : ''}`;
   },
 
   /* ── Grammar Exercise 1: controlled practice — MCQ / gap-fill / judgment.
