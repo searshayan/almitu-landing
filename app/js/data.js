@@ -316,6 +316,96 @@ async function dataGetPlanById(id) {
   return data;
 }
 
+/* ─────────────── messages (tutor ↔ assigned student chat) ───────────────
+   send / delivered / seen are three timestamps on each row (see
+   supabase/migration_005_messaging.sql). RLS guarantees a message can only
+   exist between an assigned pair, so these helpers never have to re-check
+   the assignment themselves. */
+
+/* The full conversation between me and one partner, oldest → newest. */
+async function dataListThread(myId, otherId) {
+  const c = requireSb();
+  const { data, error } = await c.from('messages')
+    .select('*')
+    .or(`and(sender_id.eq.${myId},recipient_id.eq.${otherId}),and(sender_id.eq.${otherId},recipient_id.eq.${myId})`)
+    .order('created_at', { ascending: true });
+  throwIf(error, 'listThread');
+  return data || [];
+}
+
+/* Send a message. Returns the inserted row (with its id + created_at "sent" mark). */
+async function dataSendMessage(recipientId, body) {
+  const c = requireSb();
+  const { data, error } = await c.from('messages')
+    .insert({ sender_id: currentUserId(), recipient_id: recipientId, body })
+    .select('*').single();
+  throwIf(error, 'sendMessage');
+  return data;
+}
+
+/* Recipient side: stamp delivered_at on every not-yet-delivered message
+   this partner sent me. Called as soon as the client receives them. */
+async function dataMarkDelivered(myId, otherId) {
+  const c = requireSb();
+  const { error } = await c.from('messages')
+    .update({ delivered_at: new Date().toISOString() })
+    .eq('sender_id', otherId).eq('recipient_id', myId)
+    .is('delivered_at', null);
+  throwIf(error, 'markDelivered');
+}
+
+/* Recipient side: stamp seen_at (and delivered_at, if it somehow skipped)
+   on this partner's unseen messages. Called when the thread is on screen. */
+async function dataMarkSeen(myId, otherId) {
+  const c = requireSb();
+  const now = new Date().toISOString();
+  // seen implies delivered — set delivered first for any that slipped through.
+  await c.from('messages')
+    .update({ delivered_at: now })
+    .eq('sender_id', otherId).eq('recipient_id', myId).is('delivered_at', null);
+  const { error } = await c.from('messages')
+    .update({ seen_at: now })
+    .eq('sender_id', otherId).eq('recipient_id', myId)
+    .is('seen_at', null);
+  throwIf(error, 'markSeen');
+}
+
+/* How many messages are waiting for me, unseen — for the header badge.
+   { total, byUser: { <senderId>: count } } so a tutor can badge per student. */
+async function dataUnreadCounts(myId) {
+  const c = requireSb();
+  const { data, error } = await c.from('messages')
+    .select('sender_id')
+    .eq('recipient_id', myId).is('seen_at', null);
+  throwIf(error, 'unreadCounts');
+  const byUser = {};
+  (data || []).forEach(r => { byUser[r.sender_id] = (byUser[r.sender_id] || 0) + 1; });
+  return { total: (data || []).length, byUser };
+}
+
+/* Realtime: live push of messages that touch me. RLS decides what I receive —
+   INSERTs addressed to me, and UPDATEs (delivered/seen ticks) on messages I
+   sent. `onInsert` / `onUpdate` get the changed row. Returns the channel so
+   the caller can dataUnsubscribe() it on teardown. */
+function dataSubscribeMessages(myId, onInsert, onUpdate) {
+  const c = requireSb();
+  if (!c) return null;
+  const channel = c.channel('messages:' + myId)
+    .on('postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages', filter: `recipient_id=eq.${myId}` },
+        payload => { if (onInsert) onInsert(payload.new); })
+    .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'messages', filter: `sender_id=eq.${myId}` },
+        payload => { if (onUpdate) onUpdate(payload.new); })
+    .subscribe();
+  return channel;
+}
+
+function dataUnsubscribe(channel) {
+  const c = sb();
+  if (c && channel) { try { c.removeChannel(channel); } catch (e) { /* already gone */ } }
+}
+
 /* ─────────────── app settings (AI engine config) ─────────────── */
 
 async function dataGetSettings() {
