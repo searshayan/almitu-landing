@@ -131,6 +131,11 @@
             <span id="userNameLabel" class="text-sm font-semibold" style="color:var(--navy);"></span>
             <span id="userEmailLabel" class="text-[10px]" style="color:var(--muted);"></span>
           </div>
+          <button onclick="openMessages()" id="messagesBtn" title="Messages" class="hidden relative flex items-center justify-center w-9 h-9 rounded-lg transition-all" style="background:var(--card); border:1px solid var(--line); color:var(--secondary);"
+            onmouseover="this.style.borderColor='var(--secondary)';" onmouseout="this.style.borderColor='var(--line)';">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.3-3.9A7.96 7.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <span id="messagesBadge" class="hidden absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-bold text-white rounded-full" style="background:var(--primary);">0</span>
+          </button>
           <button onclick="openGuide()" id="howItWorksBtn" title="How Almitu works"
             class="flex items-center gap-1.5 px-3 h-9 rounded-lg text-xs font-semibold transition-all" style="background:var(--card); border:1px solid var(--line); color:var(--secondary);"
             onmouseover="this.style.borderColor='var(--secondary)';" onmouseout="this.style.borderColor='var(--line)';">
@@ -755,6 +760,7 @@
   <script src="js/step2.js"></script>
   <script src="js/step3.js"></script>
   <script src="js/router.js"></script>
+  <script src="js/messaging.js"></script>
   <script src="js/guide.js"></script>
   <script src="js/app.js"></script>
 </body>

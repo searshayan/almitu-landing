@@ -36,7 +36,7 @@ function routeApp() {
     return;
   }
 
-  if (!a.user) { setAuthMode(authMode); showOnly('authView'); return; }
+  if (!a.user) { if (typeof teardownMessaging === 'function') teardownMessaging(); setAuthMode(authMode); showOnly('authView'); return; }
 
   const p = a.profile;
   if (!p || p.status !== 'approved' || !p.role) {
@@ -52,6 +52,9 @@ function routeApp() {
   if (ctx.role === 'admin') showDashboard('admin');
   else if (ctx.role === 'tutor') showDashboard('tutor');
   else showDashboard('student');
+
+  // Chat is available to tutors and students (not admins, not View-as).
+  if (typeof initMessaging === 'function') initMessaging(ctx);
 }
 
 function showDashboard(kind) {
