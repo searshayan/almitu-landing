@@ -36,7 +36,7 @@ function routeApp() {
     return;
   }
 
-  if (!a.user) { if (typeof teardownMessaging === 'function') teardownMessaging(); setAuthMode(authMode); showOnly('authView'); return; }
+  if (!a.user) { if (typeof teardownMessaging === 'function') teardownMessaging(); if (typeof hideAmieButton === 'function') hideAmieButton(); setAuthMode(authMode); showOnly('authView'); return; }
 
   const p = a.profile;
   if (!p || p.status !== 'approved' || !p.role) {
@@ -55,6 +55,8 @@ function routeApp() {
 
   // Chat is available to tutors and students (not admins, not View-as).
   if (typeof initMessaging === 'function') initMessaging(ctx);
+  // Amie, the student study buddy (students only, not View-as).
+  if (typeof initAmie === 'function') initAmie(ctx);
 }
 
 function showDashboard(kind) {

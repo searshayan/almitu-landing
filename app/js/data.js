@@ -406,6 +406,36 @@ function dataUnsubscribe(channel) {
   if (c && channel) { try { c.removeChannel(channel); } catch (e) { /* already gone */ } }
 }
 
+/* ─────────────── Amie (student AI study buddy) ───────────────
+   The AI call goes through the `amie-chat` Edge Function so the API key
+   stays server-side (app_settings is not student-readable). History is a
+   plain read of amie_messages, which the function writes. */
+
+async function dataListAmieHistory(studentId) {
+  const c = requireSb();
+  const { data, error } = await c.from('amie_messages')
+    .select('role, content, created_at')
+    .eq('student_id', studentId)
+    .order('created_at', { ascending: true });
+  throwIf(error, 'listAmieHistory');
+  return data || [];
+}
+
+/* Send a message to Amie. Returns { reply, remaining } or throws.
+   A 4xx from the function (e.g. daily_limit) comes back in `data.error`. */
+async function dataAskAmie(message) {
+  const c = requireSb();
+  const { data, error } = await c.functions.invoke('amie-chat', { body: { message } });
+  if (error) {
+    // Try to surface the function's own JSON error body if present.
+    let detail = error.message || 'Amie is unavailable right now.';
+    try { const ctx = await error.context?.json?.(); if (ctx?.error) detail = ctx.error; } catch (e) {}
+    throw new Error(detail);
+  }
+  if (data && data.error) { const e = new Error(data.error); e.code = data.error; e.payload = data; throw e; }
+  return data;
+}
+
 /* ─────────────── app settings (AI engine config) ─────────────── */
 
 async function dataGetSettings() {
