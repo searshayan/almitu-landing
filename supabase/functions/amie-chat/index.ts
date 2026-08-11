@@ -26,6 +26,13 @@ const DAILY_CAP = 40;          // student messages per day
 const HISTORY_TURNS = 16;      // prior messages sent back as context
 const MAX_MESSAGE_LEN = 2000;  // per user message
 
+// Amie runs on Haiku 4.5 — fast and ~3x cheaper than Sonnet, which suits a
+// casual practice chat. The tutor's SESSION GENERATION is unaffected: that
+// path reads app_settings.claude_model (Sonnet) in api.js and never touches
+// this. To move Amie to another model later, set an `amie_model` value in
+// app_settings — no redeploy needed — otherwise this default is used.
+const AMIE_MODEL = "claude-haiku-4-5";
+
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -207,7 +214,7 @@ async function callClaude(settings: any, system: string, history: Turn[], messag
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: settings.claude_model || "claude-sonnet-4-6",
+      model: settings.amie_model || AMIE_MODEL,
       max_tokens: 700,
       system,
       messages,
