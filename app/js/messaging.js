@@ -216,7 +216,7 @@ function renderThread() {
       : 'margin-right:auto; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:14px 14px 14px 4px;';
     return `
       <div class="max-w-[78%] px-3 py-2 mb-2" style="${bubble} width:fit-content;">
-        <div class="text-sm whitespace-pre-wrap break-words">${escapeHtml(m.body)}</div>
+        <div class="text-sm whitespace-pre-wrap break-words" dir="${textDir(m.body)}">${escapeHtml(m.body)}</div>
         <div class="flex items-center gap-1 justify-end mt-0.5 text-[10px]" style="${mine ? 'color:rgba(255,255,255,.85);' : 'color:var(--muted);'}">
           <span>${fmtTime(m.created_at)}</span>
           ${mine ? tickHtml(m) : ''}
