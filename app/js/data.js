@@ -427,12 +427,24 @@ async function dataAskAmie(message) {
   const c = requireSb();
   const { data, error } = await c.functions.invoke('amie-chat', { body: { message } });
   if (error) {
-    // Try to surface the function's own JSON error body if present.
+    // supabase-js hides the function's response body inside error.context
+    // (a Response). Pull out the real { error, detail } so we can see it.
     let detail = error.message || 'Amie is unavailable right now.';
-    try { const ctx = await error.context?.json?.(); if (ctx?.error) detail = ctx.error; } catch (e) {}
-    throw new Error(detail);
+    let code = null;
+    try {
+      const ctx = error.context;
+      if (ctx && typeof ctx.json === 'function') {
+        const body = await ctx.json();
+        if (body && body.error) { code = body.error; detail = body.detail || body.error; }
+      }
+    } catch (e) { /* body not JSON */ }
+    console.error('[amie] function call failed —', { code, detail, raw: error });
+    const err = new Error(detail); err.code = code; throw err;
   }
-  if (data && data.error) { const e = new Error(data.error); e.code = data.error; e.payload = data; throw e; }
+  if (data && data.error) {
+    console.error('[amie] function returned error —', data);
+    const e = new Error(data.detail || data.error); e.code = data.error; e.payload = data; throw e;
+  }
   return data;
 }
 

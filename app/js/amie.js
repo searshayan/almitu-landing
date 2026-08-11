@@ -21,14 +21,28 @@ const amieState = {
 function initAmie(ctx) {
   const allowed = ctx && !ctx.readOnly && ctx.role === 'student';
   if (!allowed) { hideAmieButton(); return; }
+  // Different student (e.g. sign out → sign in as someone else on the same
+  // browser): wipe the previous conversation so it can never be seen.
+  if (amieState.myId && amieState.myId !== ctx.userId) resetAmie();
   amieState.myId = ctx.userId;
   amieState.studentName = (ctx.name || '').split(' ')[0] || '';
   buildAmieUi();
   showAmieButton();
 }
 
+/* Clear all in-memory conversation state and the rendered thread. */
+function resetAmie() {
+  amieState.history = [];
+  amieState.loaded = false;
+  amieState.sending = false;
+  amieState.myId = null;
+  if (amieState.open) closeAmie();
+  const host = document.getElementById('amieThread');
+  if (host) host.innerHTML = '';
+}
+
 function showAmieButton() { const b = document.getElementById('amieFab'); if (b) b.classList.remove('hidden'); }
-function hideAmieButton() { const b = document.getElementById('amieFab'); if (b) b.classList.add('hidden'); }
+function hideAmieButton() { const b = document.getElementById('amieFab'); if (b) b.classList.add('hidden'); resetAmie(); }
 
 /* ─────────────── open / close ─────────────── */
 
