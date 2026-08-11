@@ -262,6 +262,7 @@ async function initTutorDashboard() {
     // Practice stats for the tutor's own sessions (RLS scopes this to them).
     tutorState.attempts = await dataListAttemptsForSessions(sessions.map(s => s.id)).catch(() => []);
     renderTutorHome();
+    if (typeof maybeAutoOpenGuide === 'function') maybeAutoOpenGuide();
   } catch (e) {
     home.innerHTML = `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load your dashboard: ${escapeHtml(e.message)}</div>`;
   }
@@ -557,7 +558,7 @@ function renderTutorHome() {
   const home = document.getElementById('tutorHome');
 
   const newBtn = ctx.readOnly ? '' : `
-    <button onclick="tutorNewSession()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">
+    <button onclick="tutorNewSession()" data-guide="tutor-generate" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       Generate New Session
     </button>`;
@@ -572,8 +573,8 @@ function renderTutorHome() {
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div class="lg:col-span-7">${plansCard(tutorState.plans, ctx.readOnly)}</div>
-      <div class="lg:col-span-5">${studentsCard(tutorState.students)}</div>
+      <div class="lg:col-span-7" data-guide="tutor-plans">${plansCard(tutorState.plans, ctx.readOnly)}</div>
+      <div class="lg:col-span-5" data-guide="tutor-students">${studentsCard(tutorState.students)}</div>
     </div>`;
 }
 
@@ -908,6 +909,7 @@ async function initStudentDashboard() {
   // Watch for the tutor starting a session / sharing the Meet link.
   refreshStudentLive(ctx.userId);
   startStudentLivePolling(ctx.userId);
+  if (typeof maybeAutoOpenGuide === 'function') maybeAutoOpenGuide();
 }
 
 /* ── Student XP badge: lifetime total + this session's practice ── */
