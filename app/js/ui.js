@@ -33,6 +33,24 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+/* ── Bidirectional (RTL) text support ──
+   First-language content — Farsi, Pashto, Urdu, Arabic, Hebrew, Dari, … — is
+   right-to-left. When such a sentence embeds an English word or phrase, the
+   browser needs the correct BASE direction or the whole line reorders and
+   becomes unreadable (this is what broke L1 support). textDir() reads the base
+   direction from the content; bidiText() escapes a string and wraps it in a
+   <bdi> with that direction, so mixed RTL/LTR renders correctly and stays
+   isolated from whatever surrounds it. Use bidiText() as a drop-in for
+   escapeHtml() anywhere first-language or free model text is shown. */
+const RTL_CHAR_RE = /[\u0590-\u05FF\u0600-\u06FF\u0700-\u074F\u0750-\u077F\u0780-\u07BF\u08A0-\u08FF\uFB1D-\uFDFF\uFE70-\uFEFF]/;
+function textDir(text) {
+  return RTL_CHAR_RE.test(text == null ? '' : String(text)) ? 'rtl' : 'auto';
+}
+function bidiText(text) {
+  const s = text == null ? '' : String(text);
+  return `<bdi dir="${textDir(s)}">${escapeHtml(s)}</bdi>`;
+}
+
 /* Reset the tutor prep surface for a brand-new session (does not touch
    any stored data — sessions live in Supabase). */
 function resetPrepForm() {

@@ -115,7 +115,7 @@ function explainAnswer(nb, item) {
     text = item.explanation || `"${item.term}" means ${item.meaning}.${item.example ? ' Example: "' + item.example + '"' : ''}`;
     icon = '💡';
   }
-  return `<div class="expl">${icon} ${escapeHtml(text)}</div>`;
+  return `<div class="expl">${icon} ${bidiText(text)}</div>`;
 }
 
 /* ── Try Again / Challenge Practice buttons ── */
@@ -369,11 +369,11 @@ function actFlashcards(challenge) {
         <div class="flashcard-inner w-full h-full">
           <div class="flashcard-front rounded-2xl p-5 flex flex-col items-center justify-center text-center" style="background:white; border:1px solid var(--line);">
             <span class="text-[10px] uppercase tracking-wider mb-2 font-semibold" style="color:var(--muted);">Card ${i + 1} — tap to flip</span>
-            <span class="text-lg font-semibold" style="color:var(--navy);">${escapeHtml(card.front)}</span>
+            <span class="text-lg font-semibold" style="color:var(--navy);">${bidiText(card.front)}</span>
           </div>
           <div class="flashcard-back rounded-2xl p-5 flex flex-col items-center justify-center text-center" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.15);">
-            <span class="text-sm font-semibold mb-1" style="color:var(--ink);">${escapeHtml(card.back)}</span>
-            ${card.example ? `<span class="text-[11px] italic" style="color:var(--muted);">"${escapeHtml(card.example)}"</span>` : ''}
+            <span class="text-sm font-semibold mb-1" style="color:var(--ink);">${bidiText(card.back)}</span>
+            ${card.example ? `<span class="text-[11px] italic" style="color:var(--muted);">"${bidiText(card.example)}"</span>` : ''}
           </div>
         </div>
       </div>`;

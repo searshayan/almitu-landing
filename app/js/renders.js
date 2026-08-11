@@ -11,8 +11,12 @@
    ═══════════════════════════════════════════════════════ */
 
 function md(text) {
-  // minimal markdown: **bold** → highlighted target item
-  return escapeHtml(String(text ?? '')).replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--primary);">$1</strong>');
+  // minimal markdown: **bold** → highlighted target item, wrapped in a
+  // direction-aware <bdi> so mixed RTL/LTR (a first-language sentence with an
+  // English word in it) renders in the correct order rather than scrambling.
+  const raw = String(text ?? '');
+  const html = escapeHtml(raw).replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--primary);">$1</strong>');
+  return `<bdi dir="${textDir(raw)}">${html}</bdi>`;
 }
 
 const LAYOUT_BUILDERS = {
@@ -64,7 +68,7 @@ const LAYOUT_BUILDERS = {
             <div>
               <p class="text-sm" style="color:var(--ink);">${md(w.definition)}</p>
               ${w.example ? `<p class="text-sm mt-1 italic" style="color:var(--navy);">${md(w.example)}</p>` : ''}
-              ${w.l1 ? `<p class="text-[11px] mt-1" style="color:var(--secondary);">${escapeHtml(w.l1)}</p>` : ''}
+              ${w.l1 ? `<p class="text-[11px] mt-1" style="color:var(--secondary);">${bidiText(w.l1)}</p>` : ''}
             </div>
           </div>`).join('')}
       </div>
@@ -100,7 +104,7 @@ const LAYOUT_BUILDERS = {
         ${(d.items || []).map(it => `
           <div class="vocab-card">
             <p class="text-sm font-semibold" style="color:var(--navy);">${md(it.top)}</p>
-            ${it.mid ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${escapeHtml(it.mid)}</p>` : ''}
+            ${it.mid ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${bidiText(it.mid)}</p>` : ''}
             ${it.bottom ? `<p class="text-[11px] mt-0.5" style="color:var(--muted);">${md(it.bottom)}</p>` : ''}
           </div>`).join('')}
       </div>`;
@@ -335,7 +339,7 @@ const LAYOUT_BUILDERS = {
                   <p class="text-sm font-semibold" style="color:var(--navy);">${md(phrase)}</p>
                   ${(it && it.use) ? `<p class="text-xs mt-0.5" style="color:var(--muted);">${md(it.use)}</p>` : ''}
                   ${(it && it.example) ? `<p class="text-xs mt-1 italic" style="color:var(--navy);">${md(it.example)}</p>` : ''}
-                  ${(it && it.l1) ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${escapeHtml(it.l1)}</p>` : ''}
+                  ${(it && it.l1) ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${bidiText(it.l1)}</p>` : ''}
                 </div>`; }).join('')}
             </div>
           </div>`).join('')}
@@ -405,7 +409,7 @@ const LAYOUT_BUILDERS = {
               </div>`).join('')}
           </div>
         </div>` : ''}
-      ${d.l1 ? `<p class="text-[11px] mt-2" style="color:var(--secondary);">${escapeHtml(d.l1)}</p>` : ''}
+      ${d.l1 ? `<p class="text-[11px] mt-2" style="color:var(--secondary);">${bidiText(d.l1)}</p>` : ''}
       ${d.note ? `<div class="mt-3 p-3 rounded-xl text-xs" style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.12);"><span class="font-semibold text-red-500">Nuance:</span> <span style="color:var(--ink);">${md(d.note)}</span></div>` : ''}`;
   },
 

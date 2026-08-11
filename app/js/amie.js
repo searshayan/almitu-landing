@@ -123,7 +123,7 @@ function renderAmie(typing) {
       : `margin-right:auto; background:var(--card); color:var(--ink); border:1px solid ${m._error ? 'rgba(239,68,68,.4)' : 'var(--line)'}; border-radius:14px 14px 14px 4px;`;
     return `
       <div class="max-w-[85%] px-3 py-2 mb-2" style="${style} width:fit-content;">
-        <div class="text-sm whitespace-pre-wrap break-words">${escapeHtml(m.content)}</div>
+        <div class="text-sm whitespace-pre-wrap break-words" dir="${textDir(m.content)}">${amieRich(m.content)}</div>
       </div>`;
   }).join('');
 
@@ -150,6 +150,16 @@ function amieWelcomeHtml() {
         ${chip("Let's practise a short conversation.")}
       </div>
     </div>`;
+}
+
+/* Render Amie's light markdown (the model replies with **bold** / *italic* /
+   `code`) instead of showing the raw asterisks. Escapes first, so it's safe. */
+function amieRich(str) {
+  let h = escapeHtml(str == null ? '' : String(str));
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');   // **bold**
+  h = h.replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');           // *italic*  (singles left after bold)
+  h = h.replace(/`([^`\n]+?)`/g, '<code style="background:rgba(0,0,0,.06); padding:0 3px; border-radius:3px;">$1</code>');
+  return h;
 }
 
 function amieQuick(text) {
