@@ -67,6 +67,12 @@ function teardownMessaging() {
   if (msgState.channel) { dataUnsubscribe(msgState.channel); msgState.channel = null; }
   if (msgState.poll) { clearInterval(msgState.poll); msgState.poll = null; }
   msgState.myId = null; msgState.partnerId = null; msgState.thread = []; msgState.partners = []; msgState.unread = {};
+  // Wipe the rendered drawer too, so a previous user's messages can never be
+  // seen after a sign-out or account switch (not just the in-memory state).
+  if (msgState.open) closeMessages();
+  const thread = document.getElementById('msgThread'); if (thread) thread.innerHTML = '';
+  const list = document.getElementById('msgList'); if (list) list.innerHTML = '';
+  renderBadge();
 }
 
 /* ─────────────── realtime + poll ─────────────── */
