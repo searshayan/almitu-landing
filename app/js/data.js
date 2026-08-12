@@ -544,6 +544,16 @@ async function dataAddScheduleSlot(row) {
   return data;
 }
 
+/* Admin: re-anchor a pairing's existing slots when the tutor's zone is changed,
+   so already-entered class times move with it (times are stored in the tutor's
+   wall-clock, anchor_tz just tells the app which zone that is). */
+async function dataReanchorSchedule(tutorId, studentId, tz) {
+  const c = requireSb();
+  const { error } = await c.from('class_schedule')
+    .update({ anchor_tz: tz }).eq('tutor_id', tutorId).eq('student_id', studentId);
+  throwIf(error, 'reanchorSchedule');
+}
+
 /* Admin: remove one weekly slot (cascades its attendance flags). */
 async function dataDeleteScheduleSlot(id) {
   const c = requireSb();
