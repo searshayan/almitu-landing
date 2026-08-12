@@ -426,10 +426,11 @@ async function dataSetPresentState(sessionId, patch) {
 }
 
 /* Open the per-session channel. Pass handlers to RECEIVE (student side); omit
-   them to only SEND (tutor scroll). `onState` gets the updated session row
-   (present_active, current_slide); `onScroll` gets { f } as a 0–1 fraction.
+   them to only SEND (tutor scroll/pointer). `onState` gets the updated session
+   row (present_active, current_slide); `onScroll` gets { f } as a 0–1 fraction;
+   `onPointer` gets { x, y, on } (x/y are 0–1 fractions of the slide content).
    Returns the channel for teardown / sending. */
-function dataOpenLiveChannel(sessionId, { onState, onScroll } = {}) {
+function dataOpenLiveChannel(sessionId, { onState, onScroll, onPointer } = {}) {
   const c = requireSb();
   if (!c) return null;
   let ch = c.channel(liveChannelName(sessionId), { config: { broadcast: { self: false } } });
@@ -441,6 +442,9 @@ function dataOpenLiveChannel(sessionId, { onState, onScroll } = {}) {
   if (onScroll) {
     ch = ch.on('broadcast', { event: 'scroll' }, msg => onScroll(msg.payload || {}));
   }
+  if (onPointer) {
+    ch = ch.on('broadcast', { event: 'pointer' }, msg => onPointer(msg.payload || {}));
+  }
   ch.subscribe();
   return ch;
 }
@@ -449,6 +453,13 @@ function dataOpenLiveChannel(sessionId, { onState, onScroll } = {}) {
 function dataBroadcastScroll(channel, fraction) {
   if (!channel) return;
   try { channel.send({ type: 'broadcast', event: 'scroll', payload: { f: fraction } }); } catch (e) { /* transient */ }
+}
+
+/* Tutor: push the laser-pointer position (fractions of the slide content) or a
+   { on: false } to hide it. Fire-and-forget — dropped ticks don't matter. */
+function dataBroadcastPointer(channel, payload) {
+  if (!channel) return;
+  try { channel.send({ type: 'broadcast', event: 'pointer', payload: payload }); } catch (e) { /* transient */ }
 }
 
 /* ─────────────── Amie (student AI study buddy) ───────────────

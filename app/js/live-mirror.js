@@ -20,6 +20,7 @@
   let slides = null;         // slide array captured from the session plan
   let curIdx = 0;
   let mirrorRO = null;       // ResizeObserver that refits on layout changes
+  let ptr = { fx: 0, fy: 0, on: false };   // last laser-pointer position (content fractions)
 
   /* Public entry — called each poll with the live session (or null). */
   window.syncStudentMirror = function (live) {
@@ -31,7 +32,7 @@
       closeMirror();
       subSessionId = live.id;
       slides = (live.plan && live.plan.slides) || null;
-      sub = dataOpenLiveChannel(live.id, { onState: onState, onScroll: onScroll });
+      sub = dataOpenLiveChannel(live.id, { onState: onState, onScroll: onScroll, onPointer: onPointer });
     }
     // Reflect the row's current state immediately — this is what lets a student
     // who loads mid-lesson land straight on the slide the tutor is showing.
@@ -58,6 +59,28 @@
     const max = frame.scrollHeight - frame.clientHeight;
     frame.scrollTop = max > 0 ? f * max : 0;
     updateMirrorFade();
+    placePointer();   // the dot is in viewport coords, so it must follow the scroll
+  }
+
+  /* Laser pointer: place a glowing dot at the tutor's cursor position. Coords
+     arrive as fractions of the slide content, so they map onto our own (smaller)
+     rendering. Held at the last spot until the tutor moves or { on:false }. */
+  function onPointer(payload) {
+    if (!payload || !payload.on) { ptr.on = false; placePointer(); return; }
+    ptr = { fx: clamp01(payload.x), fy: clamp01(payload.y), on: true };
+    placePointer();
+  }
+
+  function placePointer() {
+    const dot = document.getElementById('mirrorPointer');
+    const content = document.getElementById('mirrorSlide');
+    if (!dot) return;
+    if (!ptr.on || !content) { dot.style.opacity = '0'; return; }
+    const rect = content.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) { dot.style.opacity = '0'; return; }
+    dot.style.left = (rect.left + ptr.fx * rect.width) + 'px';
+    dot.style.top = (rect.top + ptr.fy * rect.height) + 'px';
+    dot.style.opacity = '1';
   }
 
   function renderMirror() {
@@ -65,6 +88,8 @@
     const slide = slides[curIdx];
     const el = document.getElementById('mirrorSlide');
     if (!el || !slide) return;
+    ptr.on = false;                     // new slide → drop the old pointer spot
+    placePointer();
     el.innerHTML = slide.html;
     const label = document.getElementById('mirrorLabel');
     if (label) label.textContent = slide.label || '';
@@ -96,6 +121,7 @@
     frame.style.justifyContent = (h * k <= innerH) ? 'center' : 'flex-start';
     stage.style.alignItems = 'center';
     updateMirrorFade();
+    placePointer();   // keep the dot glued to its word when the layout refits
   }
 
   function updateMirrorFade() {
@@ -127,6 +153,8 @@
     el.classList.add('hidden');
     el.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    ptr.on = false;
+    placePointer();
     if (mirrorRO) { mirrorRO.disconnect(); mirrorRO = null; }
     window.removeEventListener('resize', fitMirror);
   }
