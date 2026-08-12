@@ -406,6 +406,51 @@ function dataUnsubscribe(channel) {
   if (c && channel) { try { c.removeChannel(channel); } catch (e) { /* already gone */ } }
 }
 
+/* ─────────────── Live synced slides (Model A: full mirror) ───────────────
+   The tutor's Present state — presenting or not, and which slide — lives on the
+   session row (dataSetPresentState) and reaches the student over Realtime
+   postgres_changes: durable, and correct even for a student who joins mid-
+   lesson. The faster-moving SCROLL position travels over a Realtime BROADCAST
+   on the same per-session channel, so scrolling never writes to the table.
+   The slide HTML itself is never sent — the student already holds the plan
+   (via their live session row) and re-draws each slide natively. */
+
+const liveChannelName = id => 'session:' + id;
+
+/* Tutor: persist Present state on the session row. Light update (no re-select
+   of the joined profiles) since this fires on every slide change. */
+async function dataSetPresentState(sessionId, patch) {
+  const c = requireSb();
+  const { error } = await c.from('sessions').update(patch).eq('id', sessionId);
+  throwIf(error, 'setPresentState');
+}
+
+/* Open the per-session channel. Pass handlers to RECEIVE (student side); omit
+   them to only SEND (tutor scroll). `onState` gets the updated session row
+   (present_active, current_slide); `onScroll` gets { f } as a 0–1 fraction.
+   Returns the channel for teardown / sending. */
+function dataOpenLiveChannel(sessionId, { onState, onScroll } = {}) {
+  const c = requireSb();
+  if (!c) return null;
+  let ch = c.channel(liveChannelName(sessionId), { config: { broadcast: { self: false } } });
+  if (onState) {
+    ch = ch.on('postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'sessions', filter: `id=eq.${sessionId}` },
+      payload => onState(payload.new));
+  }
+  if (onScroll) {
+    ch = ch.on('broadcast', { event: 'scroll' }, msg => onScroll(msg.payload || {}));
+  }
+  ch.subscribe();
+  return ch;
+}
+
+/* Tutor: push a scroll fraction (0–1) to the student. Fire-and-forget. */
+function dataBroadcastScroll(channel, fraction) {
+  if (!channel) return;
+  try { channel.send({ type: 'broadcast', event: 'scroll', payload: { f: fraction } }); } catch (e) { /* transient */ }
+}
+
 /* ─────────────── Amie (student AI study buddy) ───────────────
    The AI call goes through the `amie-chat` Edge Function so the API key
    stays server-side (app_settings is not student-readable). The client never

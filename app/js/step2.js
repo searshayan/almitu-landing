@@ -212,6 +212,8 @@ function renderPresentation() {
   fitPresent();                      // synchronous (offsetWidth forces layout)
   requestAnimationFrame(fitPresent); // refine after paint / web-font settle
   setTimeout(fitPresent, 60);        // settle fallback if rAF is throttled
+
+  syncPresentSlide();                // mirror this slide to the live student
 }
 
 /* Fit a slide into a FIXED frame (identical size on every slide, filling the
@@ -257,6 +259,7 @@ function updatePresentFade() {
   if (!stage || !frame) return;
   const more = (frame.scrollHeight - frame.clientHeight - frame.scrollTop) > 4;
   stage.classList.toggle('can-scroll-down', more);
+  syncPresentScroll();               // mirror scroll position to the live student
 }
 
 function enterPresentation() {
@@ -281,6 +284,12 @@ function enterPresentation() {
   } else {
     window.addEventListener('resize', fitPresent);
   }
+  // If a live session is running, open the mirror channel BEFORE the first
+  // render so its slide push lands, and mark us "presenting" for the student.
+  if (window.tutorState && tutorState.currentSessionId) {
+    _lastPushedSlide = -1;
+    window._presentChannel = dataOpenLiveChannel(tutorState.currentSessionId);
+  }
   renderPresentation();
   updateTimerDisplay();
   presentRequestFullscreen(el);
@@ -298,7 +307,48 @@ function exitPresentation() {
   if (pf) pf.removeEventListener('scroll', updatePresentFade);
   document.removeEventListener('fullscreenchange', onPresentFsChange);
   if (window._presentRO) { window._presentRO.disconnect(); window._presentRO = null; }
+  // Tell the live student we've stopped presenting, and close the channel.
+  if (window.tutorState && tutorState.currentSessionId) {
+    dataSetPresentState(tutorState.currentSessionId, { present_active: false }).catch(() => {});
+  }
+  if (window._presentChannel) { dataUnsubscribe(window._presentChannel); window._presentChannel = null; }
+  _lastPushedSlide = -1;
   presentExitFullscreen();
+}
+
+/* ─── Live mirror (Model A): push Present state to the live student ───
+   Only active while the tutor is presenting AND a live session is running, so
+   solo rehearsal of Present mode never broadcasts. Slide index is persisted on
+   the row (durable, late-join safe); scroll goes over broadcast (no DB write). */
+function presentIsLive() {
+  return window._presentActive && window.tutorState && tutorState.currentSessionId;
+}
+
+let _lastPushedSlide = -1;
+function syncPresentSlide() {
+  if (!presentIsLive()) return;
+  const idx = getState().currentSlide;
+  if (idx === _lastPushedSlide) return;
+  _lastPushedSlide = idx;
+  dataSetPresentState(tutorState.currentSessionId, { present_active: true, current_slide: idx })
+    .catch(() => { _lastPushedSlide = -1; });   // let a failed push retry next change
+}
+
+let _lastScrollSent = 0, _scrollTrailTimer = null;
+function syncPresentScroll() {
+  if (!presentIsLive() || !window._presentChannel) return;
+  const frame = document.getElementById('presentScaler');
+  if (!frame) return;
+  const max = frame.scrollHeight - frame.clientHeight;
+  const f = max > 0 ? frame.scrollTop / max : 0;
+  const now = (window.performance && performance.now) ? performance.now() : Date.now();
+  if (now - _lastScrollSent >= 60) {          // cap ~16 sends/sec
+    _lastScrollSent = now;
+    dataBroadcastScroll(window._presentChannel, f);
+  }
+  // Trailing send so the student lands exactly where the tutor stops.
+  clearTimeout(_scrollTrailTimer);
+  _scrollTrailTimer = setTimeout(() => dataBroadcastScroll(window._presentChannel, f), 120);
 }
 
 function presentKeydown(e) {

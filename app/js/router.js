@@ -979,12 +979,14 @@ function startStudentLivePolling(studentId) {
 
 function stopStudentLivePolling() {
   if (window._studentPoll) { clearInterval(window._studentPoll); window._studentPoll = null; }
+  if (window.syncStudentMirror) syncStudentMirror(null);   // tear down the live slide mirror
 }
 
 async function refreshStudentLive(studentId) {
   try {
     const live = await dataGetLiveSessionForStudent(studentId);
     renderStudentLiveBanner(live);
+    if (window.syncStudentMirror) syncStudentMirror(live);   // live slide mirror follows the same poll
   } catch (e) {
     // Silent: polling shouldn't spam the student with toasts.
     console.warn('live poll failed', e);
@@ -1103,6 +1105,12 @@ function startSession() {
       const row = await dataCreateSession(buildSessionRow(plan, student, 'live', ''));
       tutorState.currentSessionId = row.id;
       renderMeetLinkBox();
+      // If the tutor opened Present before this row existed, wire the mirror now:
+      // open the scroll channel and push the current slide + present_active.
+      if (window._presentActive && !window._presentChannel && typeof dataOpenLiveChannel === 'function') {
+        window._presentChannel = dataOpenLiveChannel(row.id);
+      }
+      if (typeof syncPresentSlide === 'function') syncPresentSlide();
     } catch (e) {
       showToast('Could not start the session record: ' + e.message, 'error');
     }
