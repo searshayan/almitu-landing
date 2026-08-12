@@ -123,5 +123,21 @@ create policy class_attendance_delete on public.class_attendance
 
 -- ─────────── 4. Realtime: keep both dashboards in sync ───────────
 -- So a flag raised by one party reddens the other's calendar without a reload.
-alter publication supabase_realtime add table public.class_schedule;
-alter publication supabase_realtime add table public.class_attendance;
+-- ALTER PUBLICATION has no "IF NOT EXISTS", so guard each add — this makes the
+-- whole migration safe to re-run (e.g. after a partial first attempt).
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'class_schedule'
+  ) then
+    alter publication supabase_realtime add table public.class_schedule;
+  end if;
+
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'class_attendance'
+  ) then
+    alter publication supabase_realtime add table public.class_attendance;
+  end if;
+end $$;
