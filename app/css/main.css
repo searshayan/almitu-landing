@@ -649,6 +649,44 @@ textarea:focus-visible,
   .mirror-pointer { transition: opacity .15s ease; }
 }
 
+/* Opt-in "your tutor is presenting" pill on the student dashboard. Tapping it
+   opens the fullscreen slide mirror; until then the dashboard + Join stay
+   reachable. Tokens (--navy/--primary) flip with the theme automatically. */
+.presenting-pill {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,107,53,.10), rgba(255,107,53,.04));
+  border: 1px solid rgba(255,107,53,.30);
+  color: var(--navy);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.presenting-pill:hover {
+  background: linear-gradient(135deg, rgba(255,107,53,.16), rgba(255,107,53,.07));
+  box-shadow: 0 6px 18px rgba(255,107,53,.18);
+}
+.presenting-pill:active { transform: translateY(1px); }
+.presenting-pill:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.presenting-pill .pp-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #FF6B35; flex-shrink: 0;
+  animation: pp-pulse 1.6s ease-in-out infinite;
+}
+@keyframes pp-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,107,53,.5); }
+  50%      { opacity: .55; box-shadow: 0 0 0 7px rgba(255,107,53,0); }
+}
+.presenting-pill .pp-text { font-size: 14px; font-weight: 600; }
+.presenting-pill .pp-cta { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--primary); flex-shrink: 0; }
+@media (prefers-reduced-motion: reduce) { .presenting-pill .pp-dot { animation: none; } }
+
 .present-topbar {
   flex-shrink: 0;
   display: flex;

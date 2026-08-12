@@ -18,9 +18,19 @@
   let sub = null;            // the per-session realtime channel
   let subSessionId = null;   // which session we're currently mirrored to
   let slides = null;         // slide array captured from the session plan
+  let tutorName = '';        // for the "…is presenting" pill
   let curIdx = 0;
   let mirrorRO = null;       // ResizeObserver that refits on layout changes
   let ptr = { fx: 0, fy: 0, on: false };   // last laser-pointer position (content fractions)
+
+  // The student experience is a small state machine: the tutor is either
+  // `presenting` or not, and the student has independently chosen to open the
+  // slides (`slidesOpen`) or not. Opt-in: while the tutor presents we show a
+  // "View slides" pill on the dashboard (so Join + the rest stay reachable); the
+  // student taps it to open the fullscreen mirror, and can close back anytime.
+  let presenting = false;
+  let slidesOpen = false;
+  let lastRenderedIdx = -1;
 
   /* Public entry — called each poll with the live session (or null). */
   window.syncStudentMirror = function (live) {
@@ -32,24 +42,59 @@
       closeMirror();
       subSessionId = live.id;
       slides = (live.plan && live.plan.slides) || null;
+      tutorName = (live.tutor && live.tutor.full_name) || 'Your tutor';
       sub = dataOpenLiveChannel(live.id, { onState: onState, onScroll: onScroll, onPointer: onPointer });
     }
     // Reflect the row's current state immediately — this is what lets a student
-    // who loads mid-lesson land straight on the slide the tutor is showing.
+    // who loads mid-lesson see the "presenting" pill straight away.
     applyState(live.present_active, live.current_slide);
   };
 
   function onState(row) { applyState(row.present_active, row.current_slide); }
 
   function applyState(active, idx) {
-    if (!active || !slides || !slides.length) { hideOverlay(); return; }
-    const el = document.getElementById('mirrorMode');
-    if (!el) return;
-    const next = Math.max(0, Math.min(idx | 0, slides.length - 1));
-    const slideChanged = next !== curIdx || el.classList.contains('hidden');
-    curIdx = next;
-    showOverlay();
-    if (slideChanged) renderMirror();
+    presenting = !!active && !!slides && slides.length > 0;
+    if (presenting) curIdx = Math.max(0, Math.min(idx | 0, slides.length - 1));
+    updateMirrorUI();
+  }
+
+  /* Reconcile the two overlays (pill vs fullscreen slides) with the state. */
+  function updateMirrorUI() {
+    if (!presenting) { hideOverlay(); hidePill(); return; }
+    if (slidesOpen) {
+      hidePill();
+      showOverlay();                       // idempotent
+      if (curIdx !== lastRenderedIdx) { renderMirror(); lastRenderedIdx = curIdx; }
+    } else {
+      hideOverlay();                       // keeps slidesOpen=false; just not shown
+      showPill();
+    }
+  }
+
+  /* Student taps the pill → open the fullscreen slides. */
+  window.openStudentSlides = function () {
+    if (!presenting) return;
+    slidesOpen = true;
+    lastRenderedIdx = -1;                  // force a fresh render on open
+    updateMirrorUI();
+  };
+  /* Student taps close on the slide view → back to the dashboard (pill returns). */
+  window.closeStudentSlides = function () {
+    slidesOpen = false;
+    lastRenderedIdx = -1;
+    updateMirrorUI();
+  };
+
+  function showPill() {
+    const pill = document.getElementById('presentingPill');
+    if (!pill) return;
+    const txt = document.getElementById('presentingPillText');
+    if (txt) txt.textContent = tutorName + ' is presenting';
+    pill.classList.remove('hidden');
+  }
+  function hidePill() {
+    const pill = document.getElementById('presentingPill');
+    if (pill) pill.classList.add('hidden');
   }
 
   function onScroll(payload) {
@@ -162,10 +207,15 @@
   /* Full teardown — session ended or student left the dashboard. */
   function closeMirror() {
     hideOverlay();
+    hidePill();
     if (sub) { dataUnsubscribe(sub); sub = null; }
     subSessionId = null;
     slides = null;
+    tutorName = '';
     curIdx = 0;
+    presenting = false;
+    slidesOpen = false;
+    lastRenderedIdx = -1;
   }
 
   function clamp01(n) { return n < 0 ? 0 : n > 1 ? 1 : n; }
