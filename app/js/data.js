@@ -491,3 +491,105 @@ function rowToNotebook(row) {
     chatLog: []   // chat removed; kept empty so any legacy .chatLog access is safe
   };
 }
+
+/* ─────────────── class schedule + attendance (migration 007) ─────────────── */
+
+/* Store the signed-in user's detected IANA timezone on their profile, but only
+   when it actually changed — avoids a write on every load. RLS: profiles_self_update. */
+async function dataSetMyTimezone(userId, tz) {
+  if (!userId || !tz) return;
+  const c = requireSb();
+  const { error } = await c.from('profiles').update({ timezone: tz }).eq('id', userId);
+  throwIf(error, 'setMyTimezone');
+}
+
+/* Read one profile's stored timezone (used to skip redundant writes / for the
+   admin editor's anchor). Returns null if unset. */
+async function dataGetTimezone(userId) {
+  const c = requireSb();
+  const { data, error } = await c.from('profiles').select('timezone').eq('id', userId).maybeSingle();
+  throwIf(error, 'getTimezone');
+  return (data && data.timezone) || null;
+}
+
+/* Every weekly slot visible to me (tutor sees all their students; student sees
+   their own). RLS scopes this to the caller. Names come along for labelling. */
+async function dataListMySchedule(userId) {
+  const c = requireSb();
+  const { data, error } = await c.from('class_schedule')
+    .select('id, tutor_id, student_id, weekday, start_time, duration_min, anchor_tz, ' +
+            'tutor:profiles!class_schedule_tutor_id_fkey(id, full_name), ' +
+            'student:profiles!class_schedule_student_id_fkey(id, full_name)')
+    .or(`tutor_id.eq.${userId},student_id.eq.${userId}`);
+  throwIf(error, 'listMySchedule');
+  return data || [];
+}
+
+/* Admin editor: the slots for one specific pairing. */
+async function dataListScheduleForPair(tutorId, studentId) {
+  const c = requireSb();
+  const { data, error } = await c.from('class_schedule')
+    .select('id, tutor_id, student_id, weekday, start_time, duration_min, anchor_tz')
+    .eq('tutor_id', tutorId).eq('student_id', studentId)
+    .order('weekday').order('start_time');
+  throwIf(error, 'listScheduleForPair');
+  return data || [];
+}
+
+/* Admin: add one weekly slot. */
+async function dataAddScheduleSlot(row) {
+  const c = requireSb();
+  const { data, error } = await c.from('class_schedule').insert(row).select().single();
+  throwIf(error, 'addScheduleSlot');
+  return data;
+}
+
+/* Admin: remove one weekly slot (cascades its attendance flags). */
+async function dataDeleteScheduleSlot(id) {
+  const c = requireSb();
+  const { error } = await c.from('class_schedule').delete().eq('id', id);
+  throwIf(error, 'deleteScheduleSlot');
+}
+
+/* "Can't attend" flags for a set of schedule rows within a set of occurrence
+   dates (this week's dates). RLS scopes to the caller's pairs. */
+async function dataListAttendance(scheduleIds, occurrenceDates) {
+  if (!scheduleIds.length || !occurrenceDates.length) return [];
+  const c = requireSb();
+  const { data, error } = await c.from('class_attendance')
+    .select('id, schedule_id, occurrence_date, status, marked_by, marked_role')
+    .in('schedule_id', scheduleIds)
+    .in('occurrence_date', occurrenceDates);
+  throwIf(error, 'listAttendance');
+  return data || [];
+}
+
+/* Raise a "can't attend" flag for one occurrence. */
+async function dataFlagAttendance(scheduleId, occurrenceDate, myId, role) {
+  const c = requireSb();
+  const { error } = await c.from('class_attendance').insert({
+    schedule_id: scheduleId, occurrence_date: occurrenceDate,
+    status: 'cant_attend', marked_by: myId, marked_role: role
+  });
+  throwIf(error, 'flagAttendance');
+}
+
+/* Clear a "can't attend" flag (toggle off). */
+async function dataUnflagAttendance(scheduleId, occurrenceDate) {
+  const c = requireSb();
+  const { error } = await c.from('class_attendance')
+    .delete().eq('schedule_id', scheduleId).eq('occurrence_date', occurrenceDate);
+  throwIf(error, 'unflagAttendance');
+}
+
+/* Realtime: fire cb() whenever any schedule/attendance row changes. The filter
+   is coarse (whole tables) but RLS still gates what the client can read, and
+   these tables are tiny + change rarely. */
+function dataSubscribeSchedule(myId, cb) {
+  const c = requireSb();
+  if (!c) return null;
+  return c.channel('schedule:' + myId)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'class_attendance' }, () => cb && cb())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'class_schedule' }, () => cb && cb())
+    .subscribe();
+}

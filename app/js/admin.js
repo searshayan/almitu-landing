@@ -155,7 +155,10 @@ function renderAssignmentsTab() {
         <span style="color:var(--muted);"> → </span>
         <span class="font-semibold">${escapeHtml(a.tutor ? (a.tutor.full_name || a.tutor.email) : '—')}</span>
       </div>
-      <button onclick="adminUnassign('${a.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:#EF4444;">Remove</button>
+      <div class="flex items-center gap-1.5">
+        <button onclick="adminOpenSchedule('${a.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--secondary);">🗓 Schedule</button>
+        <button onclick="adminUnassign('${a.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:#EF4444;">Remove</button>
+      </div>
     </div>`).join('') || `<div class="text-center py-8 text-sm" style="color:var(--muted);">No assignments yet.</div>`;
 
   const canAssign = tutors.length && students.length;
@@ -204,6 +207,18 @@ async function adminUnassign(id) {
     showToast('Assignment removed.', 'info');
     renderAdmin();
   } catch (e) { showToast('Remove failed: ' + e.message, 'error'); }
+}
+
+/* Open the weekly-schedule editor for one assignment (handled by schedule.js).
+   Names are passed from the loaded assignment so schedule.js needn't re-query. */
+function adminOpenSchedule(assignmentId) {
+  const a = adminData.assignments.find(x => x.id === assignmentId);
+  if (!a || !a.tutor || !a.student) { showToast('Assignment not found.', 'error'); return; }
+  if (typeof schedAdminOpen !== 'function') { showToast('Schedule module not loaded.', 'error'); return; }
+  schedAdminOpen(
+    a.tutor.id, a.tutor.full_name || a.tutor.email || 'Tutor',
+    a.student.id, a.student.full_name || a.student.email || 'Student'
+  );
 }
 
 /* ─────────────── AI Settings tab ─────────────── */
