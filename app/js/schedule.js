@@ -25,7 +25,6 @@ const schedState = {
   tutorCols: {},        // viewer-weekday (0-6) -> [slotId] (tutor aggregate, for "day off")
   loaded: false,
   channel: null, poll: null,
-  tzCaptured: false,
   editor: null          // admin modal state
 };
 
@@ -117,21 +116,17 @@ async function initSchedule(ctx) {
   schedState.myId = ctx.userId;
   schedState.readOnly = !!ctx.readOnly;
 
-  // Capture the real user's browser timezone once (never during View-as, where
-  // auth.uid() is the admin — we don't want to overwrite the target's zone).
+  // Timezone is admin-controlled: the coordinator sets it per user in the
+  // schedule editor. We only auto-detect the browser zone as a first-time
+  // BOOTSTRAP (when a user has no zone yet), and never overwrite an existing
+  // value — so an admin's choice always wins. Skipped during View-as.
   const localTz = schedLocalTz();
-  if (!ctx.readOnly && !schedState.tzCaptured) {
-    schedState.tzCaptured = true;
-    try {
-      const stored = await dataGetTimezone(ctx.userId);
-      if (stored !== localTz) await dataSetMyTimezone(ctx.userId, localTz);
-    } catch (e) { /* non-fatal: schedule still renders, just in browser tz */ }
+  let storedTz = null;
+  try { storedTz = await dataGetTimezone(ctx.userId); } catch (e) {}
+  if (!ctx.readOnly && !storedTz) {
+    try { await dataSetMyTimezone(ctx.userId, localTz); storedTz = localTz; } catch (e) {}
   }
-  // Viewer tz: the target's stored zone during View-as, else this browser's.
-  schedState.viewerTz = localTz;
-  if (ctx.readOnly) {
-    try { schedState.viewerTz = (await dataGetTimezone(ctx.userId)) || localTz; } catch (e) {}
-  }
+  schedState.viewerTz = storedTz || localTz;
 
   await schedLoad();
 
@@ -348,18 +343,15 @@ async function schedWhenForPartner(partnerId, instant) {
   return `${day} at ${time}${mine ? ' (my time)' : ''}`;
 }
 
-/* Courtesy chat message to the partner when a class is flagged / un-flagged.
-   Posts into the existing 1:1 thread (unread badge + realtime). Never blocks
-   the flag itself — failures are swallowed. */
-async function schedNotifyFlag(slot, occ, nowFlagged) {
+/* Courtesy chat message to the partner when a class is flagged "can't attend".
+   Posts into the existing 1:1 thread (unread badge + realtime). Only fires on
+   flagging (not on clearing), and never blocks the flag — failures swallowed. */
+async function schedNotifyFlag(slot, occ) {
   try {
     const partnerId = schedPartnerId(slot);
     if (!partnerId) return;
     const when = await schedWhenForPartner(partnerId, occ.instant);
-    const body = nowFlagged
-      ? `🗓 Heads up — I can’t attend our class this ${when}, just this week.`
-      : `🗓 Update — I can make our class this ${when} after all.`;
-    await dataSendMessage(partnerId, body);
+    await dataSendMessage(partnerId, `🗓 Heads up — I can’t attend our class this ${when}, just this week.`);
   } catch (e) { /* courtesy only */ }
 }
 
@@ -373,24 +365,21 @@ async function schedToggleFlag(slotId) {
     if (wasFlagged) await dataUnflagAttendance(slotId, occ.occDate);
     else await dataFlagAttendance(slotId, occ.occDate, schedState.myId, schedState.role);
     await schedReload();
-    schedNotifyFlag(slot, occ, !wasFlagged);   // fire-and-forget
+    if (!wasFlagged) schedNotifyFlag(slot, occ);   // notify only on "can't attend"
   } catch (e) {
     showToast('Could not update attendance: ' + e.message, 'error');
   }
 }
 
-/* One summary message to a student when the tutor toggles a whole day. */
-async function schedNotifyDay(partnerId, slots, nowFlagged) {
+/* One summary message to a student when the tutor flags a whole day off. */
+async function schedNotifyDay(partnerId, slots) {
   try {
     if (!partnerId || !slots.length) return;
     const occ = schedState.occBySlot[slots[0].id];
     const when = await schedWhenForPartner(partnerId, occ.instant);   // "Monday at 6:00 PM"
     const day = when.split(' at ')[0];
     const plural = slots.length > 1 ? 'es' : '';
-    const body = nowFlagged
-      ? `🗓 Heads up — I can’t make our class${plural} this ${day}, just this week.`
-      : `🗓 Update — I can make our class${plural} this ${day} after all.`;
-    await dataSendMessage(partnerId, body);
+    await dataSendMessage(partnerId, `🗓 Heads up — I can’t make our class${plural} this ${day}, just this week.`);
   } catch (e) { /* courtesy only */ }
 }
 
@@ -413,15 +402,17 @@ async function schedTutorDayToggle(wd) {
       else if (!allFlagged && !isFlagged) { await dataFlagAttendance(id, occ.occDate, schedState.myId, schedState.role); changed.push(id); }
     }
     await schedReload();
-    // Notify each affected student once (group the changed slots by partner).
-    const byPartner = {};
-    for (const id of changed) {
-      const slot = schedState.slots.find(s => s.id === id);
-      if (!slot) continue;
-      const pid = schedPartnerId(slot);
-      (byPartner[pid] = byPartner[pid] || []).push(slot);
+    // Notify each affected student once — only when flagging (day off), not clearing.
+    if (!allFlagged) {
+      const byPartner = {};
+      for (const id of changed) {
+        const slot = schedState.slots.find(s => s.id === id);
+        if (!slot) continue;
+        const pid = schedPartnerId(slot);
+        (byPartner[pid] = byPartner[pid] || []).push(slot);
+      }
+      for (const pid in byPartner) schedNotifyDay(pid, byPartner[pid]);
     }
-    for (const pid in byPartner) schedNotifyDay(pid, byPartner[pid], !allFlagged);
   } catch (e) {
     showToast('Could not update the day: ' + e.message, 'error');
   }
@@ -432,16 +423,24 @@ async function schedTutorDayToggle(wd) {
    ════════════════════════════════════════════════════════════════════════ */
 
 async function schedAdminOpen(tutorId, tutorName, studentId, studentName) {
-  let tz = null;
-  try { tz = await dataGetTimezone(tutorId); } catch (e) {}
+  const fallback = schedLocalTz();
+  let tutorTz = null, studentTz = null;
+  try { tutorTz = await dataGetTimezone(tutorId); } catch (e) {}
+  try { studentTz = await dataGetTimezone(studentId); } catch (e) {}
   schedState.editor = {
     tutorId, tutorName, studentId, studentName,
-    tz: tz || schedLocalTz(),      // fall back to admin's zone if tutor hasn't signed in
-    tzKnown: !!tz,
+    tutorTz: tutorTz || fallback,
+    studentTz: studentTz || fallback,
     slots: []
   };
   await schedAdminReloadSlots();
   schedAdminRenderModal();
+}
+
+/* True if `tz` is a timezone the browser's Intl accepts (guards typos). */
+function schedValidTz(tz) {
+  try { new Intl.DateTimeFormat('en-US', { timeZone: tz }); return true; }
+  catch (e) { return false; }
 }
 
 async function schedAdminReloadSlots() {
@@ -481,10 +480,6 @@ function schedAdminRenderModal() {
       <button onclick="schedAdminDelete('${s.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:#EF4444;">Remove</button>
     </div>`).join('') || `<div class="text-center py-4 text-xs" style="color:var(--muted);">No classes set yet.</div>`;
 
-  const tzNote = ed.tzKnown
-    ? `Times are in <strong>${escapeHtml(ed.tutorName)}</strong>'s timezone: <strong>${escapeHtml(ed.tz)}</strong>`
-    : `⚠️ ${escapeHtml(ed.tutorName)} hasn't signed in since this feature launched, so their timezone is unknown. Enter it below (an IANA name like <code>Asia/Tehran</code>); it defaults to yours.`;
-
   m.innerHTML = `
     <div class="w-full max-w-lg rounded-2xl p-5 max-h-[90vh] overflow-y-auto" style="background:var(--bg,#fff);">
       <div class="flex items-center justify-between mb-1">
@@ -494,11 +489,21 @@ function schedAdminRenderModal() {
       <p class="text-xs mb-3" style="color:var(--muted);">
         ${bidiText(ed.studentName)} <span style="color:var(--muted);">→</span> ${bidiText(ed.tutorName)}
       </p>
-      <div class="text-[11px] mb-3 px-3 py-2 rounded-lg" style="background:rgba(255,210,63,.10);border:1px solid rgba(255,210,63,.30);color:#92400E;">${tzNote}</div>
 
-      ${ed.tzKnown ? '' : `
-        <label class="block text-xs font-medium mb-1" style="color:var(--muted);">Tutor timezone (IANA)</label>
-        <input id="schedTz" value="${escapeHtml(ed.tz)}" class="w-full mb-3 rounded-xl px-3 py-2 text-sm field-input" />`}
+      <div class="rounded-xl p-3 mb-3" style="background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.30);">
+        <p class="text-[11px] mb-2" style="color:#92400E;">Set each person's timezone (IANA name, e.g. <code>Asia/Tehran</code>). Class times are entered in the <strong>tutor's</strong> timezone; the student sees them converted to theirs.</p>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] mb-1 truncate" style="color:var(--muted);">Tutor — ${bidiText(ed.tutorName)}</label>
+            <input id="schedTutorTz" value="${escapeHtml(ed.tutorTz)}" class="w-full rounded-xl px-3 py-2 text-sm field-input" />
+          </div>
+          <div>
+            <label class="block text-[11px] mb-1 truncate" style="color:var(--muted);">Student — ${bidiText(ed.studentName)}</label>
+            <input id="schedStudentTz" value="${escapeHtml(ed.studentTz)}" class="w-full rounded-xl px-3 py-2 text-sm field-input" />
+          </div>
+        </div>
+        <button onclick="schedAdminSaveTz()" class="w-full mt-2 py-2 rounded-xl text-sm font-semibold" style="background:white;border:1px solid var(--line);color:var(--secondary);">Save timezones</button>
+      </div>
 
       <div class="mb-4">${rows}</div>
 
@@ -523,24 +528,56 @@ function schedAdminRenderModal() {
     </div>`;
 }
 
+/* Read the two tz inputs, validate, and persist any change to each profile.
+   Changing the tutor's zone also re-anchors this pairing's existing slots so
+   their times move with it. Returns the validated {tutorTz, studentTz} or null. */
+async function schedAdminPersistTz() {
+  const ed = schedState.editor;
+  const tutorTz = (document.getElementById('schedTutorTz').value || '').trim();
+  const studentTz = (document.getElementById('schedStudentTz').value || '').trim();
+  if (!schedValidTz(tutorTz) || !schedValidTz(studentTz)) {
+    showToast('Enter valid IANA timezones (e.g. Asia/Tehran, Europe/London).', 'error');
+    return null;
+  }
+  if (tutorTz !== ed.tutorTz) {
+    await dataSetMyTimezone(ed.tutorId, tutorTz);
+    await dataReanchorSchedule(ed.tutorId, ed.studentId, tutorTz);
+  }
+  if (studentTz !== ed.studentTz) await dataSetMyTimezone(ed.studentId, studentTz);
+  ed.tutorTz = tutorTz; ed.studentTz = studentTz;
+  return { tutorTz, studentTz };
+}
+
+async function schedAdminSaveTz() {
+  if (!schedState.editor) return;
+  try {
+    const tz = await schedAdminPersistTz();
+    if (!tz) return;
+    await schedAdminReloadSlots();
+    schedAdminRenderModal();
+    showToast('Timezones saved.', 'success');
+  } catch (e) {
+    showToast('Could not save timezones: ' + e.message, 'error');
+  }
+}
+
 async function schedAdminAdd() {
   const ed = schedState.editor;
   if (!ed) return;
   const weekday = parseInt(document.getElementById('schedDay').value, 10);
   const time = document.getElementById('schedTime').value;       // "HH:MM"
   const dur = parseInt(document.getElementById('schedDur').value, 10) || 60;
-  const tzEl = document.getElementById('schedTz');
-  const anchorTz = (tzEl ? tzEl.value.trim() : ed.tz) || ed.tz;
   if (!time) { showToast('Pick a start time.', 'error'); return; }
 
   try {
+    const tz = await schedAdminPersistTz();     // also validates the zones
+    if (!tz) return;
     await dataAddScheduleSlot({
       tutor_id: ed.tutorId, student_id: ed.studentId,
       weekday, start_time: time, duration_min: dur,
-      anchor_tz: anchorTz,
+      anchor_tz: tz.tutorTz,
       created_by: (window.almituAuth && window.almituAuth.user && window.almituAuth.user.id) || null
     });
-    ed.tz = anchorTz; ed.tzKnown = true;
     await schedAdminReloadSlots();
     schedAdminRenderModal();
     showToast('Class added.', 'success');
