@@ -54,16 +54,15 @@ async function openAmie() {
   const input = document.getElementById('amieInput');
   if (input) input.focus();
 
+  // The visible chat always starts fresh: we deliberately do NOT load the
+  // student's stored history into the UI, so a student never sees their old
+  // conversations. Amie itself still recalls earlier chats server-side (the
+  // amie-chat function reads prior turns for continuity) — the memory lives on
+  // the server; only the on-screen thread is reset.
   if (!amieState.loaded) {
-    const host = document.getElementById('amieThread');
-    if (host) host.innerHTML = '<div class="text-center py-10 text-xs" style="color:var(--muted);">Loading…</div>';
-    try {
-      amieState.history = await dataListAmieHistory(amieState.myId);
-      amieState.loaded = true;
-    } catch (e) {
-      amieState.history = [];
-    }
-    renderAmie();
+    amieState.loaded = true;
+    amieState.history = [];
+    renderAmie();   // shows the welcome screen
   }
 }
 
