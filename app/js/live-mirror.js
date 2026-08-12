@@ -138,6 +138,8 @@
     el.innerHTML = slide.html;
     const label = document.getElementById('mirrorLabel');
     if (label) label.textContent = slide.label || '';
+    const sc = document.getElementById('mirrorScaler');
+    if (sc) sc.scrollTop = 0;           // open each slide at its top (header visible)
     fitMirror();
     requestAnimationFrame(fitMirror);
     setTimeout(fitMirror, 60);
