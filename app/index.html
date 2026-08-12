@@ -589,6 +589,14 @@
     <!-- Live session banner: "Join the Session" (rendered by js/router.js) -->
     <div id="studentLiveBanner" class="hidden"></div>
 
+    <!-- Opt-in pill: appears while the tutor is presenting so the dashboard (and
+         the Join banner) stay reachable. Tapping opens the fullscreen slides. -->
+    <button id="presentingPill" class="presenting-pill hidden" onclick="openStudentSlides()">
+      <span class="pp-dot"></span>
+      <span id="presentingPillText" class="pp-text">Your tutor is presenting</span>
+      <span class="pp-cta">View slides &rarr;</span>
+    </button>
+
     <!-- Live synced-slides mirror (Model A): shown while the tutor is presenting.
          View-only — the tutor drives which slide and how far it's scrolled.
          Reuses the tutor Present-mode styles; driven by js/live-mirror.js. -->
@@ -600,6 +608,9 @@
             <span class="present-live-dot"></span>
             <span class="present-timer">Live</span>
           </div>
+          <button onclick="closeStudentSlides()" class="present-icon-btn" title="Back to dashboard" aria-label="Back to dashboard">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
         </div>
       </div>
       <div class="present-stage" id="mirrorStage">
