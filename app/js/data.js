@@ -517,7 +517,7 @@ async function dataGetTimezone(userId) {
 async function dataListMySchedule(userId) {
   const c = requireSb();
   const { data, error } = await c.from('class_schedule')
-    .select('id, tutor_id, student_id, weekday, start_time, duration_min, anchor_tz, label, ' +
+    .select('id, tutor_id, student_id, weekday, start_time, duration_min, anchor_tz, ' +
             'tutor:profiles!class_schedule_tutor_id_fkey(id, full_name), ' +
             'student:profiles!class_schedule_student_id_fkey(id, full_name)')
     .or(`tutor_id.eq.${userId},student_id.eq.${userId}`);
@@ -529,7 +529,7 @@ async function dataListMySchedule(userId) {
 async function dataListScheduleForPair(tutorId, studentId) {
   const c = requireSb();
   const { data, error } = await c.from('class_schedule')
-    .select('id, tutor_id, student_id, weekday, start_time, duration_min, anchor_tz, label')
+    .select('id, tutor_id, student_id, weekday, start_time, duration_min, anchor_tz')
     .eq('tutor_id', tutorId).eq('student_id', studentId)
     .order('weekday').order('start_time');
   throwIf(error, 'listScheduleForPair');

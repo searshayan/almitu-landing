@@ -45,7 +45,6 @@ create table if not exists public.class_schedule (
   -- the anchor the app converts FROM, so a later profile-timezone change does
   -- not silently move existing classes.
   anchor_tz    text not null,
-  label        text,                              -- optional ("Grammar", …)
   created_by   uuid references public.profiles(id) on delete set null,
   created_at   timestamptz not null default now()
 );

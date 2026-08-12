@@ -234,9 +234,6 @@ function schedChip(slot, subtitle) {
   const border = flagged ? 'rgba(239,68,68,.45)' : 'rgba(6,214,160,.30)';
   const timeStyle = flagged ? 'color:#B91C1C;text-decoration:line-through;' : 'color:var(--navy);';
 
-  const label = slot.label
-    ? `<span class="text-[10px] px-1.5 py-0.5 rounded" style="background:rgba(0,78,137,.08);color:var(--secondary);">${escapeHtml(slot.label)}</span>`
-    : '';
   const caption = flagged
     ? `<span class="block text-[10px] font-semibold mt-0.5" style="color:#B91C1C;">${schedFlagCaption(flag)}</span>`
     : (schedState.readOnly ? '' : `<span class="block text-[10px] mt-0.5" style="color:var(--muted);">tap if you can’t make it</span>`);
@@ -248,7 +245,6 @@ function schedChip(slot, subtitle) {
       style="background:${bg};border:1px solid ${border};cursor:${cursor};">
       <span class="block text-xs font-bold" style="${timeStyle}">${escapeHtml(start)}${end ? '–' + escapeHtml(end) : ''}</span>
       ${subtitle ? `<span class="block text-[11px] truncate mt-0.5" style="color:var(--muted);">${bidiText(subtitle)}</span>` : ''}
-      ${label ? `<span class="block mt-1">${label}</span>` : ''}
       ${caption}
     </button>`;
 }
@@ -335,21 +331,67 @@ function schedRenderTutor() {
     </div>`;
 }
 
-/* ─────────────── flag toggling ─────────────── */
+/* ─────────────── flag toggling + partner notification ─────────────── */
+
+/* The other person in this 1:1 class (from my point of view). */
+function schedPartnerId(slot) {
+  return slot.tutor_id === schedState.myId ? slot.student_id : slot.tutor_id;
+}
+
+/* Phrase a class time in the recipient's own timezone when we can read it, so
+   the note lands in their local Mon/Tue frame. Falls back to my zone. */
+async function schedWhenForPartner(partnerId, instant) {
+  let tz = schedState.viewerTz, mine = true;
+  try { const t = await dataGetTimezone(partnerId); if (t) { tz = t; mine = false; } } catch (e) {}
+  const day = SCHED_DAY_LONG[schedPartsInTz(instant, tz).weekday];
+  const time = schedFmtTime(instant, tz);
+  return `${day} at ${time}${mine ? ' (my time)' : ''}`;
+}
+
+/* Courtesy chat message to the partner when a class is flagged / un-flagged.
+   Posts into the existing 1:1 thread (unread badge + realtime). Never blocks
+   the flag itself — failures are swallowed. */
+async function schedNotifyFlag(slot, occ, nowFlagged) {
+  try {
+    const partnerId = schedPartnerId(slot);
+    if (!partnerId) return;
+    const when = await schedWhenForPartner(partnerId, occ.instant);
+    const body = nowFlagged
+      ? `🗓 Heads up — I can’t attend our class this ${when}, just this week.`
+      : `🗓 Update — I can make our class this ${when} after all.`;
+    await dataSendMessage(partnerId, body);
+  } catch (e) { /* courtesy only */ }
+}
 
 async function schedToggleFlag(slotId) {
   if (schedState.readOnly) return;
   const slot = schedState.slots.find(s => s.id === slotId);
   const occ = schedState.occBySlot[slotId];
   if (!slot || !occ) return;
-  const flagged = !!schedState.flags[`${slotId}|${occ.occDate}`];
+  const wasFlagged = !!schedState.flags[`${slotId}|${occ.occDate}`];
   try {
-    if (flagged) await dataUnflagAttendance(slotId, occ.occDate);
+    if (wasFlagged) await dataUnflagAttendance(slotId, occ.occDate);
     else await dataFlagAttendance(slotId, occ.occDate, schedState.myId, schedState.role);
     await schedReload();
+    schedNotifyFlag(slot, occ, !wasFlagged);   // fire-and-forget
   } catch (e) {
     showToast('Could not update attendance: ' + e.message, 'error');
   }
+}
+
+/* One summary message to a student when the tutor toggles a whole day. */
+async function schedNotifyDay(partnerId, slots, nowFlagged) {
+  try {
+    if (!partnerId || !slots.length) return;
+    const occ = schedState.occBySlot[slots[0].id];
+    const when = await schedWhenForPartner(partnerId, occ.instant);   // "Monday at 6:00 PM"
+    const day = when.split(' at ')[0];
+    const plural = slots.length > 1 ? 'es' : '';
+    const body = nowFlagged
+      ? `🗓 Heads up — I can’t make our class${plural} this ${day}, just this week.`
+      : `🗓 Update — I can make our class${plural} this ${day} after all.`;
+    await dataSendMessage(partnerId, body);
+  } catch (e) { /* courtesy only */ }
 }
 
 /* Tutor: flag (or clear) every class in one viewer-day column. */
@@ -361,15 +403,25 @@ async function schedTutorDayToggle(wd) {
     const occ = schedState.occBySlot[id];
     return occ && schedState.flags[`${id}|${occ.occDate}`];
   });
+  const changed = [];
   try {
     for (const id of ids) {
       const occ = schedState.occBySlot[id];
       if (!occ) continue;
       const isFlagged = !!schedState.flags[`${id}|${occ.occDate}`];
-      if (allFlagged && isFlagged) await dataUnflagAttendance(id, occ.occDate);
-      else if (!allFlagged && !isFlagged) await dataFlagAttendance(id, occ.occDate, schedState.myId, schedState.role);
+      if (allFlagged && isFlagged) { await dataUnflagAttendance(id, occ.occDate); changed.push(id); }
+      else if (!allFlagged && !isFlagged) { await dataFlagAttendance(id, occ.occDate, schedState.myId, schedState.role); changed.push(id); }
     }
     await schedReload();
+    // Notify each affected student once (group the changed slots by partner).
+    const byPartner = {};
+    for (const id of changed) {
+      const slot = schedState.slots.find(s => s.id === id);
+      if (!slot) continue;
+      const pid = schedPartnerId(slot);
+      (byPartner[pid] = byPartner[pid] || []).push(slot);
+    }
+    for (const pid in byPartner) schedNotifyDay(pid, byPartner[pid], !allFlagged);
   } catch (e) {
     showToast('Could not update the day: ' + e.message, 'error');
   }
@@ -425,7 +477,6 @@ function schedAdminRenderModal() {
       <div class="text-sm" style="color:var(--navy);">
         <span class="font-semibold">${SCHED_DAY_LONG[s.weekday]}</span>
         <span style="color:var(--muted);"> · ${escapeHtml(String(s.start_time).slice(0, 5))} · ${s.duration_min}m</span>
-        ${s.label ? `<span class="ml-1 text-[11px] px-1.5 py-0.5 rounded" style="background:rgba(0,78,137,.08);color:var(--secondary);">${escapeHtml(s.label)}</span>` : ''}
       </div>
       <button onclick="schedAdminDelete('${s.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:#EF4444;">Remove</button>
     </div>`).join('') || `<div class="text-center py-4 text-xs" style="color:var(--muted);">No classes set yet.</div>`;
@@ -453,7 +504,7 @@ function schedAdminRenderModal() {
 
       <div class="rounded-xl p-3 mb-1" style="background:rgba(0,0,0,.02);border:1px solid var(--line);">
         <p class="text-xs font-semibold mb-2" style="color:var(--navy);">Add a class</p>
-        <div class="grid grid-cols-2 gap-2 mb-2">
+        <div class="grid grid-cols-3 gap-2 mb-2">
           <div>
             <label class="block text-[11px] mb-1" style="color:var(--muted);">Day</label>
             <select id="schedDay" class="w-full rounded-xl px-3 py-2 text-sm field-input">${dayOpts}</select>
@@ -465,10 +516,6 @@ function schedAdminRenderModal() {
           <div>
             <label class="block text-[11px] mb-1" style="color:var(--muted);">Duration (min)</label>
             <input id="schedDur" type="number" min="5" max="600" step="5" value="60" class="w-full rounded-xl px-3 py-2 text-sm field-input" />
-          </div>
-          <div>
-            <label class="block text-[11px] mb-1" style="color:var(--muted);">Label (optional)</label>
-            <input id="schedLabel" type="text" placeholder="e.g. Grammar" class="w-full rounded-xl px-3 py-2 text-sm field-input" />
           </div>
         </div>
         <button onclick="schedAdminAdd()" class="w-full py-2.5 rounded-xl text-white text-sm font-semibold" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Add class</button>
@@ -482,7 +529,6 @@ async function schedAdminAdd() {
   const weekday = parseInt(document.getElementById('schedDay').value, 10);
   const time = document.getElementById('schedTime').value;       // "HH:MM"
   const dur = parseInt(document.getElementById('schedDur').value, 10) || 60;
-  const label = (document.getElementById('schedLabel').value || '').trim();
   const tzEl = document.getElementById('schedTz');
   const anchorTz = (tzEl ? tzEl.value.trim() : ed.tz) || ed.tz;
   if (!time) { showToast('Pick a start time.', 'error'); return; }
@@ -491,7 +537,7 @@ async function schedAdminAdd() {
     await dataAddScheduleSlot({
       tutor_id: ed.tutorId, student_id: ed.studentId,
       weekday, start_time: time, duration_min: dur,
-      anchor_tz: anchorTz, label: label || null,
+      anchor_tz: anchorTz,
       created_by: (window.almituAuth && window.almituAuth.user && window.almituAuth.user.id) || null
     });
     ed.tz = anchorTz; ed.tzKnown = true;
