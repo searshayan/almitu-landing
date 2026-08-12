@@ -408,18 +408,9 @@ function dataUnsubscribe(channel) {
 
 /* ─────────────── Amie (student AI study buddy) ───────────────
    The AI call goes through the `amie-chat` Edge Function so the API key
-   stays server-side (app_settings is not student-readable). History is a
-   plain read of amie_messages, which the function writes. */
-
-async function dataListAmieHistory(studentId) {
-  const c = requireSb();
-  const { data, error } = await c.from('amie_messages')
-    .select('role, content, created_at')
-    .eq('student_id', studentId)
-    .order('created_at', { ascending: true });
-  throwIf(error, 'listAmieHistory');
-  return data || [];
-}
+   stays server-side (app_settings is not student-readable). The client never
+   reads the stored history: the visible chat starts fresh each session, while
+   the function itself recalls prior turns server-side for continuity. */
 
 /* Send a message to Amie. Returns { reply, remaining } or throws.
    A 4xx from the function (e.g. daily_limit) comes back in `data.error`. */
