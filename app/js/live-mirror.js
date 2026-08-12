@@ -145,9 +145,13 @@
     setTimeout(fitMirror, 60);
   }
 
-  /* Same fill-width fit as the tutor's fitPresent(), against the mirror ids:
-     scale the fixed-width slide to fill the stage, center if it fits, scroll if
-     it's taller. Kept as its own copy so it can't collide with tutor state. */
+  /* CONTAIN fit (differs from the tutor's fill-width fitPresent): scale the whole
+     slide to fit BOTH the width and the height of the phone, so the entire slide
+     — header to footer — is always visible with no scrolling. This is what keeps
+     the header on screen and lets the laser map accurately: because the student
+     sees the complete slide (not a scrolled window of it), a pointer at "40%
+     down the slide" lands on the same word the tutor is on, regardless of the
+     wildly different desktop-vs-phone screen shapes. */
   function fitMirror() {
     const stage = document.getElementById('mirrorStage');
     const frame = document.getElementById('mirrorScaler');
@@ -161,11 +165,11 @@
     const PADX = 48, PADY = 40;
     const innerW = availW - 2 * PADX;
     const innerH = availH - 2 * PADY;
-    const k = Math.min(innerW / w, 2.4);          // matches PRESENT_MAX_ZOOM
+    const k = Math.min(innerW / w, innerH / h, 2.4);   // fit BOTH dimensions
     content.style.zoom = k;
     frame.style.width = availW + 'px';
     frame.style.height = availH + 'px';
-    frame.style.justifyContent = (h * k <= innerH) ? 'center' : 'flex-start';
+    frame.style.justifyContent = 'center';             // whole slide fits → always centered
     stage.style.alignItems = 'center';
     updateMirrorFade();
     placePointer();   // keep the dot glued to its word when the layout refits
