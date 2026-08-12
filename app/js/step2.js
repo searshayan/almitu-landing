@@ -209,6 +209,9 @@ function renderPresentation() {
   document.getElementById('presentDots').innerHTML = slides.map((sl, i) =>
     `<button onclick="goToSlide(${i})" class="slide-dot ${i === idx ? 'active' : ''}" title="${escapeHtml(sl.label)}"></button>`).join('');
 
+  const scaler = document.getElementById('presentScaler');
+  if (scaler) scaler.scrollTop = 0;  // every slide opens at its top, not where the last one was
+
   fitPresent();                      // synchronous (offsetWidth forces layout)
   requestAnimationFrame(fitPresent); // refine after paint / web-font settle
   setTimeout(fitPresent, 60);        // settle fallback if rAF is throttled
@@ -340,6 +343,7 @@ function syncPresentSlide() {
   const idx = getState().currentSlide;
   if (idx === _lastPushedSlide) return;
   _lastPushedSlide = idx;
+  clearTimeout(_scrollTrailTimer);               // drop any pending scroll from the old slide
   hidePresentPointer();                          // clear the laser — new slide, new content
   dataSetPresentState(tutorState.currentSessionId, { present_active: true, current_slide: idx })
     .catch(() => { _lastPushedSlide = -1; });   // let a failed push retry next change
