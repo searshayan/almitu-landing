@@ -290,6 +290,11 @@ function enterPresentation() {
     _lastPushedSlide = -1;
     window._presentChannel = dataOpenLiveChannel(tutorState.currentSessionId);
   }
+  const stageEl = document.getElementById('presentStage');
+  if (stageEl) {
+    stageEl.addEventListener('mousemove', onPresentMouseMove);
+    stageEl.addEventListener('mouseleave', onPresentMouseLeave);
+  }
   renderPresentation();
   updateTimerDisplay();
   presentRequestFullscreen(el);
@@ -305,6 +310,11 @@ function exitPresentation() {
   window.removeEventListener('resize', fitPresent);
   const pf = document.getElementById('presentScaler');
   if (pf) pf.removeEventListener('scroll', updatePresentFade);
+  const stageEl = document.getElementById('presentStage');
+  if (stageEl) {
+    stageEl.removeEventListener('mousemove', onPresentMouseMove);
+    stageEl.removeEventListener('mouseleave', onPresentMouseLeave);
+  }
   document.removeEventListener('fullscreenchange', onPresentFsChange);
   if (window._presentRO) { window._presentRO.disconnect(); window._presentRO = null; }
   // Tell the live student we've stopped presenting, and close the channel.
@@ -330,6 +340,7 @@ function syncPresentSlide() {
   const idx = getState().currentSlide;
   if (idx === _lastPushedSlide) return;
   _lastPushedSlide = idx;
+  hidePresentPointer();                          // clear the laser — new slide, new content
   dataSetPresentState(tutorState.currentSessionId, { present_active: true, current_slide: idx })
     .catch(() => { _lastPushedSlide = -1; });   // let a failed push retry next change
 }
@@ -350,6 +361,36 @@ function syncPresentScroll() {
   clearTimeout(_scrollTrailTimer);
   _scrollTrailTimer = setTimeout(() => dataBroadcastScroll(window._presentChannel, f), 120);
 }
+
+/* ─── Laser pointer ───
+   While presenting, the tutor's cursor over the slide shows as a glowing dot on
+   the student's mirror — a way to say "look HERE" (which matters since answer
+   reveals aren't mirrored). Position is sent as a fraction of the slide content
+   (scroll/size-independent), so it maps onto the student's differently-sized
+   screen. It shows only over the slide area (moving to the nav hides it) and
+   holds at the last spot when the tutor pauses to talk about a word. */
+let _lastPointerSent = 0;
+function syncPresentPointer(clientX, clientY) {
+  if (!presentIsLive() || !window._presentChannel) return;
+  const content = document.getElementById('presentSlide');
+  if (!content) return;
+  const rect = content.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return;
+  const fx = (clientX - rect.left) / rect.width;
+  const fy = (clientY - rect.top) / rect.height;
+  if (fx < 0 || fx > 1 || fy < 0 || fy > 1) return;   // only over the slide itself
+  const now = (window.performance && performance.now) ? performance.now() : Date.now();
+  if (now - _lastPointerSent < 30) return;            // cap ~33 sends/sec
+  _lastPointerSent = now;
+  dataBroadcastPointer(window._presentChannel, { x: fx, y: fy, on: true });
+}
+function hidePresentPointer() {
+  if (presentIsLive() && window._presentChannel) {
+    dataBroadcastPointer(window._presentChannel, { on: false });
+  }
+}
+function onPresentMouseMove(e) { syncPresentPointer(e.clientX, e.clientY); }
+function onPresentMouseLeave() { hidePresentPointer(); }
 
 function presentKeydown(e) {
   if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }

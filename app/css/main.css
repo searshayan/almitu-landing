@@ -629,6 +629,26 @@ textarea:focus-visible,
 .mirror-mode .present-scaler { overflow: hidden; }
 .mirror-mode .present-slide { pointer-events: none; }
 
+/* Tutor's laser pointer, shown on the student's mirror. Fixed to the viewport;
+   js/live-mirror.js sets left/top/opacity. The margin offset centers it on the
+   point; the short position transition smooths the throttled updates. */
+.mirror-pointer {
+  position: fixed;
+  left: 0; top: 0;
+  width: 18px; height: 18px;
+  margin-left: -9px; margin-top: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,68,68,.95) 0%, rgba(255,68,68,.7) 38%, rgba(255,68,68,0) 72%);
+  box-shadow: 0 0 12px 4px rgba(255,68,68,.45);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1001;
+  transition: opacity .15s ease, left .05s linear, top .05s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mirror-pointer { transition: opacity .15s ease; }
+}
+
 .present-topbar {
   flex-shrink: 0;
   display: flex;
