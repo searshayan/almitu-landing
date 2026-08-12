@@ -443,50 +443,124 @@ function schedValidTz(tz) {
   catch (e) { return false; }
 }
 
-/* Curated fallback for browsers without Intl.supportedValuesOf (pre-2022). */
-const SCHED_TZ_FALLBACK = [
-  'UTC',
-  'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
-  'America/Toronto', 'America/Mexico_City', 'America/Sao_Paulo',
-  'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid', 'Europe/Rome',
-  'Europe/Istanbul', 'Europe/Moscow',
-  'Africa/Cairo', 'Africa/Lagos', 'Africa/Johannesburg',
-  'Asia/Jerusalem', 'Asia/Baghdad', 'Asia/Riyadh', 'Asia/Tehran', 'Asia/Dubai',
-  'Asia/Kabul', 'Asia/Karachi', 'Asia/Kolkata', 'Asia/Dhaka', 'Asia/Jakarta',
-  'Asia/Shanghai', 'Asia/Tokyo', 'Asia/Seoul',
-  'Australia/Sydney', 'Pacific/Auckland'
+/* Curated world timezone list — [IANA, City, Country] — one entry per major
+   city/country across every offset, weighted toward Almitu's regions. Shown as
+   "(GMT+03:30) Tehran, Iran", sorted by live GMT offset. A stored zone not in
+   this list is still preserved (prepended raw) so no one's setting is lost. */
+const SCHED_TZ_ZONES = [
+  ['Pacific/Midway', 'Midway', 'US Minor Islands'],
+  ['Pacific/Honolulu', 'Honolulu', 'United States'],
+  ['America/Anchorage', 'Anchorage', 'United States'],
+  ['America/Los_Angeles', 'Los Angeles', 'United States'],
+  ['America/Vancouver', 'Vancouver', 'Canada'],
+  ['America/Tijuana', 'Tijuana', 'Mexico'],
+  ['America/Denver', 'Denver', 'United States'],
+  ['America/Phoenix', 'Phoenix', 'United States'],
+  ['America/Edmonton', 'Edmonton', 'Canada'],
+  ['America/Chicago', 'Chicago', 'United States'],
+  ['America/Mexico_City', 'Mexico City', 'Mexico'],
+  ['America/Winnipeg', 'Winnipeg', 'Canada'],
+  ['America/Guatemala', 'Guatemala City', 'Guatemala'],
+  ['America/New_York', 'New York', 'United States'],
+  ['America/Toronto', 'Toronto', 'Canada'],
+  ['America/Bogota', 'Bogotá', 'Colombia'],
+  ['America/Lima', 'Lima', 'Peru'],
+  ['America/Halifax', 'Halifax', 'Canada'],
+  ['America/Santiago', 'Santiago', 'Chile'],
+  ['America/Caracas', 'Caracas', 'Venezuela'],
+  ['America/St_Johns', "St. John's", 'Canada'],
+  ['America/Sao_Paulo', 'São Paulo', 'Brazil'],
+  ['America/Argentina/Buenos_Aires', 'Buenos Aires', 'Argentina'],
+  ['Atlantic/South_Georgia', 'South Georgia', 'South Georgia'],
+  ['Atlantic/Azores', 'Azores', 'Portugal'],
+  ['Atlantic/Cape_Verde', 'Praia', 'Cape Verde'],
+  ['UTC', 'UTC', ''],
+  ['Europe/London', 'London', 'United Kingdom'],
+  ['Europe/Dublin', 'Dublin', 'Ireland'],
+  ['Europe/Lisbon', 'Lisbon', 'Portugal'],
+  ['Africa/Casablanca', 'Casablanca', 'Morocco'],
+  ['Europe/Paris', 'Paris', 'France'],
+  ['Europe/Madrid', 'Madrid', 'Spain'],
+  ['Europe/Berlin', 'Berlin', 'Germany'],
+  ['Europe/Rome', 'Rome', 'Italy'],
+  ['Europe/Amsterdam', 'Amsterdam', 'Netherlands'],
+  ['Europe/Stockholm', 'Stockholm', 'Sweden'],
+  ['Europe/Warsaw', 'Warsaw', 'Poland'],
+  ['Africa/Lagos', 'Lagos', 'Nigeria'],
+  ['Africa/Cairo', 'Cairo', 'Egypt'],
+  ['Africa/Johannesburg', 'Johannesburg', 'South Africa'],
+  ['Europe/Athens', 'Athens', 'Greece'],
+  ['Europe/Bucharest', 'Bucharest', 'Romania'],
+  ['Europe/Kyiv', 'Kyiv', 'Ukraine'],
+  ['Europe/Helsinki', 'Helsinki', 'Finland'],
+  ['Asia/Jerusalem', 'Jerusalem', 'Israel'],
+  ['Asia/Beirut', 'Beirut', 'Lebanon'],
+  ['Europe/Istanbul', 'Istanbul', 'Türkiye'],
+  ['Europe/Moscow', 'Moscow', 'Russia'],
+  ['Asia/Baghdad', 'Baghdad', 'Iraq'],
+  ['Asia/Riyadh', 'Riyadh', 'Saudi Arabia'],
+  ['Asia/Qatar', 'Doha', 'Qatar'],
+  ['Africa/Nairobi', 'Nairobi', 'Kenya'],
+  ['Asia/Tehran', 'Tehran', 'Iran'],
+  ['Asia/Dubai', 'Dubai', 'United Arab Emirates'],
+  ['Asia/Baku', 'Baku', 'Azerbaijan'],
+  ['Asia/Yerevan', 'Yerevan', 'Armenia'],
+  ['Asia/Tbilisi', 'Tbilisi', 'Georgia'],
+  ['Asia/Kabul', 'Kabul', 'Afghanistan'],
+  ['Asia/Karachi', 'Karachi', 'Pakistan'],
+  ['Asia/Tashkent', 'Tashkent', 'Uzbekistan'],
+  ['Asia/Yekaterinburg', 'Yekaterinburg', 'Russia'],
+  ['Asia/Kolkata', 'Kolkata', 'India'],
+  ['Asia/Colombo', 'Colombo', 'Sri Lanka'],
+  ['Asia/Kathmandu', 'Kathmandu', 'Nepal'],
+  ['Asia/Dhaka', 'Dhaka', 'Bangladesh'],
+  ['Asia/Almaty', 'Almaty', 'Kazakhstan'],
+  ['Asia/Yangon', 'Yangon', 'Myanmar'],
+  ['Asia/Bangkok', 'Bangkok', 'Thailand'],
+  ['Asia/Jakarta', 'Jakarta', 'Indonesia'],
+  ['Asia/Ho_Chi_Minh', 'Ho Chi Minh City', 'Vietnam'],
+  ['Asia/Shanghai', 'Shanghai', 'China'],
+  ['Asia/Hong_Kong', 'Hong Kong', 'Hong Kong'],
+  ['Asia/Singapore', 'Singapore', 'Singapore'],
+  ['Asia/Kuala_Lumpur', 'Kuala Lumpur', 'Malaysia'],
+  ['Asia/Manila', 'Manila', 'Philippines'],
+  ['Australia/Perth', 'Perth', 'Australia'],
+  ['Asia/Taipei', 'Taipei', 'Taiwan'],
+  ['Asia/Tokyo', 'Tokyo', 'Japan'],
+  ['Asia/Seoul', 'Seoul', 'South Korea'],
+  ['Australia/Darwin', 'Darwin', 'Australia'],
+  ['Australia/Brisbane', 'Brisbane', 'Australia'],
+  ['Australia/Adelaide', 'Adelaide', 'Australia'],
+  ['Australia/Sydney', 'Sydney', 'Australia'],
+  ['Australia/Melbourne', 'Melbourne', 'Australia'],
+  ['Pacific/Guam', 'Guam', 'Guam'],
+  ['Pacific/Noumea', 'Nouméa', 'New Caledonia'],
+  ['Pacific/Auckland', 'Auckland', 'New Zealand'],
+  ['Pacific/Fiji', 'Suva', 'Fiji'],
+  ['Pacific/Tongatapu', "Nuku'alofa", 'Tonga']
 ];
 
-/* The full standard IANA zone list (or the fallback). */
-function schedTzList() {
-  try {
-    if (typeof Intl.supportedValuesOf === 'function') {
-      const list = Intl.supportedValuesOf('timeZone');
-      if (list && list.length) return list;
-    }
-  } catch (e) {}
-  return SCHED_TZ_FALLBACK;
+/* "GMT+03:30" for an offset in minutes. */
+function schedGmt(offMin) {
+  const sign = offMin < 0 ? '-' : '+';
+  const a = Math.abs(offMin);
+  return `GMT${sign}${String(Math.floor(a / 60)).padStart(2, '0')}:${String(a % 60).padStart(2, '0')}`;
 }
 
-/* <optgroup>-grouped <option>s for a tz <select>, `selected` pre-picked. Option
-   text is the city (region prefix stripped, underscores → spaces); value is the
-   full IANA name. A stored value not in the list is preserved at the top. */
+/* <option>s for a tz <select>, sorted by live GMT offset and labelled
+   "(GMT±HH:MM) City, Country". `selected` is pre-picked; a stored zone outside
+   the curated list is preserved (prepended raw) rather than dropped. */
 function schedTzOptions(selected) {
-  const list = schedTzList();
-  const groups = {};
-  for (const tz of list) {
-    const region = tz.includes('/') ? tz.split('/')[0] : 'Other';
-    (groups[region] = groups[region] || []).push(tz);
-  }
+  const now = new Date();
+  const zones = SCHED_TZ_ZONES.map(z => ({ tz: z[0], city: z[1], country: z[2], off: schedTzOffset(now, z[0]) }));
+  zones.sort((a, b) => a.off - b.off || a.city.localeCompare(b.city));
   let html = '';
-  if (selected && !list.includes(selected)) {
+  if (selected && !SCHED_TZ_ZONES.some(z => z[0] === selected)) {
     html += `<option value="${escapeHtml(selected)}" selected>${escapeHtml(selected)}</option>`;
   }
-  for (const region of Object.keys(groups).sort()) {
-    html += `<optgroup label="${escapeHtml(region)}">` + groups[region].map(tz => {
-      const city = tz.includes('/') ? tz.split('/').slice(1).join('/').replace(/_/g, ' ') : tz;
-      return `<option value="${escapeHtml(tz)}"${tz === selected ? ' selected' : ''}>${escapeHtml(city)}</option>`;
-    }).join('') + `</optgroup>`;
+  for (const z of zones) {
+    const place = z.country ? `${z.city}, ${z.country}` : z.city;
+    html += `<option value="${escapeHtml(z.tz)}"${z.tz === selected ? ' selected' : ''}>(${schedGmt(z.off)}) ${escapeHtml(place)}</option>`;
   }
   return html;
 }
