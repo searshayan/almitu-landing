@@ -589,6 +589,27 @@
     <!-- Live session banner: "Join the Session" (rendered by js/router.js) -->
     <div id="studentLiveBanner" class="hidden"></div>
 
+    <!-- Live synced-slides mirror (Model A): shown while the tutor is presenting.
+         View-only — the tutor drives which slide and how far it's scrolled.
+         Reuses the tutor Present-mode styles; driven by js/live-mirror.js. -->
+    <div id="mirrorMode" class="present-mode mirror-mode hidden" aria-hidden="true">
+      <div class="present-topbar">
+        <span id="mirrorLabel" class="present-label"></span>
+        <div class="present-tools">
+          <div class="present-timer-pill">
+            <span class="present-live-dot"></span>
+            <span class="present-timer">Live</span>
+          </div>
+        </div>
+      </div>
+      <div class="present-stage" id="mirrorStage">
+        <div class="present-scaler" id="mirrorScaler">
+          <div class="present-slide" id="mirrorSlide"></div>
+        </div>
+        <div class="present-fade" id="mirrorFade"></div>
+      </div>
+    </div>
+
     <!-- Weekly class schedule card (rendered by js/schedule.js) -->
     <div id="studentScheduleCard" class="hidden"></div>
 
@@ -766,6 +787,7 @@
   <script src="js/step2.js?v=1"></script>
   <script src="js/step3.js?v=1"></script>
   <script src="js/router.js?v=1"></script>
+  <script src="js/live-mirror.js?v=1"></script>
   <script src="js/messaging.js?v=1"></script>
   <script src="js/amie.js?v=1"></script>
   <script src="js/schedule.js?v=1"></script>

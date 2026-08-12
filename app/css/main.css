@@ -623,6 +623,12 @@ textarea:focus-visible,
 }
 .present-mode.hidden { display: none; }
 
+/* Student mirror (Model A): view-only. The tutor drives scroll (over broadcast)
+   and clicks, so the student can neither scroll the slide nor trigger reveals —
+   that would desync their view from the tutor's. */
+.mirror-mode .present-scaler { overflow: hidden; }
+.mirror-mode .present-slide { pointer-events: none; }
+
 .present-topbar {
   flex-shrink: 0;
   display: flex;
