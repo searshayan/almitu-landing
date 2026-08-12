@@ -267,7 +267,6 @@ async function initTutorDashboard() {
     // Practice stats for the tutor's own sessions (RLS scopes this to them).
     tutorState.attempts = await dataListAttemptsForSessions(sessions.map(s => s.id)).catch(() => []);
     renderTutorHome();
-    if (typeof maybeAutoOpenGuide === 'function') maybeAutoOpenGuide();
   } catch (e) {
     home.innerHTML = `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load your dashboard: ${escapeHtml(e.message)}</div>`;
   }
@@ -914,7 +913,6 @@ async function initStudentDashboard() {
   // Watch for the tutor starting a session / sharing the Meet link.
   refreshStudentLive(ctx.userId);
   startStudentLivePolling(ctx.userId);
-  if (typeof maybeAutoOpenGuide === 'function') maybeAutoOpenGuide();
 }
 
 /* ── Student XP badge: lifetime total + this session's practice ── */

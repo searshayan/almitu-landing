@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    Almitu — "How it works" guide
-   A role-aware onboarding guide opened from the header button (and once
-   automatically on a user's first visit). Big picture first, then A→Z steps;
+   A role-aware onboarding guide opened on demand from the header button.
+   Big picture first, then A→Z steps;
    each step can spotlight the REAL element live on the dashboard ("Show me"),
    so there are no static screenshots to keep up to date.
    ═══════════════════════════════════════════════════════ */
@@ -77,8 +77,6 @@ function closeGuide() {
   if (panel) { panel.classList.remove('guide-open'); setTimeout(() => panel.classList.add('hidden'), 200); }
   guideSpotClose();
   document.body.style.overflow = '';
-  // Remember the user has seen it, so first-visit auto-open won't fire again.
-  try { localStorage.setItem('almitu-guide-seen-' + _guideActiveRole(), '1'); } catch (e) {}
 }
 
 function _guidePanelHtml(role) {
@@ -194,12 +192,4 @@ function guideSpotClose() {
     _guideSpotReposition = null;
   }
   _guideSpotTarget = null;
-}
-
-/* ── First-visit auto-open (once per role) ── */
-function maybeAutoOpenGuide() {
-  const role = _guideActiveRole();
-  let seen = '1';
-  try { seen = localStorage.getItem('almitu-guide-seen-' + role); } catch (e) {}
-  if (!seen) setTimeout(() => openGuide(role), 700);   // let the dashboard render first
 }
