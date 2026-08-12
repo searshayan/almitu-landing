@@ -443,6 +443,54 @@ function schedValidTz(tz) {
   catch (e) { return false; }
 }
 
+/* Curated fallback for browsers without Intl.supportedValuesOf (pre-2022). */
+const SCHED_TZ_FALLBACK = [
+  'UTC',
+  'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
+  'America/Toronto', 'America/Mexico_City', 'America/Sao_Paulo',
+  'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid', 'Europe/Rome',
+  'Europe/Istanbul', 'Europe/Moscow',
+  'Africa/Cairo', 'Africa/Lagos', 'Africa/Johannesburg',
+  'Asia/Jerusalem', 'Asia/Baghdad', 'Asia/Riyadh', 'Asia/Tehran', 'Asia/Dubai',
+  'Asia/Kabul', 'Asia/Karachi', 'Asia/Kolkata', 'Asia/Dhaka', 'Asia/Jakarta',
+  'Asia/Shanghai', 'Asia/Tokyo', 'Asia/Seoul',
+  'Australia/Sydney', 'Pacific/Auckland'
+];
+
+/* The full standard IANA zone list (or the fallback). */
+function schedTzList() {
+  try {
+    if (typeof Intl.supportedValuesOf === 'function') {
+      const list = Intl.supportedValuesOf('timeZone');
+      if (list && list.length) return list;
+    }
+  } catch (e) {}
+  return SCHED_TZ_FALLBACK;
+}
+
+/* <optgroup>-grouped <option>s for a tz <select>, `selected` pre-picked. Option
+   text is the city (region prefix stripped, underscores → spaces); value is the
+   full IANA name. A stored value not in the list is preserved at the top. */
+function schedTzOptions(selected) {
+  const list = schedTzList();
+  const groups = {};
+  for (const tz of list) {
+    const region = tz.includes('/') ? tz.split('/')[0] : 'Other';
+    (groups[region] = groups[region] || []).push(tz);
+  }
+  let html = '';
+  if (selected && !list.includes(selected)) {
+    html += `<option value="${escapeHtml(selected)}" selected>${escapeHtml(selected)}</option>`;
+  }
+  for (const region of Object.keys(groups).sort()) {
+    html += `<optgroup label="${escapeHtml(region)}">` + groups[region].map(tz => {
+      const city = tz.includes('/') ? tz.split('/').slice(1).join('/').replace(/_/g, ' ') : tz;
+      return `<option value="${escapeHtml(tz)}"${tz === selected ? ' selected' : ''}>${escapeHtml(city)}</option>`;
+    }).join('') + `</optgroup>`;
+  }
+  return html;
+}
+
 async function schedAdminReloadSlots() {
   const ed = schedState.editor;
   try { ed.slots = await dataListScheduleForPair(ed.tutorId, ed.studentId); }
@@ -491,15 +539,15 @@ function schedAdminRenderModal() {
       </p>
 
       <div class="rounded-xl p-3 mb-3" style="background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.30);">
-        <p class="text-[11px] mb-2" style="color:#92400E;">Set each person's timezone (IANA name, e.g. <code>Asia/Tehran</code>). Class times are entered in the <strong>tutor's</strong> timezone; the student sees them converted to theirs.</p>
+        <p class="text-[11px] mb-2" style="color:#92400E;">Set each person's timezone. Class times are entered in the <strong>tutor's</strong> timezone; the student sees them converted to theirs.</p>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-[11px] mb-1 truncate" style="color:var(--muted);">Tutor — ${bidiText(ed.tutorName)}</label>
-            <input id="schedTutorTz" value="${escapeHtml(ed.tutorTz)}" class="w-full rounded-xl px-3 py-2 text-sm field-input" />
+            <select id="schedTutorTz" class="w-full rounded-xl px-3 py-2 text-sm field-input">${schedTzOptions(ed.tutorTz)}</select>
           </div>
           <div>
             <label class="block text-[11px] mb-1 truncate" style="color:var(--muted);">Student — ${bidiText(ed.studentName)}</label>
-            <input id="schedStudentTz" value="${escapeHtml(ed.studentTz)}" class="w-full rounded-xl px-3 py-2 text-sm field-input" />
+            <select id="schedStudentTz" class="w-full rounded-xl px-3 py-2 text-sm field-input">${schedTzOptions(ed.studentTz)}</select>
           </div>
         </div>
         <button onclick="schedAdminSaveTz()" class="w-full mt-2 py-2 rounded-xl text-sm font-semibold" style="background:white;border:1px solid var(--line);color:var(--secondary);">Save timezones</button>
