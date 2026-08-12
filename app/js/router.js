@@ -36,7 +36,7 @@ function routeApp() {
     return;
   }
 
-  if (!a.user) { if (typeof teardownMessaging === 'function') teardownMessaging(); if (typeof hideAmieButton === 'function') hideAmieButton(); setAuthMode(authMode); showOnly('authView'); return; }
+  if (!a.user) { if (typeof teardownMessaging === 'function') teardownMessaging(); if (typeof hideAmieButton === 'function') hideAmieButton(); if (typeof teardownSchedule === 'function') teardownSchedule(); setAuthMode(authMode); showOnly('authView'); return; }
 
   const p = a.profile;
   if (!p || p.status !== 'approved' || !p.role) {
@@ -57,6 +57,8 @@ function routeApp() {
   if (typeof initMessaging === 'function') initMessaging(ctx);
   // Amie, the student study buddy (students only, not View-as).
   if (typeof initAmie === 'function') initAmie(ctx);
+  // Weekly class schedule (tutors & students).
+  if (typeof initSchedule === 'function') initSchedule(ctx);
 }
 
 function showDashboard(kind) {
@@ -128,8 +130,9 @@ function renderHeaderNav(ctx) {
       btn('AI Settings', "adminTab('settings')", adminActiveTab === 'settings');
   } else if (ctx.role === 'tutor') {
     nav.innerHTML =
-      btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum') +
-      btn('📚 Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum');
+      btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum' && tutorState.view !== 'schedule') +
+      btn('📚 Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum') +
+      btn('🗓 Schedule', "tutorGoSchedule()", tutorState.view === 'schedule');
   } else {
     nav.innerHTML = '';
   }
@@ -277,10 +280,24 @@ function tutorGoHome() {
   tutorState.view = 'home';
   document.getElementById('tutorHome').classList.remove('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
+  document.getElementById('tutorSchedule').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');
   renderHeaderNav(activeContext());
+}
+
+/* Show the tutor's weekly schedule (aggregate across all their students). */
+function tutorGoSchedule() {
+  tutorState.view = 'schedule';
+  document.getElementById('tutorHome').classList.add('hidden');
+  document.getElementById('tutorCurriculum').classList.add('hidden');
+  document.getElementById('tutorSchedule').classList.remove('hidden');
+  document.getElementById('tutorPrepBar').classList.add('hidden');
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.add('hidden');
+  renderHeaderNav(activeContext());
+  if (typeof schedRenderTutor === 'function') schedRenderTutor();
 }
 
 /* ═════════════════ Curriculum browser (level → type → topic) ═════════════════
@@ -292,6 +309,7 @@ function tutorGoCurriculum() {
   tutorState.view = 'curriculum';
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.remove('hidden');
+  document.getElementById('tutorSchedule').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');
