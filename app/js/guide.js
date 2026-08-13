@@ -10,7 +10,7 @@ const GUIDE_CONTENT = {
   tutor: {
     label: 'Tutor',
     heading: 'How Almitu works — for tutors',
-    big: 'Build a lesson once → teach it live on Google Meet → Almitu turns it into practice on your student’s dashboard. Every plan is reusable with any student.',
+    big: 'Build a lesson once → teach it live over any video call → Almitu turns it into practice on your student’s dashboard. Every plan is reusable with any student.',
     flow: ['Generate a session', 'Teach live', 'Auto-practice for the student', 'Reuse the plan'],
     steps: [
       { icon: '📚', title: 'Your session library', target: '[data-guide="tutor-plans"]',
@@ -22,7 +22,7 @@ const GUIDE_CONTENT = {
       { icon: '📝', title: 'Review &amp; edit the deck',
         body: 'Flip through the generated slides and edit any text in place. When it looks right, <b>Save to My Plans</b> for reuse, or <b>Start the Session</b> to teach now.' },
       { icon: '▶️', title: 'Start &amp; teach live',
-        body: 'Starting opens <b>Google Meet</b> in a new tab plus a full-screen <b>Present</b> mode for screen-sharing. Paste the Meet link so your student can join, then teach using the slides, the timer, and the notes panel.' },
+        body: 'Starting opens a full-screen <b>Present</b> mode for screen-sharing. Start a call in your video tool (Google Meet, Zoom, WhatsApp…), paste the link so your student can join, then teach using the slides, the timer, and the notes panel.' },
       { icon: '💾', title: 'End &amp; compile',
         body: 'Tap <b>End Session</b> when you’re done. Almitu saves your notes and automatically builds the practice activities (flashcards, quiz, and more) onto your student’s dashboard.' }
     ]
@@ -34,7 +34,7 @@ const GUIDE_CONTENT = {
     flow: ['Join the live session', 'Learn with your tutor', 'Practice afterwards', 'Track progress'],
     steps: [
       { icon: '🟢', title: 'Join your live session', target: '#studentLiveBanner',
-        body: 'When your tutor starts a session, a green “Your tutor is live” banner appears at the top — tap <b>Join</b> to open the Google Meet call.' },
+        body: 'When your tutor starts a session, a green “Your tutor is live” banner appears at the top — tap <b>Join</b> to open the call your tutor shared.' },
       { icon: '📒', title: 'Your sessions', target: '.sv-notebook-list',
         body: 'Every lesson your tutor teaches is saved here as a session. Tap one to open it.' },
       { icon: '🎯', title: 'Open a session',
