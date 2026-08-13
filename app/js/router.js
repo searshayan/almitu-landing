@@ -132,7 +132,8 @@ function renderHeaderNav(ctx) {
     nav.innerHTML =
       btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum' && tutorState.view !== 'schedule') +
       btn('📚 Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum') +
-      btn('🗓 Schedule', "tutorGoSchedule()", tutorState.view === 'schedule');
+      btn('🗓 Schedule', "tutorGoSchedule()", tutorState.view === 'schedule') +
+      btn('🎓 Enter Classroom', "tutorEnterClassroom()", false);
   } else {
     nav.innerHTML = '';
   }
@@ -996,11 +997,34 @@ async function refreshStudentLive(studentId) {
 function renderStudentLiveBanner(live) {
   const host = document.getElementById('studentLiveBanner');
   if (!host) return;
-  if (!live) { host.classList.add('hidden'); host.innerHTML = ''; return; }
+  if (!live) { host.classList.add('hidden'); host.innerHTML = ''; window._studentLive = null; return; }
 
-  const link = live.meet_link;
   const tutorName = (live.tutor && live.tutor.full_name) || 'Your tutor';
   const title = live.title || 'your session';
+
+  // Classroom session: the tutor is in the room and has selected this student,
+  // so "Join Classroom" is live right away (no link to wait for).
+  if (live.is_classroom) {
+    window._studentLive = live;
+    host.classList.remove('hidden');
+    host.innerHTML = `
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 rounded-2xl mb-6" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.3);">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="w-2.5 h-2.5 rounded-full animate-pulse flex-shrink-0" style="background:#059669;"></span>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold" style="color:var(--navy);">Your tutor is in the classroom</p>
+            <p class="text-[11px] truncate" style="color:var(--muted);">${escapeHtml(tutorName)} · ${escapeHtml(title)}</p>
+          </div>
+        </div>
+        <button onclick="classroomJoinAsStudent(window._studentLive)" class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold glow-success flex-shrink-0" style="background:linear-gradient(135deg, #06D6A0, #05B586);">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a2 2 0 012-2h9a2 2 0 012 2v14l-6-3-6 3V5z"/></svg>
+          Join Classroom
+        </button>
+      </div>`;
+    return;
+  }
+
+  const link = live.meet_link;
   host.classList.remove('hidden');
   host.innerHTML = `
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 rounded-2xl mb-6" style="background:${link ? 'rgba(6,214,160,.08)' : 'rgba(255,210,63,.10)'}; border:1px solid ${link ? 'rgba(6,214,160,.3)' : 'rgba(255,210,63,.35)'};">

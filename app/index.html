@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=4">
+  <link rel="stylesheet" href="css/main.css?v=5">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -799,12 +799,22 @@
           <div class="room-frame" id="roomFrame">
             <div class="present-slide room-slide" id="roomSlide"></div>
           </div>
+          <div class="room-empty" id="roomEmpty" hidden></div>
         </div>
       </div>
     </div>
     <div class="room-side">
-      <div class="room-tile"><span class="who">Tutor</span>Video connects in Phase 3</div>
-      <div class="room-tile"><span class="who">Student</span>Video connects in Phase 3</div>
+      <div class="room-tile" id="roomTileTutor"><span class="who">You (tutor)</span>Video connects in Phase 3</div>
+      <div class="room-tile" id="roomTileStudent"><span class="who">Student</span>No student yet</div>
+    </div>
+
+    <!-- Student picker: shown when the tutor enters, to choose who's in this class -->
+    <div id="roomPicker" class="room-picker hidden">
+      <div class="room-picker-card">
+        <h3>Who are you teaching now?</h3>
+        <p>Pick the student for this class — they'll be able to Join Classroom.</p>
+        <div id="roomPickerList" class="room-picker-list"></div>
+      </div>
     </div>
     <div class="room-toolbar">
       <button class="rbtn"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg></span><span class="lbl">Mic</span></button>
@@ -835,9 +845,9 @@
   <script src="js/step1.js?v=1"></script>
   <script src="js/step2.js?v=2"></script>
   <script src="js/step3.js?v=1"></script>
-  <script src="js/router.js?v=2"></script>
+  <script src="js/router.js?v=3"></script>
   <script src="js/live-mirror.js?v=4"></script>
-  <script src="js/classroom.js?v=1"></script>
+  <script src="js/classroom.js?v=2"></script>
   <script src="js/messaging.js?v=1"></script>
   <script src="js/amie.js?v=1"></script>
   <script src="js/schedule.js?v=1"></script>
