@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=6">
+  <link rel="stylesheet" href="css/main.css?v=7">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -784,10 +784,10 @@
     <div class="room-main">
       <div class="room-panel">
         <div class="room-head">
+          <button class="room-back" id="roomBack" onclick="roomBackToLauncher()" title="Choose another deck">☰ Decks</button>
           <span class="room-src" id="roomSource">Session</span>
           <span class="r">
             <span class="room-shared">● Shared</span>
-            <button class="room-close" onclick="classroomLeave()" aria-label="Leave classroom">✕</button>
           </span>
         </div>
         <div class="room-nav" id="roomNav">
@@ -831,7 +831,7 @@
     <div class="room-toolbar">
       <button class="rbtn"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg></span><span class="lbl">Mic</span></button>
       <button class="rbtn"><span class="ico"><svg viewBox="0 0 24 24"><path d="M15 10l4.5-2.3A1 1 0 0121 8.6v6.8a1 1 0 01-1.5.9L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></span><span class="lbl">Camera</span></button>
-      <button class="rbtn primary" onclick="roomOpenLibrary()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h9a2 2 0 012 2v14l-6-3-6 3V5z"/></svg></span><span class="lbl">Library</span></button>
+      <button class="rbtn primary" onclick="roomShareScreen()"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4M9 10l3-3 3 3M12 7v6"/></svg></span><span class="lbl">Share Screen</span></button>
       <button class="rbtn" onclick="roomOpenNotes()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span class="lbl">Notes</span></button>
       <button class="rbtn leave" onclick="classroomLeave()"><span class="ico"><svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M15 12H4m0 0l4-4m-4 4l4 4M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/></svg></span><span class="lbl">Leave</span></button>
     </div>
@@ -872,9 +872,9 @@
   <script src="js/step1.js?v=1"></script>
   <script src="js/step2.js?v=2"></script>
   <script src="js/step3.js?v=1"></script>
-  <script src="js/router.js?v=5"></script>
+  <script src="js/router.js?v=6"></script>
   <script src="js/live-mirror.js?v=4"></script>
-  <script src="js/classroom.js?v=6"></script>
+  <script src="js/classroom.js?v=7"></script>
   <script src="js/messaging.js?v=1"></script>
   <script src="js/amie.js?v=1"></script>
   <script src="js/schedule.js?v=1"></script>

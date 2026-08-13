@@ -34,7 +34,9 @@
     v.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     const nav = document.getElementById('roomNav');
-    if (nav) nav.style.display = role === 'tutor' ? '' : 'none';   // tutor drives (Model A)
+    if (nav) nav.style.display = role === 'tutor' ? '' : 'none';   // tutor drives
+    const back = document.getElementById('roomBack');
+    if (back) back.style.display = role === 'tutor' ? '' : 'none';
     if (window.ResizeObserver) {
       ro = new ResizeObserver(() => fitRoomSlide());
       const st = document.getElementById('roomStage');
@@ -63,7 +65,9 @@
     if (taughtDeck && window.tutorState && tutorState.currentSessionId && typeof endSession === 'function') {
       endSession();
     } else if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
-      dataUpdateSession(tutorState.currentSessionId, { status: 'completed' }).catch(() => {});
+      // Nothing was taught — revert to 'planned' so it clears the student's
+      // "Join" without becoming an empty (plan=null) notebook in their history.
+      dataUpdateSession(tutorState.currentSessionId, { status: 'planned' }).catch(() => {});
       tutorState.currentSessionId = null;
     }
   };
@@ -242,6 +246,24 @@
     if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
       dataUpdateSession(tutorState.currentSessionId, { plan: plan, present_active: true, current_slide: 0, is_classroom: true }).catch(() => {});
     }
+  };
+
+  /* Back to the 3-option launcher to pick a different deck (curriculum / plans /
+     generate) without leaving the class. Clears the current deck. */
+  window.roomBackToLauncher = function () {
+    if (role !== 'tutor') return;
+    plan = null; idx = 0;
+    if (typeof getState === 'function') getState().generatedLessonPlan = null;
+    if (window.tutorState && tutorState.currentSessionId && typeof dataSetPresentState === 'function') {
+      dataSetPresentState(tutorState.currentSessionId, { present_active: false }).catch(() => {});
+    }
+    roomRenderSlide();   // no deck → shows the launcher
+  };
+
+  /* Share Screen — becomes real screen sharing once the Zoom Video SDK is
+     connected. Until then the stage is shared live to the student. */
+  window.roomShareScreen = function () {
+    if (typeof showToast === 'function') showToast('Screen sharing turns on with the video (Zoom) connection — coming next. Until then the stage is shared live.', 'info');
   };
 
   /* ─── Notes & Assignments (tutor writes for this session) ─── */

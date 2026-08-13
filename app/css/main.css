@@ -1239,3 +1239,11 @@ textarea:focus-visible,
   background: #FF6B35; color: #fff; font-weight: 700; font-size: 14px;
 }
 .room-notes-save:hover { background: #E85A2A; }
+
+/* Classroom: "back to deck menu" button in the panel header */
+.room-back {
+  font-size: 12px; font-weight: 700; color: #004E89; background: #EEF3F8;
+  border: 1px solid #DCE5EF; border-radius: 8px; padding: 5px 11px; cursor: pointer;
+  margin-right: auto;
+}
+.room-back:hover { background: #E2ECF5; }

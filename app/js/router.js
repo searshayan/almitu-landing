@@ -253,8 +253,14 @@ window.tutorState = {
   curLoading: false
 };
 
+function saveTutorView(v) { try { localStorage.setItem('almitu.tutorView', v); } catch (e) { /* private mode */ } }
+
 async function initTutorDashboard() {
   const ctx = activeContext();
+  // Remember which top-level view was open, so a page refresh returns to it
+  // instead of always dropping back to Home. (Read before tutorGoHome resets it.)
+  let savedView = null;
+  try { savedView = localStorage.getItem('almitu.tutorView'); } catch (e) { /* private mode */ }
   tutorGoHome();
   const home = document.getElementById('tutorHome');
   home.innerHTML = '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading your dashboard…</div>';
@@ -271,6 +277,8 @@ async function initTutorDashboard() {
     // Practice stats for the tutor's own sessions (RLS scopes this to them).
     tutorState.attempts = await dataListAttemptsForSessions(sessions.map(s => s.id)).catch(() => []);
     renderTutorHome();
+    if (savedView === 'curriculum') tutorGoCurriculum();
+    else if (savedView === 'schedule') tutorGoSchedule();
   } catch (e) {
     home.innerHTML = `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load your dashboard: ${escapeHtml(e.message)}</div>`;
   }
@@ -280,6 +288,7 @@ async function initTutorDashboard() {
 function tutorGoHome() {
   tutorState.fromClassroom = false;   // navigating away abandons any classroom build
   tutorState.view = 'home';
+  saveTutorView('home');
   document.getElementById('tutorHome').classList.remove('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorSchedule').classList.add('hidden');
@@ -293,6 +302,7 @@ function tutorGoHome() {
 function tutorGoSchedule() {
   tutorState.fromClassroom = false;   // navigating away abandons any classroom build
   tutorState.view = 'schedule';
+  saveTutorView('schedule');
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorSchedule').classList.remove('hidden');
@@ -310,6 +320,7 @@ function tutorGoSchedule() {
 
 function tutorGoCurriculum() {
   tutorState.view = 'curriculum';
+  saveTutorView('curriculum');
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.remove('hidden');
   document.getElementById('tutorSchedule').classList.add('hidden');
@@ -648,7 +659,7 @@ function studentsCard(students) {
   }
   const rows = students.map(st => {
     const open = tutorState.openStudentId === st.id;
-    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed');
+    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed' && x.plan);
     const history = !open ? '' : `
       <div class="mt-3 pt-3" style="border-top:1px dashed var(--line);">
         ${done.length ? done.map(row => {
@@ -919,7 +930,10 @@ async function initStudentDashboard() {
       dataListStudentSessions(ctx.userId),
       dataListAttemptsForStudent(ctx.userId).catch(() => [])
     ]);
-    s.savedNotebooks = rows.map(rowToNotebook);
+    // Only real, taught sessions become notebooks. A classroom session that was
+    // opened but never taught has plan=null; including it would throw in the
+    // notebook render (nb.plan.meta) and wipe the whole list.
+    s.savedNotebooks = rows.map(rowToNotebook).filter(nb => nb && nb.plan && nb.plan.meta);
     s.selectedNotebookId = s.savedNotebooks[0] ? s.savedNotebooks[0].id : null;
     studentProgress.attempts = attempts;
   } catch (e) {
