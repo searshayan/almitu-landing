@@ -1164,3 +1164,37 @@ textarea:focus-visible,
   .room-side { display: none; }
   .rbtn { width: 48px; }
 }
+
+/* Classroom: empty-stage prompt + student picker */
+.room-empty {
+  max-width: 340px; text-align: center; color: #646C82; font-size: 15px; font-weight: 500;
+  background: #fff; border-radius: 12px; padding: 22px 24px; box-shadow: 0 12px 30px rgba(0,0,0,.25);
+}
+.room-picker {
+  position: absolute; inset: 0; z-index: 5; display: grid; place-items: center;
+  background: rgba(15,18,27,.55); backdrop-filter: blur(3px); padding: 20px;
+}
+.room-picker.hidden { display: none; }
+.room-picker-card {
+  width: 100%; max-width: 420px; background: #fff; border-radius: 16px; padding: 22px 22px 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.room-picker-card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 800; color: #181B26; }
+.room-picker-card > p { margin: 0 0 16px; font-size: 13.5px; color: #646C82; }
+.room-picker-list { display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow-y: auto; }
+.room-pick {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 11px 13px; border: 1px solid #E1E6F1; border-radius: 11px; background: #fff; cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.room-pick:hover { border-color: #FF6B35; background: #FFF6F2; }
+.room-pick-av {
+  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0; display: grid; place-items: center;
+  color: #fff; font-weight: 800; font-size: 15px; background: linear-gradient(150deg, #004E89, #FF6B35);
+}
+.room-pick-name { font-size: 14.5px; font-weight: 600; color: #181B26; flex: 1; }
+.room-pick-badge {
+  font-size: 10px; font-weight: 800; letter-spacing: .04em; color: #0A8F5F;
+  background: rgba(10,143,95,.12); padding: 3px 9px; border-radius: 100px; flex-shrink: 0;
+}
+.room-pick-empty { font-size: 13.5px; color: #9098AC; text-align: center; padding: 16px 0; }
