@@ -1255,3 +1255,8 @@ textarea:focus-visible,
   margin-right: auto;
 }
 .room-back:hover { background: #E2ECF5; }
+
+/* Classroom control-bar states (video on/off, sharing) */
+.rbtn.rbtn-off .ico { background: rgba(229,72,77,.22); }
+.rbtn.rbtn-off .ico svg { stroke: #FF8A8A; }
+.rbtn.rbtn-active .ico { background: #0A8F5F; }

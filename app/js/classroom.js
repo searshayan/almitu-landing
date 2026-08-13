@@ -47,6 +47,7 @@
     document.body.style.overflow = '';
     if (ro) { ro.disconnect(); ro = null; }
     window.removeEventListener('resize', fitRoomSlide);
+    if (window.almituVideo) almituVideo.leave();
 
     if (role !== 'tutor') return;
 
@@ -138,6 +139,7 @@
       if (window.tutorState) { tutorState.currentSessionId = row.id; tutorState.selectedStudent = student; }
       hidePicker();
       setStudentTile(student.full_name || 'Student');
+      if (window.almituVideo) almituVideo.connect(row.id);   // tutor joins the call
       if (typeof showToast === 'function') showToast((student.full_name || 'Your student') + ' can now Join Classroom.', 'success');
     } catch (e) {
       if (typeof showToast === 'function') showToast('Could not start the classroom: ' + e.message, 'error');
@@ -231,6 +233,7 @@
     openRoom('tutor');
     roomRenderSlide();
     if (typeof getState === 'function' && plan) getState().generatedLessonPlan = plan;
+    if (window.almituVideo && window.tutorState && tutorState.currentSessionId) almituVideo.connect(tutorState.currentSessionId);
   };
 
   /* Back to the 3-option launcher to pick a different deck without leaving. */
@@ -241,19 +244,22 @@
     roomRenderSlide();   // no deck → shows the launcher
   };
 
-  /* Share Screen — turns on real screen sharing once the Zoom Video SDK is wired.
-     It streams the Stage (this deck view) to the student. */
+  /* Share Screen — streams the Stage (this deck view) to the student via Daily. */
   window.roomShareScreen = function () {
-    if (typeof showToast === 'function') showToast('Screen sharing turns on with the video (Zoom) connection — coming next.', 'info');
+    if (!window.almituVideo) { if (typeof showToast === 'function') showToast('Video isn’t ready yet.', 'warn'); return; }
+    if (almituVideo.sharing) almituVideo.stopShare(); else almituVideo.shareScreen();
   };
+
+  /* Re-render the Stage — called by daily-video.js when a screen share ends. */
+  window.roomRefreshStage = function () { roomRenderSlide(); };
 
   /* ─── Student: join and watch the tutor's shared screen ─── */
 
-  window.classroomJoinAsStudent = function () {
+  window.classroomJoinAsStudent = function (live) {
     plan = null; idx = 0;
     openRoom('student');
-    roomRenderSlide();   // shows the "waiting for your tutor to share their screen" note
-    // The shared Stage arrives as a video stream once the Zoom Video SDK is wired.
+    roomRenderSlide();   // "waiting…" note until the tutor shares their screen
+    if (window.almituVideo && live && live.id) almituVideo.connect(live.id);
   };
 
   /* ─── Notes & Assignments (tutor writes for this session) ─── */
