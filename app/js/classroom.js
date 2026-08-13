@@ -51,11 +51,21 @@
     if (ro) { ro.disconnect(); ro = null; }
     window.removeEventListener('resize', fitRoomSlide);
     if (sub) { dataUnsubscribe(sub); sub = null; }
-    // Tutor: stop sharing on leave (Phase 2 will also run the compile-lesson flow).
-    if (role === 'tutor' && window.tutorState && tutorState.currentSessionId && typeof dataSetPresentState === 'function') {
-      dataSetPresentState(tutorState.currentSessionId, { present_active: false }).catch(() => {});
-    }
     liveId = null;
+
+    if (role !== 'tutor') return;
+
+    // Tutor leaving: if a deck was taught, compile the lesson (reuses endSession,
+    // which builds the practice bank, marks the session completed, saves it to
+    // the student's dashboard, and returns to the tutor home). If nothing was
+    // taught, just close the still-"live" session so the student's Join clears.
+    const taughtDeck = slides().length && typeof getState === 'function' && getState().generatedLessonPlan;
+    if (taughtDeck && window.tutorState && tutorState.currentSessionId && typeof endSession === 'function') {
+      endSession();
+    } else if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
+      dataUpdateSession(tutorState.currentSessionId, { status: 'completed' }).catch(() => {});
+      tutorState.currentSessionId = null;
+    }
   };
 
   /* Direct entry with a deck already chosen (preview path). */
@@ -170,12 +180,59 @@
     const entry = plans.find(p => p.id === planId);
     if (!entry || !entry.plan) return;
     plan = entry.plan; idx = 0;
+    // Reuse the existing workspace state so Leave→compile (endSession) and any
+    // in-place editing operate on this deck, exactly like the normal flow.
+    if (typeof getState === 'function') getState().generatedLessonPlan = plan;
+    if (window.tutorState) tutorState.currentPlanId = entry.id;
     hidePicker();
     roomRenderSlide();
     // Share the deck with the student + mark presenting on the live session row.
     if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
       dataUpdateSession(tutorState.currentSessionId, { plan: plan, present_active: true, current_slide: 0 }).catch(() => {});
     }
+  };
+
+  /* The other two stage-launcher options (fully wired in the next pass). */
+  window.roomLaunchCurriculum = function () {
+    if (typeof showToast === 'function') showToast('Curriculum-in-room is the next piece — use My Session Plans for now.', 'info');
+  };
+  window.roomLaunchGenerate = function () {
+    if (typeof showToast === 'function') showToast('Generate-in-room is next — build a session in My Sessions, then load it here.', 'info');
+  };
+
+  /* ─── Notes & Assignments (tutor writes for this session) ─── */
+
+  window.roomOpenNotes = function () {
+    if (role !== 'tutor') return;
+    const panel = document.getElementById('roomNotes');
+    const ta = document.getElementById('roomNotesText');
+    if (!panel || !ta) return;
+    // Prefer the shared step-2 notes field so this stays in sync with compile.
+    const step2Notes = (document.getElementById('tutorNotes') || {}).value;
+    ta.value = (window.tutorState && tutorState.currentNotes) || step2Notes || '';
+    panel.classList.remove('hidden');
+    ta.focus();
+  };
+  window.roomCloseNotes = function () {
+    const panel = document.getElementById('roomNotes');
+    if (panel) panel.classList.add('hidden');
+  };
+  window.roomSaveNotes = async function () {
+    const ta = document.getElementById('roomNotesText');
+    if (!ta) return;
+    const notes = ta.value || '';
+    if (window.tutorState) tutorState.currentNotes = notes;
+    // Mirror into the step-2 field so Leave→compile (endSession) keeps these notes.
+    const step2 = document.getElementById('tutorNotes'); if (step2) step2.value = notes;
+    if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
+      try {
+        await dataUpdateSession(tutorState.currentSessionId, { tutor_notes: notes });
+        if (typeof showToast === 'function') showToast('Notes saved for this session.', 'success');
+      } catch (e) {
+        if (typeof showToast === 'function') showToast('Could not save notes: ' + e.message, 'error');
+      }
+    }
+    roomCloseNotes();
   };
 
   /* ─── Student: join and mirror the tutor ─── */
@@ -210,13 +267,16 @@
     const empty = document.getElementById('roomEmpty');
     if (!el) return;
     const list = slides();
+    const launcher = document.getElementById('roomLauncher');
     if (!list.length) {
       if (frame) frame.style.display = 'none';
-      if (empty) {
-        empty.hidden = false;
-        empty.textContent = role === 'tutor'
-          ? 'Pick a student, then load a deck from Library.'
-          : 'Waiting for your tutor to share a slide…';
+      // Tutor sees the 3-option launcher; student sees a gentle "waiting" note.
+      if (role === 'tutor') {
+        if (launcher) launcher.hidden = false;
+        if (empty) empty.hidden = true;
+      } else {
+        if (launcher) launcher.hidden = true;
+        if (empty) { empty.hidden = false; empty.textContent = 'Waiting for your tutor to share a slide…'; }
       }
       const src0 = document.getElementById('roomSource'); if (src0) src0.textContent = 'Classroom';
       const c0 = document.getElementById('roomCounter'); if (c0) c0.textContent = '';
@@ -224,6 +284,7 @@
     }
     if (frame) frame.style.display = '';
     if (empty) empty.hidden = true;
+    if (launcher) launcher.hidden = true;
     idx = Math.max(0, Math.min(idx, list.length - 1));
     el.innerHTML = list[idx].html;
     const src = document.getElementById('roomSource');
