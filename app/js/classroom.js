@@ -238,6 +238,7 @@
   /* ─── Student: join and mirror the tutor ─── */
 
   window.classroomJoinAsStudent = function (live) {
+    if (sub) { dataUnsubscribe(sub); sub = null; }   // never stack subscriptions on re-join
     plan = (live && live.plan) || null;
     idx = (live && live.current_slide) | 0;
     liveId = live && live.id;
@@ -251,6 +252,7 @@
   /* The tutor's row changed: pick up a (re)loaded deck and the current slide. */
   function onRoomState(row) {
     if (!row) return;
+    if (row.status && row.status !== 'live') { window.classroomLeave(); return; }  // tutor ended the class
     if (row.plan) plan = row.plan;              // deck loaded/replaced by the tutor
     if (!row.present_active || !slides().length) { roomRenderSlide(); return; }
     idx = Math.max(0, row.current_slide | 0);
