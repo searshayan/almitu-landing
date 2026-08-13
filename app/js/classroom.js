@@ -5,25 +5,27 @@
    on the left, a video column on the right (placeholder tiles until Phase 3
    wires the Zoom Video SDK), and one control bar.
 
-   Entry model (per the agreed flow):
-     • Tutor taps "Enter Classroom" → the room opens and asks which student
-       they're teaching. Picking a student creates a LIVE classroom session,
-       which is what lights up that student's "Join Classroom".
-     • Student's "Join Classroom" stays locked until their tutor is in the room
-       and has selected them; tapping it enters the same room.
+   Entry model:
+     • Tutor taps "Enter Classroom" → picks the student they're teaching →
+       that creates a LIVE classroom session, lighting up the student's
+       "Join Classroom".
+     • Tutor taps "Library" → loads a saved deck onto the stage. Loading it, and
+       every slide change, is shared over Realtime so the student mirrors it
+       (Model A: tutor drives, student view-only). Slides fit whole (transform),
+       so there's nothing to scroll and the student always sees the full slide.
 
-   Still to come (later increments): loading a deck from the Library, the
-   realtime "● Shared" slide sync so the student mirrors the tutor, chat,
-   Leave→compile, the mobile Video/Slides flip, and the real video tiles.
+   Still to come: chat, Leave→compile, the mobile Video/Slides flip, real video.
    ═══════════════════════════════════════════════════════ */
 
 (function () {
-  let plan = null;      // the loaded deck (a session/curriculum plan with .slides)
+  let plan = null;      // the loaded deck (a plan with .slides)
   let idx = 0;          // current slide index
   let role = 'tutor';   // 'tutor' drives; 'student' is view-only
   let ro = null;        // ResizeObserver that refits on layout change
+  let sub = null;       // student's realtime subscription to the session row
+  let liveId = null;    // the live session id (student side)
 
-  /* ─── open / close the room ─── */
+  /* ─── open / close ─── */
 
   function openRoom(asRole) {
     role = asRole === 'student' ? 'student' : 'tutor';
@@ -48,13 +50,17 @@
     document.body.style.overflow = '';
     if (ro) { ro.disconnect(); ro = null; }
     window.removeEventListener('resize', fitRoomSlide);
-    // Phase 2 will also tear down the call + run the compile-lesson flow here.
+    if (sub) { dataUnsubscribe(sub); sub = null; }
+    // Tutor: stop sharing on leave (Phase 2 will also run the compile-lesson flow).
+    if (role === 'tutor' && window.tutorState && tutorState.currentSessionId && typeof dataSetPresentState === 'function') {
+      dataSetPresentState(tutorState.currentSessionId, { present_active: false }).catch(() => {});
+    }
+    liveId = null;
   };
 
-  /* Direct entry with a deck already chosen (preview + the student join path). */
+  /* Direct entry with a deck already chosen (preview path). */
   window.classroomEnter = function (loadedPlan, asRole) {
-    plan = loadedPlan || null;
-    idx = 0;
+    plan = loadedPlan || null; idx = 0;
     openRoom(asRole);
     roomRenderSlide();
   };
@@ -62,23 +68,28 @@
   /* ─── Tutor: enter, then pick the student ─── */
 
   window.tutorEnterClassroom = function () {
-    if (window.tutorState) { tutorState.currentSessionId = null; }
+    if (window.tutorState) tutorState.currentSessionId = null;
     plan = null; idx = 0;
     openRoom('tutor');
-    roomRenderSlide();            // shows the "pick a student / load a deck" prompt
+    roomRenderSlide();
     showPicker();
   };
+
+  function setPicker(title, sub) {
+    const t = document.getElementById('roomPickerTitle'); if (t) t.textContent = title;
+    const s = document.getElementById('roomPickerSub'); if (s) s.textContent = sub;
+  }
 
   function showPicker() {
     const host = document.getElementById('roomPicker');
     const list = document.getElementById('roomPickerList');
     if (!host || !list) return;
+    setPicker('Who are you teaching now?', "Pick the student for this class — they'll be able to Join Classroom.");
     const students = (window.tutorState && tutorState.students) || [];
     host.classList.remove('hidden');
     list.innerHTML = students.length
       ? students.map(s => pickerRow(s, false)).join('')
       : '<p class="room-pick-empty">No students assigned yet.</p>';
-    // Best-effort "class today" highlight — refine the list once the schedule loads.
     markScheduledToday(students, list);
   }
   function hidePicker() { const h = document.getElementById('roomPicker'); if (h) h.classList.add('hidden'); }
@@ -97,13 +108,12 @@
     try {
       if (typeof dataListMySchedule !== 'function' || !window.currentUserId) return;
       const rows = await dataListMySchedule(currentUserId());
-      const dow = new Date().getDay();   // 0=Sun..6=Sat, tutor's local ≈ anchor tz
+      const dow = new Date().getDay();
       const todayIds = new Set((rows || []).filter(r => r.weekday === dow).map(r => r.student_id));
       if (!todayIds.size) return;
-      // Re-render with today's students first + badged.
       const sorted = students.slice().sort((a, b) => (todayIds.has(b.id) ? 1 : 0) - (todayIds.has(a.id) ? 1 : 0));
       list.innerHTML = sorted.map(s => pickerRow(s, todayIds.has(s.id))).join('');
-    } catch (e) { /* highlight is best-effort; the plain list already works */ }
+    } catch (e) { /* best-effort */ }
   }
 
   window.classroomSelectStudent = async function (studentId) {
@@ -133,14 +143,62 @@
     if (t) t.innerHTML = '<span class="who">' + escHtml(name) + '</span>Waiting to join…';
   }
 
-  /* ─── Student: join the room the tutor opened ─── */
+  /* ─── Tutor: load a deck from the Library and share it ─── */
+
+  window.roomOpenLibrary = function () {
+    if (role !== 'tutor') return;
+    const host = document.getElementById('roomPicker');
+    const list = document.getElementById('roomPickerList');
+    if (!host || !list) return;
+    setPicker('Choose a deck', 'Load one of your saved sessions onto the stage.');
+    const plans = (window.tutorState && tutorState.plans) || [];
+    host.classList.remove('hidden');
+    list.innerHTML = plans.length
+      ? plans.map(p => deckRow(p)).join('')
+      : '<p class="room-pick-empty">No saved sessions yet — build one first.</p>';
+  };
+
+  function deckRow(p) {
+    return `<button class="room-pick" onclick="classroomLoadDeck('${p.id}')">
+      <span class="room-pick-av">📚</span>
+      <span class="room-pick-name">${escHtml(p.title || 'Session')}</span>
+    </button>`;
+  }
+
+  window.classroomLoadDeck = function (planId) {
+    const plans = (window.tutorState && tutorState.plans) || [];
+    const entry = plans.find(p => p.id === planId);
+    if (!entry || !entry.plan) return;
+    plan = entry.plan; idx = 0;
+    hidePicker();
+    roomRenderSlide();
+    // Share the deck with the student + mark presenting on the live session row.
+    if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
+      dataUpdateSession(tutorState.currentSessionId, { plan: plan, present_active: true, current_slide: 0 }).catch(() => {});
+    }
+  };
+
+  /* ─── Student: join and mirror the tutor ─── */
 
   window.classroomJoinAsStudent = function (live) {
     plan = (live && live.plan) || null;
-    idx = 0;
+    idx = (live && live.current_slide) | 0;
+    liveId = live && live.id;
     openRoom('student');
     roomRenderSlide();
+    if (liveId && typeof dataOpenLiveChannel === 'function') {
+      sub = dataOpenLiveChannel(liveId, { onState: onRoomState });
+    }
   };
+
+  /* The tutor's row changed: pick up a (re)loaded deck and the current slide. */
+  function onRoomState(row) {
+    if (!row) return;
+    if (row.plan) plan = row.plan;              // deck loaded/replaced by the tutor
+    if (!row.present_active || !slides().length) { roomRenderSlide(); return; }
+    idx = Math.max(0, row.current_slide | 0);
+    roomRenderSlide();
+  }
 
   /* ─── slide rendering (transform:scale contain-fit, iOS-safe) ─── */
 
@@ -153,7 +211,6 @@
     if (!el) return;
     const list = slides();
     if (!list.length) {
-      // No deck yet — show a centered prompt instead of a blank stage.
       if (frame) frame.style.display = 'none';
       if (empty) {
         empty.hidden = false;
@@ -197,8 +254,20 @@
     frame.style.height = (h * k) + 'px';
   }
 
-  window.roomNextSlide = function () { if (role !== 'tutor') return; idx++; roomRenderSlide(); };
-  window.roomPrevSlide = function () { if (role !== 'tutor') return; idx--; roomRenderSlide(); };
+  /* Tutor-only nav — persists the slide so the student mirrors it. */
+  window.roomNextSlide = function () {
+    if (role !== 'tutor' || idx >= slides().length - 1) return;
+    idx++; roomRenderSlide(); persistSlide();
+  };
+  window.roomPrevSlide = function () {
+    if (role !== 'tutor' || idx <= 0) return;
+    idx--; roomRenderSlide(); persistSlide();
+  };
+  function persistSlide() {
+    if (window.tutorState && tutorState.currentSessionId && typeof dataSetPresentState === 'function') {
+      dataSetPresentState(tutorState.currentSessionId, { present_active: true, current_slide: idx }).catch(() => {});
+    }
+  }
 
   function escHtml(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
