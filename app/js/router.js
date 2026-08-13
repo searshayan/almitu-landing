@@ -278,6 +278,7 @@ async function initTutorDashboard() {
 
 /* Show the tutor landing (sessions + students); hide the prep/live steps. */
 function tutorGoHome() {
+  tutorState.fromClassroom = false;   // navigating away abandons any classroom build
   tutorState.view = 'home';
   document.getElementById('tutorHome').classList.remove('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
@@ -290,6 +291,7 @@ function tutorGoHome() {
 
 /* Show the tutor's weekly schedule (aggregate across all their students). */
 function tutorGoSchedule() {
+  tutorState.fromClassroom = false;   // navigating away abandons any classroom build
   tutorState.view = 'schedule';
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
@@ -1115,6 +1117,15 @@ function startSession() {
   if (activeContext().readOnly) { showToast('Read-only view — cannot start sessions.', 'warn'); return; }
   const plan = getState().generatedLessonPlan;
   if (!plan) { showToast('Generate or open a session first.', 'warn'); return; }
+
+  // Build started from the classroom → return to the room and teach there
+  // (not the legacy Meet flow).
+  if (tutorState.fromClassroom && typeof classroomStartTeaching === 'function') {
+    tutorState.fromClassroom = false;
+    classroomStartTeaching(plan);
+    return;
+  }
+
   const student = tutorState.selectedStudent;
   if (!student) { showToast('Pick a student for this session first.', 'warn'); return; }
 

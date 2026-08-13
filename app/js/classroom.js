@@ -192,12 +192,56 @@
     }
   };
 
-  /* The other two stage-launcher options (fully wired in the next pass). */
-  window.roomLaunchCurriculum = function () {
-    if (typeof showToast === 'function') showToast('Curriculum-in-room is the next piece — use My Session Plans for now.', 'info');
-  };
+  /* Curriculum + Generate reuse the existing build flow: we stash the classroom
+     session, drop into the normal dashboard flow to build/pick a deck, and the
+     "Start" button (classroom-aware, see startSession) brings the tutor back
+     into the room to teach it. */
+  function leaveRoomToBuild() {
+    if (window.tutorState) {
+      tutorState.classroomSessionId = tutorState.currentSessionId || null;
+      tutorState.classroomStudent = tutorState.selectedStudent || null;
+      tutorState.fromClassroom = true;
+    }
+    const v = document.getElementById('viewClassroom'); if (v) v.classList.add('hidden');
+    hidePicker();
+    document.body.style.overflow = '';
+    if (ro) { ro.disconnect(); ro = null; }
+    window.removeEventListener('resize', fitRoomSlide);
+  }
+
   window.roomLaunchGenerate = function () {
-    if (typeof showToast === 'function') showToast('Generate-in-room is next — build a session in My Sessions, then load it here.', 'info');
+    if (role !== 'tutor') return;
+    if (!(window.tutorState && tutorState.currentSessionId)) {
+      if (typeof showToast === 'function') showToast('Pick a student first.', 'warn'); return;
+    }
+    leaveRoomToBuild();
+    if (typeof tutorNewSession === 'function') tutorNewSession();
+  };
+
+  window.roomLaunchCurriculum = function () {
+    if (role !== 'tutor') return;
+    if (!(window.tutorState && tutorState.currentSessionId)) {
+      if (typeof showToast === 'function') showToast('Pick a student first.', 'warn'); return;
+    }
+    leaveRoomToBuild();
+    if (typeof tutorGoCurriculum === 'function') tutorGoCurriculum();
+  };
+
+  /* Called by startSession() when the build began in the classroom: bring the
+     finished deck back into the room and share it on the classroom session. */
+  window.classroomStartTeaching = function (deck) {
+    plan = deck || (typeof getState === 'function' && getState().generatedLessonPlan) || null;
+    idx = 0;
+    if (window.tutorState) {
+      if (tutorState.classroomSessionId) tutorState.currentSessionId = tutorState.classroomSessionId;
+      if (tutorState.classroomStudent) tutorState.selectedStudent = tutorState.classroomStudent;
+    }
+    openRoom('tutor');
+    roomRenderSlide();
+    if (typeof getState === 'function' && plan) getState().generatedLessonPlan = plan;
+    if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
+      dataUpdateSession(tutorState.currentSessionId, { plan: plan, present_active: true, current_slide: 0, is_classroom: true }).catch(() => {});
+    }
   };
 
   /* ─── Notes & Assignments (tutor writes for this session) ─── */
