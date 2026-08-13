@@ -140,7 +140,6 @@
     if (!stage) return;
     const frame = document.getElementById('roomFrame'); if (frame) frame.style.display = 'none';
     const empty = document.getElementById('roomEmpty'); if (empty) empty.hidden = true;
-    const launcher = document.getElementById('roomLauncher'); if (launcher) launcher.hidden = true;
     let v = document.getElementById('rv-screen');
     if (!v) {
       v = document.createElement('video');
