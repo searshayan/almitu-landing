@@ -623,11 +623,15 @@ textarea:focus-visible,
 }
 .present-mode.hidden { display: none; }
 
-/* Student mirror (Model A): view-only. The tutor drives scroll (over broadcast)
-   and clicks, so the student can neither scroll the slide nor trigger reveals —
-   that would desync their view from the tutor's. */
-.mirror-mode .present-scaler { overflow: hidden; }
-.mirror-mode .present-slide { pointer-events: none; }
+/* Student mirror (Model A): view-only, and scaled with transform (NOT `zoom`,
+   which is unreliable on iOS Safari — it distorts both the layout and the
+   position math, which is what threw off the header and the laser on phones).
+   The scaler is sized to the scaled slide and the slide is transform-scaled from
+   its top-left corner to fill it exactly, so the whole slide is visible and
+   getBoundingClientRect reports the true on-screen box → the laser lands right. */
+.mirror-mode .present-stage { align-items: center; overflow: hidden; padding: 16px; }
+.mirror-mode .present-scaler { position: relative; overflow: hidden; padding: 0; border: 0; display: block; }
+.mirror-mode .present-slide { position: absolute; top: 0; left: 0; transform-origin: top left; pointer-events: none; }
 
 /* Tutor's laser pointer, shown on the student's mirror. Fixed to the viewport;
    js/live-mirror.js sets left/top/opacity. The margin offset centers it on the
@@ -1079,4 +1083,84 @@ textarea:focus-visible,
 @media (max-width: 640px) {
   .guide-card { width: calc(100% - 20px); max-height: 92vh; }
   .guide-scroll { padding: 16px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Virtual Classroom (Phase 1 shell) — a dark room with a framed content
+   panel (left), a video column (right), and one control bar. Slides render
+   via transform:scale (iOS-safe), same as the student mirror.
+   ═══════════════════════════════════════════════════════ */
+#viewClassroom {
+  position: fixed; inset: 0; z-index: 900;
+  background: linear-gradient(160deg, #141722, #0F121B);
+}
+#viewClassroom.hidden { display: none; }
+
+.room-main { position: absolute; top: 3%; left: 3%; right: 25%; bottom: 14%; }
+.room-side {
+  position: absolute; top: 3%; right: 3%; width: 19%; bottom: 14%;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.room-tile {
+  flex: 1; border-radius: 12px; overflow: hidden; position: relative;
+  background: linear-gradient(150deg, #3B3F4E, #42465a);
+  border: 1px solid rgba(255,255,255,.08);
+  display: grid; place-items: center; color: #9aa0b2; font-size: 11px; text-align: center;
+}
+.room-tile .who {
+  position: absolute; bottom: 8px; left: 8px; font-size: 11px; color: #fff;
+  background: rgba(0,0,0,.5); padding: 2px 8px; border-radius: 6px; font-weight: 600;
+}
+
+.room-panel {
+  width: 100%; height: 100%; background: #fff; border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.35); display: flex; flex-direction: column; overflow: hidden;
+}
+.room-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; background: #F3F5FA; border-bottom: 1px solid #E6E9F1; flex-shrink: 0;
+}
+.room-src { font-size: 13px; font-weight: 700; color: #181B26; }
+.room-head .r { display: flex; align-items: center; gap: 10px; }
+.room-shared {
+  font-size: 10.5px; font-weight: 700; color: #0A8F5F;
+  background: rgba(10,143,95,.1); padding: 3px 9px; border-radius: 100px;
+}
+.room-close { background: none; border: 0; color: #646C82; font-size: 16px; cursor: pointer; line-height: 1; }
+.room-nav { display: flex; align-items: center; gap: 8px; padding: 10px 14px 4px; }
+.room-nav .nb {
+  width: 30px; height: 30px; border: 1px solid #E1E6F1; border-radius: 8px; background: #fff;
+  color: #333849; cursor: pointer; font-size: 15px; display: grid; place-items: center;
+}
+.room-nav .nb:disabled { opacity: .4; cursor: default; }
+#roomCounter { font-size: 12px; color: #646C82; }
+
+.room-stage {
+  flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; padding: 16px; position: relative;
+}
+.room-frame { position: relative; overflow: hidden; }
+.room-slide { position: absolute; top: 0; left: 0; transform-origin: top left; }
+
+.room-toolbar {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 3.5%;
+  display: flex; gap: 6px; background: #1B1E29; border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px; padding: 8px 10px;
+}
+.rbtn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  width: 58px; padding: 6px 4px; border-radius: 11px; color: #EDEFF5; background: none; border: 0; cursor: pointer;
+}
+.rbtn .ico { width: 34px; height: 34px; border-radius: 9px; background: rgba(255,255,255,.08); display: grid; place-items: center; }
+.rbtn .ico svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.9; }
+.rbtn .lbl { font-size: 10px; color: #9aa0b2; }
+.rbtn.primary .ico { background: #FF6B35; }
+.rbtn.leave .ico { background: #E5484D; }
+
+/* Phase 1 mobile: content full-width, video column hidden (the Video/Slides
+   flip is Phase 2). */
+@media (max-width: 720px) {
+  .room-main { right: 3%; }
+  .room-side { display: none; }
+  .rbtn { width: 48px; }
 }
