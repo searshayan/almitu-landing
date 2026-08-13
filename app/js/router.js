@@ -132,8 +132,7 @@ function renderHeaderNav(ctx) {
     nav.innerHTML =
       btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum' && tutorState.view !== 'schedule') +
       btn('📚 Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum') +
-      btn('🗓 Schedule', "tutorGoSchedule()", tutorState.view === 'schedule') +
-      btn('🎓 Enter Classroom', "tutorEnterClassroom()", false);
+      btn('🗓 Schedule', "tutorGoSchedule()", tutorState.view === 'schedule');
   } else {
     nav.innerHTML = '';
   }
@@ -1126,40 +1125,22 @@ function startSession() {
   if (activeContext().readOnly) { showToast('Read-only view — cannot start sessions.', 'warn'); return; }
   const plan = getState().generatedLessonPlan;
   if (!plan) { showToast('Generate or open a session first.', 'warn'); return; }
-
-  // Build started from the classroom → return to the room and teach there
-  // (not the legacy Meet flow).
-  if (tutorState.fromClassroom && typeof classroomStartTeaching === 'function') {
-    tutorState.fromClassroom = false;
-    classroomStartTeaching(plan);
-    return;
-  }
-
   const student = tutorState.selectedStudent;
   if (!student) { showToast('Pick a student for this session first.', 'warn'); return; }
 
-  // Must fire synchronously inside the click handler, BEFORE any await,
-  // or the popup blocker will swallow the new tab.
-  window.open('https://meet.google.com/', '_blank', 'noopener');
-
   if (typeof _editMode !== 'undefined' && _editMode) savePvEdit();
-  launchCall();          // shows the presentation in this tab
 
-  // Then persist the live session in the background.
+  // Start Session now opens the in-app Classroom (video + screen share), not
+  // Google Meet. Create the live classroom session, then enter the room and
+  // connect the call. The student's "Join Classroom" lights up off this row.
   (async () => {
     try {
       await ensurePlanInLibrary(plan);
-      const row = await dataCreateSession(buildSessionRow(plan, student, 'live', ''));
+      const row = await dataCreateSession({ ...buildSessionRow(plan, student, 'live', ''), is_classroom: true });
       tutorState.currentSessionId = row.id;
-      renderMeetLinkBox();
-      // If the tutor opened Present before this row existed, wire the mirror now:
-      // open the scroll channel and push the current slide + present_active.
-      if (window._presentActive && !window._presentChannel && typeof dataOpenLiveChannel === 'function') {
-        window._presentChannel = dataOpenLiveChannel(row.id);
-      }
-      if (typeof syncPresentSlide === 'function') syncPresentSlide();
+      if (typeof classroomStartTeaching === 'function') classroomStartTeaching(plan);
     } catch (e) {
-      showToast('Could not start the session record: ' + e.message, 'error');
+      showToast('Could not start the session: ' + e.message, 'error');
     }
   })();
 }

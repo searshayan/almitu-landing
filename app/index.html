@@ -752,10 +752,9 @@
     <div class="room-main">
       <div class="room-panel">
         <div class="room-head">
-          <button class="room-back" id="roomBack" onclick="roomBackToLauncher()" title="Choose another deck">☰ Decks</button>
           <span class="room-src" id="roomSource">Session</span>
           <span class="r">
-            <span class="room-shared">● Shared</span>
+            <span class="room-shared">● Live</span>
           </span>
         </div>
         <div class="room-nav" id="roomNav">
@@ -768,34 +767,14 @@
             <div class="present-slide room-slide" id="roomSlide"></div>
           </div>
           <div class="room-empty" id="roomEmpty" hidden></div>
-          <!-- Tutor's empty-stage home: three ways to put a deck on the stage -->
-          <div class="room-launcher" id="roomLauncher" hidden>
-            <button class="room-launch" onclick="roomLaunchCurriculum()">
-              <span class="rl-ico">📚</span><span class="rl-t">The Curriculum</span><span class="rl-s">Teach a curriculum unit</span>
-            </button>
-            <button class="room-launch" onclick="roomOpenLibrary()">
-              <span class="rl-ico">🗂️</span><span class="rl-t">My Session Plans</span><span class="rl-s">Load a saved session</span>
-            </button>
-            <button class="room-launch" onclick="roomLaunchGenerate()">
-              <span class="rl-ico">✨</span><span class="rl-t">Generate New Session</span><span class="rl-s">Build one now</span>
-            </button>
-          </div>
         </div>
       </div>
     </div>
     <div class="room-side">
-      <div class="room-tile" id="roomTileTutor"><span class="who">You (tutor)</span>Video connects in Phase 3</div>
-      <div class="room-tile" id="roomTileStudent"><span class="who">Student</span>No student yet</div>
+      <div class="room-tile" id="roomTileTutor"><span class="who">You</span>Camera off</div>
+      <div class="room-tile" id="roomTileStudent"><span class="who">Student</span>Camera off</div>
     </div>
 
-    <!-- Student picker: shown when the tutor enters, to choose who's in this class -->
-    <div id="roomPicker" class="room-picker hidden">
-      <div class="room-picker-card">
-        <h3 id="roomPickerTitle">Who are you teaching now?</h3>
-        <p id="roomPickerSub">Pick the student for this class — they'll be able to Join Classroom.</p>
-        <div id="roomPickerList" class="room-picker-list"></div>
-      </div>
-    </div>
     <div class="room-toolbar">
       <button class="rbtn" id="roomMicBtn" onclick="almituVideo.toggleMic()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg></span><span class="lbl">Mic</span></button>
       <button class="rbtn" id="roomCamBtn" onclick="almituVideo.toggleCam()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M15 10l4.5-2.3A1 1 0 0121 8.6v6.8a1 1 0 01-1.5.9L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></span><span class="lbl">Camera</span></button>
@@ -840,9 +819,9 @@
   <script src="js/step1.js?v=1"></script>
   <script src="js/step2.js?v=2"></script>
   <script src="js/step3.js?v=1"></script>
-  <script src="js/router.js?v=7"></script>
-  <script src="js/daily-video.js?v=1"></script>
-  <script src="js/classroom.js?v=9"></script>
+  <script src="js/router.js?v=8"></script>
+  <script src="js/daily-video.js?v=2"></script>
+  <script src="js/classroom.js?v=10"></script>
   <script src="js/messaging.js?v=1"></script>
   <script src="js/amie.js?v=1"></script>
   <script src="js/schedule.js?v=1"></script>
