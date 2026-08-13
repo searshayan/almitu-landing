@@ -1120,7 +1120,8 @@ async function tutorSaveToPlans() {
   } catch (e) { showToast('Save failed: ' + e.message, 'error'); }
 }
 
-/* ── Start The Session: open Google Meet + show the presentation ── */
+/* ── Start The Session: show the presentation; tutor pastes their own call link
+   (Google Meet, Zoom, WhatsApp — any tool). No tab is auto-opened. ── */
 function startSession() {
   if (activeContext().readOnly) { showToast('Read-only view — cannot start sessions.', 'warn'); return; }
   const plan = getState().generatedLessonPlan;
@@ -1145,15 +1146,15 @@ function startSession() {
   })();
 }
 
-/* ── The Meet-link box inside the live view ── */
+/* ── The call-link box inside the live view (any video tool) ── */
 function renderMeetLinkBox() {
   const host = document.getElementById('meetLinkBox');
   if (!host) return;
   const shared = tutorState.currentMeetLink;
   host.innerHTML = `
-    <label class="block text-[11px] font-semibold mb-1.5" style="color:var(--navy);">🔗 Paste your Google Meet link</label>
+    <label class="block text-[11px] font-semibold mb-1.5" style="color:var(--navy);">🔗 Paste your video call link</label>
     <div class="flex gap-1.5">
-      <input id="meetLinkInput" type="url" placeholder="https://meet.google.com/abc-defg-hij" value="${escapeHtml(shared || '')}"
+      <input id="meetLinkInput" type="url" placeholder="https://… (Google Meet, Zoom, WhatsApp…)" value="${escapeHtml(shared || '')}"
         class="flex-1 rounded-lg px-3 py-2 text-xs focus:outline-none field-input">
       <button onclick="shareMeetLink()" class="px-3 py-2 rounded-lg text-white text-xs font-semibold flex-shrink-0" style="background:var(--primary);">Share</button>
     </div>
@@ -1161,17 +1162,16 @@ function renderMeetLinkBox() {
       ${shared ? '✓ Shared — your student can now join.' : 'Your student\'s Join button stays locked until you share this.'}
     </p>
     <p class="text-[10px] mt-1.5" style="color:var(--muted);">
-      Meet tab didn't open? Your browser may have blocked it —
-      <a href="https://meet.google.com/" target="_blank" rel="noopener" class="font-semibold" style="color:var(--secondary); text-decoration:underline;">open Google Meet</a>.
+      Start a call in your video tool of choice — Google Meet, Zoom, WhatsApp — then paste its link here.
     </p>`;
 }
 
 async function shareMeetLink() {
   const input = document.getElementById('meetLinkInput');
   const link = (input.value || '').trim();
-  if (!link) { showToast('Paste the Meet link first.', 'warn'); return; }
-  if (!/^https?:\/\/meet\.google\.com\//i.test(link)) {
-    showToast('That doesn\'t look like a Google Meet link (https://meet.google.com/...).', 'warn'); return;
+  if (!link) { showToast('Paste your call link first.', 'warn'); return; }
+  if (!/^https?:\/\//i.test(link)) {
+    showToast('That doesn\'t look like a link — it should start with https://', 'warn'); return;
   }
   if (!tutorState.currentSessionId) { showToast('Session is still starting — try again in a moment.', 'warn'); return; }
   try {
