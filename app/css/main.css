@@ -1140,8 +1140,11 @@ textarea:focus-visible,
   flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;
   overflow: hidden; padding: 16px; position: relative;
 }
-.room-frame { position: relative; overflow: hidden; }
-.room-slide { position: absolute; top: 0; left: 0; transform-origin: top left; }
+/* Fill-width slide that scrolls when taller than the Stage (zoom-scaled). */
+.room-frame { display: flex; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: hidden; }
+.room-frame::-webkit-scrollbar { width: 8px; }
+.room-frame::-webkit-scrollbar-thumb { background: #C8CBD4; border-radius: 4px; }
+.room-slide { position: relative; }
 
 .room-toolbar {
   position: absolute; left: 50%; transform: translateX(-50%); bottom: 3.5%;
@@ -1162,7 +1165,13 @@ textarea:focus-visible,
    Video column hidden here (the Video/Slides flip is a later pass). */
 @media (max-width: 720px) {
   .room-main { top: 8px; left: 8px; right: 8px; bottom: 84px; }
-  .room-side { display: none; }
+  /* Video becomes small floating thumbnails over the Stage (top-right). */
+  .room-side {
+    position: absolute; top: 12px; right: 12px; left: auto; bottom: auto;
+    width: auto; flex-direction: row; gap: 6px; z-index: 4;
+  }
+  .room-side .room-tile { flex: none; width: 62px; height: 84px; }
+  .room-side .room-tile .who { font-size: 8px; padding: 1px 5px; }
   .room-head { padding: 8px 12px; }
   .room-src { font-size: 12px; }
   .room-nav { padding: 6px 12px 2px; }
@@ -1257,6 +1266,12 @@ textarea:focus-visible,
 .room-back:hover { background: #E2ECF5; }
 
 /* Classroom control-bar states (video on/off, sharing) */
-.rbtn.rbtn-off .ico { background: rgba(229,72,77,.22); }
-.rbtn.rbtn-off .ico svg { stroke: #FF8A8A; }
+/* Standard "muted / off" look: red icon with a diagonal slash. */
+.rbtn.rbtn-off .ico { background: #E5484D; position: relative; }
+.rbtn.rbtn-off .ico svg { stroke: #fff; }
+.rbtn.rbtn-off .ico::after {
+  content: ''; position: absolute; left: 50%; top: 8%; width: 2.5px; height: 84%;
+  background: #fff; border-radius: 2px; transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 0 0 1.5px rgba(0,0,0,.25);
+}
 .rbtn.rbtn-active .ico { background: #0A8F5F; }

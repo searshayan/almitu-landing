@@ -20,6 +20,7 @@
   let idx = 0;          // current slide index (tutor's Stage)
   let role = 'tutor';   // 'tutor' teaches; 'student' watches
   let ro = null;        // ResizeObserver that refits on layout change
+  let sub = null;       // student's realtime slide-follow subscription
 
   function openRoom(asRole) {
     role = asRole === 'student' ? 'student' : 'tutor';
@@ -43,6 +44,7 @@
     document.body.style.overflow = '';
     if (ro) { ro.disconnect(); ro = null; }
     window.removeEventListener('resize', fitRoomSlide);
+    if (sub) { dataUnsubscribe(sub); sub = null; }
     if (window.almituVideo) almituVideo.leave();
 
     if (role !== 'tutor') return;
@@ -67,18 +69,44 @@
     openRoom('tutor');
     roomRenderSlide();
     if (typeof getState === 'function' && plan) getState().generatedLessonPlan = plan;
+    persistSlide();   // publish the starting slide so the student mirrors it
     if (window.almituVideo && window.tutorState && tutorState.currentSessionId) {
       almituVideo.connect(tutorState.currentSessionId);
     }
   };
 
-  /* Student: join the room the tutor started. */
+  /* Student: join the room the tutor started. The deck rides on the session row,
+     so the student renders the slides natively (crisp, scrollable) and follows
+     the tutor's current slide over Realtime — no screen-video for the slides. */
   window.classroomJoinAsStudent = function (live) {
-    plan = null; idx = 0;
+    plan = (live && live.plan) || null;
+    idx = (live && live.current_slide) | 0;
     openRoom('student');
-    roomRenderSlide();   // "waiting…" until the tutor shares their screen
+    roomRenderSlide();
     if (window.almituVideo && live && live.id) almituVideo.connect(live.id);
+    if (sub) { dataUnsubscribe(sub); sub = null; }
+    if (live && live.id && typeof dataOpenLiveChannel === 'function') {
+      sub = dataOpenLiveChannel(live.id, { onState: onRoomState });
+    }
   };
+
+  /* The tutor's row changed: pick up the deck + current slide (unless a screen
+     share is currently overlaying the Stage — then just remember the slide). */
+  function onRoomState(row) {
+    if (!row) return;
+    if (row.status && row.status !== 'live') { window.classroomLeave(); return; }
+    if (row.plan) plan = row.plan;
+    idx = Math.max(0, row.current_slide | 0);
+    if (!document.getElementById('rv-screen')) roomRenderSlide();
+  }
+
+  /* Tutor: publish the current slide so the student's Stage follows. */
+  function persistSlide() {
+    if (role !== 'tutor') return;
+    if (window.tutorState && tutorState.currentSessionId && typeof dataSetPresentState === 'function') {
+      dataSetPresentState(tutorState.currentSessionId, { current_slide: idx }).catch(() => {});
+    }
+  }
 
   /* Share Screen — streams the tutor's screen to the student (Daily). */
   window.roomShareScreen = function () {
@@ -160,29 +188,33 @@
     setTimeout(fitRoomSlide, 60);
   }
 
+  /* Fill the WIDTH (so slides are big and readable) and SCROLL when a slide is
+     taller than the Stage — short slides center, long slides scroll, nothing is
+     squished. `zoom` scales layout so the frame scrolls naturally. */
   function fitRoomSlide() {
     const stage = document.getElementById('roomStage');
     const frame = document.getElementById('roomFrame');
     const content = document.getElementById('roomSlide');
     if (!stage || !frame || !content || !slides().length) return;
-    content.style.transform = 'none';
+    content.style.zoom = '1';
     const w = content.offsetWidth, h = content.offsetHeight;
     if (!w || !h) return;
-    const pad = stage.clientWidth < 520 ? 12 : 24;
+    const pad = stage.clientWidth < 520 ? 14 : 28;
     const availW = stage.clientWidth - pad * 2;
     const availH = stage.clientHeight - pad * 2;
-    const k = Math.min(availW / w, availH / h, 3.2);
-    content.style.transform = 'scale(' + k + ')';
-    frame.style.width = Math.round(w * k) + 'px';
-    frame.style.height = Math.round(h * k) + 'px';
+    const k = Math.min(availW / w, 2.6);       // fill width (capped); taller → scroll
+    content.style.zoom = k;
+    frame.style.width = availW + 'px';
+    frame.style.height = availH + 'px';
+    frame.style.justifyContent = (h * k <= availH) ? 'center' : 'flex-start';
   }
 
   window.roomNextSlide = function () {
     if (role !== 'tutor' || idx >= slides().length - 1) return;
-    idx++; roomRenderSlide();
+    idx++; roomRenderSlide(); persistSlide();
   };
   window.roomPrevSlide = function () {
     if (role !== 'tutor' || idx <= 0) return;
-    idx--; roomRenderSlide();
+    idx--; roomRenderSlide(); persistSlide();
   };
 })();
