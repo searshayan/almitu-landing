@@ -996,17 +996,12 @@ function startStudentLivePolling(studentId) {
 
 function stopStudentLivePolling() {
   if (window._studentPoll) { clearInterval(window._studentPoll); window._studentPoll = null; }
-  if (window.syncStudentMirror) syncStudentMirror(null);   // tear down the live slide mirror
 }
 
 async function refreshStudentLive(studentId) {
   try {
     const live = await dataGetLiveSessionForStudent(studentId);
     renderStudentLiveBanner(live);
-    // The old Slice-1 fullscreen mirror is only for legacy (Meet-era) present
-    // sessions — a classroom session shows content inside the room instead, so
-    // don't let the mirror overlay pop up over the dashboard for it.
-    if (window.syncStudentMirror) syncStudentMirror(live && !live.is_classroom ? live : null);
   } catch (e) {
     // Silent: polling shouldn't spam the student with toasts.
     console.warn('live poll failed', e);

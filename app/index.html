@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=7">
+  <link rel="stylesheet" href="css/main.css?v=8">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -589,39 +589,6 @@
     <!-- Live session banner: "Join the Session" (rendered by js/router.js) -->
     <div id="studentLiveBanner" class="hidden"></div>
 
-    <!-- Opt-in pill: appears while the tutor is presenting so the dashboard (and
-         the Join banner) stay reachable. Tapping opens the fullscreen slides. -->
-    <button id="presentingPill" class="presenting-pill hidden" onclick="openStudentSlides()">
-      <span class="pp-dot"></span>
-      <span id="presentingPillText" class="pp-text">Your tutor is presenting</span>
-      <span class="pp-cta">View slides &rarr;</span>
-    </button>
-
-    <!-- Live synced-slides mirror (Model A): shown while the tutor is presenting.
-         View-only — the tutor drives which slide and how far it's scrolled.
-         Reuses the tutor Present-mode styles; driven by js/live-mirror.js. -->
-    <div id="mirrorMode" class="present-mode mirror-mode hidden" aria-hidden="true">
-      <div class="present-topbar">
-        <span id="mirrorLabel" class="present-label"></span>
-        <div class="present-tools">
-          <div class="present-timer-pill">
-            <span class="present-live-dot"></span>
-            <span class="present-timer">Live</span>
-          </div>
-          <button onclick="closeStudentSlides()" class="present-icon-btn" title="Back to dashboard" aria-label="Back to dashboard">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="present-stage" id="mirrorStage">
-        <div class="present-scaler" id="mirrorScaler">
-          <div class="present-slide" id="mirrorSlide"></div>
-        </div>
-        <div class="present-fade" id="mirrorFade"></div>
-      </div>
-      <!-- Tutor's laser pointer, positioned in viewport coords by js/live-mirror.js -->
-      <div id="mirrorPointer" class="mirror-pointer"></div>
-    </div>
 
     <!-- Weekly class schedule card (rendered by js/schedule.js) -->
     <div id="studentScheduleCard" class="hidden"></div>
@@ -872,9 +839,8 @@
   <script src="js/step1.js?v=1"></script>
   <script src="js/step2.js?v=2"></script>
   <script src="js/step3.js?v=1"></script>
-  <script src="js/router.js?v=6"></script>
-  <script src="js/live-mirror.js?v=4"></script>
-  <script src="js/classroom.js?v=7"></script>
+  <script src="js/router.js?v=7"></script>
+  <script src="js/classroom.js?v=8"></script>
   <script src="js/messaging.js?v=1"></script>
   <script src="js/amie.js?v=1"></script>
   <script src="js/schedule.js?v=1"></script>

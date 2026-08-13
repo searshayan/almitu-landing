@@ -1096,9 +1096,10 @@ textarea:focus-visible,
 }
 #viewClassroom.hidden { display: none; }
 
-.room-main { position: absolute; top: 3%; left: 3%; right: 25%; bottom: 14%; }
+/* Fixed toolbar clearance (not a %) so the Stage keeps maximum height. */
+.room-main { position: absolute; top: 14px; left: 14px; right: calc(20% + 12px); bottom: 92px; }
 .room-side {
-  position: absolute; top: 3%; right: 3%; width: 19%; bottom: 14%;
+  position: absolute; top: 14px; right: 14px; width: 19%; bottom: 92px;
   display: flex; flex-direction: column; gap: 10px;
 }
 .room-tile {
@@ -1157,12 +1158,19 @@ textarea:focus-visible,
 .rbtn.primary .ico { background: #FF6B35; }
 .rbtn.leave .ico { background: #E5484D; }
 
-/* Phase 1 mobile: content full-width, video column hidden (the Video/Slides
-   flip is Phase 2). */
+/* Mobile: Stage claims the whole screen so slides render as big as possible.
+   Video column hidden here (the Video/Slides flip is a later pass). */
 @media (max-width: 720px) {
-  .room-main { right: 3%; }
+  .room-main { top: 8px; left: 8px; right: 8px; bottom: 84px; }
   .room-side { display: none; }
-  .rbtn { width: 48px; }
+  .room-head { padding: 8px 12px; }
+  .room-src { font-size: 12px; }
+  .room-nav { padding: 6px 12px 2px; }
+  .room-stage { padding: 8px; }
+  .room-toolbar { gap: 3px; padding: 6px 7px; bottom: 10px; }
+  .rbtn { width: 46px; }
+  .rbtn .ico { width: 30px; height: 30px; }
+  .rbtn .lbl { font-size: 9px; }
 }
 
 /* Classroom: empty-stage prompt + student picker */
