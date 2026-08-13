@@ -145,33 +145,25 @@
     setTimeout(fitMirror, 60);
   }
 
-  /* CONTAIN fit (differs from the tutor's fill-width fitPresent): scale the whole
-     slide to fit BOTH the width and the height of the phone, so the entire slide
-     — header to footer — is always visible with no scrolling. This is what keeps
-     the header on screen and lets the laser map accurately: because the student
-     sees the complete slide (not a scrolled window of it), a pointer at "40%
-     down the slide" lands on the same word the tutor is on, regardless of the
-     wildly different desktop-vs-phone screen shapes. */
+  /* CONTAIN fit via transform:scale (see the .mirror-mode CSS note on why NOT
+     zoom). Scale the whole 760px slide to fit both the phone's width and height,
+     size the frame to the scaled result, and let the slide fill it from top-left.
+     The entire slide — header to footer — is visible with no scrolling, and the
+     laser maps accurately because transform + getBoundingClientRect agree on iOS. */
   function fitMirror() {
     const stage = document.getElementById('mirrorStage');
     const frame = document.getElementById('mirrorScaler');
     const content = document.getElementById('mirrorSlide');
     if (!stage || !frame || !content) return;
-    content.style.zoom = '1';
+    content.style.transform = 'none';                  // measure at natural (760px) size
     const w = content.offsetWidth, h = content.offsetHeight;
     if (!w || !h) return;
-    const availW = stage.clientWidth - 56;
-    const availH = stage.clientHeight - 56;
-    const PADX = 48, PADY = 40;
-    const innerW = availW - 2 * PADX;
-    const innerH = availH - 2 * PADY;
-    const k = Math.min(innerW / w, innerH / h, 2.4);   // fit BOTH dimensions
-    content.style.zoom = k;
-    frame.style.width = availW + 'px';
-    frame.style.height = availH + 'px';
-    frame.style.justifyContent = 'center';             // whole slide fits → always centered
-    stage.style.alignItems = 'center';
-    updateMirrorFade();
+    const availW = stage.clientWidth - 32;             // minus the .mirror-mode stage padding
+    const availH = stage.clientHeight - 32;
+    const k = Math.min(availW / w, availH / h, 2.4);   // fit BOTH dimensions
+    content.style.transform = 'scale(' + k + ')';
+    frame.style.width = (w * k) + 'px';
+    frame.style.height = (h * k) + 'px';
     placePointer();   // keep the dot glued to its word when the layout refits
   }
 
