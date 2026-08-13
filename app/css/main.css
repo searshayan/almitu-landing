@@ -1142,6 +1142,9 @@ textarea:focus-visible,
 }
 /* Fill-width slide that scrolls when taller than the Stage (zoom-scaled). */
 .room-frame { display: flex; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: hidden; }
+/* Student mirror is view-only: no clicking, and the tutor drives the scroll. */
+.room-student .room-slide { pointer-events: none; }
+.room-student .room-frame { overflow: hidden; }
 .room-frame::-webkit-scrollbar { width: 8px; }
 .room-frame::-webkit-scrollbar-thumb { background: #C8CBD4; border-radius: 4px; }
 .room-slide { position: relative; }

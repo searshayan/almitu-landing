@@ -1,32 +1,40 @@
 /* ═══════════════════════════════════════════════════════
    Virtual Classroom — the live room reached from "Start Session".
 
-   The tutor picks content and the student the EXISTING way (Curriculum /
-   Generate / My Session Plans → Teach This / choose student → preview & edit).
-   "Start Session" then opens THIS room instead of Google Meet: video tiles +
-   mic/camera + screen share, with the tutor teaching from the Stage.
+   Reached the EXISTING way: pick content → Teach This → choose student →
+   preview & edit → "Start Session" opens THIS room (video + screen share).
 
-     • startSession() → creates the live is_classroom session, then
-       classroomStartTeaching(deck) opens the room as tutor + connects video.
-     • The student's "Join Classroom" banner opens the same room.
-     • Leave → compiles the lesson (reuses endSession).
+   FULL STAGE MIRROR: whatever is on the tutor's Stage is shown identically on
+   the student's Stage — the current slide, revealed answers, opened notes, and
+   scroll position. The tutor broadcasts the live slide DOM (innerHTML) + scroll
+   on every change; the student renders it, view-only (no clicks). Slides fill
+   the width and scroll when tall, so they stay big and readable.
 
-   Video/voice/screen-share = Daily (see daily-video.js). No slide sync here yet
-   (that's a later decision) — the student sees the tutor's shared screen.
+   "Share Screen" is separate — it streams the tutor's actual screen (whole
+   screen; the browser can't isolate one element) for showing non-slide content.
+   Video/voice/screen-share = Daily (daily-video.js). Leave → compiles the lesson.
    ═══════════════════════════════════════════════════════ */
 
 (function () {
   let plan = null;      // the deck being taught (a plan with .slides)
-  let idx = 0;          // current slide index (tutor's Stage)
-  let role = 'tutor';   // 'tutor' teaches; 'student' watches
+  let idx = 0;          // current slide index (tutor drives)
+  let role = 'tutor';   // 'tutor' teaches; 'student' watches, view-only
   let ro = null;        // ResizeObserver that refits on layout change
-  let sub = null;       // student's realtime slide-follow subscription
+  let chan = null;      // realtime channel (tutor sends, student receives)
+  let mo = null;        // tutor's MutationObserver on the Stage slide
+  let hb = null;        // tutor's heartbeat re-broadcast (for late joiners)
+  let htmlT = 0, scrollT = 0;   // send throttles
+  let studentScrollF = 0;       // scroll the student should hold across re-renders
+
+  const SLIDE = () => document.getElementById('roomSlide');
+  const FRAME = () => document.getElementById('roomFrame');
 
   function openRoom(asRole) {
     role = asRole === 'student' ? 'student' : 'tutor';
     const v = document.getElementById('viewClassroom');
     if (!v) return;
     v.classList.remove('hidden');
+    v.classList.toggle('room-student', role === 'student');   // view-only styling
     document.body.style.overflow = 'hidden';
     const nav = document.getElementById('roomNav');
     if (nav) nav.style.display = role === 'tutor' ? '' : 'none';
@@ -44,15 +52,12 @@
     document.body.style.overflow = '';
     if (ro) { ro.disconnect(); ro = null; }
     window.removeEventListener('resize', fitRoomSlide);
-    if (sub) { dataUnsubscribe(sub); sub = null; }
+    stopStageMirror();
+    if (chan) { dataUnsubscribe(chan); chan = null; }
     if (window.almituVideo) almituVideo.leave();
 
     if (role !== 'tutor') return;
 
-    // Tutor leaving: if a deck was taught, compile the lesson (endSession builds
-    // the practice bank, marks the session completed, saves it to the student's
-    // dashboard, returns home). Otherwise revert to 'planned' so it never becomes
-    // an empty notebook and clears the student's Join.
     const taughtDeck = slides().length && typeof getState === 'function' && getState().generatedLessonPlan;
     if (taughtDeck && window.tutorState && tutorState.currentSessionId && typeof endSession === 'function') {
       endSession();
@@ -69,53 +74,93 @@
     openRoom('tutor');
     roomRenderSlide();
     if (typeof getState === 'function' && plan) getState().generatedLessonPlan = plan;
-    persistSlide();   // publish the starting slide so the student mirrors it
-    if (window.almituVideo && window.tutorState && tutorState.currentSessionId) {
-      almituVideo.connect(tutorState.currentSessionId);
+    if (window.tutorState && tutorState.currentSessionId) {
+      chan = dataOpenLiveChannel(tutorState.currentSessionId);   // send-only channel
+      startStageMirror();
+      if (window.almituVideo) almituVideo.connect(tutorState.currentSessionId);
     }
   };
 
-  /* Student: join the room the tutor started. The deck rides on the session row,
-     so the student renders the slides natively (crisp, scrollable) and follows
-     the tutor's current slide over Realtime — no screen-video for the slides. */
+  /* Student: join the room. The Stage is driven by the tutor's mirror; the deck
+     on the session row gives an immediate base slide until the first frame. */
   window.classroomJoinAsStudent = function (live) {
     plan = (live && live.plan) || null;
     idx = (live && live.current_slide) | 0;
     openRoom('student');
     roomRenderSlide();
     if (window.almituVideo && live && live.id) almituVideo.connect(live.id);
-    if (sub) { dataUnsubscribe(sub); sub = null; }
-    if (live && live.id && typeof dataOpenLiveChannel === 'function') {
-      sub = dataOpenLiveChannel(live.id, { onState: onRoomState });
+    if (chan) { dataUnsubscribe(chan); chan = null; }
+    if (live && live.id) {
+      chan = dataOpenLiveChannel(live.id, { onState: onRoomState, onHtml: onStageHtml, onScroll: onStageScroll });
     }
   };
 
-  /* The tutor's row changed: pick up the deck + current slide (unless a screen
-     share is currently overlaying the Stage — then just remember the slide). */
   function onRoomState(row) {
-    if (!row) return;
-    if (row.status && row.status !== 'live') { window.classroomLeave(); return; }
-    if (row.plan) plan = row.plan;
-    idx = Math.max(0, row.current_slide | 0);
-    if (!document.getElementById('rv-screen')) roomRenderSlide();
+    if (row && row.status && row.status !== 'live') window.classroomLeave();   // tutor ended the class
   }
 
-  /* Tutor: publish the current slide so the student's Stage follows. */
-  function persistSlide() {
-    if (role !== 'tutor') return;
-    if (window.tutorState && tutorState.currentSessionId && typeof dataSetPresentState === 'function') {
-      dataSetPresentState(tutorState.currentSessionId, { current_slide: idx }).catch(() => {});
+  /* Student: apply the tutor's live Stage DOM (slide + reveals + notes). */
+  function onStageHtml(p) {
+    const el = SLIDE();
+    if (!el || !p || typeof p.html !== 'string') return;
+    const frame = FRAME(); const empty = document.getElementById('roomEmpty');
+    if (frame) frame.style.display = '';
+    if (empty) empty.hidden = true;
+    el.innerHTML = p.html;
+    fitRoomSlide();
+    applyScroll(studentScrollF);
+  }
+  function onStageScroll(p) {
+    studentScrollF = clamp01(p && typeof p.f === 'number' ? p.f : 0);
+    applyScroll(studentScrollF);
+  }
+  function applyScroll(f) {
+    const frame = FRAME(); if (!frame) return;
+    const max = frame.scrollHeight - frame.clientHeight;
+    frame.scrollTop = max > 0 ? f * max : 0;
+  }
+
+  /* ─── Tutor: broadcast the Stage (DOM + scroll) on every change ─── */
+
+  function startStageMirror() {
+    stopStageMirror();
+    const el = SLIDE(), frame = FRAME();
+    if (el && window.MutationObserver) {
+      // class/hidden = reveals + note toggles; childList = slide change. (Not
+      // 'style' — the zoom-fit sets that and would fire needlessly.)
+      mo = new MutationObserver(scheduleHtml);
+      mo.observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden'] });
     }
+    if (frame) frame.addEventListener('scroll', scheduleScroll);
+    hb = setInterval(broadcastHtmlNow, 2000);   // heartbeat: late joiners catch up
+    broadcastHtmlNow();
+  }
+  function stopStageMirror() {
+    if (mo) { mo.disconnect(); mo = null; }
+    if (hb) { clearInterval(hb); hb = null; }
+    const frame = FRAME(); if (frame) frame.removeEventListener('scroll', scheduleScroll);
+  }
+  function scheduleHtml() { const t = perf(); if (t - htmlT < 120) return; htmlT = t; broadcastHtmlNow(); }
+  function broadcastHtmlNow() {
+    const el = SLIDE(); if (!el || !chan || typeof dataBroadcastHtml !== 'function') return;
+    dataBroadcastHtml(chan, el.innerHTML);
+    broadcastScrollNow();
+  }
+  function scheduleScroll() { const t = perf(); if (t - scrollT < 80) return; scrollT = t; broadcastScrollNow(); }
+  function broadcastScrollNow() {
+    const frame = FRAME(); if (!frame || !chan || typeof dataBroadcastScroll !== 'function') return;
+    const max = frame.scrollHeight - frame.clientHeight;
+    dataBroadcastScroll(chan, max > 0 ? frame.scrollTop / max : 0);
   }
 
-  /* Share Screen — streams the tutor's screen to the student (Daily). */
+  /* Share Screen — streams the tutor's actual screen to the student (Daily). */
   window.roomShareScreen = function () {
     if (!window.almituVideo) { if (typeof showToast === 'function') showToast('Video isn’t ready yet.', 'warn'); return; }
     if (almituVideo.sharing) almituVideo.stopShare(); else almituVideo.shareScreen();
   };
 
   /* Re-render the Stage — called by daily-video.js when a screen share ends. */
-  window.roomRefreshStage = function () { roomRenderSlide(); };
+  window.roomRefreshStage = function () { roomRenderSlide(); if (role !== 'tutor') applyScroll(studentScrollF); };
 
   /* ─── Notes & Assignments (tutor writes for this session) ─── */
 
@@ -138,7 +183,7 @@
     if (!ta) return;
     const notes = ta.value || '';
     if (window.tutorState) tutorState.currentNotes = notes;
-    const step2 = document.getElementById('tutorNotes'); if (step2) step2.value = notes;   // keep compile in sync
+    const step2 = document.getElementById('tutorNotes'); if (step2) step2.value = notes;
     if (window.tutorState && tutorState.currentSessionId && typeof dataUpdateSession === 'function') {
       try {
         await dataUpdateSession(tutorState.currentSessionId, { tutor_notes: notes });
@@ -150,13 +195,13 @@
     roomCloseNotes();
   };
 
-  /* ─── Stage slide rendering (contain-fit for now; scroll fix comes later) ─── */
+  /* ─── Stage slide rendering (fill-width via zoom; scroll when tall) ─── */
 
   function slides() { return (plan && plan.slides) || []; }
 
   function roomRenderSlide() {
-    const el = document.getElementById('roomSlide');
-    const frame = document.getElementById('roomFrame');
+    const el = SLIDE();
+    const frame = FRAME();
     const empty = document.getElementById('roomEmpty');
     if (!el) return;
     const list = slides();
@@ -164,9 +209,7 @@
       if (frame) frame.style.display = 'none';
       if (empty) {
         empty.hidden = false;
-        empty.textContent = role === 'tutor'
-          ? 'Loading your slides…'
-          : 'Waiting for your tutor to share their screen…';
+        empty.textContent = role === 'tutor' ? 'Loading your slides…' : 'Waiting for your tutor…';
       }
       const src0 = document.getElementById('roomSource'); if (src0) src0.textContent = 'Classroom';
       const c0 = document.getElementById('roomCounter'); if (c0) c0.textContent = '';
@@ -188,21 +231,18 @@
     setTimeout(fitRoomSlide, 60);
   }
 
-  /* Fill the WIDTH (so slides are big and readable) and SCROLL when a slide is
-     taller than the Stage — short slides center, long slides scroll, nothing is
-     squished. `zoom` scales layout so the frame scrolls naturally. */
   function fitRoomSlide() {
     const stage = document.getElementById('roomStage');
-    const frame = document.getElementById('roomFrame');
-    const content = document.getElementById('roomSlide');
-    if (!stage || !frame || !content || !slides().length) return;
+    const frame = FRAME();
+    const content = SLIDE();
+    if (!stage || !frame || !content) return;
     content.style.zoom = '1';
     const w = content.offsetWidth, h = content.offsetHeight;
     if (!w || !h) return;
     const pad = stage.clientWidth < 520 ? 14 : 28;
     const availW = stage.clientWidth - pad * 2;
     const availH = stage.clientHeight - pad * 2;
-    const k = Math.min(availW / w, 2.6);       // fill width (capped); taller → scroll
+    const k = Math.min(availW / w, 2.6);       // fill width; taller → scroll
     content.style.zoom = k;
     frame.style.width = availW + 'px';
     frame.style.height = availH + 'px';
@@ -211,10 +251,13 @@
 
   window.roomNextSlide = function () {
     if (role !== 'tutor' || idx >= slides().length - 1) return;
-    idx++; roomRenderSlide(); persistSlide();
+    idx++; roomRenderSlide();   // innerHTML change → MutationObserver → mirror
   };
   window.roomPrevSlide = function () {
     if (role !== 'tutor' || idx <= 0) return;
-    idx--; roomRenderSlide(); persistSlide();
+    idx--; roomRenderSlide();
   };
+
+  function clamp01(n) { return n < 0 ? 0 : n > 1 ? 1 : n; }
+  function perf() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
 })();

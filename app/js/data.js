@@ -430,7 +430,7 @@ async function dataSetPresentState(sessionId, patch) {
    row (present_active, current_slide); `onScroll` gets { f } as a 0–1 fraction;
    `onPointer` gets { x, y, on } (x/y are 0–1 fractions of the slide content).
    Returns the channel for teardown / sending. */
-function dataOpenLiveChannel(sessionId, { onState, onScroll, onPointer } = {}) {
+function dataOpenLiveChannel(sessionId, { onState, onScroll, onPointer, onHtml } = {}) {
   const c = requireSb();
   if (!c) return null;
   let ch = c.channel(liveChannelName(sessionId), { config: { broadcast: { self: false } } });
@@ -445,8 +445,18 @@ function dataOpenLiveChannel(sessionId, { onState, onScroll, onPointer } = {}) {
   if (onPointer) {
     ch = ch.on('broadcast', { event: 'pointer' }, msg => onPointer(msg.payload || {}));
   }
+  if (onHtml) {
+    ch = ch.on('broadcast', { event: 'html' }, msg => onHtml(msg.payload || {}));
+  }
   ch.subscribe();
   return ch;
+}
+
+/* Tutor: mirror the live Stage DOM (the current slide's innerHTML) to the
+   student, so revealed answers / opened notes show identically. Fire-and-forget. */
+function dataBroadcastHtml(channel, html) {
+  if (!channel) return;
+  try { channel.send({ type: 'broadcast', event: 'html', payload: { html: html } }); } catch (e) { /* transient */ }
 }
 
 /* Tutor: push a scroll fraction (0–1) to the student. Fire-and-forget. */
