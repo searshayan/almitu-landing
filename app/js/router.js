@@ -645,7 +645,7 @@ function studentsCard(students) {
   }
   const rows = students.map(st => {
     const open = tutorState.openStudentId === st.id;
-    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed');
+    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed' && x.plan);
     const history = !open ? '' : `
       <div class="mt-3 pt-3" style="border-top:1px dashed var(--line);">
         ${done.length ? done.map(row => {
@@ -916,7 +916,10 @@ async function initStudentDashboard() {
       dataListStudentSessions(ctx.userId),
       dataListAttemptsForStudent(ctx.userId).catch(() => [])
     ]);
-    s.savedNotebooks = rows.map(rowToNotebook);
+    // Only real sessions with a lesson plan become notebooks. A stray session
+    // with no plan (plan = null) would throw in the notebook render (nb.plan.meta)
+    // and wipe the whole list, so skip those defensively.
+    s.savedNotebooks = rows.map(rowToNotebook).filter(nb => nb && nb.plan && nb.plan.meta);
     s.selectedNotebookId = s.savedNotebooks[0] ? s.savedNotebooks[0].id : null;
     studentProgress.attempts = attempts;
   } catch (e) {
