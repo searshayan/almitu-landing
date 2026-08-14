@@ -28,7 +28,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Supabase JS (auth + database) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://unpkg.com/@daily-co/daily-js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -590,7 +589,6 @@
     <!-- Live session banner: "Join the Session" (rendered by js/router.js) -->
     <div id="studentLiveBanner" class="hidden"></div>
 
-
     <!-- Weekly class schedule card (rendered by js/schedule.js) -->
     <div id="studentScheduleCard" class="hidden"></div>
 
@@ -747,85 +745,31 @@
     </div>
   </div>
 
-  <!-- ═══ Virtual Classroom (Phase 1 shell) — rendered/driven by js/classroom.js ═══ -->
-  <div id="viewClassroom" class="hidden">
-    <div class="room-main">
-      <div class="room-panel">
-        <div class="room-head">
-          <span class="room-src" id="roomSource">Session</span>
-          <span class="r">
-            <span class="room-shared">● Live</span>
-          </span>
-        </div>
-        <div class="room-nav" id="roomNav">
-          <button class="nb" id="roomPrev" onclick="roomPrevSlide()" title="Previous slide">‹</button>
-          <button class="nb" id="roomNext" onclick="roomNextSlide()" title="Next slide">›</button>
-          <span id="roomCounter">1 / 1</span>
-        </div>
-        <div class="room-stage" id="roomStage">
-          <div class="room-frame" id="roomFrame">
-            <div class="present-slide room-slide" id="roomSlide"></div>
-          </div>
-          <div class="room-empty" id="roomEmpty" hidden></div>
-        </div>
-      </div>
-    </div>
-    <div class="room-side">
-      <div class="room-tile" id="roomTileTutor"><span class="who">You</span>Camera off</div>
-      <div class="room-tile" id="roomTileStudent"><span class="who">Student</span>Camera off</div>
-    </div>
-
-    <div class="room-toolbar">
-      <button class="rbtn" id="roomMicBtn" onclick="almituVideo.toggleMic()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg></span><span class="lbl">Mic</span></button>
-      <button class="rbtn" id="roomCamBtn" onclick="almituVideo.toggleCam()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M15 10l4.5-2.3A1 1 0 0121 8.6v6.8a1 1 0 01-1.5.9L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></span><span class="lbl">Camera</span></button>
-      <button class="rbtn primary" id="roomShareBtn" onclick="roomShareScreen()"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4M9 10l3-3 3 3M12 7v6"/></svg></span><span class="lbl">Share Screen</span></button>
-      <button class="rbtn" onclick="roomOpenNotes()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span class="lbl">Notes</span></button>
-      <button class="rbtn leave" onclick="classroomLeave()"><span class="ico"><svg viewBox="0 0 24 24" style="stroke:#fff"><path d="M15 12H4m0 0l4-4m-4 4l4 4M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/></svg></span><span class="lbl">Leave</span></button>
-    </div>
-
-    <!-- Notes & Assignments (tutor writes for this session) -->
-    <div id="roomNotes" class="room-notes hidden">
-      <div class="room-notes-card">
-        <div class="room-notes-head">
-          <h3>Notes &amp; Assignments</h3>
-          <button class="room-close" onclick="roomCloseNotes()" aria-label="Close">✕</button>
-        </div>
-        <p>For this session — saved to the student's dashboard.</p>
-        <textarea id="roomNotesText" class="room-notes-text" placeholder="Notes for the student, homework, assignments…"></textarea>
-        <div class="room-notes-actions">
-          <button class="room-notes-save" onclick="roomSaveNotes()">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Scripts (dependency order) -->
-  <script src="js/supabase.js?v=1"></script>
-  <script src="js/state.js?v=1"></script>
-  <script src="js/levels.js?v=1"></script>
-  <script src="js/fingerprint.js?v=1"></script>
-  <script src="js/sessionTypes.js?v=1"></script>
-  <script src="js/config.js?v=1"></script>
-  <script src="js/prompts.js?v=1"></script>
-  <script src="js/renders.js?v=1"></script>
-  <script src="js/demoEngine.js?v=1"></script>
-  <script src="js/api.js?v=1"></script>
-  <script src="js/data.js?v=3"></script>
-  <script src="js/auth.js?v=1"></script>
-  <script src="js/progress.js?v=1"></script>
-  <script src="js/admin.js?v=1"></script>
-  <script src="js/curriculum.js?v=1"></script>
-  <script src="js/ui.js?v=1"></script>
-  <script src="js/step1.js?v=1"></script>
-  <script src="js/step2.js?v=2"></script>
-  <script src="js/step3.js?v=1"></script>
-  <script src="js/router.js?v=8"></script>
-  <script src="js/daily-video.js?v=2"></script>
-  <script src="js/classroom.js?v=12"></script>
-  <script src="js/messaging.js?v=1"></script>
-  <script src="js/amie.js?v=1"></script>
-  <script src="js/schedule.js?v=1"></script>
-  <script src="js/guide.js?v=1"></script>
-  <script src="js/app.js?v=1"></script>
+  <script src="js/supabase.js?v=11"></script>
+  <script src="js/state.js?v=11"></script>
+  <script src="js/levels.js?v=11"></script>
+  <script src="js/fingerprint.js?v=11"></script>
+  <script src="js/sessionTypes.js?v=11"></script>
+  <script src="js/config.js?v=11"></script>
+  <script src="js/prompts.js?v=11"></script>
+  <script src="js/renders.js?v=11"></script>
+  <script src="js/demoEngine.js?v=11"></script>
+  <script src="js/api.js?v=11"></script>
+  <script src="js/data.js?v=11"></script>
+  <script src="js/auth.js?v=11"></script>
+  <script src="js/progress.js?v=11"></script>
+  <script src="js/admin.js?v=11"></script>
+  <script src="js/curriculum.js?v=11"></script>
+  <script src="js/ui.js?v=11"></script>
+  <script src="js/step1.js?v=11"></script>
+  <script src="js/step2.js?v=11"></script>
+  <script src="js/step3.js?v=11"></script>
+  <script src="js/router.js?v=11"></script>
+  <script src="js/messaging.js?v=11"></script>
+  <script src="js/amie.js?v=11"></script>
+  <script src="js/schedule.js?v=11"></script>
+  <script src="js/guide.js?v=11"></script>
+  <script src="js/app.js?v=11"></script>
 </body>
 </html>

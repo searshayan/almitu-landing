@@ -252,14 +252,8 @@ window.tutorState = {
   curLoading: false
 };
 
-function saveTutorView(v) { try { localStorage.setItem('almitu.tutorView', v); } catch (e) { /* private mode */ } }
-
 async function initTutorDashboard() {
   const ctx = activeContext();
-  // Remember which top-level view was open, so a page refresh returns to it
-  // instead of always dropping back to Home. (Read before tutorGoHome resets it.)
-  let savedView = null;
-  try { savedView = localStorage.getItem('almitu.tutorView'); } catch (e) { /* private mode */ }
   tutorGoHome();
   const home = document.getElementById('tutorHome');
   home.innerHTML = '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading your dashboard…</div>';
@@ -276,8 +270,6 @@ async function initTutorDashboard() {
     // Practice stats for the tutor's own sessions (RLS scopes this to them).
     tutorState.attempts = await dataListAttemptsForSessions(sessions.map(s => s.id)).catch(() => []);
     renderTutorHome();
-    if (savedView === 'curriculum') tutorGoCurriculum();
-    else if (savedView === 'schedule') tutorGoSchedule();
   } catch (e) {
     home.innerHTML = `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load your dashboard: ${escapeHtml(e.message)}</div>`;
   }
@@ -285,9 +277,7 @@ async function initTutorDashboard() {
 
 /* Show the tutor landing (sessions + students); hide the prep/live steps. */
 function tutorGoHome() {
-  tutorState.fromClassroom = false;   // navigating away abandons any classroom build
   tutorState.view = 'home';
-  saveTutorView('home');
   document.getElementById('tutorHome').classList.remove('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorSchedule').classList.add('hidden');
@@ -299,9 +289,7 @@ function tutorGoHome() {
 
 /* Show the tutor's weekly schedule (aggregate across all their students). */
 function tutorGoSchedule() {
-  tutorState.fromClassroom = false;   // navigating away abandons any classroom build
   tutorState.view = 'schedule';
-  saveTutorView('schedule');
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
   document.getElementById('tutorSchedule').classList.remove('hidden');
@@ -319,7 +307,6 @@ function tutorGoSchedule() {
 
 function tutorGoCurriculum() {
   tutorState.view = 'curriculum';
-  saveTutorView('curriculum');
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.remove('hidden');
   document.getElementById('tutorSchedule').classList.add('hidden');
@@ -658,7 +645,7 @@ function studentsCard(students) {
   }
   const rows = students.map(st => {
     const open = tutorState.openStudentId === st.id;
-    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed' && x.plan);
+    const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed');
     const history = !open ? '' : `
       <div class="mt-3 pt-3" style="border-top:1px dashed var(--line);">
         ${done.length ? done.map(row => {
@@ -929,10 +916,7 @@ async function initStudentDashboard() {
       dataListStudentSessions(ctx.userId),
       dataListAttemptsForStudent(ctx.userId).catch(() => [])
     ]);
-    // Only real, taught sessions become notebooks. A classroom session that was
-    // opened but never taught has plan=null; including it would throw in the
-    // notebook render (nb.plan.meta) and wipe the whole list.
-    s.savedNotebooks = rows.map(rowToNotebook).filter(nb => nb && nb.plan && nb.plan.meta);
+    s.savedNotebooks = rows.map(rowToNotebook);
     s.selectedNotebookId = s.savedNotebooks[0] ? s.savedNotebooks[0].id : null;
     studentProgress.attempts = attempts;
   } catch (e) {
@@ -1010,34 +994,11 @@ async function refreshStudentLive(studentId) {
 function renderStudentLiveBanner(live) {
   const host = document.getElementById('studentLiveBanner');
   if (!host) return;
-  if (!live) { host.classList.add('hidden'); host.innerHTML = ''; window._studentLive = null; return; }
-
-  const tutorName = (live.tutor && live.tutor.full_name) || 'Your tutor';
-  const title = live.title || 'your session';
-
-  // Classroom session: the tutor is in the room and has selected this student,
-  // so "Join Classroom" is live right away (no link to wait for).
-  if (live.is_classroom) {
-    window._studentLive = live;
-    host.classList.remove('hidden');
-    host.innerHTML = `
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 rounded-2xl mb-6" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.3);">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="w-2.5 h-2.5 rounded-full animate-pulse flex-shrink-0" style="background:#059669;"></span>
-          <div class="min-w-0">
-            <p class="text-sm font-semibold" style="color:var(--navy);">Your tutor is in the classroom</p>
-            <p class="text-[11px] truncate" style="color:var(--muted);">${escapeHtml(tutorName)} · ${escapeHtml(title)}</p>
-          </div>
-        </div>
-        <button onclick="classroomJoinAsStudent(window._studentLive)" class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold glow-success flex-shrink-0" style="background:linear-gradient(135deg, #06D6A0, #05B586);">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a2 2 0 012-2h9a2 2 0 012 2v14l-6-3-6 3V5z"/></svg>
-          Join Classroom
-        </button>
-      </div>`;
-    return;
-  }
+  if (!live) { host.classList.add('hidden'); host.innerHTML = ''; return; }
 
   const link = live.meet_link;
+  const tutorName = (live.tutor && live.tutor.full_name) || 'Your tutor';
+  const title = live.title || 'your session';
   host.classList.remove('hidden');
   host.innerHTML = `
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 rounded-2xl mb-6" style="background:${link ? 'rgba(6,214,160,.08)' : 'rgba(255,210,63,.10)'}; border:1px solid ${link ? 'rgba(6,214,160,.3)' : 'rgba(255,210,63,.35)'};">
@@ -1130,18 +1091,17 @@ function startSession() {
   if (!student) { showToast('Pick a student for this session first.', 'warn'); return; }
 
   if (typeof _editMode !== 'undefined' && _editMode) savePvEdit();
+  launchCall();          // shows the presentation in this tab
 
-  // Start Session now opens the in-app Classroom (video + screen share), not
-  // Google Meet. Create the live classroom session, then enter the room and
-  // connect the call. The student's "Join Classroom" lights up off this row.
+  // Then persist the live session in the background.
   (async () => {
     try {
       await ensurePlanInLibrary(plan);
-      const row = await dataCreateSession({ ...buildSessionRow(plan, student, 'live', ''), is_classroom: true });
+      const row = await dataCreateSession(buildSessionRow(plan, student, 'live', ''));
       tutorState.currentSessionId = row.id;
-      if (typeof classroomStartTeaching === 'function') classroomStartTeaching(plan);
+      renderMeetLinkBox();
     } catch (e) {
-      showToast('Could not start the session: ' + e.message, 'error');
+      showToast('Could not start the session record: ' + e.message, 'error');
     }
   })();
 }
