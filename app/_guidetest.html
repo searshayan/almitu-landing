@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --card:#fff; --line:#e3e6ea; --ink:#1d2129; --navy:#0b2a4a; --muted:#6b7280;
+    --primary:#ff6b35; --primary-dark:#e2551f; --secondary:#004e89;
+    --surface-2:#f4f6f8; --radius-md:12px; --radius-xl:20px; --radius-pill:999px;
+    --shadow-lg:0 20px 50px rgba(0,0,0,.25);
+  }
+  body { margin:0; font-family: sans-serif; }
+  .bar { position:sticky; top:0; background:#004e89; color:#fff; padding:10px; z-index:10; }
+  .tall { margin:24px; padding:20px; border:2px dashed #999; }
+  [data-guide="tutor-plans"] { height: 1400px; background:#eef; }
+  [data-guide="tutor-students"] { height: 90px; background:#efe; }
+
+  /* ---- guide panel + spotlight CSS (mirrors app/css/main.css) ---- */
+  #guidePanel { position: fixed; inset: 0; z-index: 400; }
+  #guidePanel.hidden { display: none; }
+  .guide-backdrop { position:absolute; inset:0; background:rgba(15,17,23,.55); opacity:0; transition:opacity .2s ease; }
+  #guidePanel.guide-open .guide-backdrop { opacity:1; }
+  .guide-card { position:absolute; top:50%; left:50%; transform:translate(-50%,-48%); width:min(680px,calc(100% - 32px)); max-height:90vh; display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-xl); box-shadow:var(--shadow-lg); opacity:0; transition:opacity .2s ease, transform .2s ease; }
+  #guidePanel.guide-open .guide-card { opacity:1; transform:translate(-50%,-50%); }
+  .guide-head { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line); }
+  .guide-tab { padding:7px 16px; border-radius:var(--radius-pill); font-size:13px; font-weight:700; cursor:pointer; background:transparent; border:1px solid var(--line); color:var(--muted); }
+  .guide-tab.active { background:var(--secondary); border-color:var(--secondary); color:#fff; }
+  .guide-x { width:32px; height:32px; border-radius:50%; cursor:pointer; background:transparent; border:none; color:var(--muted); }
+  .guide-scroll { padding:20px 22px; overflow-y:auto; }
+  .guide-title { font-size:20px; font-weight:800; color:var(--navy); margin:0 0 12px; }
+  .guide-big { display:flex; gap:10px; padding:14px 16px; border-radius:var(--radius-md); background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.18); margin-bottom:18px; }
+  .guide-flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px 6px; padding:12px; margin-bottom:20px; background:var(--surface-2); border-radius:var(--radius-md); }
+  .guide-flow-dot { width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background:var(--secondary); color:#fff; font-size:11px; }
+  .guide-step { display:flex; gap:14px; padding:12px 0; border-top:1px solid var(--line); }
+  .guide-step-num { flex-shrink:0; width:40px; height:40px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:20px; background:rgba(0,78,137,.07); border:1px solid rgba(0,78,137,.14); }
+  .guide-showme { margin-top:8px; padding:6px 12px; border-radius:var(--radius-pill); font-size:12px; font-weight:700; cursor:pointer; background:rgba(0,78,137,.08); border:1px solid rgba(0,78,137,.18); color:var(--secondary); }
+  .guide-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 16px; border-top:1px solid var(--line); }
+  .guide-done { padding:9px 20px; border-radius:var(--radius-pill); border:none; cursor:pointer; font-size:13px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); }
+
+  #guideSpot { position: fixed; inset: 0; z-index: 420; pointer-events: none; }
+  #guideSpot.hidden { display: none; }
+  .guide-spot-backdrop { position: fixed; inset: 0; pointer-events: auto; }
+  .guide-spot-hole { position: fixed; border-radius: 12px; box-shadow: 0 0 0 9999px rgba(15,17,23,.6); outline: 3px solid var(--primary); outline-offset: 2px; pointer-events: none; }
+  .guide-spot-callout { position: fixed; width: min(320px, calc(100vw - 24px)); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); padding: 14px 16px; pointer-events: auto; }
+  .guide-spot-title { margin:0 0 3px; font-size:14px; font-weight:700; color:var(--navy); }
+  .guide-spot-hint { margin:0 0 12px; font-size:12.5px; color:var(--muted); }
+  .guide-spot-actions { display:flex; gap:8px; justify-content:flex-end; }
+  .guide-spot-back, .guide-spot-done { padding:7px 14px; border-radius:var(--radius-pill); font-size:12px; font-weight:700; cursor:pointer; }
+  .guide-spot-back { background:transparent; border:1px solid var(--line); color:var(--muted); }
+  .guide-spot-done { background:var(--secondary); border:1px solid var(--secondary); color:#fff; }
+</style>
+</head>
+<body>
+  <div class="bar"><button onclick="openGuide('tutor')">How it works</button></div>
+  <div class="tall" data-guide="tutor-plans">tutor-plans (intentionally taller than the screen)</div>
+  <div class="tall" data-guide="tutor-students">tutor-students (short)</div>
+  <div class="tall" data-guide="tutor-generate" style="height:120px;background:#fee">tutor-generate</div>
+  <div style="height:600px"></div>
+  <script>
+    window.activeContext = () => ({ role: 'tutor' });
+    window.showToast = (m) => { window.__lastToast = m; console.log('TOAST:', m); };
+  </script>
+  <script>
+/* verbatim copy of app/js/guide.js for isolated behavior testing */
+const GUIDE_CONTENT = {
+  tutor: {
+    label: 'Tutor',
+    heading: 'How Almitu works — for tutors',
+    big: 'Build a lesson once → teach it live → practice on the dashboard.',
+    flow: ['Generate a session', 'Teach live', 'Auto-practice', 'Reuse the plan'],
+    steps: [
+      { icon: '📚', title: 'Your session library', target: '[data-guide="tutor-plans"]', body: 'Every session you generate is saved here.' },
+      { icon: '🧑‍🎓', title: 'Your students', target: '[data-guide="tutor-students"]', body: 'Students assigned to you show up here.' },
+      { icon: '✨', title: 'Generate a new session', target: '[data-guide="tutor-generate"]', body: 'Choose the student, language, level and type.' }
+    ]
+  },
+  student: { label:'Student', heading:'', big:'', flow:[], steps:[] }
+};
+let _guideRole = 'tutor';
+function _guideActiveRole() {
+  const r = (typeof activeContext === 'function' && activeContext().role) || 'tutor';
+  return r === 'student' ? 'student' : 'tutor';
+}
+function openGuide(role) {
+  _guideRole = role || _guideActiveRole();
+  let panel = document.getElementById('guidePanel');
+  if (!panel) { panel = document.createElement('div'); panel.id = 'guidePanel'; document.body.appendChild(panel); }
+  panel.innerHTML = _guidePanelHtml(_guideRole);
+  panel.classList.remove('hidden');
+  requestAnimationFrame(() => panel.classList.add('guide-open'));
+  document.body.style.overflow = 'hidden';
+}
+function switchGuideRole(role) { openGuide(role); }
+function closeGuide() {
+  const panel = document.getElementById('guidePanel');
+  if (panel) { panel.classList.remove('guide-open'); setTimeout(() => panel.classList.add('hidden'), 200); }
+  guideSpotClose();
+  document.body.style.overflow = '';
+}
+function _guidePanelHtml(role) {
+  const g = GUIDE_CONTENT[role];
+  const onDash = (role === _guideActiveRole());
+  const steps = g.steps.map((s, i) => `
+    <div class="guide-step">
+      <div class="guide-step-num">${s.icon || (i + 1)}</div>
+      <div class="guide-step-body">
+        <h4>${s.title}</h4>
+        <p>${s.body}</p>
+        ${s.target && onDash ? `<button class="guide-showme" onclick="guideShowStep(${i})">Show me on my dashboard →</button>` : ''}
+      </div>
+    </div>`).join('');
+  return `
+    <div class="guide-backdrop" onclick="closeGuide()"></div>
+    <div class="guide-card" role="dialog">
+      <div class="guide-head"><div class="guide-tabs"></div><button class="guide-x" onclick="closeGuide()">✕</button></div>
+      <div class="guide-scroll"><h3 class="guide-title">${g.heading}</h3>${steps}</div>
+      <div class="guide-foot"><span>reopen any time</span><button class="guide-done" onclick="closeGuide()">Got it</button></div>
+    </div>`;
+}
+function guideShowStep(i) {
+  const s = (GUIDE_CONTENT[_guideRole].steps || [])[i];
+  if (s && s.target) guideShowMe(s.target, s.title);
+}
+let _guideSpotTarget = null;
+let _guideSpotReposition = null;
+function guideShowMe(sel, title) {
+  const el = document.querySelector(sel);
+  if (!el || el.offsetParent === null) {
+    if (typeof showToast === 'function') showToast('That part appears on your dashboard when it’s available.', 'info');
+    return;
+  }
+  const panel = document.getElementById('guidePanel');
+  if (panel) { panel.classList.remove('guide-open'); panel.classList.add('hidden'); }
+  document.body.style.overflow = '';
+  let spot = document.getElementById('guideSpot');
+  if (!spot) { spot = document.createElement('div'); spot.id = 'guideSpot'; document.body.appendChild(spot); }
+  spot.innerHTML = `
+    <div class="guide-spot-backdrop" onclick="guideSpotBack()"></div>
+    <div class="guide-spot-hole"></div>
+    <div class="guide-spot-callout">
+      <p class="guide-spot-title">${title || ''}</p>
+      <p class="guide-spot-hint">This is the part on your dashboard.</p>
+      <div class="guide-spot-actions">
+        <button class="guide-spot-back" onclick="guideSpotBack()">← Back to guide</button>
+        <button class="guide-spot-done" onclick="guideSpotClose()">Done</button>
+      </div>
+    </div>`;
+  spot.classList.remove('hidden');
+  _guideSpotTarget = el;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const place = () => _guidePlaceSpot(spot, _guideSpotTarget);
+  _guideSpotReposition = place;
+  requestAnimationFrame(place);
+  setTimeout(place, 350);
+  window.addEventListener('resize', place);
+  window.addEventListener('scroll', place, true);
+}
+function guideSpotBack() { guideSpotClose(); openGuide(_guideRole); }
+function _guidePlaceSpot(spot, el) {
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const pad = 8;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const hole = spot.querySelector('.guide-spot-hole');
+  hole.style.top = (r.top - pad) + 'px';
+  hole.style.left = (r.left - pad) + 'px';
+  hole.style.width = (r.width + pad * 2) + 'px';
+  hole.style.height = (r.height + pad * 2) + 'px';
+  const callout = spot.querySelector('.guide-spot-callout');
+  const cw = callout.offsetWidth || 320;
+  const ch = callout.offsetHeight || 150;
+  const m = 12;
+  let top;
+  if (r.bottom + m + ch <= vh) top = r.bottom + m;
+  else if (r.top - m - ch >= 0) top = r.top - m - ch;
+  else top = vh - ch - m;
+  top = Math.max(m, Math.min(top, vh - ch - m));
+  let left = vw < 560 ? (vw - cw) / 2 : r.left;
+  left = Math.max(m, Math.min(left, vw - cw - m));
+  callout.style.top = top + 'px';
+  callout.style.left = left + 'px';
+  callout.style.bottom = 'auto';
+}
+function guideSpotClose() {
+  const spot = document.getElementById('guideSpot');
+  if (spot) spot.classList.add('hidden');
+  if (_guideSpotReposition) {
+    window.removeEventListener('resize', _guideSpotReposition);
+    window.removeEventListener('scroll', _guideSpotReposition, true);
+    _guideSpotReposition = null;
+  }
+  _guideSpotTarget = null;
+}
+  </script>
+</body>
+</html>

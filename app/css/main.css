@@ -990,6 +990,9 @@ textarea:focus-visible,
 /* ── Spotlight ── */
 #guideSpot { position: fixed; inset: 0; z-index: 420; pointer-events: none; }
 #guideSpot.hidden { display: none; }
+/* Transparent full-screen catcher so a tap anywhere outside the callout returns
+   to the guide — the dimming itself still comes from the hole's box-shadow. */
+.guide-spot-backdrop { position: fixed; inset: 0; pointer-events: auto; }
 .guide-spot-hole {
   position: fixed; border-radius: 12px;
   box-shadow: 0 0 0 9999px rgba(15, 17, 23, .6);

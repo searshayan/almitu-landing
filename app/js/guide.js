@@ -133,29 +133,33 @@ function guideShowMe(sel, title) {
     if (typeof showToast === 'function') showToast('That part appears on your dashboard when it’s available.', 'info');
     return;
   }
-  // Hide the panel so the highlighted element is visible.
+  // Fully hide the guide panel (not just fade it) so it can't keep intercepting
+  // taps behind the spotlight, and restore page scroll so scrollIntoView works.
   const panel = document.getElementById('guidePanel');
-  if (panel) panel.classList.remove('guide-open');
+  if (panel) { panel.classList.remove('guide-open'); panel.classList.add('hidden'); }
+  document.body.style.overflow = '';
 
   let spot = document.getElementById('guideSpot');
   if (!spot) {
     spot = document.createElement('div');
     spot.id = 'guideSpot';
-    spot.innerHTML = '<div class="guide-spot-hole"></div><div class="guide-spot-callout"></div>';
     document.body.appendChild(spot);
   }
+  // Rebuild every time so the backdrop always exists and the callout is fresh.
+  spot.innerHTML = `
+    <div class="guide-spot-backdrop" onclick="guideSpotBack()"></div>
+    <div class="guide-spot-hole"></div>
+    <div class="guide-spot-callout">
+      <p class="guide-spot-title">${title || ''}</p>
+      <p class="guide-spot-hint">This is the part on your dashboard.</p>
+      <div class="guide-spot-actions">
+        <button class="guide-spot-back" onclick="guideSpotBack()">← Back to guide</button>
+        <button class="guide-spot-done" onclick="guideSpotClose()">Done</button>
+      </div>
+    </div>`;
   spot.classList.remove('hidden');
   _guideSpotTarget = el;
   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  const callout = spot.querySelector('.guide-spot-callout');
-  callout.innerHTML = `
-    <p class="guide-spot-title">${title || ''}</p>
-    <p class="guide-spot-hint">This is the part on your dashboard.</p>
-    <div class="guide-spot-actions">
-      <button class="guide-spot-back" onclick="guideSpotClose(); openGuide('${_guideRole}')">← Back to guide</button>
-      <button class="guide-spot-done" onclick="guideSpotClose()">Done</button>
-    </div>`;
 
   const place = () => _guidePlaceSpot(spot, _guideSpotTarget);
   _guideSpotReposition = place;
@@ -165,22 +169,41 @@ function guideShowMe(sel, title) {
   window.addEventListener('scroll', place, true);
 }
 
+/* Return to the guide from the spotlight (backdrop tap or "Back to guide"). */
+function guideSpotBack() { guideSpotClose(); openGuide(_guideRole); }
+
 function _guidePlaceSpot(spot, el) {
   if (!el) return;
   const r = el.getBoundingClientRect();
   const pad = 8;
+  const vw = window.innerWidth, vh = window.innerHeight;
   const hole = spot.querySelector('.guide-spot-hole');
   hole.style.top = (r.top - pad) + 'px';
   hole.style.left = (r.left - pad) + 'px';
   hole.style.width = (r.width + pad * 2) + 'px';
   hole.style.height = (r.height + pad * 2) + 'px';
-  // Callout below the element if there's room, else above.
+
+  // Callout: prefer below the element, then above; otherwise dock inside the
+  // viewport. Always clamp on BOTH axes so the Back/Done buttons stay reachable
+  // even when the target is taller than the screen (common on phones).
   const callout = spot.querySelector('.guide-spot-callout');
-  const below = r.bottom + 12;
-  const spaceBelow = window.innerHeight - r.bottom;
-  callout.style.left = Math.max(12, Math.min(r.left, window.innerWidth - 340)) + 'px';
-  if (spaceBelow > 180) { callout.style.top = below + 'px'; callout.style.bottom = 'auto'; }
-  else { callout.style.bottom = (window.innerHeight - r.top + 12) + 'px'; callout.style.top = 'auto'; }
+  const cw = callout.offsetWidth || 320;
+  const ch = callout.offsetHeight || 150;
+  const m = 12;
+
+  let top;
+  if (r.bottom + m + ch <= vh) top = r.bottom + m;            // below
+  else if (r.top - m - ch >= 0) top = r.top - m - ch;         // above
+  else top = vh - ch - m;                                     // dock to bottom
+  top = Math.max(m, Math.min(top, vh - ch - m));
+
+  // Center horizontally on narrow screens, else align to the element's left.
+  let left = vw < 560 ? (vw - cw) / 2 : r.left;
+  left = Math.max(m, Math.min(left, vw - cw - m));
+
+  callout.style.top = top + 'px';
+  callout.style.left = left + 'px';
+  callout.style.bottom = 'auto';
 }
 
 function guideSpotClose() {
