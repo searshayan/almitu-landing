@@ -1,8 +1,8 @@
-# almitu - Live Micro-Tutoring for English Learners
+# almitu - Live Micro-Tutoring for Language Learners
 
 ## About
 
-almitu is a modern EdTech platform offering 25-minute live English tutoring sessions combined with AI-powered practice activities. We make language learning fit real life for busy professionals, newcomers, and anyone who wants to build English confidence.
+almitu is a modern EdTech platform offering 15 / 25-minute live language tutoring sessions combined with AI-powered practice activities. We make language learning fit real life for busy professionals, newcomers, and anyone who wants to be fluent and build confidence.
 
 ## Website Structure
 
