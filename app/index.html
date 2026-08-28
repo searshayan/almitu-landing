@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=12">
+  <link rel="stylesheet" href="css/main.css?v=13">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -219,7 +219,7 @@
           </div>
           <div>
             <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Session Prep Engine</h1>
-            <p class="text-sm" style="color:var(--muted);">Configure the session — the tier system locks the AI to CEFR-aligned, level-specific output.</p>
+            <p class="text-sm" style="color:var(--muted);">Set up your session — every plan is built to the exact CEFR level you choose.</p>
           </div>
         </div>
       </div>
@@ -320,8 +320,7 @@
         <!-- Right: AI Output + Review/Edit -->
         <div id="outputPanel" class="card-surface rounded-2xl p-6 relative overflow-hidden">
           <h2 class="text-base font-semibold mb-5 flex items-center gap-2" style="color:var(--navy);">
-            <svg class="w-5 h-5" style="color:var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-            almitu AI Engine Output
+            Your Session Plan
           </h2>
 
           <div id="genStatus" class="mb-4 px-3 py-2 rounded-xl inline-flex items-center flex-wrap gap-1" style="border:1px solid rgba(0,78,137,.15); background:rgba(0,78,137,.06);">
@@ -343,7 +342,7 @@
                 <div class="absolute inset-0 rounded-full border-2 border-transparent animate-spin" style="border-top-color:var(--primary);"></div>
                 <div class="absolute inset-2 rounded-full border-2 border-transparent animate-spin" style="border-top-color:var(--accent); animation-direction:reverse; animation-duration:1.5s;"></div>
               </div>
-              <p class="text-[11px] mb-5 font-mono" id="loadingEngine" style="color:var(--muted);">Demo Engine</p>
+              <p class="text-xs mb-5 font-medium text-center px-4 leading-snug" id="loadingEngine" style="color:var(--secondary);">Preparing your session plan…</p>
               <div class="space-y-3 w-full max-w-xs">
                 <div id="ls1" class="flex items-center gap-3 text-sm text-gray-400 transition-all duration-500">
                   <div class="w-5 h-5 rounded-full flex items-center justify-center" style="border:1px solid var(--line);"><span class="loading-check hidden text-xs" style="color:var(--success);">✓</span></div>
@@ -503,7 +502,7 @@
           <!-- Tutor Notes (replaces the old chat) -->
           <div class="chat-compact flex-1 flex flex-col" style="min-height:280px;">
             <div class="px-3 py-2 flex items-center justify-between" style="border-bottom:1px solid var(--line);">
-              <span class="text-xs font-semibold" style="color:var(--navy);">📝 Notes &amp; Assignments</span>
+              <span class="text-xs font-semibold" style="color:var(--navy);">Notes &amp; Assignments</span>
               <span class="text-[9px]" id="notesSaveState" style="color:var(--muted);"></span>
             </div>
             <div class="p-3 flex-1 flex flex-col">
@@ -639,10 +638,9 @@
         <div class="lg:col-span-8 sv-col-practice">
           <div class="card-surface rounded-2xl p-5 mb-4 sv-practice-intro">
             <h2 class="text-sm font-semibold mb-1 flex items-center gap-2" style="color:var(--navy);">
-              <svg class="w-4 h-4" style="color:var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-              AI Studio Practice Ground
+              Practice Studio
             </h2>
-            <p class="text-xs" style="color:var(--muted);">Start with the Overview, then 5 activity types — each generated from the selected session's practice bank.</p>
+            <p class="text-xs" style="color:var(--muted);">Start with the Overview, then 5 activity types — each built from the selected session's practice bank.</p>
           </div>
 
           <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6 sv-activity-tiles">
@@ -746,30 +744,30 @@
   </div>
 
   <!-- Scripts (dependency order) -->
-  <script src="js/supabase.js?v=12"></script>
-  <script src="js/state.js?v=12"></script>
-  <script src="js/levels.js?v=12"></script>
-  <script src="js/fingerprint.js?v=12"></script>
-  <script src="js/sessionTypes.js?v=12"></script>
-  <script src="js/config.js?v=12"></script>
-  <script src="js/prompts.js?v=12"></script>
-  <script src="js/renders.js?v=12"></script>
-  <script src="js/demoEngine.js?v=12"></script>
-  <script src="js/api.js?v=12"></script>
-  <script src="js/data.js?v=12"></script>
-  <script src="js/auth.js?v=12"></script>
-  <script src="js/progress.js?v=12"></script>
-  <script src="js/admin.js?v=12"></script>
-  <script src="js/curriculum.js?v=12"></script>
-  <script src="js/ui.js?v=12"></script>
-  <script src="js/step1.js?v=12"></script>
-  <script src="js/step2.js?v=12"></script>
-  <script src="js/step3.js?v=12"></script>
-  <script src="js/router.js?v=12"></script>
-  <script src="js/messaging.js?v=12"></script>
-  <script src="js/amie.js?v=12"></script>
-  <script src="js/schedule.js?v=12"></script>
-  <script src="js/guide.js?v=12"></script>
-  <script src="js/app.js?v=12"></script>
+  <script src="js/supabase.js?v=13"></script>
+  <script src="js/state.js?v=13"></script>
+  <script src="js/levels.js?v=13"></script>
+  <script src="js/fingerprint.js?v=13"></script>
+  <script src="js/sessionTypes.js?v=13"></script>
+  <script src="js/config.js?v=13"></script>
+  <script src="js/prompts.js?v=13"></script>
+  <script src="js/renders.js?v=13"></script>
+  <script src="js/demoEngine.js?v=13"></script>
+  <script src="js/api.js?v=13"></script>
+  <script src="js/data.js?v=13"></script>
+  <script src="js/auth.js?v=13"></script>
+  <script src="js/progress.js?v=13"></script>
+  <script src="js/admin.js?v=13"></script>
+  <script src="js/curriculum.js?v=13"></script>
+  <script src="js/ui.js?v=13"></script>
+  <script src="js/step1.js?v=13"></script>
+  <script src="js/step2.js?v=13"></script>
+  <script src="js/step3.js?v=13"></script>
+  <script src="js/router.js?v=13"></script>
+  <script src="js/messaging.js?v=13"></script>
+  <script src="js/amie.js?v=13"></script>
+  <script src="js/schedule.js?v=13"></script>
+  <script src="js/guide.js?v=13"></script>
+  <script src="js/app.js?v=13"></script>
 </body>
 </html>

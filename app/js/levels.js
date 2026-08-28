@@ -23,7 +23,7 @@ const TIERS = {
     color: '#E85A2A',
     bg: 'rgba(255,107,53,.08)',
     border: 'rgba(255,107,53,.25)',
-    desc: 'L1 hints · image support · word banks · memorized chunks · oral-first · short high-success activities',
+    desc: 'Early beginners building their first words and everyday phrases with plenty of support.',
     rules: [
       'L1 hints visible (when L1 support is enabled)',
       'Image/emoji support throughout',
@@ -41,7 +41,7 @@ const TIERS = {
     color: '#004E89',
     bg: 'rgba(0,78,137,.07)',
     border: 'rgba(0,78,137,.22)',
-    desc: 'Context-based introduction · collocations & word families · guided writing · semi-structured production',
+    desc: 'Growing learners forming their own sentences and short paragraphs with lighter support.',
     rules: [
       'Context-based word/structure introduction',
       'No L1 hints (unless selected by tutor)',
@@ -59,7 +59,7 @@ const TIERS = {
     color: '#7C3AED',
     bg: 'rgba(124,58,246,.07)',
     border: 'rgba(124,58,246,.22)',
-    desc: 'Authentic texts · zero scaffolding · register & nuance · critical analysis · extended production · self-assessment',
+    desc: 'Confident learners refining fluency, nuance and independent, extended communication.',
     rules: [
       'Authentic text materials',
       'Zero scaffolding (no word banks, no frames, no L1)',
@@ -134,6 +134,52 @@ const LEVEL_DESCRIPTORS = {
 
 function levelDescriptor(level) {
   return LEVEL_DESCRIPTORS[level] || LEVEL_DESCRIPTORS['A1'];
+}
+
+/* ── Tutor-facing level guidance ──
+   A short, plain-language brief shown under the level selector: the goal of
+   the level, what to expect from the learner, and how to teach at it. One
+   entry per CEFR level (kept separate from the prompt-facing descriptors). */
+const LEVEL_GUIDE = {
+  'Pre-A1': {
+    goal:   'Help the learner recognise and say a small set of everyday words and fixed phrases.',
+    expect: 'Very short spoken answers, lots of repetition, and full support from images and their first language.',
+    teach:  'Model everything first, keep writing to a minimum, and celebrate small wins to build confidence.'
+  },
+  'A1': {
+    goal:   'Build simple present-tense sentences and questions about familiar, everyday needs.',
+    expect: 'Short turns, familiar vocabulary, and steady support throughout.',
+    teach:  'Introduce one structure at a time, practise it out loud, then use it in a guided task.'
+  },
+  'A2': {
+    goal:   'Connect simple sentences about routines, past events and near-future plans.',
+    expect: 'Short paragraphs, common word pairings, and only light support.',
+    teach:  'Set a clear context first, then move from guided practice to semi-independent speaking and writing.'
+  },
+  'B1': {
+    goal:   'Handle everyday, work and travel situations and give opinions with basic reasons.',
+    expect: 'Connected talk, fewer prompts, and growing independence.',
+    teach:  'Give a realistic scenario, step back, and let the learner produce with minimal help.'
+  },
+  'B2': {
+    goal:   'Discuss a range of topics in detail and argue a point of view with some nuance.',
+    expect: 'Clear, detailed language and the beginnings of register awareness — no scaffolding.',
+    teach:  'Focus on precision and appropriacy, and push for well-supported, extended answers.'
+  },
+  'C1': {
+    goal:   'Use fluent, flexible language for social, academic and professional purposes.',
+    expect: 'Spontaneous, well-structured output and a good grasp of implied meaning.',
+    teach:  'Challenge with authentic material and refine stance, cohesion and precision.'
+  },
+  'C2': {
+    goal:   'Communicate with near-native precision, handling idiom, style and subtle meaning.',
+    expect: 'Sophisticated, effortless language shaped for effect.',
+    teach:  'Fine-tune nuance and rhetorical control through demanding, open-ended tasks.'
+  }
+};
+
+function levelGuide(level) {
+  return LEVEL_GUIDE[level] || LEVEL_GUIDE['A1'];
 }
 
 /* ── Session duration modes ──

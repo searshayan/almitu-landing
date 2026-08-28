@@ -13,16 +13,16 @@ const SESSION_TYPES = {
         placeholder: 'e.g. Food and drinks at a café', hint: 'The thematic word group for this session.' },
       { id: 'targetVocab', label: 'Target Vocabulary (6–12 items, comma-separated)', type: 'textarea', required: true, rows: 2, counter: true,
         placeholder: 'coffee, tea, juice, water, croissant, cake, sandwich, menu',
-        hint: 'These exact words will be taught — the AI will not add or replace items.' },
+        hint: 'These exact words will be taught — No items will be added or replaced.' },
       { id: 'objective', label: 'Learning Objective / Context', type: 'textarea', required: true, rows: 2,
         placeholder: 'Student can name and ask for common café items when ordering',
         hint: 'What should the student be able to DO with these words after the session?' },
       { id: 'realWorldContext', label: 'Real-World Context', type: 'text', required: false,
         placeholder: 'e.g. Student visits a café every morning before work', hint: 'Where will the student actually use this vocabulary?' },
       { id: 'personalization', label: 'Student Interests / Personalization', type: 'text', required: false,
-        placeholder: 'e.g. Loves football, has two kids, works in a bakery', hint: 'Helps the AI personalize examples.' },
+        placeholder: 'e.g. Loves football, has two kids, works in a bakery', hint: 'Helps to personalize the examples.' },
       { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
-        placeholder: 'Anything else the AI should know…', hint: '' }
+        placeholder: 'Anything else to be considered…', hint: '' }
     ]
   },
 
@@ -40,11 +40,11 @@ const SESSION_TYPES = {
         hint: 'What should the student be able to DO with this structure?' },
       { id: 'exampleSentences', label: 'Example Sentences', type: 'textarea', required: false, rows: 2,
         placeholder: 'I have visited three countries. She has never tried sushi.',
-        hint: 'Your own model sentences — the AI will build on these.' },
+        hint: 'Your own model sentences — these will be built on.' },
       { id: 'commonErrors', label: 'Common Errors / L1 Interference', type: 'text', required: false,
         placeholder: 'e.g. Student drops "have", says "I visited" for unfinished time', hint: 'Known mistakes to target.' },
       { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
-        placeholder: 'Anything else the AI should know…', hint: '' }
+        placeholder: 'Anything else to be considered…', hint: '' }
     ]
   },
 
@@ -60,7 +60,7 @@ const SESSION_TYPES = {
         hint: 'What should the student be able to DO in this scenario?' },
       { id: 'targetExpressions', label: 'Target Expressions / Vocabulary Use', type: 'textarea', required: true, rows: 2,
         placeholder: 'I\'d like to make an appointment, Is ... available?, Could you repeat that?',
-        hint: 'The key functional phrases — the AI builds the session around these.' },
+        hint: 'The key functional phrases — the session is built around these.' },
       { id: 'speakingActivity', label: 'Speaking Activity', type: 'select', required: true,
         options: ['Role-play', 'Guided Discussion', 'Interview', 'Debate', 'Presentation', 'Negotiation', 'Problem-solving'],
         hint: 'The main production activity for the session.' },
@@ -69,7 +69,7 @@ const SESSION_TYPES = {
       { id: 'culturalNotes', label: 'Cultural Context Notes', type: 'text', required: false,
         placeholder: 'e.g. In Germany appointments are usually formal and punctual', hint: 'Cultural framing for the scenario.' },
       { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
-        placeholder: 'Anything else the AI should know…', hint: '' }
+        placeholder: 'Anything else to be considered…', hint: '' }
     ]
   }
 };
