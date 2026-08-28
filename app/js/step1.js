@@ -77,14 +77,16 @@ function populateLevels() {
 function updateTierBadge() {
   const level = document.getElementById('inputLevel').value;
   const tier = getTier(tierForLevel(level));
+  const g = levelGuide(level);
   const badge = document.getElementById('tierBadge');
+  const line = (title, text) =>
+    `<p class="text-[11px] leading-snug" style="color:var(--ink);"><span style="font-weight:700; color:${tier.color};">${title}.</span> ${text}</p>`;
   badge.innerHTML = `
-    <div class="flex items-center gap-2 mb-1">
-      <span class="text-xs font-bold font-display" style="color:${tier.color};">${tier.label} Tier</span>
-      <span class="text-[10px]" style="color:var(--muted);">${tier.levels}</span>
-      <span class="text-[9px] px-1.5 py-0.5 rounded font-mono font-bold" style="background:white; border:1px solid ${tier.border}; color:${tier.color};">${renderIdFor(getState().sessionType, tier.key)}</span>
-    </div>
-    <p class="text-[11px] leading-snug" style="color:var(--muted);">${tier.desc}</p>`;
+    <div class="space-y-1">
+      ${line('Goal', g.goal)}
+      ${line('What to expect', g.expect)}
+      ${line('Teaching', g.teach)}
+    </div>`;
   badge.style.background = tier.bg;
   badge.style.borderColor = tier.border;
   applyL1Gating();          // tier may forbid L1
@@ -447,8 +449,9 @@ async function generatePlan() {
   }
 
   const cfg = getConfig();
-  const engineLabels = { demo: 'Demo Engine (rule-based)', claude: 'Claude API — ' + (cfg.claudeModel || ''), custom: 'Custom API' };
-  startLoadingAnim(engineLabels[cfg.engine] || 'Demo Engine');
+  // Tutors don't need to see which engine/model runs — show a calm, motivating
+  // message instead while the plan builds (usually well under a minute).
+  startLoadingAnim('Preparing your session plan — usually under a minute. A great lesson is on the way…');
 
   try {
     // PHASE 1: slides only — fast, so the tutor can review/edit without waiting.
@@ -505,15 +508,15 @@ async function generatePlan() {
 function friendlyGenError(e) {
   const raw = ((e && e.message) || String(e || '')).toLowerCase();
   if (/failed to fetch|networkerror|network error|err_internet|offline|dns/.test(raw))
-    return 'We couldn’t reach the AI engine. Check your internet connection and try again.';
+    return 'We couldn’t connect. Check your internet connection and try again.';
   if (/429|rate limit|too many requests|overloaded|capacity/.test(raw))
-    return 'The AI engine is busy right now. Wait a few seconds, then try again.';
+    return 'The service is busy right now. Wait a few seconds, then try again.';
   if (/abort|timeout|timed out|deadline/.test(raw))
     return 'That took too long to generate. Please try again.';
   if (/401|403|unauthor|invalid.*key|api key|forbidden/.test(raw))
-    return 'The AI engine rejected the request. An admin may need to check the API key in Settings.';
+    return 'The session couldn’t be generated. An admin may need to check the settings.';
   if (/json|unexpected token|parse|malformed|schema/.test(raw))
-    return 'The AI engine returned something we couldn’t read. Try again — this usually clears on a second run.';
+    return 'The session came back unreadable. Try again — this usually clears on a second run.';
   return 'Something went wrong while building the session. Please try again.';
 }
 

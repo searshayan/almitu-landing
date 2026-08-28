@@ -131,8 +131,8 @@ function renderHeaderNav(ctx) {
   } else if (ctx.role === 'tutor') {
     nav.innerHTML =
       btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum' && tutorState.view !== 'schedule') +
-      btn('📚 Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum') +
-      btn('🗓 Schedule', "tutorGoSchedule()", tutorState.view === 'schedule');
+      btn('Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum') +
+      btn('Schedule', "tutorGoSchedule()", tutorState.view === 'schedule');
   } else {
     nav.innerHTML = '';
   }
@@ -398,7 +398,6 @@ function renderCurriculumBrowser() {
   if (!totalSessions) {
     host.innerHTML = `
       <div class="card-surface rounded-2xl p-10 text-center">
-        <p class="text-4xl mb-3">📚</p>
         <p class="text-base font-semibold" style="color:var(--navy);">No curriculum sessions yet</p>
         <p class="text-xs mt-1" style="color:var(--muted);">An admin needs to generate the curriculum first.</p>
       </div>`;
@@ -412,9 +411,9 @@ function renderCurriculumBrowser() {
 
   host.innerHTML = `
     <div class="mb-4">
-      <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">📚 Curriculum</h1>
+      <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Curriculum</h1>
       <p class="text-sm" style="color:var(--muted);">
-        Ready-made CEFR sessions — choose a tier, level and topic, then teach it to any of your students.
+        A shared library of ready-to-teach lessons. Choose a level and topic, and teach it with any of your students.
       </p>
     </div>
     ${curriculumBreadcrumb()}
@@ -629,8 +628,8 @@ function plansCard(plans, readOnly) {
     }).join('');
   }
   return `<div class="card-surface rounded-2xl p-5">
-      <h2 class="text-sm font-semibold mb-1" style="color:var(--navy);">📚 My Session Plans</h2>
-      <p class="text-[11px] mb-4" style="color:var(--muted);">Reusable — using a plan again costs nothing to generate.</p>
+      <h2 class="text-sm font-semibold mb-1" style="color:var(--navy);">My Session Plans</h2>
+      <p class="text-[11px] mb-4" style="color:var(--muted);">Your personal lesson library. Reuse any plan to teach any of your students, as often as you like.</p>
       ${rows}
     </div>`;
 }
@@ -639,7 +638,7 @@ function plansCard(plans, readOnly) {
 function studentsCard(students) {
   if (!students.length) {
     return `<div class="card-surface rounded-2xl p-5">
-        <h2 class="text-sm font-semibold mb-4" style="color:var(--navy);">👥 My Students</h2>
+        <h2 class="text-sm font-semibold mb-4" style="color:var(--navy);">My Students</h2>
         <div class="text-center py-8 text-sm" style="color:var(--muted);">No students assigned yet. Ask your admin to assign students to you.</div>
       </div>`;
   }
@@ -679,7 +678,7 @@ function studentsCard(students) {
       </div>`;
   }).join('');
   return `<div class="card-surface rounded-2xl p-5">
-      <h2 class="text-sm font-semibold mb-1" style="color:var(--navy);">👥 My Students</h2>
+      <h2 class="text-sm font-semibold mb-1" style="color:var(--navy);">My Students</h2>
       <p class="text-[11px] mb-4" style="color:var(--muted);">Click a student to see their completed sessions.</p>
       ${rows}
     </div>`;
@@ -861,7 +860,7 @@ function tutorViewSession(id) {
     <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">${escapeHtml(nb.title)}</h3>
     <p class="text-xs mb-4" style="color:var(--muted);">${escapeHtml((row.student && row.student.full_name) || '')} · ${nb.plan?.meta?.level || ''} · ${getSessionType(nb.sessionType).label} · ${nb.duration}min · ${nb.date}</p>
     <div class="rounded-xl p-4" style="background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.15);">
-      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">📝 Notes &amp; Assignments</p>
+      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">Notes &amp; Assignments</p>
       <p class="text-sm whitespace-pre-wrap leading-relaxed" style="color:var(--ink);">${notes}</p>
     </div>
     ${practiceBlock}`);

@@ -276,7 +276,7 @@ function schedRenderStudent() {
   host.innerHTML = `
     <div class="card-surface rounded-2xl p-5 mb-6">
       <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
-        <h2 class="text-sm font-semibold" style="color:var(--navy);">🗓 Your weekly classes</h2>
+        <h2 class="text-sm font-semibold" style="color:var(--navy);">Your weekly classes</h2>
         <span class="text-[11px]" style="color:var(--muted);">times shown in your timezone (${escapeHtml(schedState.viewerTz)})</span>
       </div>
       ${grid}
@@ -319,7 +319,7 @@ function schedRenderTutor() {
   host.innerHTML = `
     <div class="card-surface rounded-2xl p-5">
       <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
-        <h2 class="text-sm font-semibold" style="color:var(--navy);">🗓 My weekly classes</h2>
+        <h2 class="text-sm font-semibold" style="color:var(--navy);">My weekly classes</h2>
         <span class="text-[11px]" style="color:var(--muted);">times in your timezone (${escapeHtml(schedState.viewerTz)}) · tap a class if you can't make it</span>
       </div>
       ${grid}
@@ -351,7 +351,7 @@ async function schedNotifyFlag(slot, occ) {
     const partnerId = schedPartnerId(slot);
     if (!partnerId) return;
     const when = await schedWhenForPartner(partnerId, occ.instant);
-    await dataSendMessage(partnerId, `🗓 Heads up — I can’t attend our class this ${when}, just this week.`);
+    await dataSendMessage(partnerId, `Heads up — I can’t attend our class this ${when}, just this week.`);
   } catch (e) { /* courtesy only */ }
 }
 
@@ -379,7 +379,7 @@ async function schedNotifyDay(partnerId, slots) {
     const when = await schedWhenForPartner(partnerId, occ.instant);   // "Monday at 6:00 PM"
     const day = when.split(' at ')[0];
     const plural = slots.length > 1 ? 'es' : '';
-    await dataSendMessage(partnerId, `🗓 Heads up — I can’t make our class${plural} this ${day}, just this week.`);
+    await dataSendMessage(partnerId, `Heads up — I can’t make our class${plural} this ${day}, just this week.`);
   } catch (e) { /* courtesy only */ }
 }
 

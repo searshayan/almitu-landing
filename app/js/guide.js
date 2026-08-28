@@ -14,7 +14,7 @@ const GUIDE_CONTENT = {
     flow: ['Generate a session', 'Teach live', 'Auto-practice for the student', 'Reuse the plan'],
     steps: [
       { icon: '📚', title: 'Your session library', target: '[data-guide="tutor-plans"]',
-        body: 'Every session you generate is saved here. Reuse any plan with any student, as many times as you like — reusing costs nothing to generate.' },
+        body: 'Every session you generate is saved to your personal library. Reuse any plan with any student, as many times as you like.' },
       { icon: '🧑‍🎓', title: 'Your students', target: '[data-guide="tutor-students"]',
         body: 'Students assigned to you show up here. You pick one when you start a session, so their practice lands on the right dashboard.' },
       { icon: '✨', title: 'Generate a new session', target: '[data-guide="tutor-generate"]',
