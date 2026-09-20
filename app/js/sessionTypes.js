@@ -87,6 +87,12 @@ const LITERACY_SESSION_TYPES = {
       { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. Hello and my name', hint: 'Authored session.' }
     ]
   },
+  sentences: {
+    key: 'sentences', label: 'Sentences & Grammar', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. Subject + be', hint: 'Authored session.' }
+    ]
+  },
   alphabet: {
     key: 'alphabet', label: 'Alphabet & Sounds', literacy: true, icon: _litIcon,
     fields: [

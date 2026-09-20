@@ -80,6 +80,7 @@ const V2_MAP = {
   read:       { stage: 'Read',        label: 'Read for meaning', layout: 'microtext' },
   frame:      { stage: 'Speak',       label: 'Speak with a frame', layout: 'frame' },
   build:      { stage: 'Build',       label: 'Build & write',  layout: 'buildword' },
+  sentence:   { stage: 'Build',       label: 'Build a sentence', layout: 'sentence' },
   functional: { stage: 'Use it',      label: 'Real-life task', layout: 'functional' }
 };
 function _v2Items(arr) {
