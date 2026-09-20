@@ -71,7 +71,10 @@ function setDuration(mins) {
 
 function populateLevels() {
   const sel = document.getElementById('inputLevel');
-  sel.innerHTML = LEVELS.map(l => `<option value="${l.value}" ${l.value === 'A1' ? 'selected' : ''}>${l.label}</option>`).join('');
+  // Literacy is delivered as a ready-made curriculum, not live-generated, so it
+  // is kept out of the Generate form's level list (tutors find it in Curriculum).
+  sel.innerHTML = LEVELS.filter(l => !isLiteracyLevel(l.value))
+    .map(l => `<option value="${l.value}" ${l.value === 'A1' ? 'selected' : ''}>${l.label}</option>`).join('');
 }
 
 /* Level changed: the tier's available session types can change (literacy vs
