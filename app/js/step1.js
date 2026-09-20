@@ -74,6 +74,18 @@ function populateLevels() {
   sel.innerHTML = LEVELS.map(l => `<option value="${l.value}" ${l.value === 'A1' ? 'selected' : ''}>${l.label}</option>`).join('');
 }
 
+/* Level changed: the tier's available session types can change (literacy vs
+   CEFR), so rebuild the grid, keep a valid selected type, and set sensible
+   defaults, then refresh the badge. */
+function onLevelChange() {
+  const level = document.getElementById('inputLevel').value;
+  if (isLiteracyLevel(level)) getState().studentProfile.l1Support = true; // L1 is essential for pre-readers
+  renderSessionTypeSelector();
+  const valid = sessionTypesForLevel(level).map(t => t.key);
+  const key = valid.includes(getState().sessionType) ? getState().sessionType : valid[0];
+  selectSessionType(key);   // sets state + active button + dynamic fields + updateTierBadge()
+}
+
 function updateTierBadge() {
   const level = document.getElementById('inputLevel').value;
   const tier = getTier(tierForLevel(level));
@@ -156,8 +168,9 @@ function regeneratePlan() { generatePlan(); }
 /* ─── Session Type selector + dynamic fields ─── */
 
 function renderSessionTypeSelector() {
+  const level = document.getElementById('inputLevel').value;
   const container = document.getElementById('sessionTypeGrid');
-  container.innerHTML = getAllSessionTypes().map(t => `
+  container.innerHTML = sessionTypesForLevel(level).map(t => `
     <button onclick="selectSessionType('${t.key}')" id="st_${t.key}"
       class="session-type-btn flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl border text-center"
       style="border-color:var(--line); color:var(--muted);">
