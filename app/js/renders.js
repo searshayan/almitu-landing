@@ -226,6 +226,20 @@ const LAYOUT_BUILDERS = {
       </div>`;
   },
 
+  /* ── Literacy: read for meaning ── short controlled sentences, each with a
+     speaker and an optional picture (the key word). Bold marks a target word. */
+  microtext(d, ctx, slide) {
+    const sents = d.sentences || [];
+    return `${litHead(slide, d)}
+      <div class="lit-text">
+        ${sents.map(s => {
+          const text = (typeof s === 'string') ? s : (s.text || '');
+          const pic = (typeof s === 'object' && s.word) ? `<div class="lit-text-pic">${litImg(s.word, s.prefer || 'photo')}</div>` : '';
+          return `<div class="lit-text-line">${pic}<span class="lit-text-words">${md(text)}</span>${speakBtn(text)}</div>`;
+        }).join('')}
+      </div>`;
+  },
+
   hero(d, ctx, slide) {
     const durationLabel = d.duration_label || (ctx && ctx.durationLabel) || '25-Minute Live Micro-Session';
     return `

@@ -2651,333 +2651,2632 @@
    "homePractice": "Build one word at home with paper letters."
   },
   {
-   "curriculum_id": "LIT-W-01",
-   "skill": "blending",
+   "curriculum_id": "LIT-3-01",
    "level": "LIT3",
-   "title": "Short a",
-   "objective": "Blend and read simple short a words, checking each against its picture.",
-   "vowel": "short a",
-   "words": [
-    "cat",
-    "hat",
-    "bat",
-    "map",
-    "pan",
-    "bag",
-    "van",
-    "ham"
-   ]
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Review: sounds and blending",
+   "goal": "Today I can blend sounds into a word.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can blend sounds into a word."
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "Sound it out: c-a-t. Cat."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "sun"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "sun"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "I can read **cat**.",
+      "I can read **dog**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can read ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Sound out and read two words to a partner.",
+     "exit": "Blends and reads a CVC word."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
   },
   {
-   "curriculum_id": "LIT-W-02",
-   "skill": "blending",
+   "curriculum_id": "LIT-3-02",
    "level": "LIT3",
-   "title": "Short i",
-   "objective": "Blend and read simple short i words, checking each against its picture.",
-   "vowel": "short i",
-   "words": [
-    "pig",
-    "pin",
-    "lip",
-    "sit",
-    "fin",
-    "bib",
-    "zip",
-    "six"
-   ]
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Short a words",
+   "goal": "Today I can read words with short a.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words with short a."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "Sound it out: c-a-t. Cat."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "map"
+      },
+      {
+       "word": "pan"
+      },
+      {
+       "word": "bag"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "map"
+      },
+      {
+       "word": "pan"
+      },
+      {
+       "word": "bag"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "I have a **cat**.",
+       "word": "cat"
+      },
+      "I have a **hat**.",
+      "The **cat** has a **map**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I have a ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "bag"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “I have a ___.” for two things you can see.",
+     "exit": "Reads three short-a words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
   },
   {
-   "curriculum_id": "LIT-W-03",
-   "skill": "blending",
+   "curriculum_id": "LIT-3-03",
    "level": "LIT3",
-   "title": "Short o",
-   "objective": "Blend and read simple short o words, checking each against its picture.",
-   "vowel": "short o",
-   "words": [
-    "dog",
-    "box",
-    "mop",
-    "pot",
-    "log",
-    "fox",
-    "top",
-    "cot"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-W-04",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "Short u",
-   "objective": "Blend and read simple short u words, checking each against its picture.",
-   "vowel": "short u",
-   "words": [
-    "bus",
-    "cup",
-    "sun",
-    "bug",
-    "mug",
-    "nut",
-    "cub",
-    "rug"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-W-05",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "Short e",
-   "objective": "Blend and read simple short e words, checking each against its picture.",
-   "vowel": "short e",
-   "words": [
-    "bed",
-    "pen",
-    "net",
-    "hen",
-    "ten",
-    "leg",
-    "web",
-    "jet"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-W-06",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "Beginning blends",
-   "objective": "Blend and read simple beginning blends words, checking each against its picture.",
-   "vowel": "beginning blends",
-   "words": [
-    "frog",
-    "drum",
-    "flag",
-    "snail",
-    "star",
-    "plum",
-    "crab",
-    "sled"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-W-07",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "Ending blends",
-   "objective": "Blend and read simple ending blends words, checking each against its picture.",
-   "vowel": "ending blends",
-   "words": [
-    "hand",
-    "milk",
-    "lamp",
-    "nest",
-    "belt",
-    "tent",
-    "gift",
-    "mask"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-D-01",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "Consonant digraphs — sh ch th ng ck",
-   "objective": "Read words with two letters that make one sound.",
-   "words": [
-    "ship",
-    "shell",
-    "chip",
-    "chair",
-    "thumb",
-    "bath",
-    "king",
-    "duck"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-D-02",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "Long vowels — ai ee oa",
-   "objective": "Read words with two letters that make one sound.",
-   "words": [
-    "rain",
-    "train",
-    "tree",
-    "bee",
-    "sheep",
-    "boat",
-    "goat",
-    "snow"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-D-03",
-   "skill": "blending",
-   "level": "LIT3",
-   "title": "More vowels — oo ar or igh",
-   "objective": "Read words with two letters that make one sound.",
-   "words": [
-    "moon",
-    "book",
-    "star",
-    "car",
-    "fork",
-    "corn",
-    "light",
-    "night"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-S-01",
+   "arc": "v2",
    "skill": "sightword",
-   "level": "LIT3",
    "title": "Sight words 1",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "a",
-    "and",
-    "away",
-    "big",
-    "blue",
-    "can",
-    "come",
-    "down",
-    "find",
-    "for"
-   ]
+   "goal": "Today I can read a, I, have, is, and the.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read a, I, have, is, and the."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Read these words.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "map"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "These words we read fast, as whole words. We do not sound them out."
+    },
+    {
+     "type": "teach",
+     "layout": "sightwords",
+     "intro": "Read each word as a whole. Say it, do not sound it out.",
+     "items": [
+      {
+       "word": "a"
+      },
+      {
+       "word": "I"
+      },
+      {
+       "word": "have"
+      },
+      {
+       "word": "is"
+      },
+      {
+       "word": "the"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "sightwords",
+     "intro": "Read them again, a little faster.",
+     "items": [
+      {
+       "word": "a"
+      },
+      {
+       "word": "I"
+      },
+      {
+       "word": "have"
+      },
+      {
+       "word": "is"
+      },
+      {
+       "word": "the"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**I** have **a** cat.",
+      "**The** cat **is** a cat.",
+      "**I** have **a** hat."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I have a ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Find the word “the” in a sentence.",
+     "exit": "Reads a, I, have, is, the on sight."
+    }
+   ],
+   "teacherNote": "Sight words are recognised, not decoded. Flash them; keep exposures short and frequent.",
+   "homePractice": "Point to today's sight words in any text at home."
   },
   {
-   "curriculum_id": "LIT-S-02",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-04",
    "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Short i words",
+   "goal": "Today I can read words with short i.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words with short i."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "map"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "pig",
+     "oral": "Sound it out: p-i-g. Pig."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "pig"
+      },
+      {
+       "word": "pin"
+      },
+      {
+       "word": "lip"
+      },
+      {
+       "word": "six"
+      },
+      {
+       "word": "zip"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "pig"
+      },
+      {
+       "word": "pin"
+      },
+      {
+       "word": "lip"
+      },
+      {
+       "word": "six"
+      },
+      {
+       "word": "zip"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "This is a **pig**.",
+       "word": "pig"
+      },
+      "This is a **pin**.",
+      "I have **six**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "pig"
+      },
+      {
+       "word": "pin"
+      },
+      {
+       "word": "six"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "pig"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “This is a ___.” for two pictures.",
+     "exit": "Reads three short-i words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-05",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Short o words",
+   "goal": "Today I can read words with short o.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words with short o."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "pig"
+      },
+      {
+       "word": "six"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "dog",
+     "oral": "Sound it out: d-o-g. Dog."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "box"
+      },
+      {
+       "word": "mop"
+      },
+      {
+       "word": "pot"
+      },
+      {
+       "word": "fox"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "box"
+      },
+      {
+       "word": "mop"
+      },
+      {
+       "word": "pot"
+      },
+      {
+       "word": "fox"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "It is a **dog**.",
+       "word": "dog"
+      },
+      "It is a **box**.",
+      "The **fox** is in the **box**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "It is a ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "box"
+      },
+      {
+       "word": "fox"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "dog"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “It is a ___.” for two things.",
+     "exit": "Reads three short-o words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-06",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Review 1",
+   "goal": "Today I can read and build short a, i, and o words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read and build short a, i, and o words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "map"
+      },
+      {
+       "word": "fox"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "Sound it out: c-a-t. Cat."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "box"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "box"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "**I** **have** **a** **cat**.",
+      "**The** **pig** **is** big.",
+      "**I** **have** **a** **box**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can read ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "dog"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Read three words and build one with tiles.",
+     "exit": "Reads and builds a/i/o words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-07",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Short u words",
+   "goal": "Today I can read words with short u.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words with short u."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "box"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "bus",
+     "oral": "Sound it out: b-u-s. Bus."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "cup"
+      },
+      {
+       "word": "sun"
+      },
+      {
+       "word": "bug"
+      },
+      {
+       "word": "nut"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "cup"
+      },
+      {
+       "word": "sun"
+      },
+      {
+       "word": "bug"
+      },
+      {
+       "word": "nut"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "I see a **bus**.",
+       "word": "bus"
+      },
+      "I see a **cup**.",
+      "The **bug** is on the **nut**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I see a ___.",
+     "words": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "cup"
+      },
+      {
+       "word": "bug"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "cup"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “I see a ___.” for two things.",
+     "exit": "Reads three short-u words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-08",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Short e words",
+   "goal": "Today I can read words with short e.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words with short e."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "bed",
+     "oral": "Sound it out: b-e-d. Bed."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "bed"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "net"
+      },
+      {
+       "word": "hen"
+      },
+      {
+       "word": "ten"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "bed"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "net"
+      },
+      {
+       "word": "hen"
+      },
+      {
+       "word": "ten"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "The **hen** is here.",
+       "word": "hen"
+      },
+      "The **pen** is on the **bed**.",
+      "I have **ten**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "The ___ is here.",
+     "words": [
+      {
+       "word": "bed"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "hen"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "bed"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “The ___ is here.” for two things.",
+     "exit": "Reads three short-e words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-09",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Word families",
+   "goal": "Today I can build a family of words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can build a family of words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "bed"
+      },
+      {
+       "word": "pen"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "Sound it out: c-a-t. Cat."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "map"
+      },
+      {
+       "word": "bag"
+      },
+      {
+       "word": "pan"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "map"
+      },
+      {
+       "word": "bag"
+      },
+      {
+       "word": "pan"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "**cat**, **hat** — they end the same.",
+      "Change the first sound: **cat**, **hat**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can make ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "map"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Build cat, then change one letter to make hat.",
+     "exit": "Builds two words in the same family."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-10",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "sightword",
    "title": "Sight words 2",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "funny",
-    "go",
-    "help",
-    "here",
-    "I",
-    "in",
-    "is",
-    "it",
-    "jump",
-    "little"
-   ]
+   "goal": "Today I can read you, me, my, we, and go.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read you, me, my, we, and go."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Read these words.",
+     "items": [
+      {
+       "word": "hen"
+      },
+      {
+       "word": "ten"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "These words we read fast, as whole words. We do not sound them out."
+    },
+    {
+     "type": "teach",
+     "layout": "sightwords",
+     "intro": "Read each word as a whole. Say it, do not sound it out.",
+     "items": [
+      {
+       "word": "you"
+      },
+      {
+       "word": "me"
+      },
+      {
+       "word": "my"
+      },
+      {
+       "word": "we"
+      },
+      {
+       "word": "go"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "sightwords",
+     "intro": "Read them again, a little faster.",
+     "items": [
+      {
+       "word": "you"
+      },
+      {
+       "word": "me"
+      },
+      {
+       "word": "my"
+      },
+      {
+       "word": "we"
+      },
+      {
+       "word": "go"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**This** **is** **my** cat.",
+      "**We** **go**.",
+      "**This** **is** **my** hat."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is my ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "bag"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “This is my ___.” about something you have.",
+     "exit": "Reads you, me, my, we, go on sight."
+    }
+   ],
+   "teacherNote": "Sight words are recognised, not decoded. Flash them; keep exposures short and frequent.",
+   "homePractice": "Point to today's sight words in any text at home."
   },
   {
-   "curriculum_id": "LIT-S-03",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-11",
    "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Beginning blends",
+   "goal": "Today I can read words that start with two sounds.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words that start with two sounds."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "frog",
+     "oral": "Sound it out: f-r-o-g. Frog."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "frog"
+      },
+      {
+       "word": "drum"
+      },
+      {
+       "word": "flag"
+      },
+      {
+       "word": "star"
+      },
+      {
+       "word": "crab"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "frog"
+      },
+      {
+       "word": "drum"
+      },
+      {
+       "word": "flag"
+      },
+      {
+       "word": "star"
+      },
+      {
+       "word": "crab"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "I can see a **frog**.",
+       "word": "frog"
+      },
+      "I can see a **star**.",
+      "The **crab** is red."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can ___.",
+     "words": [
+      {
+       "word": "frog"
+      },
+      {
+       "word": "drum"
+      },
+      {
+       "word": "flag"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "frog"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “I can see a ___.” for two pictures.",
+     "exit": "Reads three words with beginning blends."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-12",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Ending blends",
+   "goal": "Today I can read words that end with two sounds.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read words that end with two sounds."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "frog"
+      },
+      {
+       "word": "star"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "hand",
+     "oral": "Sound it out: h-a-n-d. Hand."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "hand"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "lamp"
+      },
+      {
+       "word": "nest"
+      },
+      {
+       "word": "belt"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "hand"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "lamp"
+      },
+      {
+       "word": "nest"
+      },
+      {
+       "word": "belt"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "I have **milk**.",
+       "word": "milk"
+      },
+      "I have a **lamp**.",
+      "The **nest** is here."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I have a ___.",
+     "words": [
+      {
+       "word": "hand"
+      },
+      {
+       "word": "lamp"
+      },
+      {
+       "word": "belt"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "milk"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “I have a ___.” for two things.",
+     "exit": "Reads three words with ending blends."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-13",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Review 2",
+   "goal": "Today I can read short u, e, and blends.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read short u, e, and blends."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "hand"
+      },
+      {
+       "word": "belt"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "bus",
+     "oral": "Sound it out: b-u-s. Bus."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "bed"
+      },
+      {
+       "word": "frog"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "bed"
+      },
+      {
+       "word": "frog"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "**I** **have** **milk**.",
+      "**The** **bus** **is** here.",
+      "**I** can see a **frog**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can read ___.",
+     "words": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "bed"
+      },
+      {
+       "word": "frog"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "bus"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Read three words and build one with tiles.",
+     "exit": "Reads and builds u/e/blend words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-14",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "sightword",
    "title": "Sight words 3",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "look",
-    "make",
-    "me",
-    "my",
-    "not",
-    "one",
-    "play",
-    "red",
-    "run",
-    "said"
-   ]
+   "goal": "Today I can read come, help, look, said, and here.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read come, help, look, said, and here."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Read these words.",
+     "items": [
+      {
+       "word": "milk"
+      },
+      {
+       "word": "lamp"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "These words we read fast, as whole words. We do not sound them out."
+    },
+    {
+     "type": "teach",
+     "layout": "sightwords",
+     "intro": "Read each word as a whole. Say it, do not sound it out.",
+     "items": [
+      {
+       "word": "come"
+      },
+      {
+       "word": "help"
+      },
+      {
+       "word": "look"
+      },
+      {
+       "word": "said"
+      },
+      {
+       "word": "here"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "sightwords",
+     "intro": "Read them again, a little faster.",
+     "items": [
+      {
+       "word": "come"
+      },
+      {
+       "word": "help"
+      },
+      {
+       "word": "look"
+      },
+      {
+       "word": "said"
+      },
+      {
+       "word": "here"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**Look** at the dog.",
+      "**Come** **here**.",
+      "**Help** me, **said** the man."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "Look at the ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "bus"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Point to the words come and here in a sentence.",
+     "exit": "Reads come, help, look, said, here on sight."
+    }
+   ],
+   "teacherNote": "Sight words are recognised, not decoded. Flash them; keep exposures short and frequent.",
+   "homePractice": "Point to today's sight words in any text at home."
   },
   {
-   "curriculum_id": "LIT-S-04",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-15",
    "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Digraphs sh and ch",
+   "goal": "Today I can read sh and ch words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read sh and ch words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "hand"
+      },
+      {
+       "word": "milk"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "ship",
+     "oral": "Sound it out: s-h-i-p. Ship."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "shell"
+      },
+      {
+       "word": "chip"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "shell"
+      },
+      {
+       "word": "chip"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "She has a **ship**.",
+       "word": "ship"
+      },
+      "She has a **chair**.",
+      "The **shell** is on the **chip**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "She has a ___.",
+     "words": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "ship"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “She has a ___.” for two pictures.",
+     "exit": "Reads sh and ch words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-16",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Digraphs th, ng and ck",
+   "goal": "Today I can read th, ng, and ck words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read th, ng, and ck words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "chip"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "thumb",
+     "oral": "Sound it out: t-h-u-m-b. Thumb."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "thumb"
+      },
+      {
+       "word": "bath"
+      },
+      {
+       "word": "king"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "thumb"
+      },
+      {
+       "word": "bath"
+      },
+      {
+       "word": "king"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "He has a **duck**.",
+       "word": "duck"
+      },
+      "The **king** is here.",
+      "I see a **thumb**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "He has a ___.",
+     "words": [
+      {
+       "word": "thumb"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "duck"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “He has a ___.” for two pictures.",
+     "exit": "Reads th, ng, ck words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-17",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "sightword",
    "title": "Sight words 4",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "see",
-    "the",
-    "three",
-    "to",
-    "two",
-    "up",
-    "we",
-    "where",
-    "yellow",
-    "you"
-   ]
+   "goal": "Today I can read play, jump, run, big, and little.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read play, jump, run, big, and little."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Read these words.",
+     "items": [
+      {
+       "word": "king"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "These words we read fast, as whole words. We do not sound them out."
+    },
+    {
+     "type": "teach",
+     "layout": "sightwords",
+     "intro": "Read each word as a whole. Say it, do not sound it out.",
+     "items": [
+      {
+       "word": "play"
+      },
+      {
+       "word": "jump"
+      },
+      {
+       "word": "run"
+      },
+      {
+       "word": "big"
+      },
+      {
+       "word": "little"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "sightwords",
+     "intro": "Read them again, a little faster.",
+     "items": [
+      {
+       "word": "play"
+      },
+      {
+       "word": "jump"
+      },
+      {
+       "word": "run"
+      },
+      {
+       "word": "big"
+      },
+      {
+       "word": "little"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**I** can **run**.",
+      "**I** can **jump**.",
+      "**The** dog **is** **big**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Read “I can run.” then act it out.",
+     "exit": "Reads play, jump, run, big, little on sight."
+    }
+   ],
+   "teacherNote": "Sight words are recognised, not decoded. Flash them; keep exposures short and frequent.",
+   "homePractice": "Point to today's sight words in any text at home."
   },
   {
-   "curriculum_id": "LIT-S-05",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-18",
    "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Review 3",
+   "goal": "Today I can read digraph words in a text.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read digraph words in a text."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "run"
+      },
+      {
+       "word": "big"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "ship",
+     "oral": "Sound it out: s-h-i-p. Ship."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "chair"
+      },
+      {
+       "word": "duck"
+      },
+      {
+       "word": "king"
+      },
+      {
+       "word": "bath"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "chair"
+      },
+      {
+       "word": "duck"
+      },
+      {
+       "word": "king"
+      },
+      {
+       "word": "bath"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "**She** has a **ship**.",
+      "**The** **king** **is** here.",
+      "**I** can see a **duck**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can read ___.",
+     "words": [
+      {
+       "word": "ship"
+      },
+      {
+       "word": "chair"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "ship"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Read a short text out loud.",
+     "exit": "Reads a short decodable text with digraphs."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-19",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Long vowels ai and ee",
+   "goal": "Today I can read ai and ee words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read ai and ee words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "bath"
+      },
+      {
+       "word": "king"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "rain",
+     "oral": "Sound it out: r-a-i-n. Rain."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "rain"
+      },
+      {
+       "word": "train"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "bee"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "rain"
+      },
+      {
+       "word": "train"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "bee"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "It is a **tree**.",
+       "word": "tree"
+      },
+      "It is a **train**.",
+      "The **bee** is in the **rain**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "It is a ___.",
+     "words": [
+      {
+       "word": "train"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "bee"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "tree"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “It is a ___.” for two pictures.",
+     "exit": "Reads ai and ee words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-20",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Long vowel oa",
+   "goal": "Today I can read oa words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read oa words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "rain"
+      },
+      {
+       "word": "tree"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "boat",
+     "oral": "Sound it out: b-o-a-t. Boat."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "boat"
+      },
+      {
+       "word": "goat"
+      },
+      {
+       "word": "snow"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "boat"
+      },
+      {
+       "word": "goat"
+      },
+      {
+       "word": "snow"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "The **boat** is big.",
+       "word": "boat"
+      },
+      "The **goat** is here.",
+      "I see **snow**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "The ___ is big.",
+     "words": [
+      {
+       "word": "boat"
+      },
+      {
+       "word": "goat"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "boat"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “The ___ is big.” for a picture.",
+     "exit": "Reads oa words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-3-21",
+   "level": "LIT3",
+   "arc": "v2",
+   "skill": "sightword",
    "title": "Sight words 5",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "all",
-    "am",
-    "are",
-    "at",
-    "ate",
-    "be",
-    "black",
-    "brown",
-    "but",
-    "came"
-   ]
+   "goal": "Today I can read up, down, in, on, and at.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read up, down, in, on, and at."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Read these words.",
+     "items": [
+      {
+       "word": "boat"
+      },
+      {
+       "word": "goat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "These words we read fast, as whole words. We do not sound them out."
+    },
+    {
+     "type": "teach",
+     "layout": "sightwords",
+     "intro": "Read each word as a whole. Say it, do not sound it out.",
+     "items": [
+      {
+       "word": "up"
+      },
+      {
+       "word": "down"
+      },
+      {
+       "word": "in"
+      },
+      {
+       "word": "on"
+      },
+      {
+       "word": "at"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "sightwords",
+     "intro": "Read them again, a little faster.",
+     "items": [
+      {
+       "word": "up"
+      },
+      {
+       "word": "down"
+      },
+      {
+       "word": "in"
+      },
+      {
+       "word": "on"
+      },
+      {
+       "word": "at"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**The** cat **is** **on** **the** box.",
+      "**The** bug **is** **in** **the** cup.",
+      "Look **up**. Look **down**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "The ___ is on the ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "box"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Put a pen on the table. Say: “The pen is on the table.”",
+     "exit": "Reads up, down, in, on, at and shows position."
+    }
+   ],
+   "teacherNote": "Sight words are recognised, not decoded. Flash them; keep exposures short and frequent.",
+   "homePractice": "Point to today's sight words in any text at home."
   },
   {
-   "curriculum_id": "LIT-S-06",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-22",
    "level": "LIT3",
-   "title": "Sight words 6",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "did",
-    "do",
-    "eat",
-    "four",
-    "get",
-    "good",
-    "have",
-    "he",
-    "into",
-    "like"
-   ]
+   "arc": "v2",
+   "skill": "blending",
+   "title": "oo and ar words",
+   "goal": "Today I can read oo and ar words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read oo and ar words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "snow"
+      },
+      {
+       "word": "boat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "moon",
+     "oral": "Sound it out: m-o-o-n. Moon."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "moon"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "star"
+      },
+      {
+       "word": "car"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "moon"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "star"
+      },
+      {
+       "word": "car"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      {
+       "text": "I see the **moon**.",
+       "word": "moon"
+      },
+      "I see the **car**.",
+      "The **book** is on the **star**."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I see the ___.",
+     "words": [
+      {
+       "word": "moon"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "car"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "book"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say: “I see the ___.” for two things.",
+     "exit": "Reads oo and ar words."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
   },
   {
-   "curriculum_id": "LIT-S-07",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-23",
    "level": "LIT3",
-   "title": "Sight words 7",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "must",
-    "new",
-    "no",
-    "now",
-    "on",
-    "our",
-    "out",
-    "please",
-    "ran",
-    "ride"
-   ]
+   "arc": "v2",
+   "skill": "blending",
+   "title": "igh words and review",
+   "goal": "Today I can read igh words and mixed patterns.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read igh words and mixed patterns."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "moon"
+      },
+      {
+       "word": "car"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "light",
+     "oral": "Sound it out: l-i-g-h-t. Light."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "light"
+      },
+      {
+       "word": "night"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "boat"
+      },
+      {
+       "word": "star"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "light"
+      },
+      {
+       "word": "night"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "boat"
+      },
+      {
+       "word": "star"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "**It** **is** **night**.",
+      "**I** see a **light**.",
+      "**The** **boat** **is** here."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "It is ___.",
+     "words": [
+      {
+       "word": "light"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "boat"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "light"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Read three words with different patterns.",
+     "exit": "Reads igh words and reviews taught patterns."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
   },
   {
-   "curriculum_id": "LIT-S-08",
-   "skill": "sightword",
+   "curriculum_id": "LIT-3-24",
    "level": "LIT3",
-   "title": "Sight words 8",
-   "objective": "Recognise these common words on sight.",
-   "words": [
-    "saw",
-    "say",
-    "she",
-    "so",
-    "soon",
-    "that",
-    "there",
-    "they",
-    "this",
-    "too"
-   ]
+   "arc": "v2",
+   "skill": "blending",
+   "title": "Level 3 checkpoint",
+   "goal": "Today I can read a short text and build words.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read a short text and build words."
+    },
+    {
+     "type": "review",
+     "layout": "blend",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "light"
+      },
+      {
+       "word": "night"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "Sound it out: c-a-t. Cat."
+    },
+    {
+     "type": "teach",
+     "layout": "blend",
+     "intro": "Sound out each word, then blend. Check the picture.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "ship"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "boat"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "blend",
+     "intro": "Blend each word together, out loud.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "ship"
+      },
+      {
+       "word": "tree"
+      },
+      {
+       "word": "boat"
+      },
+      {
+       "word": "duck"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences. Point to each word.",
+     "sentences": [
+      "**I** **have** **a** **cat**.",
+      "**She** has a **ship**.",
+      "**It** **is** a **tree**.",
+      "**The** **boat** **is** big."
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I can read ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "ship"
+      },
+      {
+       "word": "tree"
+      }
+     ]
+    },
+    {
+     "type": "build",
+     "word": "ship"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Read the text out loud. Build two words with tiles.",
+     "exit": "Reads a short decodable text and builds two words with support."
+    }
+   ],
+   "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
+   "homePractice": "Read today's words to someone at home."
   }
  ]
 }

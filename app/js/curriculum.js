@@ -244,13 +244,42 @@ async function runCurriculumGeneration(regenerate) {
     renderCurriculumTab();
   }
 
+  // Prune orphans: after a complete run, remove any library session at these
+  // levels whose id is no longer in the source (e.g. sessions that were renamed
+  // or replaced). Only runs on a full, non-cancelled pass so nothing pending is
+  // ever removed.
+  let pruned = 0;
+  if (!cs.cancel) {
+    try { pruned = await pruneCurriculumOrphans(cs); }
+    catch (e) { console.warn('orphan prune failed', e); }
+  }
+
   cs.running = false;
   renderCurriculumTab();
   showToast(
     cs.cancel ? `Stopped — ${ok} generated, ${failed} failed.`
-              : `Done — ${ok} generated${failed ? `, ${failed} failed` : ''}.`,
+              : `Done — ${ok} generated${failed ? `, ${failed} failed` : ''}${pruned ? `, ${pruned} old removed` : ''}.`,
     failed ? 'warn' : 'success'
   );
+}
+
+/* Delete shared curriculum plans at the current level(s) whose curriculum_id is
+   no longer in the loaded source set. Scoped to the levels being generated, so
+   it never touches other levels' content. */
+async function pruneCurriculumOrphans(cs) {
+  const loadedIds = new Set((cs.sessions || []).map(r => r.curriculum_id));
+  const levels = [...new Set((cs.sessions || []).map(r => r.level).filter(Boolean))];
+  let pruned = 0;
+  for (const lvl of levels) {
+    const existing = await dataListCurriculumIndex(lvl);
+    for (const row of existing) {
+      if (row.curriculum_id && !loadedIds.has(row.curriculum_id)) {
+        try { await dataDeleteCurriculumPlan(row.curriculum_id); pruned++; }
+        catch (e) { console.warn('could not prune', row.curriculum_id, e); }
+      }
+    }
+  }
+  return pruned;
 }
 
 function cancelCurriculumGeneration() {
