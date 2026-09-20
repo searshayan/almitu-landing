@@ -422,7 +422,7 @@ function renderCurriculumBrowser() {
 
 /* Step 1 — the three tiers. */
 function renderCurriculumTiers(available) {
-  const cards = ['foundation', 'development', 'proficiency'].map(key => {
+  const cards = ['literacy', 'foundation', 'development', 'proficiency'].map(key => {
     const t = TIERS[key];
     const levels = LEVELS.filter(l => l.tier === key);
     const count = levels.reduce((n, l) => n + (available[l.value] || 0), 0);

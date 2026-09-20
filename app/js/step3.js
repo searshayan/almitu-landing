@@ -203,12 +203,22 @@ function renderNotebooks() {
 
 /* Select a specific session for practice. The Overview is shown by default so
    the student lands on the session summary before choosing an activity. */
+/* Literacy sessions are pre-reading, so the reading-dependent activities
+   (Quiz, Reorder, Gap Fill) are hidden — only Overview, Flashcards and Matching
+   (picture-based) are offered. */
+function applyActivityGating() {
+  const nb = getActiveNotebook();
+  const isLit = !!(nb && nb.plan && nb.plan.meta && nb.plan.meta.tier === 'literacy');
+  document.querySelectorAll('.sv-activity-tiles [data-reading]').forEach(b => { b.style.display = isLit ? 'none' : ''; });
+}
+
 function selectSession(id) {
   const s = getState();
   if (!s.savedNotebooks.some(n => n.id === id)) return;
   s.selectedNotebookId = id;
   persistNotebooks();
   renderNotebooks();
+  applyActivityGating();
   if (typeof renderStudentXpBadge === 'function') renderStudentXpBadge();
   if (_svIsMobile()) {
     // Mobile: open the session's detail page — objective on top, activity tiles
@@ -347,12 +357,21 @@ function actFlashcards(challenge) {
   const nb = requireNotebook(); if (!nb) return;
   const bank = getBank(nb);
   const l1On = nb.student.l1Support;
+  const T = t => `<span class="text-lg font-semibold" style="color:var(--navy);">${bidiText(t)}</span>`;
+  const B = t => `<span class="text-sm font-semibold" style="color:var(--ink);">${bidiText(t)}</span>`;
   const cards = bank.items.map(it => {
+    // Literacy items carry a picture: flip picture ⇄ word (a pre-reader recalls
+    // the word from the image, or the image from the word in challenge mode).
+    if (it.image && typeof litImg === 'function') {
+      const pic = `<div class="fc-pic">${litImg(it.term, it.image.type)}</div>`;
+      const word = `<span class="fc-word">${escapeHtml(it.term)}</span>`;
+      return challenge ? { front: word, back: pic } : { front: pic, back: word };
+    }
     const term = it.term;
     const def = `${it.meaning}${l1On && it.l1 ? ' · ' + it.l1 : ''}`;
     return challenge
-      ? { front: def, back: term, example: it.example || '' }   // recall the term from its meaning — harder
-      : { front: term, back: def, example: it.example || '' };
+      ? { front: T(def), back: B(term), example: it.example || '' }   // recall the term from its meaning — harder
+      : { front: T(term), back: B(def), example: it.example || '' };
   });
   if (!cards.length) { showToast('No practice items in this notebook.', 'warn'); return; }
 
@@ -369,11 +388,11 @@ function actFlashcards(challenge) {
         <div class="flashcard-inner w-full h-full">
           <div class="flashcard-front rounded-2xl p-5 flex flex-col items-center justify-center text-center" style="background:white; border:1px solid var(--line);">
             <span class="text-[10px] uppercase tracking-wider mb-2 font-semibold" style="color:var(--muted);">Card ${i + 1} — tap to flip</span>
-            <span class="text-lg font-semibold" style="color:var(--navy);">${bidiText(card.front)}</span>
+            ${card.front}
           </div>
           <div class="flashcard-back rounded-2xl p-5 flex flex-col items-center justify-center text-center" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.15);">
-            <span class="text-sm font-semibold mb-1" style="color:var(--ink);">${bidiText(card.back)}</span>
-            ${card.example ? `<span class="text-[11px] italic" style="color:var(--muted);">"${bidiText(card.example)}"</span>` : ''}
+            ${card.back}
+            ${card.example ? `<span class="text-[11px] italic mt-1" style="color:var(--muted);">"${bidiText(card.example)}"</span>` : ''}
           </div>
         </div>
       </div>`;
@@ -710,25 +729,36 @@ let _match = null;
 function actMatching(challenge) {
   const nb = requireNotebook(); if (!nb) return;
   const bank = getBank(nb);
-  let candidates = bank.items.filter(i => challenge ? (i.example && i.example.toLowerCase().includes(i.term.toLowerCase())) : i.meaning);
+  // Literacy: match the word to its picture. Otherwise word ↔ meaning (or word
+  // ↔ the sentence it completes, in challenge mode).
+  const litItems = bank.items.filter(i => i.image);
+  const isLit = litItems.length >= 3 && typeof litImg === 'function';
+  if (isLit) challenge = false;
+  let candidates = isLit
+    ? litItems
+    : bank.items.filter(i => challenge ? (i.example && i.example.toLowerCase().includes(i.term.toLowerCase())) : i.meaning);
   const maxPairs = challenge ? 8 : 5;
   const pairs = shuffled(candidates).slice(0, Math.min(maxPairs, candidates.length));
   if (pairs.length < 3) { showToast('Need at least 3 items for matching.', 'warn'); return; }
 
-  const rightText = it => challenge
-    ? it.example.replace(new RegExp(it.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '_____')
-    : it.meaning;
+  const rightText = it => isLit
+    ? `<div class="match-pic">${litImg(it.term, it.image.type)}</div>`
+    : (challenge
+        ? it.example.replace(new RegExp(it.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '_____')
+        : it.meaning);
 
   _match = {
-    nb, pairs, challenge: !!challenge,
+    nb, pairs, challenge: !!challenge, rightHtml: isLit,
     left: shuffled(pairs.map((p, i) => ({ text: p.term, pair: i }))),
     right: shuffled(pairs.map((p, i) => ({ text: rightText(p), pair: i }))),
     selectedLeft: null, matched: new Set(), attempts: 0
   };
 
-  let html = activityHeader('🔗', 'Matching', challenge
-    ? `Challenge: match each word to the sentence it completes. ${pairs.length} pairs.`
-    : 'Click a word, then click its meaning. Match all pairs.', challenge);
+  let html = activityHeader('🔗', 'Matching', isLit
+    ? 'Click a word, then click its picture. Match all pairs.'
+    : (challenge
+        ? `Challenge: match each word to the sentence it completes. ${pairs.length} pairs.`
+        : 'Click a word, then click its meaning. Match all pairs.'), challenge);
   html += `
     <p class="text-xs mb-2" id="matchStatus" style="color:var(--muted);">0 / ${pairs.length} matched</p>
     <div id="matchFeedback" class="hidden mb-3 p-2.5 rounded-xl text-xs"></div>
@@ -751,7 +781,7 @@ function renderMatch() {
   }).join('');
   document.getElementById('matchRight').innerHTML = m.right.map((it, i) => {
     const done = m.matched.has(it.pair);
-    return `<button onclick="pickRight(${i})" class="match-token w-full ${done ? 'done' : ''}" ${done ? 'disabled' : ''}>${escapeHtml(it.text)}</button>`;
+    return `<button onclick="pickRight(${i})" class="match-token w-full ${m.rightHtml ? 'match-token-pic' : ''} ${done ? 'done' : ''}" ${done ? 'disabled' : ''}>${m.rightHtml ? it.text : escapeHtml(it.text)}</button>`;
   }).join('');
   document.getElementById('matchStatus').textContent = `${m.matched.size} / ${m.pairs.length} matched · ${m.attempts} attempts`;
 }
@@ -763,7 +793,7 @@ function matchFeedback(item, correct) {
   fb.style.border = correct ? '1px solid rgba(6,214,160,.2)' : '1px solid rgba(239,68,68,.15)';
   fb.innerHTML = (correct
     ? '<span style="color:#059669;" class="font-semibold">✓ Match!</span>'
-    : '<span class="text-red-500 font-semibold">✗ Not a match.</span>') + explainAnswer(_match.nb, item);
+    : '<span class="text-red-500 font-semibold">✗ Not a match.</span>') + (item.image ? '' : explainAnswer(_match.nb, item));
 }
 
 function pickLeft(i) {

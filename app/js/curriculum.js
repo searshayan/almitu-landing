@@ -89,7 +89,10 @@ function curriculumFormData(rec) {
 async function loadCurriculumLevel(level) {
   const cs = window.curriculumState;
   cs.level = level;
-  const slug = level.toLowerCase();               // 'Pre-A1' → 'pre-a1'
+  // All literacy levels (LIT1/2/3) live in one authored file; CEFR levels map
+  // to their own slug. 'Literacy' is the picker's umbrella value.
+  const isLit = level === 'Literacy' || (typeof isLiteracyLevel === 'function' && isLiteracyLevel(level));
+  const slug = isLit ? 'literacy' : level.toLowerCase();   // 'Pre-A1' → 'pre-a1'
   const res = await fetch(`curriculum/${slug}.json`);
   if (!res.ok) throw new Error(`Could not load curriculum/${slug}.json (${res.status})`);
   const data = await res.json();
@@ -118,6 +121,19 @@ function isAlreadyGeneratedError(e) {
    With overwrite=true, an existing library entry is deleted first so the
    session is rebuilt with the current design specs. */
 async function generateCurriculumSession(rec, overwrite) {
+  // Literacy sessions are authored deterministically (buildLiteracyPlan) — no
+  // AI call, no engine needed — then stored the same way as any curriculum plan.
+  if (typeof isLiteracyLevel === 'function' && isLiteracyLevel(rec.level)) {
+    const plan = buildLiteracyPlan(rec);
+    if (overwrite) await dataDeleteCurriculumPlan(rec.curriculum_id);
+    await dataCreateCurriculumPlan({
+      tutor_id: null, is_curriculum: true, curriculum_id: rec.curriculum_id,
+      title: rec.title, session_type: plan.meta.sessionType, level: rec.level,
+      duration: plan.meta.duration, plan
+    });
+    return plan;
+  }
+
   const formData = curriculumFormData(rec);
 
   const result = await generateSlides(formData);
@@ -185,9 +201,10 @@ async function runCurriculumGeneration(regenerate) {
   const cs = window.curriculumState;
   if (cs.running) return;
 
-  // The Demo engine emits rule-based placeholder text. Generating the whole
+  // The Demo engine emits rule-based placeholder text. Generating an AI
   // curriculum with it would silently fill the shared library with junk.
-  if (getConfig().engine === 'demo') {
+  // Literacy is authored deterministically, so it never needs an engine.
+  if (getConfig().engine === 'demo' && cs.level !== 'Literacy') {
     showToast('Switch to the Claude API in AI Settings first — the Demo engine only produces placeholder content.', 'error');
     return;
   }
@@ -291,13 +308,14 @@ function selectCurriculumLevel(level) {
 /* The level-picker pills, shown above the curriculum table. */
 function curriculumLevelPicker() {
   const cs = window.curriculumState;
-  const pills = LEVELS.map(l => {
-    const active = l.value === cs.level;
-    return `<button onclick="selectCurriculumLevel('${l.value}')" ${cs.running ? 'disabled' : ''}
+  const pill = (value, label, active) =>
+    `<button onclick="selectCurriculumLevel('${value}')" ${cs.running ? 'disabled' : ''}
       class="px-3 py-1.5 rounded-lg text-xs font-semibold ${cs.running ? 'opacity-60 cursor-not-allowed' : ''}"
       style="${active ? 'background:var(--secondary);color:#fff;' : 'background:#fff;border:1px solid var(--line);color:var(--muted);'}">
-      ${escapeHtml(l.value)}</button>`;
-  }).join('');
+      ${escapeHtml(label)}</button>`;
+  // CEFR levels, then one umbrella pill for the authored Literacy curriculum.
+  const pills = LEVELS.filter(l => !isLiteracyLevel(l.value)).map(l => pill(l.value, l.value, l.value === cs.level)).join('')
+    + pill('Literacy', 'Literacy', cs.level === 'Literacy');
   return `<div class="card-surface rounded-2xl p-3 mb-4 flex flex-wrap gap-2 items-center">
     <span class="text-[11px] font-semibold uppercase tracking-wide mr-1" style="color:var(--muted);">Level</span>${pills}</div>`;
 }
@@ -328,7 +346,7 @@ function renderCurriculumTabBody() {
   const done  = cs.sessions.filter(r => cs.status[r.curriculum_id] === 'done').length;
   const failed = cs.sessions.filter(r => cs.status[r.curriculum_id] === 'failed').length;
   const pct = total ? Math.round((done / total) * 100) : 0;
-  const isDemo = getConfig().engine === 'demo';
+  const isDemo = getConfig().engine === 'demo' && cs.level !== 'Literacy';
 
   const engineWarning = isDemo ? `
     <div class="mb-4 px-4 py-3 rounded-xl text-sm" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.25);color:#B91C1C;">

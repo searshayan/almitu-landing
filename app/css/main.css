@@ -1060,3 +1060,10 @@ textarea:focus-visible,
   font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 30px; color: var(--navy);
   letter-spacing: .01em; text-transform: lowercase;
 }
+/* literacy flashcard faces */
+.fc-pic { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background: var(--surface-2, #f4f6f8); border: 1px solid var(--line); }
+.fc-word { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; color: var(--navy); text-transform: capitalize; }
+/* literacy matching: picture tiles */
+.match-token-pic { padding: 8px !important; }
+.match-pic { width: 72px; height: 72px; margin: 0 auto; border-radius: 10px; overflow: hidden; background: var(--surface-2, #f4f6f8); }
+.match-token-pic .lit-img { width: 100%; height: 100%; }

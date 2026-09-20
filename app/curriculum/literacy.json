@@ -1,0 +1,705 @@
+{
+ "level": "Literacy",
+ "tier": "literacy",
+ "sessions": [
+  {
+   "curriculum_id": "LIT-P-01",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Family",
+   "objective": "Name each family word from a real picture.",
+   "theme": "Family",
+   "words": [
+    "mother",
+    "father",
+    "sister",
+    "brother",
+    "baby",
+    "grandmother",
+    "grandfather"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-02",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Food & Drink",
+   "objective": "Name each food & drink word from a real picture.",
+   "theme": "Food & Drink",
+   "words": [
+    "bread",
+    "water",
+    "milk",
+    "rice",
+    "apple",
+    "egg",
+    "fish"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-03",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "My Body",
+   "objective": "Name each my body word from a real picture.",
+   "theme": "My Body",
+   "words": [
+    "head",
+    "hand",
+    "eye",
+    "ear",
+    "nose",
+    "mouth",
+    "foot"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-04",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "My Home",
+   "objective": "Name each my home word from a real picture.",
+   "theme": "My Home",
+   "words": [
+    "door",
+    "window",
+    "bed",
+    "chair",
+    "table",
+    "cup",
+    "lamp"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-05",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Animals",
+   "objective": "Name each animals word from a real picture.",
+   "theme": "Animals",
+   "words": [
+    "dog",
+    "cat",
+    "cow",
+    "horse",
+    "sheep",
+    "bird",
+    "rabbit"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-06",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Clothes",
+   "objective": "Name each clothes word from a real picture.",
+   "theme": "Clothes",
+   "words": [
+    "shirt",
+    "trousers",
+    "shoes",
+    "hat",
+    "coat",
+    "socks",
+    "dress",
+    "scarf"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-07",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Transport",
+   "objective": "Name each transport word from a real picture.",
+   "theme": "Transport",
+   "words": [
+    "car",
+    "bus",
+    "bike",
+    "train",
+    "plane",
+    "boat",
+    "truck",
+    "van"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-08",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Numbers 1-10",
+   "objective": "Name each numbers 1-10 word from a real picture.",
+   "theme": "Numbers 1-10",
+   "words": [
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-09",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Colours",
+   "objective": "Name each colours word from a real picture.",
+   "theme": "Colours",
+   "words": [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "black",
+    "white",
+    "orange",
+    "pink"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-10",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Weather",
+   "objective": "Name each weather word from a real picture.",
+   "theme": "Weather",
+   "words": [
+    "sun",
+    "rain",
+    "cloud",
+    "snow",
+    "wind",
+    "storm",
+    "hot",
+    "cold"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-P-11",
+   "skill": "pictureword",
+   "level": "LIT1",
+   "title": "Everyday Actions",
+   "objective": "Name each everyday actions word from a real picture.",
+   "theme": "Everyday Actions",
+   "words": [
+    "eat",
+    "drink",
+    "sit",
+    "stand",
+    "sleep",
+    "walk",
+    "run",
+    "look"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-A-01",
+   "skill": "alphabet",
+   "level": "LIT2",
+   "title": "Group 1 — s a t p i n",
+   "objective": "Recognise each letter and say its sound, with an example word for each.",
+   "letters": [
+    {
+     "letter": "s",
+     "sound": "/s/",
+     "word": "sun"
+    },
+    {
+     "letter": "a",
+     "sound": "/a/",
+     "word": "apple"
+    },
+    {
+     "letter": "t",
+     "sound": "/t/",
+     "word": "tent"
+    },
+    {
+     "letter": "p",
+     "sound": "/p/",
+     "word": "pig"
+    },
+    {
+     "letter": "i",
+     "sound": "/i/",
+     "word": "igloo"
+    },
+    {
+     "letter": "n",
+     "sound": "/n/",
+     "word": "nest"
+    }
+   ]
+  },
+  {
+   "curriculum_id": "LIT-A-02",
+   "skill": "alphabet",
+   "level": "LIT2",
+   "title": "Group 2 — c k e h r m d",
+   "objective": "Recognise each letter and say its sound, with an example word for each.",
+   "letters": [
+    {
+     "letter": "c",
+     "sound": "/k/",
+     "word": "cat"
+    },
+    {
+     "letter": "k",
+     "sound": "/k/",
+     "word": "kite"
+    },
+    {
+     "letter": "e",
+     "sound": "/e/",
+     "word": "egg"
+    },
+    {
+     "letter": "h",
+     "sound": "/h/",
+     "word": "hat"
+    },
+    {
+     "letter": "r",
+     "sound": "/r/",
+     "word": "ring"
+    },
+    {
+     "letter": "m",
+     "sound": "/m/",
+     "word": "moon"
+    },
+    {
+     "letter": "d",
+     "sound": "/d/",
+     "word": "dog"
+    }
+   ]
+  },
+  {
+   "curriculum_id": "LIT-A-03",
+   "skill": "alphabet",
+   "level": "LIT2",
+   "title": "Group 3 — g o u l f b",
+   "objective": "Recognise each letter and say its sound, with an example word for each.",
+   "letters": [
+    {
+     "letter": "g",
+     "sound": "/g/",
+     "word": "goat"
+    },
+    {
+     "letter": "o",
+     "sound": "/o/",
+     "word": "orange"
+    },
+    {
+     "letter": "u",
+     "sound": "/u/",
+     "word": "umbrella"
+    },
+    {
+     "letter": "l",
+     "sound": "/l/",
+     "word": "leaf"
+    },
+    {
+     "letter": "f",
+     "sound": "/f/",
+     "word": "fish"
+    },
+    {
+     "letter": "b",
+     "sound": "/b/",
+     "word": "ball"
+    }
+   ]
+  },
+  {
+   "curriculum_id": "LIT-A-04",
+   "skill": "alphabet",
+   "level": "LIT2",
+   "title": "Group 4 — j v w x y z",
+   "objective": "Recognise each letter and say its sound, with an example word for each.",
+   "letters": [
+    {
+     "letter": "j",
+     "sound": "/j/",
+     "word": "jug"
+    },
+    {
+     "letter": "v",
+     "sound": "/v/",
+     "word": "van"
+    },
+    {
+     "letter": "w",
+     "sound": "/w/",
+     "word": "watch"
+    },
+    {
+     "letter": "x",
+     "sound": "/ks/",
+     "word": "fox"
+    },
+    {
+     "letter": "y",
+     "sound": "/y/",
+     "word": "yak"
+    },
+    {
+     "letter": "z",
+     "sound": "/z/",
+     "word": "zebra"
+    }
+   ]
+  },
+  {
+   "curriculum_id": "LIT-A-05",
+   "skill": "alphabet",
+   "level": "LIT2",
+   "title": "Group 5 — qu + review",
+   "objective": "Recognise each letter and say its sound, with an example word for each.",
+   "letters": [
+    {
+     "letter": "qu",
+     "sound": "/kw/",
+     "word": "queen"
+    }
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-01",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Short a",
+   "objective": "Blend and read simple short a words, checking each against its picture.",
+   "vowel": "short a",
+   "words": [
+    "cat",
+    "hat",
+    "bat",
+    "map",
+    "pan",
+    "bag",
+    "van",
+    "ham"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-02",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Short i",
+   "objective": "Blend and read simple short i words, checking each against its picture.",
+   "vowel": "short i",
+   "words": [
+    "pig",
+    "pin",
+    "lip",
+    "sit",
+    "fin",
+    "bib",
+    "zip",
+    "six"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-03",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Short o",
+   "objective": "Blend and read simple short o words, checking each against its picture.",
+   "vowel": "short o",
+   "words": [
+    "dog",
+    "box",
+    "mop",
+    "pot",
+    "log",
+    "fox",
+    "top",
+    "cot"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-04",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Short u",
+   "objective": "Blend and read simple short u words, checking each against its picture.",
+   "vowel": "short u",
+   "words": [
+    "bus",
+    "cup",
+    "sun",
+    "bug",
+    "mug",
+    "nut",
+    "cub",
+    "rug"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-05",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Short e",
+   "objective": "Blend and read simple short e words, checking each against its picture.",
+   "vowel": "short e",
+   "words": [
+    "bed",
+    "pen",
+    "net",
+    "hen",
+    "ten",
+    "leg",
+    "web",
+    "jet"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-06",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Beginning blends",
+   "objective": "Blend and read simple beginning blends words, checking each against its picture.",
+   "vowel": "beginning blends",
+   "words": [
+    "frog",
+    "drum",
+    "flag",
+    "snail",
+    "star",
+    "plum",
+    "crab",
+    "sled"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-W-07",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Ending blends",
+   "objective": "Blend and read simple ending blends words, checking each against its picture.",
+   "vowel": "ending blends",
+   "words": [
+    "hand",
+    "milk",
+    "lamp",
+    "nest",
+    "belt",
+    "tent",
+    "gift",
+    "mask"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-D-01",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Consonant digraphs — sh ch th ng ck",
+   "objective": "Read words with two letters that make one sound.",
+   "words": [
+    "ship",
+    "shell",
+    "chip",
+    "chair",
+    "thumb",
+    "bath",
+    "king",
+    "duck"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-D-02",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "Long vowels — ai ee oa",
+   "objective": "Read words with two letters that make one sound.",
+   "words": [
+    "rain",
+    "train",
+    "tree",
+    "bee",
+    "sheep",
+    "boat",
+    "goat",
+    "snow"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-D-03",
+   "skill": "blending",
+   "level": "LIT3",
+   "title": "More vowels — oo ar or igh",
+   "objective": "Read words with two letters that make one sound.",
+   "words": [
+    "moon",
+    "book",
+    "star",
+    "car",
+    "fork",
+    "corn",
+    "light",
+    "night"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-01",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 1",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "a",
+    "and",
+    "away",
+    "big",
+    "blue",
+    "can",
+    "come",
+    "down",
+    "find",
+    "for"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-02",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 2",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "funny",
+    "go",
+    "help",
+    "here",
+    "I",
+    "in",
+    "is",
+    "it",
+    "jump",
+    "little"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-03",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 3",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "look",
+    "make",
+    "me",
+    "my",
+    "not",
+    "one",
+    "play",
+    "red",
+    "run",
+    "said"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-04",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 4",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "see",
+    "the",
+    "three",
+    "to",
+    "two",
+    "up",
+    "we",
+    "where",
+    "yellow",
+    "you"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-05",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 5",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "all",
+    "am",
+    "are",
+    "at",
+    "ate",
+    "be",
+    "black",
+    "brown",
+    "but",
+    "came"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-06",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 6",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "did",
+    "do",
+    "eat",
+    "four",
+    "get",
+    "good",
+    "have",
+    "he",
+    "into",
+    "like"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-07",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 7",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "must",
+    "new",
+    "no",
+    "now",
+    "on",
+    "our",
+    "out",
+    "please",
+    "ran",
+    "ride"
+   ]
+  },
+  {
+   "curriculum_id": "LIT-S-08",
+   "skill": "sightword",
+   "level": "LIT3",
+   "title": "Sight words 8",
+   "objective": "Recognise these common words on sight.",
+   "words": [
+    "saw",
+    "say",
+    "she",
+    "so",
+    "soon",
+    "that",
+    "there",
+    "they",
+    "this",
+    "too"
+   ]
+  }
+ ]
+}
