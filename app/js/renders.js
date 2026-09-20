@@ -63,8 +63,8 @@ function litIco(name) {
   const paths = p.split('|').map(d => `<path d="${d}"/>`).join('');
   return `<svg class="lit-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 }
-function _litShuffle(str) {
-  const a = String(str).split('');
+function _litShuffle(input) {
+  const a = Array.isArray(input) ? input.slice() : String(input).split('');
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
@@ -96,6 +96,34 @@ function litBuildReset(btn) {
   w.classList.remove('done', 'wrong');
   w.querySelectorAll('.lit-bslot').forEach(s => { s.textContent = ''; delete s.dataset.tile; });
   w.querySelectorAll('.lit-btile').forEach(t => { t.disabled = false; t.classList.remove('used'); });
+  const m = w.querySelector('.lit-build-msg'); if (m) m.innerHTML = '';
+}
+
+/* Sentence builder — tap word tiles into order to make the target sentence. */
+function litSentPick(btn) {
+  const w = btn.closest('.lit-sentbuild'); if (!w || btn.disabled || w.classList.contains('done')) return;
+  const slot = [...w.querySelectorAll('.lit-wslot')].find(s => !s.textContent);
+  if (!slot) return;
+  slot.textContent = btn.dataset.w; btn.disabled = true; btn.classList.add('used');
+  const slots = [...w.querySelectorAll('.lit-wslot')];
+  if (slots.every(s => s.textContent)) {
+    const built = slots.map(s => s.textContent).join(' ');
+    const msg = w.querySelector('.lit-build-msg');
+    if (built === w.dataset.target) {
+      w.classList.add('done');
+      msg.innerHTML = `<span class="ok">${litIco('check')} ${escapeHtml(built)}${w.dataset.punct || ''}</span>`;
+      if (typeof speak === 'function') speak(built);
+    } else {
+      w.classList.add('wrong'); msg.innerHTML = `<span class="no">Try again</span>`;
+      setTimeout(() => w.classList.remove('wrong'), 500);
+    }
+  }
+}
+function litSentReset(btn) {
+  const w = btn.closest('.lit-sentbuild'); if (!w) return;
+  w.classList.remove('done', 'wrong');
+  w.querySelectorAll('.lit-wslot').forEach(s => { s.textContent = ''; });
+  w.querySelectorAll('.lit-wtile').forEach(t => { t.disabled = false; t.classList.remove('used'); });
   const m = w.querySelector('.lit-build-msg'); if (m) m.innerHTML = '';
 }
 
@@ -223,6 +251,23 @@ const LAYOUT_BUILDERS = {
         <div class="lit-tiles">${tiles}</div>
         <div class="lit-build-msg"></div>
         <button type="button" class="lit-build-reset" onclick="litBuildReset(this)">Start again</button>
+      </div>`;
+  },
+
+  /* ── Literacy: sentence builder ── tap word tiles into order. */
+  sentence(d, ctx, slide) {
+    const target = String(d.sentence || '').trim();
+    const punct = /[.?!]$/.test(target) ? target.slice(-1) : '';
+    const words = target.replace(/[.?!]$/, '').split(/\s+/).filter(Boolean);
+    const tiles = _litShuffle(words.slice()).map((wd, i) => `<button type="button" class="lit-wtile" data-w="${escapeHtml(wd)}" data-i="${i}" onclick="litSentPick(this)">${escapeHtml(wd)}</button>`).join('');
+    const slots = words.map(() => `<span class="lit-wslot"></span>`).join('');
+    return `${litHead(slide, d)}
+      ${d.word ? `<div class="lit-frame lit-frame-lg lit-sent-pic">${litImg(d.word, 'photo')}</div>` : ''}
+      <div class="lit-sentbuild" data-target="${escapeHtml(words.join(' '))}" data-punct="${escapeHtml(punct)}">
+        <div class="lit-wslots">${slots}${punct ? `<span class="lit-wpunct">${escapeHtml(punct)}</span>` : ''}</div>
+        <div class="lit-wtiles">${tiles}</div>
+        <div class="lit-build-msg"></div>
+        <button type="button" class="lit-build-reset" onclick="litSentReset(this)">Start again</button>
       </div>`;
   },
 

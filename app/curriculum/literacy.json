@@ -5277,6 +5277,1322 @@
    ],
    "teacherNote": "Blend slowly then quickly; always confirm meaning with the picture. Keep every item short and high-success.",
    "homePractice": "Read today's words to someone at home."
+  },
+  {
+   "curriculum_id": "LIT-4-01",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "What is a sentence?",
+   "goal": "Today I can find the start and end of a sentence.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A sentence starts with a big letter and ends with a full stop."
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "The cat is big. That is a sentence. It starts with a big T and ends with a dot."
+    },
+    {
+     "type": "read",
+     "intro": "Read each sentence. Find the big letter and the dot.",
+     "sentences": [
+      {
+       "text": "The **cat** is big.",
+       "word": "cat"
+      },
+      "I have a **dog**.",
+      "The **sun** is hot."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "The cat is big.",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Point to the capital letter and the full stop in one sentence.",
+     "exit": "Points to the capital letter and the full stop."
+    }
+   ],
+   "teacherNote": "Concepts of a sentence: one big letter to start, one dot to end, spaces between words.",
+   "homePractice": "Find one sentence in any text. Point to the start and end."
+  },
+  {
+   "curriculum_id": "LIT-4-02",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "Capital letters and stops",
+   "goal": "Today I can tell a sentence from a question.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A sentence ends with a dot. A question ends with a ?"
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "I have a cat. That is a sentence. Do you have a cat? That is a question."
+    },
+    {
+     "type": "read",
+     "intro": "Read. Which one is a question?",
+     "sentences": [
+      "**I** have a cat.",
+      "**Do** you have a cat?"
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "Do you have a cat?",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Write one sentence. Start with a big letter. End with a full stop.",
+     "exit": "Writes a sentence with a capital and a full stop."
+    }
+   ],
+   "teacherNote": ". for a telling sentence, ? for a question. Read them with different voices.",
+   "homePractice": "Write one question. Use a ? at the end."
+  },
+  {
+   "curriculum_id": "LIT-4-03",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "I am, you are",
+   "goal": "Today I can say and write 'I am ___.'",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say and write 'I am ___.'"
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "How are you? I am happy. You are here."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "I am ___.",
+     "words": [
+      {
+       "word": "happy"
+      },
+      {
+       "word": "tired"
+      },
+      {
+       "word": "here"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "I am ___.",
+     "words": [
+      {
+       "word": "happy"
+      },
+      {
+       "word": "tired"
+      },
+      {
+       "word": "here"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**I am** happy.",
+      "**You are** here.",
+      "**I am** tired."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I am happy.",
+     "word": "happy"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Write: I am ___. (happy or tired)",
+     "exit": "Says and writes 'I am ___.'"
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-04",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "He, she, it is",
+   "goal": "Today I can say and write 'She is ___.'",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say and write 'She is ___.'"
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "happy"
+      },
+      {
+       "word": "tired"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "This is my mother. She is my mother."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "She is my ___.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "sister"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "She is my ___.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "sister"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**She is** my mother.",
+      "**He is** my father.",
+      "**It is** a dog."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "She is my mother.",
+     "word": "mother"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Write a sentence: He is my ___ / She is my ___.",
+     "exit": "Writes 'He/She is my ___.'"
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-05",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "I work, she works",
+   "goal": "Today I can say what people do.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say what people do."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "What do you do? I work. She works."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "I ___.",
+     "words": [
+      {
+       "word": "eat"
+      },
+      {
+       "word": "drink"
+      },
+      {
+       "word": "sleep"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "I ___.",
+     "words": [
+      {
+       "word": "eat"
+      },
+      {
+       "word": "drink"
+      },
+      {
+       "word": "sleep"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**I** work.",
+      "**She** works.",
+      "**We** eat."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I eat at home.",
+     "word": null
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Write: I ___ (work, eat, or sleep).",
+     "exit": "Writes a subject + verb sentence."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-06",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "I drink tea",
+   "goal": "Today I can say what I do with a thing.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say what I do with a thing."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "eat"
+      },
+      {
+       "word": "drink"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "I drink water. She drinks milk."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "I drink ___.",
+     "words": [
+      {
+       "word": "water"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "I drink ___.",
+     "words": [
+      {
+       "word": "water"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**I** drink water.",
+      "**She** drinks milk.",
+      "**I** have a cup."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I drink water.",
+     "word": "water"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Write: I drink ___ (water or milk).",
+     "exit": "Writes a subject + verb + object sentence."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-07",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "He, she, it",
+   "goal": "Today I can use he, she, and it.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can use he, she, and it."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "water"
+      },
+      {
+       "word": "milk"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "Sara is here. She is here. The dog is here. It is here."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "___ is here.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "___ is here.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**He** is here.",
+      "**She** is here.",
+      "**It** is a cat."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "She is my sister.",
+     "word": "dog"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Change the name to he, she, or it.",
+     "exit": "Uses he, she, it for people and things."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-08",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "Naming words",
+   "goal": "Today I can name people, places, and things.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can name people, places, and things."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "A person, a place, a thing -- these are naming words."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "door"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "door"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**This** is my mother.",
+      "**This** is an apple.",
+      "**This** is a door."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "This is a book.",
+     "word": "book"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Say two people and two things you can see.",
+     "exit": "Names people and things (nouns)."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-09",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "a, an, the",
+   "goal": "Today I can use a, an, and the.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can use a, an, and the."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "apple"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "a cat, an egg -- an before a, e, i, o, u."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "___ egg. ___ cat.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "egg"
+      },
+      {
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "___ egg. ___ cat.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "egg"
+      },
+      {
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**a** cat",
+      "**an** egg",
+      "**the** sun"
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I have an egg.",
+     "word": "egg"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Choose a, an, or the for each word.",
+     "exit": "Uses a, an, the correctly."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-10",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "One and many",
+   "goal": "Today I can make words mean more than one.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can make words mean more than one."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "egg"
+      },
+      {
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "One cat. Two cats. We add an s."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "two ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "bus"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "two ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "bus"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "one cat, two **cats**",
+      "one cup, two **cups**",
+      "one bus, two **buses**"
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I have two cats.",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Add s to make a word mean more than one.",
+     "exit": "Forms plural nouns with s."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-11",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "Describing words",
+   "goal": "Today I can describe a thing.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can describe a thing."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "A big bus. A red hat. Big and red are describing words."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "a ___ ___.",
+     "words": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "ball"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "a ___ ___.",
+     "words": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "ball"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "a **big** bus",
+      "a **red** hat",
+      "a **little** cat"
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I have a big bus.",
+     "word": "bus"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Describe a thing: a ___ ___ (a big bag).",
+     "exit": "Uses a colour or size word to describe a noun."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-12",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "Where is it?",
+   "goal": "Today I can say where a thing is.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say where a thing is."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "The cat is on the box. On tells us where."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "The ___ is on the ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "box"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "The ___ is on the ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "box"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "The **cat** is **on** the box.",
+      "The **cup** is **on** the table.",
+      "The bug is **in** the cup."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "The cat is on the box.",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Put a pen on the table. Say where it is.",
+     "exit": "Uses in / on to say where something is."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-13",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "There is, there are",
+   "goal": "Today I can say what is in a room.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say what is in a room."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "box"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "There is a dog. There are three cats."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "There is a ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "There is a ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**There is** a dog.",
+      "**There are** three cats.",
+      "**There is** a book."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "There is a dog.",
+     "word": "dog"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Say what is in the room: There is a ___.",
+     "exit": "Uses 'There is / There are'."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-14",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "Asking questions",
+   "goal": "Today I can ask and answer a question.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can ask and answer a question."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "book"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "What? Where? Who? These ask a question."
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "Where is the ___?",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "bus"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "Where is the ___?",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "bus"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**What** is this?",
+      "**Where** is the cat?",
+      "**Who** is she?"
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "Where is the cat?",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Ask: Where is the ___? Then answer it.",
+     "exit": "Asks and answers a simple question."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-15",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "No, and please",
+   "goal": "Today I can say no and ask politely.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say no and ask politely."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "bus"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "oral": "I am not tired. Can I have water, please?"
+    },
+    {
+     "type": "teach",
+     "layout": "frame",
+     "title": "The pattern",
+     "intro": "Read the pattern. The words go in the blank.",
+     "frame": "Can I have ___, please?",
+     "words": [
+      {
+       "word": "water"
+      },
+      {
+       "word": "cup"
+      },
+      {
+       "word": "book"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "frame",
+     "title": "Say it",
+     "intro": "Say the sentence for each picture.",
+     "frame": "Can I have ___, please?",
+     "words": [
+      {
+       "word": "water"
+      },
+      {
+       "word": "cup"
+      },
+      {
+       "word": "book"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these sentences.",
+     "sentences": [
+      "**I am not** tired.",
+      "**It is not** a dog.",
+      "**Can I have** water, **please**?"
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "Can I have water, please?",
+     "word": "water"
+    },
+    {
+     "type": "functional",
+     "title": "Write it",
+     "task": "Ask for something politely: Can I have ___, please?",
+     "exit": "Uses a negative and a polite request."
+    }
+   ],
+   "teacherNote": "Teach the pattern through the picture, an oral model, reading, and word cards -- never a definition alone.",
+   "homePractice": "Write one sentence using today's pattern."
+  },
+  {
+   "curriculum_id": "LIT-4-16",
+   "level": "LIT4",
+   "arc": "v2",
+   "skill": "sentences",
+   "title": "Sentences checkpoint",
+   "goal": "Today I can read and build correct sentences.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can read a sentence and build my own."
+    },
+    {
+     "type": "review",
+     "layout": "picwords",
+     "intro": "Name these.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      },
+      {
+       "word": "water"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read each sentence.",
+     "sentences": [
+      "**I am** happy.",
+      "**She is** my mother.",
+      "**There is** a big dog."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "The cat is on the box.",
+     "word": "cat"
+    },
+    {
+     "type": "sentence",
+     "sentence": "I drink water.",
+     "word": "water"
+    },
+    {
+     "type": "functional",
+     "title": "Show what you can do",
+     "task": "Build one sentence with tiles. Then write one sentence about yourself.",
+     "exit": "Builds and writes one correct sentence with support."
+    }
+   ],
+   "teacherNote": "Low-stakes checkpoint. Note secure / developing / needs support.",
+   "homePractice": "Write two sentences about your day."
   }
  ]
 }
