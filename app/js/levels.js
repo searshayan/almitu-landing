@@ -10,6 +10,7 @@ const LEVELS = [
   { value: 'LIT2',   label: 'Literacy 2 · Letters & Sounds',  tier: 'literacy' },
   { value: 'LIT3',   label: 'Literacy 3 · Word Building',      tier: 'literacy' },
   { value: 'LIT4',   label: 'Literacy 4 · Sentences & Grammar', tier: 'literacy' },
+  { value: 'LIT5',   label: 'Literacy 5 · Reading for Meaning', tier: 'literacy' },
   { value: 'Pre-A1', label: 'Beginner (Pre-A1)',          tier: 'foundation' },
   { value: 'A1',     label: 'Elementary (A1)',            tier: 'foundation' },
   { value: 'A2',     label: 'Pre-Intermediate (A2)',      tier: 'development' },
@@ -152,6 +153,7 @@ const LEVEL_DESCRIPTORS = {
   'LIT2': 'Letters and sounds. Learner recognises letters and their sounds (name AND phonic sound), one small group at a time, each anchored to a picture example. Begins to blend two or three sounds. No connected text.',
   'LIT3': 'Word building. Learner blends and reads simple CVC words and a few high-frequency sight words, checking meaning against a picture. Short, decodable items only — no sentences beyond CVC.',
   'LIT4': 'Sentences and grammar. Learner moves from words to accurate simple sentences — subject + verb, articles, plurals, adjectives, prepositions, questions and negatives — always through pictures, oral models, reading and guided writing.',
+  'LIT5': 'Reading for meaning. Learner reads short, controlled texts (single sentences up to five connected ones) and shows understanding — matching sentence to picture, scanning for key words and numbers, answering who/what/where and yes/no, sequencing, following instructions and retelling. Decoding is secure; the focus is comprehension.',
   'Pre-A1': 'Absolute beginner. Isolated high-frequency words, fixed greetings, and memorised chunks only. No independent sentence building yet. Everything supported by images and L1.',
   'A1':     'Basic user. Simple present-tense statements and questions about immediate, concrete needs. Very short turns, heavy scaffolding, familiar everyday words.',
   'A2':     'Elementary. Simple connected sentences about routine matters; can use past and near-future with support. Short paragraph contexts, light scaffolding, common collocations.',
@@ -189,6 +191,11 @@ const LEVEL_GUIDE = {
     goal:   'Read and write simple, correct sentences about everyday life.',
     expect: 'Building and reading short sentences with a frame; first use of grammar (be, verbs, articles, plurals, prepositions, questions).',
     teach:  'Teach each pattern through a picture, an oral model, a readable sentence and word cards — never a definition alone.'
+  },
+  'LIT5': {
+    goal:   'Read short texts and show real understanding — not just sound out the words.',
+    expect: 'Matching sentences to pictures, scanning for key words and numbers, answering who/what/where and yes/no, sequencing and retelling short texts.',
+    teach:  'Read the text together, then ask the learner to point to the answer in the words; reread for fluency and always check meaning with the picture.'
   },
   'Pre-A1': {
     goal:   'Help the learner recognise and say a small set of everyday words and fixed phrases.',

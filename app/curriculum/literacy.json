@@ -6593,6 +6593,930 @@
    ],
    "teacherNote": "Low-stakes checkpoint. Note secure / developing / needs support.",
    "homePractice": "Write two sentences about your day."
+  },
+  {
+   "curriculum_id": "LIT-5-01",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Word, phrase, sentence",
+   "goal": "Today I can see how a word grows into a whole sentence.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A word names one thing. Add more words and you have a sentence.",
+     "warmup": "Point to one thing in the room and name it. That one word is where a sentence starts."
+    },
+    {
+     "type": "context",
+     "word": "dog",
+     "oral": "Look — dog. A big dog. The big dog can run. One word, then more words, then a whole sentence."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "dog",
+      "big",
+      "run"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read from the top. See how it grows.",
+     "sentences": [
+      {
+       "text": "**dog**",
+       "word": "dog"
+      },
+      {
+       "text": "a big **dog**",
+       "word": "dog"
+      },
+      {
+       "text": "The big **dog** can **run**.",
+       "word": "run"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the right picture.",
+     "items": [
+      "dog",
+      "big",
+      "run"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Find the parts",
+     "task": "In the last line, point to the word **dog**, then a longer phrase, then the whole sentence.",
+     "exit": "Points to a word, a phrase and a full sentence."
+    },
+    {
+     "type": "sentence",
+     "sentence": "The dog can run.",
+     "word": "dog"
+    }
+   ],
+   "teacherNote": "Build word → phrase → sentence so the learner sees a sentence is words that work together.",
+   "homePractice": "Find one word, then a longer phrase, in any text at home."
+  },
+  {
+   "curriculum_id": "LIT-5-02",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Match the sentence to the picture",
+   "goal": "Today I can read a sentence and find the picture that matches.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Each sentence tells us something. Find the picture that shows it.",
+     "warmup": "Name the two pictures you can see: a cat and a box. Keep them in mind as we read."
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "The cat is on the bed. The cat is in the box. Same cat, different place — read carefully."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "cat",
+      "bed",
+      "box"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read each sentence. Look at the picture.",
+     "sentences": [
+      {
+       "text": "The **cat** is on the **bed**.",
+       "word": "cat"
+      },
+      {
+       "text": "The **cat** is in the **box**.",
+       "word": "box"
+      },
+      {
+       "text": "The **dog** is on the **bed**.",
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a sentence — the learner points to the matching picture.",
+     "items": [
+      "cat",
+      "bed",
+      "box"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Match it",
+     "task": "Read each sentence and point to the picture that matches it. Which words tell you where?",
+     "exit": "Matches each sentence to the correct picture."
+    },
+    {
+     "type": "sentence",
+     "sentence": "The cat is in the box.",
+     "word": "cat"
+    }
+   ],
+   "teacherNote": "Meaning first: the learner must read the words, not guess from one picture. Contrast on/in and cat/dog.",
+   "homePractice": "Read a short caption under a photo and check it matches."
+  },
+  {
+   "curriculum_id": "LIT-5-03",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Read it again",
+   "goal": "Today I can read the same sentences again — smoother and faster.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Reading gets easier the second time. We read, then read again.",
+     "warmup": "Read any one word you already know. Good — now we build up to smooth sentences."
+    },
+    {
+     "type": "context",
+     "word": "sun",
+     "oral": "The sun is hot. I have a hat. We will read this, then read it again — better each time."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "sun",
+      "hot",
+      "hat"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read these once, slowly.",
+     "sentences": [
+      {
+       "text": "The **sun** is **hot**.",
+       "word": "sun"
+      },
+      {
+       "text": "I have a **hat**.",
+       "word": "hat"
+      },
+      {
+       "text": "The hat is **red**.",
+       "word": "red"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Read again",
+     "task": "Read all three sentences a second time. This time, read them smoothly, without stopping.",
+     "exit": "Reads the three sentences again, more smoothly."
+    },
+    {
+     "type": "sentence",
+     "sentence": "The sun is hot.",
+     "word": "sun"
+    },
+    {
+     "type": "functional",
+     "title": "On your own",
+     "task": "Read the three sentences to your tutor with no help.",
+     "exit": "Reads three simple sentences fluently."
+    }
+   ],
+   "teacherNote": "Repeated reading builds fluency. Praise smoothness, not speed alone.",
+   "homePractice": "Read the same three sentences again tomorrow."
+  },
+  {
+   "curriculum_id": "LIT-5-04",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Find the key words",
+   "goal": "Today I can find important words in a text.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Good readers look for the words that matter.",
+     "warmup": "Say how you get to work or the shops. We will read words for travel."
+    },
+    {
+     "type": "context",
+     "word": "bus",
+     "oral": "I go on the bus. My bike is at home. Listen for the travel words as we read."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "bus",
+      "bike",
+      "car"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read about how I travel.",
+     "sentences": [
+      {
+       "text": "I go to work on the **bus**.",
+       "word": "bus"
+      },
+      {
+       "text": "My **bike** is at home.",
+       "word": "bike"
+      },
+      {
+       "text": "I do not have a **car**.",
+       "word": "car"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the matching picture.",
+     "items": [
+      "bus",
+      "bike",
+      "car"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Scan and find",
+     "task": "Read again. Find and point to the word **bus**. Now find **bike**. Now find **car**.",
+     "exit": "Scans the text and finds the target words."
+    }
+   ],
+   "teacherNote": "Scanning: eyes hunt for a known word without reading every part. Model it first.",
+   "homePractice": "In any short text, find one word you know."
+  },
+  {
+   "curriculum_id": "LIT-5-05",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Find the number",
+   "goal": "Today I can find numbers and say how many.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Numbers in a text tell us how many or how much.",
+     "warmup": "Count some things in the room out loud: one, two, three. Numbers matter when we read."
+    },
+    {
+     "type": "context",
+     "word": "three",
+     "oral": "I have two eggs. I want three apples. Listen for the numbers."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "two",
+      "three",
+      "five"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read and look for the numbers.",
+     "sentences": [
+      {
+       "text": "I have **two** eggs.",
+       "word": "two"
+      },
+      {
+       "text": "I want **three** apples.",
+       "word": "three"
+      },
+      {
+       "text": "I see **five** birds.",
+       "word": "five"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a number — the learner points to it.",
+     "items": [
+      "two",
+      "three",
+      "five"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "How many?",
+     "task": "Find each number. How many eggs? How many apples? How many birds?",
+     "exit": "Finds the numbers in a text and says how many."
+    }
+   ],
+   "teacherNote": "Numbers are high-value information (prices, times, amounts). Point to the number, then the thing.",
+   "homePractice": "Find a number on a sign, a price or a bus."
+  },
+  {
+   "curriculum_id": "LIT-5-06",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Who, what, where",
+   "goal": "Today I can answer who, what and where about a text.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A text can tell us who, what and where. We read to find out.",
+     "warmup": "Think of your home: who is there? We will read and answer who and where."
+    },
+    {
+     "type": "context",
+     "word": "baby",
+     "oral": "The baby is in bed. Who is it? Where is the baby? Read to find the answer."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "baby",
+      "mother",
+      "bed"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read about the baby.",
+     "sentences": [
+      {
+       "text": "The **baby** is in **bed**.",
+       "word": "baby"
+      },
+      {
+       "text": "**Mother** is happy.",
+       "word": "mother"
+      },
+      {
+       "text": "The baby is **happy**.",
+       "word": "happy"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the picture.",
+     "items": [
+      "baby",
+      "mother",
+      "bed"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Answer the questions",
+     "task": "Answer: Who is in bed? Where is the baby? Point to the words that tell you.",
+     "exit": "Answers who / what / where using the text."
+    },
+    {
+     "type": "sentence",
+     "sentence": "The baby is in bed.",
+     "word": "baby"
+    }
+   ],
+   "teacherNote": "Comprehension: the answer is in the words, so ask the learner to point to it, not recall it.",
+   "homePractice": "After reading anything short, ask yourself: who and where?"
+  },
+  {
+   "curriculum_id": "LIT-5-07",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Yes or no",
+   "goal": "Today I can read a sentence and say if it is true.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Some sentences are true. Some are not. We read and decide: yes or no.",
+     "warmup": "Say one true thing about today. We will read sentences and judge them."
+    },
+    {
+     "type": "context",
+     "word": "fish",
+     "oral": "A fish lives in water — yes. A cat can fly — no. We read, then we decide."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "fish",
+      "water",
+      "cat"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read each sentence. Is it true?",
+     "sentences": [
+      {
+       "text": "A **fish** lives in **water**.",
+       "word": "fish"
+      },
+      {
+       "text": "A **cat** can fly.",
+       "word": "cat"
+      },
+      {
+       "text": "The **sun** is **hot**.",
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the picture.",
+     "items": [
+      "fish",
+      "water",
+      "cat"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Yes or no?",
+     "task": "Say **yes** if it is true and **no** if it is not. A fish lives in water? A cat can fly? The sun is hot?",
+     "exit": "Reads a sentence and judges true (yes) or not true (no)."
+    }
+   ],
+   "teacherNote": "True/false checks real understanding, not decoding alone. Keep facts obvious.",
+   "homePractice": "Read a sentence to someone and ask: yes or no?"
+  },
+  {
+   "curriculum_id": "LIT-5-08",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "First, next, last",
+   "goal": "Today I can put a small story in the right order.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Stories happen in order: first, next, last.",
+     "warmup": "Say two things you do in the morning. Which comes first? Order matters."
+    },
+    {
+     "type": "context",
+     "word": "sun",
+     "oral": "First the sun comes up. Next I eat. Last I sleep. Listen for the order words."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "sun",
+      "eat",
+      "sleep"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read my day, in order.",
+     "sentences": [
+      {
+       "text": "**First**, the **sun** comes up.",
+       "word": "sun"
+      },
+      {
+       "text": "**Next**, I **eat**.",
+       "word": "eat"
+      },
+      {
+       "text": "**Last**, I **sleep**.",
+       "word": "sleep"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say first, next or last — the learner points to the right picture.",
+     "items": [
+      "sun",
+      "eat",
+      "sleep"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Put it in order",
+     "task": "Look at the three pictures. Which is **first**? Which is **next**? Which is **last**? Put them in order.",
+     "exit": "Puts the three steps in the right order: first, next, last."
+    }
+   ],
+   "teacherNote": "Sequencing: use the order words (first/next/last) as anchors. The three teach pictures are the cards to order.",
+   "homePractice": "Tell someone three things you did today, in order."
+  },
+  {
+   "curriculum_id": "LIT-5-09",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Read and do",
+   "goal": "Today I can read an instruction and do it.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Some texts tell us to do something. We read, then we do it.",
+     "warmup": "Do one thing when I say it: stand up. Good — now we will read instructions."
+    },
+    {
+     "type": "context",
+     "word": "book",
+     "oral": "Open the book. Point to the door. We read a line, then we do it."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "book",
+      "door",
+      "box"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read each line, then do it.",
+     "sentences": [
+      {
+       "text": "Open the **book**.",
+       "word": "book"
+      },
+      {
+       "text": "Point to the **door**.",
+       "word": "door"
+      },
+      {
+       "text": "Put the pen in the **box**.",
+       "word": "box"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the picture.",
+     "items": [
+      "book",
+      "door",
+      "box"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Read and do",
+     "task": "Read each instruction on your own and do the action.",
+     "exit": "Reads a simple instruction and carries it out."
+    }
+   ],
+   "teacherNote": "Following instructions proves comprehension through action. Keep verbs concrete and doable in the room.",
+   "homePractice": "Read one instruction at home (a label, a note) and follow it."
+  },
+  {
+   "curriculum_id": "LIT-5-10",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Signs and labels",
+   "goal": "Today I can read short signs and labels around me.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Words are everywhere — on doors, shelves and bottles. We read them fast.",
+     "warmup": "Name one sign or label you saw today. Signs use short, useful words."
+    },
+    {
+     "type": "context",
+     "word": "milk",
+     "oral": "This bottle says milk. This tap says water. Short words help us every day."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "milk",
+      "water",
+      "out"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read each sign or label.",
+     "sentences": [
+      {
+       "text": "**milk**",
+       "word": "milk"
+      },
+      {
+       "text": "**water**",
+       "word": "water"
+      },
+      {
+       "text": "**out**",
+       "word": "out"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the sign.",
+     "items": [
+      "milk",
+      "water",
+      "out"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Where would you see it?",
+     "task": "Read each one. Where might you see it — a shop, a bottle, a door?",
+     "exit": "Reads short signs and labels and says where each appears."
+    }
+   ],
+   "teacherNote": "Environmental print: single words in the real world. Connect each to a place the learner knows.",
+   "homePractice": "Read one sign or label you pass every day."
+  },
+  {
+   "curriculum_id": "LIT-5-11",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "A short message",
+   "goal": "Today I can read a short note and find what it says.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A message is a few short lines. We read to find the important parts.",
+     "warmup": "Have you had a text or note today? A message tells us something quickly."
+    },
+    {
+     "type": "context",
+     "word": "milk",
+     "oral": "Hi. I am at work. Get milk and bread. This is a short message from home."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "work",
+      "milk",
+      "bread"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read this note from home.",
+     "sentences": [
+      {
+       "text": "Hi. I am at **work**.",
+       "word": "work"
+      },
+      {
+       "text": "Get **milk** and **bread**.",
+       "word": "milk"
+      },
+      {
+       "text": "See you at **night**.",
+       "word": "night"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word from the note — the learner points to the picture.",
+     "items": [
+      "work",
+      "milk",
+      "bread"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "What does it say?",
+     "task": "Read the message. What must you get? When will you meet?",
+     "exit": "Reads a short message and finds the key facts."
+    }
+   ],
+   "teacherNote": "Real texts: a note has a purpose. Ask what it wants the reader to do.",
+   "homePractice": "Read a real note or text message and say what it asks."
+  },
+  {
+   "curriculum_id": "LIT-5-12",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Tell it back",
+   "goal": "Today I can read a few sentences and tell them back.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "After we read, we can say it again in our own words.",
+     "warmup": "Tell me one thing about your day. Telling it back is what good readers do."
+    },
+    {
+     "type": "context",
+     "word": "dog",
+     "oral": "I have a dog. The dog likes a ball. We will read it, then tell it back."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "dog",
+      "ball",
+      "run"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read about the dog.",
+     "sentences": [
+      {
+       "text": "I have a **dog**.",
+       "word": "dog"
+      },
+      {
+       "text": "The dog likes a **ball**.",
+       "word": "ball"
+      },
+      {
+       "text": "We **run** and play.",
+       "word": "run"
+      }
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "The dog likes a ball.",
+     "word": "dog"
+    },
+    {
+     "type": "functional",
+     "title": "Tell it back",
+     "task": "Cover the text. Tell it back in your own words: what do I have? what does it like?",
+     "exit": "Retells a short text from memory."
+    }
+   ],
+   "teacherNote": "Retelling shows the learner built meaning, not just sounded out words. Accept their own wording.",
+   "homePractice": "Read three sentences, then tell someone what they said."
+  },
+  {
+   "curriculum_id": "LIT-5-13",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "A longer text",
+   "goal": "Today I can read five sentences that go together.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "More sentences, one story. We read from the top to the end.",
+     "warmup": "Say two things you do in a normal day. We will read five sentences about a day."
+    },
+    {
+     "type": "context",
+     "word": "sun",
+     "oral": "The sun is up. I make tea. I go to work. Five short sentences, one day."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "sun",
+      "tea",
+      "bus"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read my morning.",
+     "sentences": [
+      {
+       "text": "The **sun** is up.",
+       "word": "sun"
+      },
+      {
+       "text": "I make a cup of **tea**.",
+       "word": "tea"
+      },
+      {
+       "text": "I **eat** an egg.",
+       "word": "eat"
+      },
+      {
+       "text": "I go to work on the **bus**.",
+       "word": "bus"
+      },
+      {
+       "text": "At **night**, I **sleep**.",
+       "word": "sleep"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "title": "Listen and find",
+     "intro": "Say a word — the learner points to the picture.",
+     "items": [
+      "sun",
+      "tea",
+      "bus"
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Answer about it",
+     "task": "Read all five sentences. What do I do in the morning? What do I do at night?",
+     "exit": "Reads a five-sentence text and answers questions about it."
+    }
+   ],
+   "teacherNote": "First connected text. Track line by line; check the learner holds meaning across sentences.",
+   "homePractice": "Read a short paragraph and tell one thing that happened."
+  },
+  {
+   "curriculum_id": "LIT-5-14",
+   "level": "LIT5",
+   "arc": "v2",
+   "skill": "reading",
+   "title": "Reading checkpoint",
+   "goal": "Today I can show what I can read on my own.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Show all your reading: words, sentences and meaning — on your own.",
+     "warmup": "You have read words, sentences and short texts. Today you show it by yourself."
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "The cat is on the bed. I go to work on the bus. Read each one on your own today."
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "cat",
+      "bus",
+      "sun"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read each sentence on your own.",
+     "sentences": [
+      {
+       "text": "The **cat** is on the **bed**.",
+       "word": "cat"
+      },
+      {
+       "text": "I go to work on the **bus**.",
+       "word": "bus"
+      },
+      {
+       "text": "The **sun** is **hot** today.",
+       "word": "sun"
+      }
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "The cat is on the bed.",
+     "word": "cat"
+    },
+    {
+     "type": "functional",
+     "title": "Show what you can do",
+     "task": "Read each sentence with no help. Then answer: Where is the cat? How do I go to work?",
+     "exit": "Reads simple sentences independently and answers about them."
+    }
+   ],
+   "teacherNote": "Checkpoint: minimal support. Note which skills are secure (decoding, meaning) and which need more work.",
+   "homePractice": "Read three sentences to a family member with no help."
   }
  ]
 }
