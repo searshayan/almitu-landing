@@ -7517,6 +7517,911 @@
    ],
    "teacherNote": "Checkpoint: minimal support. Note which skills are secure (decoding, meaning) and which need more work.",
    "homePractice": "Read three sentences to a family member with no help."
+  },
+  {
+   "curriculum_id": "LIT-6-01",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Signs on doors",
+   "goal": "Today I can read the signs on doors.",
+   "practiceWords": [
+    "push",
+    "pull",
+    "open",
+    "closed"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Doors tell us what to do: push or pull, open or closed.",
+     "warmup": "Think of a shop door you use. Does it say push or pull? We will read door signs."
+    },
+    {
+     "type": "context",
+     "oral": "Some doors say PUSH. Some say PULL. A shop can be OPEN or CLOSED. We read the sign first."
+    },
+    {
+     "type": "sign",
+     "intro": "These are on doors. Read each one.",
+     "items": [
+      {
+       "word": "PUSH",
+       "sub": "push the door",
+       "tone": "info"
+      },
+      {
+       "word": "PULL",
+       "sub": "pull the door",
+       "tone": "info"
+      },
+      {
+       "word": "OPEN",
+       "sub": "you can go in",
+       "tone": "go"
+      },
+      {
+       "word": "CLOSED",
+       "sub": "you cannot go in",
+       "tone": "stop"
+      }
+     ]
+    },
+    {
+     "type": "sign",
+     "intro": "More door signs.",
+     "items": [
+      {
+       "word": "WAY IN",
+       "tone": "go"
+      },
+      {
+       "word": "WAY OUT",
+       "tone": "go"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say what each sign means. At a door that says PULL, what do you do?",
+     "exit": "Reads door signs and acts on them (push/pull, open/closed)."
+    }
+   ],
+   "teacherNote": "Environmental print with a clear action. Mime push/pull so meaning is physical, not just decoded.",
+   "homePractice": "Read the sign on one door before you open it today."
+  },
+  {
+   "curriculum_id": "LIT-6-02",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Safety and warning signs",
+   "goal": "Today I can read signs that keep me safe.",
+   "practiceWords": [
+    "stop",
+    "danger",
+    "exit"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Some signs keep us safe. We must read and obey them.",
+     "warmup": "Have you seen a red STOP sign? Red often means stop or danger."
+    },
+    {
+     "type": "context",
+     "oral": "STOP means stop. DANGER means keep away. NO ENTRY means do not go in. FIRE EXIT is the way out in a fire."
+    },
+    {
+     "type": "sign",
+     "intro": "Safety signs. Read each one.",
+     "items": [
+      {
+       "word": "STOP",
+       "sub": "do not go",
+       "tone": "stop"
+      },
+      {
+       "word": "DANGER",
+       "sub": "keep away",
+       "tone": "stop"
+      },
+      {
+       "word": "NO ENTRY",
+       "sub": "do not go in",
+       "tone": "stop"
+      },
+      {
+       "word": "FIRE EXIT",
+       "sub": "way out in a fire",
+       "tone": "go"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Which signs mean 'do not go'? Which one shows the way out in a fire?",
+     "exit": "Reads safety signs and knows which mean danger or the way out."
+    }
+   ],
+   "teacherNote": "High-stakes signs. Colour is a strong cue (red=stop/danger, green=go/exit) — teach it explicitly.",
+   "homePractice": "Point out one safety sign you see this week and say what it means."
+  },
+  {
+   "curriculum_id": "LIT-6-03",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Signs around town",
+   "goal": "Today I can read signs in shops and the street.",
+   "practiceWords": [
+    "toilets",
+    "exit",
+    "lift"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Signs help us find our way in town.",
+     "warmup": "When you need the toilet in a shop, what sign do you look for? We will read town signs."
+    },
+    {
+     "type": "context",
+     "oral": "TOILETS shows where the toilet is. EXIT is the way out. LIFT takes you up and down. NO SMOKING means do not smoke."
+    },
+    {
+     "type": "sign",
+     "intro": "Signs you see out and about.",
+     "items": [
+      {
+       "word": "TOILETS",
+       "sub": "the toilet is here",
+       "tone": "info"
+      },
+      {
+       "word": "EXIT",
+       "sub": "the way out",
+       "tone": "go"
+      },
+      {
+       "word": "LIFT",
+       "sub": "goes up and down",
+       "tone": "info"
+      },
+      {
+       "word": "NO SMOKING",
+       "sub": "do not smoke",
+       "tone": "stop"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "You need the way out. Which sign do you follow? You need the toilet — which sign?",
+     "exit": "Finds the right sign for a real need (exit, toilets)."
+    }
+   ],
+   "teacherNote": "Wayfinding. Tie each sign to a real need the learner has when out.",
+   "homePractice": "Find the EXIT sign next time you are in a shop."
+  },
+  {
+   "curriculum_id": "LIT-6-04",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Money and prices",
+   "goal": "Today I can read prices and money.",
+   "practiceWords": [
+    "pound",
+    "price",
+    "pay"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Prices tell us how much to pay. We read the number and the sign.",
+     "warmup": "How much is a loaf of bread near you? We will read prices with the pound sign."
+    },
+    {
+     "type": "context",
+     "oral": "£ means pounds. p means pence. £1 is one pound. 50p is fifty pence. £2.50 is two pounds and fifty pence."
+    },
+    {
+     "type": "sign",
+     "intro": "Read each price.",
+     "items": [
+      {
+       "word": "£1",
+       "sub": "one pound",
+       "tone": "info"
+      },
+      {
+       "word": "50p",
+       "sub": "fifty pence",
+       "tone": "info"
+      },
+      {
+       "word": "£2",
+       "sub": "two pounds",
+       "tone": "info"
+      },
+      {
+       "word": "£5",
+       "sub": "five pounds",
+       "tone": "info"
+      }
+     ]
+    },
+    {
+     "type": "doc",
+     "intro": "A small shopping list with prices.",
+     "doc_title": "SHOP",
+     "rows": [
+      {
+       "label": "Milk",
+       "value": "£1"
+      },
+      {
+       "label": "Bread",
+       "value": "£1"
+      },
+      {
+       "label": "Eggs",
+       "value": "£2"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Which costs the most? You have £5 — is that enough for the milk, bread and eggs?",
+     "exit": "Reads prices and compares amounts of money."
+    }
+   ],
+   "teacherNote": "Money is the highest-value functional reading. Use real coins/notes if you have them.",
+   "homePractice": "Read one price on a shelf or a menu today."
+  },
+  {
+   "curriculum_id": "LIT-6-05",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "The clock: o'clock",
+   "goal": "Today I can read o'clock times.",
+   "practiceWords": [
+    "clock",
+    "time"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "The clock tells us the time. We start with o'clock times.",
+     "warmup": "What time do you get up? We will read whole hours on a clock."
+    },
+    {
+     "type": "context",
+     "oral": "When the long hand points to 12, it is an o'clock time. The short hand shows the hour."
+    },
+    {
+     "type": "clock",
+     "intro": "Read each clock.",
+     "times": [
+      {
+       "time": "3:00",
+       "words": "three o'clock"
+      },
+      {
+       "time": "6:00",
+       "words": "six o'clock"
+      },
+      {
+       "time": "9:00",
+       "words": "nine o'clock"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say each time. Which clock shows nine o'clock? Point to it.",
+     "exit": "Reads whole-hour (o'clock) times on a clock face."
+    }
+   ],
+   "teacherNote": "Start with the hour hand only, long hand on 12. Say the digital time and the words together.",
+   "homePractice": "Look at a clock at home and say the o'clock time."
+  },
+  {
+   "curriculum_id": "LIT-6-06",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "The clock: half past",
+   "goal": "Today I can read half past times.",
+   "practiceWords": [
+    "clock",
+    "half"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "When the long hand points to 6, it is half past.",
+     "warmup": "You have read o'clock times. Now we read half past — the long hand on 6."
+    },
+    {
+     "type": "context",
+     "oral": "The long hand on 6 means half past. Half past seven is 7:30. Half past one is 1:30."
+    },
+    {
+     "type": "clock",
+     "intro": "Read each clock.",
+     "times": [
+      {
+       "time": "7:30",
+       "words": "half past seven"
+      },
+      {
+       "time": "1:30",
+       "words": "half past one"
+      },
+      {
+       "time": "12:30",
+       "words": "half past twelve"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say each time. Which clock shows half past seven?",
+     "exit": "Reads half-past times on a clock face."
+    }
+   ],
+   "teacherNote": "Contrast with o'clock: same hours, long hand now on 6. Keep the digital :30 visible.",
+   "homePractice": "Find a half past time on a clock today (something on the :30)."
+  },
+  {
+   "curriculum_id": "LIT-6-07",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Days of the week",
+   "goal": "Today I can read the days of the week.",
+   "practiceWords": [
+    "Monday",
+    "Friday",
+    "Sunday"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "There are seven days in a week. We read them in order.",
+     "warmup": "What day is it today? We will read all seven days of the week."
+    },
+    {
+     "type": "context",
+     "oral": "The week goes Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday. Then it starts again."
+    },
+    {
+     "type": "sign",
+     "intro": "Read the days in order.",
+     "items": [
+      {
+       "word": "Monday",
+       "tone": "info"
+      },
+      {
+       "word": "Tuesday",
+       "tone": "info"
+      },
+      {
+       "word": "Wednesday",
+       "tone": "info"
+      },
+      {
+       "word": "Thursday",
+       "tone": "info"
+      },
+      {
+       "word": "Friday",
+       "tone": "info"
+      },
+      {
+       "word": "Saturday",
+       "tone": "go"
+      },
+      {
+       "word": "Sunday",
+       "tone": "go"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Which day is today? Point to it and say it. Which day comes after Friday?",
+     "exit": "Reads the days of the week and finds today."
+    }
+   ],
+   "teacherNote": "Order matters. Saturday/Sunday marked as the weekend. Anchor to the learner's own week (work/rest days).",
+   "homePractice": "Say the days of the week in order before the next class."
+  },
+  {
+   "curriculum_id": "LIT-6-08",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "The calendar",
+   "goal": "Today I can read a calendar and find a date.",
+   "practiceWords": [
+    "month",
+    "date",
+    "September"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A calendar shows the days of a month. We find the right date.",
+     "warmup": "When is your next appointment or a family day? We will find a date on a calendar."
+    },
+    {
+     "type": "context",
+     "oral": "This is one month: September. Each box is a day. We find a date and point to it."
+    },
+    {
+     "type": "calendar",
+     "intro": "Look at the month. The party is on the coloured day.",
+     "month": "September",
+     "first_dow": 1,
+     "days": 30,
+     "highlight": [
+      15
+     ],
+     "note": "The party is on **15 September**. Find it on the calendar.",
+     "year": 2026
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Point to 15 September. What day of the week is it? Find day 1 of the month.",
+     "exit": "Finds a given date on a calendar and reads the weekday."
+    }
+   ],
+   "teacherNote": "One month at a time. Point to the date, then read across to the weekday header.",
+   "homePractice": "Find today's date on any calendar at home."
+  },
+  {
+   "curriculum_id": "LIT-6-09",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "An appointment card",
+   "goal": "Today I can read an appointment card.",
+   "practiceWords": [
+    "name",
+    "date",
+    "time"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "An appointment card tells us where and when to go.",
+     "warmup": "Have you had a card from a doctor or dentist? We will read one."
+    },
+    {
+     "type": "context",
+     "oral": "An appointment card has a name, a date, a time and a place. We read each part."
+    },
+    {
+     "type": "doc",
+     "intro": "Read the appointment card.",
+     "doc_title": "APPOINTMENT",
+     "rows": [
+      {
+       "label": "Name",
+       "value": "Sara Ali"
+      },
+      {
+       "label": "Date",
+       "value": "15 September"
+      },
+      {
+       "label": "Time",
+       "value": "3:00"
+      },
+      {
+       "label": "Place",
+       "value": "Health Centre"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "When is the appointment — the date and the time? Where must Sara go?",
+     "exit": "Reads the date, time and place from an appointment card."
+    }
+   ],
+   "teacherNote": "Bring together date + time + place. Have the learner find each field on the card.",
+   "homePractice": "Read a real appointment card or letter and find the date and time."
+  },
+  {
+   "curriculum_id": "LIT-6-10",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "A shop receipt",
+   "goal": "Today I can read a receipt and find the total.",
+   "practiceWords": [
+    "milk",
+    "bread",
+    "total"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A receipt shows what we bought and how much we paid.",
+     "warmup": "Do you keep your shopping receipts? We will read one and find the total."
+    },
+    {
+     "type": "context",
+     "oral": "A receipt lists each thing and its price. At the bottom is the TOTAL — all of it added up."
+    },
+    {
+     "type": "doc",
+     "intro": "Read the receipt.",
+     "doc_title": "SHOP RECEIPT",
+     "rows": [
+      {
+       "label": "Milk",
+       "value": "£1"
+      },
+      {
+       "label": "Bread",
+       "value": "£1"
+      },
+      {
+       "label": "Eggs",
+       "value": "£2"
+      },
+      {
+       "label": "TOTAL",
+       "value": "£4"
+      }
+     ],
+     "footer": "Thank you"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "What did Sara buy? How much was the milk? What is the total?",
+     "exit": "Reads items and prices on a receipt and finds the total."
+    }
+   ],
+   "teacherNote": "The TOTAL line is the key. Show that it equals the items added up.",
+   "homePractice": "Find the total on your next receipt."
+  },
+  {
+   "curriculum_id": "LIT-6-11",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "A food label",
+   "goal": "Today I can read a food label.",
+   "practiceWords": [
+    "milk",
+    "use",
+    "date"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A label tells us about the food — and when to use it.",
+     "warmup": "How do you know if milk is still good? A label has a use-by date."
+    },
+    {
+     "type": "context",
+     "oral": "A label has the name of the food and a USE BY date. After that date, do not use it."
+    },
+    {
+     "type": "doc",
+     "intro": "Read the milk label.",
+     "doc_title": "MILK",
+     "rows": [
+      {
+       "label": "Use by",
+       "value": "20 September"
+      },
+      {
+       "label": "Keep",
+       "value": "Cold"
+      }
+     ],
+     "footer": "1 litre"
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "What is this? When must you use it by? Where should you keep it?",
+     "exit": "Reads the name and use-by date on a food label."
+    }
+   ],
+   "teacherNote": "Use-by keeps food safe. Contrast today's date with the use-by date so the learner sees why it matters.",
+   "homePractice": "Read the use-by date on something in your kitchen."
+  },
+  {
+   "curriculum_id": "LIT-6-12",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "A bus timetable",
+   "goal": "Today I can read a bus timetable.",
+   "practiceWords": [
+    "bus",
+    "time",
+    "next"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A timetable tells us when the bus comes.",
+     "warmup": "Do you take a bus? We will read the times the bus comes."
+    },
+    {
+     "type": "context",
+     "oral": "A timetable is a list of times. We find the time we need and take that bus."
+    },
+    {
+     "type": "doc",
+     "intro": "Read the bus times for Bus 12.",
+     "doc_title": "BUS 12",
+     "rows": [
+      {
+       "label": "Bus 1",
+       "value": "8:00"
+      },
+      {
+       "label": "Bus 2",
+       "value": "8:30"
+      },
+      {
+       "label": "Bus 3",
+       "value": "9:00"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "You must be at work by 9:00. Which bus do you take — the 8:00 or the 8:30? Point to it.",
+     "exit": "Reads a timetable and chooses the right bus time."
+    }
+   ],
+   "teacherNote": "Reading to decide, not just to decode. Give a real goal (be at work by 9) so the choice matters.",
+   "homePractice": "Find one bus or train time you need this week."
+  },
+  {
+   "curriculum_id": "LIT-6-13",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Fill a form: your name",
+   "goal": "Today I can write my name on a form.",
+   "practiceWords": [
+    "name",
+    "first",
+    "last"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Forms often ask for your name — first name and last name.",
+     "warmup": "What is your first name? What is your last name? We will put a name on a form."
+    },
+    {
+     "type": "context",
+     "oral": "A form has boxes with labels. First name goes in one box, last name in another."
+    },
+    {
+     "type": "form",
+     "intro": "Tap a name, then tap the box it goes in.",
+     "form_title": "YOUR NAME",
+     "rows": [
+      {
+       "label": "First name",
+       "answer": "Sara"
+      },
+      {
+       "label": "Last name",
+       "answer": "Ali"
+      },
+      {
+       "label": "Full name",
+       "answer": "Sara Ali"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Now you",
+     "task": "On paper, write your own first name, then your last name.",
+     "exit": "Writes their own first and last name in the right places."
+    }
+   ],
+   "teacherNote": "Model with the example, then personalise: the learner writes their real name. Capital letters to start.",
+   "homePractice": "Practise writing your full name three times at home."
+  },
+  {
+   "curriculum_id": "LIT-6-14",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Fill a form: your address",
+   "goal": "Today I can write my address on a form.",
+   "practiceWords": [
+    "address",
+    "street",
+    "town"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Your address says where you live: number, street, town and postcode.",
+     "warmup": "What is the name of your street? We will put an address on a form."
+    },
+    {
+     "type": "context",
+     "oral": "An address has a house number, a street, a town and a postcode. Each goes in its own box."
+    },
+    {
+     "type": "form",
+     "intro": "Tap the answer, then tap the right box.",
+     "form_title": "YOUR ADDRESS",
+     "rows": [
+      {
+       "label": "Number",
+       "answer": "42"
+      },
+      {
+       "label": "Street",
+       "answer": "Green Road"
+      },
+      {
+       "label": "Town",
+       "answer": "Leeds"
+      },
+      {
+       "label": "Postcode",
+       "answer": "LS1 4AB"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Now you",
+     "task": "On paper, write your own house number and street.",
+     "exit": "Writes their own address details in the right fields."
+    }
+   ],
+   "teacherNote": "Address order is fixed (number, street, town, postcode). Use the learner's real address for production.",
+   "homePractice": "Write your address on paper and check each part."
+  },
+  {
+   "curriculum_id": "LIT-6-15",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Fill a form: personal details",
+   "goal": "Today I can complete a simple personal form.",
+   "practiceWords": [
+    "name",
+    "date",
+    "phone"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Many forms ask for your name, date of birth and phone number.",
+     "warmup": "Do you know your phone number by heart? We will complete a short form."
+    },
+    {
+     "type": "context",
+     "oral": "A form can ask for your full name, your date of birth, and your phone number. We fill each box."
+    },
+    {
+     "type": "form",
+     "intro": "Tap the answer, then tap the right box.",
+     "form_title": "YOUR DETAILS",
+     "rows": [
+      {
+       "label": "Name",
+       "answer": "Sara Ali"
+      },
+      {
+       "label": "Date of birth",
+       "answer": "03/05/1990"
+      },
+      {
+       "label": "Phone",
+       "answer": "07700 900123"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Now you",
+     "task": "On paper, write your own name and phone number.",
+     "exit": "Completes a simple personal-details form with their own information."
+    }
+   ],
+   "teacherNote": "These three fields appear on nearly every form. Keep a card with the learner's details for reference.",
+   "homePractice": "Write your name and phone number from memory."
+  },
+  {
+   "curriculum_id": "LIT-6-16",
+   "level": "LIT6",
+   "arc": "v2",
+   "skill": "functional",
+   "title": "Functional checkpoint",
+   "goal": "Today I can show my everyday reading and writing.",
+   "practiceWords": [
+    "exit",
+    "time",
+    "name"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Show what you can do: read a sign, read the clock, and fill a form.",
+     "warmup": "You have read signs, prices, clocks, calendars, cards and forms. Today you show it."
+    },
+    {
+     "type": "sign",
+     "intro": "Read this sign.",
+     "items": [
+      {
+       "word": "EXIT",
+       "sub": "the way out",
+       "tone": "go"
+      }
+     ]
+    },
+    {
+     "type": "clock",
+     "intro": "Read this clock.",
+     "times": [
+      {
+       "time": "3:00",
+       "words": "three o'clock"
+      }
+     ]
+    },
+    {
+     "type": "form",
+     "intro": "Tap the answer, then tap the box.",
+     "form_title": "SIGN IN",
+     "rows": [
+      {
+       "label": "Name",
+       "answer": "Sara Ali"
+      },
+      {
+       "label": "Time",
+       "answer": "3:00"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Show what you can do",
+     "task": "Read the EXIT sign and the clock on your own. Then write your own name on paper.",
+     "exit": "Reads a sign and a clock and writes their name independently."
+    }
+   ],
+   "teacherNote": "Light-support checkpoint across the level. Note which document types are secure and which need review.",
+   "homePractice": "Read one sign, one time and write your name — all on your own."
   }
  ]
 }

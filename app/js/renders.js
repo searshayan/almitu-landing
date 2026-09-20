@@ -127,6 +127,37 @@ function litSentReset(btn) {
   const m = w.querySelector('.lit-build-msg'); if (m) m.innerHTML = '';
 }
 
+/* Form-fill (L6) — tap an answer chip to select it, then tap the field it
+   belongs to. Correct → the field fills; wrong → a gentle nudge. Matching by
+   the field's data-answer, so it teaches which detail goes where. */
+function litFormPick(chip) {
+  const w = chip.closest('.lit-form'); if (!w || chip.classList.contains('used') || w.classList.contains('done')) return;
+  w.querySelectorAll('.lit-form-chip.sel').forEach(c => c.classList.remove('sel'));
+  chip.classList.add('sel');
+}
+function litFormPlace(slot) {
+  const w = slot.closest('.lit-form'); if (!w || slot.classList.contains('filled') || w.classList.contains('done')) return;
+  const chip = w.querySelector('.lit-form-chip.sel'); if (!chip) return;
+  const msg = w.querySelector('.lit-build-msg');
+  if (chip.dataset.a === slot.dataset.answer) {
+    slot.textContent = chip.dataset.a; slot.classList.add('filled');
+    chip.classList.remove('sel'); chip.classList.add('used'); chip.disabled = true;
+    if (typeof speak === 'function') speak(chip.dataset.a);
+    const filled = w.querySelectorAll('.lit-form-slot.filled').length;
+    if (filled === parseInt(w.dataset.total, 10)) { w.classList.add('done'); if (msg) msg.innerHTML = `<span class="ok">${litIco('check')} All done</span>`; }
+  } else {
+    slot.classList.add('wrong'); if (msg) msg.innerHTML = `<span class="no">Try again</span>`;
+    setTimeout(() => slot.classList.remove('wrong'), 500);
+  }
+}
+function litFormReset(btn) {
+  const w = btn.closest('.lit-form'); if (!w) return;
+  w.classList.remove('done');
+  w.querySelectorAll('.lit-form-slot').forEach(s => { s.textContent = ''; s.classList.remove('filled', 'wrong'); });
+  w.querySelectorAll('.lit-form-chip').forEach(c => { c.classList.remove('sel', 'used'); c.disabled = false; });
+  const m = w.querySelector('.lit-build-msg'); if (m) m.innerHTML = '';
+}
+
 /* Shared literacy slide header: the PPP stage label (eyebrow), the title, and
    an optional instruction line. */
 function litHead(slide, d) {
@@ -282,6 +313,110 @@ const LAYOUT_BUILDERS = {
           const pic = (typeof s === 'object' && s.word) ? `<div class="lit-text-pic">${litImg(s.word, s.prefer || 'photo')}</div>` : '';
           return `<div class="lit-text-line">${pic}<span class="lit-text-words">${md(text)}</span>${speakBtn(text)}</div>`;
         }).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy L6: signs & symbols ── bold word cards styled like real signage.
+     items: [{word, sub?, tone?}]; tone = stop | go | info for a colour cue. */
+  sign(d, ctx, slide) {
+    const items = (d.items || []).map(it => (typeof it === 'string' ? { word: it } : it));
+    return `${litHead(slide, d)}
+      <div class="lit-signgrid">
+        ${items.map(it => `
+          <div class="lit-sign ${it.tone ? 'lit-sign-' + it.tone : ''}">
+            <div class="lit-sign-word">${escapeHtml(it.word || '')}</div>
+            ${it.sub ? `<div class="lit-sign-sub">${escapeHtml(it.sub)}</div>` : ''}
+            ${speakBtn(it.word)}
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy L6: clock(s) ── drawn analog face + digital time and words.
+     times: [{time:'3:00', words?, label?}] (or a single time/words/label). */
+  clock(d, ctx, slide) {
+    const times = d.times || (d.time ? [{ time: d.time, words: d.words, label: d.label }] : []);
+    const face = (t) => {
+      const m = String(t.time || '').match(/(\d{1,2}):(\d{2})/);
+      const H = m ? parseInt(m[1], 10) : 12, MM = m ? parseInt(m[2], 10) : 0;
+      const ha = ((H % 12) + MM / 60) * 30, ma = MM * 6;
+      const hx = 50 + 25 * Math.sin(ha * Math.PI / 180), hy = 50 - 25 * Math.cos(ha * Math.PI / 180);
+      const mx = 50 + 37 * Math.sin(ma * Math.PI / 180), my = 50 - 37 * Math.cos(ma * Math.PI / 180);
+      const nums = [12, 3, 6, 9].map((n, i) => {
+        const a = i * 90 * Math.PI / 180, x = 50 + 38 * Math.sin(a), y = 50 - 38 * Math.cos(a);
+        return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" class="lit-clock-num">${n}</text>`;
+      }).join('');
+      return `
+        <div class="lit-clock">
+          <svg viewBox="0 0 100 100" class="lit-clock-face" aria-hidden="true">
+            <circle cx="50" cy="50" r="47" class="lit-clock-ring"/>
+            ${nums}
+            <line x1="50" y1="50" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" class="lit-clock-hand lit-clock-hour"/>
+            <line x1="50" y1="50" x2="${mx.toFixed(1)}" y2="${my.toFixed(1)}" class="lit-clock-hand lit-clock-min"/>
+            <circle cx="50" cy="50" r="2.5" class="lit-clock-cap"/>
+          </svg>
+          <div class="lit-clock-digital">${escapeHtml(t.time || '')}${speakBtn(t.words || t.time)}</div>
+          ${t.words ? `<div class="lit-clock-words">${escapeHtml(t.words)}</div>` : ''}
+          ${t.label ? `<div class="lit-clock-label">${escapeHtml(t.label)}</div>` : ''}
+        </div>`;
+    };
+    return `${litHead(slide, d)}<div class="lit-clockgrid">${times.map(face).join('')}</div>`;
+  },
+
+  /* ── Literacy L6: month calendar ── a real grid with day(s) highlighted.
+     month, year?, first_dow (0=Mon…6=Sun) for day 1, days, highlight:[n], note? */
+  calendar(d, ctx, slide) {
+    const dows = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const lead = Math.max(0, Math.min(6, d.first_dow || 0));
+    const days = d.days || 30;
+    const hi = new Set(d.highlight || []);
+    let cells = '';
+    for (let i = 0; i < lead; i++) cells += `<div class="lit-cal-cell lit-cal-blank"></div>`;
+    for (let n = 1; n <= days; n++) cells += `<div class="lit-cal-cell ${hi.has(n) ? 'lit-cal-hi' : ''}">${n}</div>`;
+    return `${litHead(slide, d)}
+      <div class="lit-cal">
+        <div class="lit-cal-title">${escapeHtml((d.month || '') + (d.year ? ' ' + d.year : ''))}${speakBtn(d.month || '')}</div>
+        <div class="lit-cal-grid">
+          ${dows.map(w => `<div class="lit-cal-dow">${w}</div>`).join('')}
+          ${cells}
+        </div>
+        ${d.note ? `<div class="lit-cal-note">${litIco('look')} <span>${md(d.note)}</span></div>` : ''}
+      </div>`;
+  },
+
+  /* ── Literacy L6: everyday document ── appointment card, receipt, label,
+     timetable. rows:[{label,value}] for fielded docs; lines:[…] for free text. */
+  doc(d, ctx, slide) {
+    const rows = d.rows || [], lines = d.lines || [];
+    return `${litHead(slide, d)}
+      <div class="lit-doc">
+        ${d.doc_title ? `<div class="lit-doc-head">${escapeHtml(d.doc_title)}${speakBtn(d.doc_title)}</div>` : ''}
+        ${rows.length ? `<div class="lit-doc-rows">${rows.map(r => `
+          <div class="lit-doc-row"><span class="lit-doc-label">${escapeHtml(r.label || '')}</span><span class="lit-doc-value">${escapeHtml(r.value || '')}</span></div>`).join('')}</div>` : ''}
+        ${lines.map(l => { const t = (typeof l === 'string') ? l : (l.text || ''); return `<div class="lit-doc-line">${md(t)}${speakBtn(t)}</div>`; }).join('')}
+        ${d.footer ? `<div class="lit-doc-foot">${escapeHtml(d.footer)}</div>` : ''}
+      </div>`;
+  },
+
+  /* ── Literacy L6: fill-the-form (interactive) ── tap an answer chip, then tap
+     the field it belongs to. rows:[{label, answer}]. */
+  formfill(d, ctx, slide) {
+    const rows = d.rows || [];
+    const answers = _litShuffle(rows.map(r => r.answer));
+    return `${litHead(slide, d)}
+      <div class="lit-form" data-total="${rows.length}">
+        ${d.form_title ? `<div class="lit-form-title">${escapeHtml(d.form_title)}</div>` : ''}
+        <div class="lit-form-rows">
+          ${rows.map(r => `
+            <div class="lit-form-row">
+              <span class="lit-form-label">${escapeHtml(r.label || '')}</span>
+              <button type="button" class="lit-form-slot" data-answer="${escapeHtml(r.answer || '')}" onclick="litFormPlace(this)"></button>
+            </div>`).join('')}
+        </div>
+        <div class="lit-form-chips">
+          ${answers.map(a => `<button type="button" class="lit-form-chip" data-a="${escapeHtml(a)}" onclick="litFormPick(this)">${escapeHtml(a)}</button>`).join('')}
+        </div>
+        <div class="lit-build-msg"></div>
+        <button type="button" class="lit-build-reset" onclick="litFormReset(this)">Start again</button>
       </div>`;
   },
 

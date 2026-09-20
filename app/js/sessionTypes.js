@@ -99,6 +99,12 @@ const LITERACY_SESSION_TYPES = {
       { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. Who, what, where', hint: 'Authored session.' }
     ]
   },
+  functional: {
+    key: 'functional', label: 'Functional Reading & Writing', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. Reading the clock', hint: 'Authored session.' }
+    ]
+  },
   alphabet: {
     key: 'alphabet', label: 'Alphabet & Sounds', literacy: true, icon: _litIcon,
     fields: [

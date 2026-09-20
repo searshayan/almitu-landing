@@ -81,6 +81,11 @@ const V2_MAP = {
   frame:      { stage: 'Speak',       label: 'Speak with a frame', layout: 'frame' },
   build:      { stage: 'Build',       label: 'Build & write',  layout: 'buildword' },
   sentence:   { stage: 'Build',       label: 'Build a sentence', layout: 'sentence' },
+  sign:       { stage: 'Read',        label: 'Signs & symbols', layout: 'sign' },
+  clock:      { stage: 'Read',        label: 'What time is it?', layout: 'clock' },
+  calendar:   { stage: 'Read',        label: 'Days & dates',   layout: 'calendar' },
+  doc:        { stage: 'Read',        label: 'Read the document', layout: 'doc' },
+  form:       { stage: 'Build',       label: 'Fill in the form', layout: 'formfill' },
   functional: { stage: 'Use it',      label: 'Real-life task', layout: 'functional' }
 };
 function _v2Items(arr) {

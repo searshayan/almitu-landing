@@ -11,6 +11,7 @@ const LEVELS = [
   { value: 'LIT3',   label: 'Literacy 3 · Word Building',      tier: 'literacy' },
   { value: 'LIT4',   label: 'Literacy 4 · Sentences & Grammar', tier: 'literacy' },
   { value: 'LIT5',   label: 'Literacy 5 · Reading for Meaning', tier: 'literacy' },
+  { value: 'LIT6',   label: 'Literacy 6 · Functional Reading & Writing', tier: 'literacy' },
   { value: 'Pre-A1', label: 'Beginner (Pre-A1)',          tier: 'foundation' },
   { value: 'A1',     label: 'Elementary (A1)',            tier: 'foundation' },
   { value: 'A2',     label: 'Pre-Intermediate (A2)',      tier: 'development' },
@@ -154,6 +155,7 @@ const LEVEL_DESCRIPTORS = {
   'LIT3': 'Word building. Learner blends and reads simple CVC words and a few high-frequency sight words, checking meaning against a picture. Short, decodable items only — no sentences beyond CVC.',
   'LIT4': 'Sentences and grammar. Learner moves from words to accurate simple sentences — subject + verb, articles, plurals, adjectives, prepositions, questions and negatives — always through pictures, oral models, reading and guided writing.',
   'LIT5': 'Reading for meaning. Learner reads short, controlled texts (single sentences up to five connected ones) and shows understanding — matching sentence to picture, scanning for key words and numbers, answering who/what/where and yes/no, sequencing, following instructions and retelling. Decoding is secure; the focus is comprehension.',
+  'LIT6': 'Functional reading and writing. Learner reads and completes the everyday texts of adult life — signs and symbols, prices and money, the clock and the calendar, appointment cards, receipts, labels and timetables — and writes their own key details (name, address, phone, date) into simple forms. Real-world documents, not stories.',
   'Pre-A1': 'Absolute beginner. Isolated high-frequency words, fixed greetings, and memorised chunks only. No independent sentence building yet. Everything supported by images and L1.',
   'A1':     'Basic user. Simple present-tense statements and questions about immediate, concrete needs. Very short turns, heavy scaffolding, familiar everyday words.',
   'A2':     'Elementary. Simple connected sentences about routine matters; can use past and near-future with support. Short paragraph contexts, light scaffolding, common collocations.',
@@ -196,6 +198,11 @@ const LEVEL_GUIDE = {
     goal:   'Read short texts and show real understanding — not just sound out the words.',
     expect: 'Matching sentences to pictures, scanning for key words and numbers, answering who/what/where and yes/no, sequencing and retelling short texts.',
     teach:  'Read the text together, then ask the learner to point to the answer in the words; reread for fluency and always check meaning with the picture.'
+  },
+  'LIT6': {
+    goal:   'Read the everyday texts of adult life and write your own key details.',
+    expect: 'Reading signs, prices, the clock and calendar, cards, receipts and labels; writing name, address, phone and date into a simple form.',
+    teach:  'Use a real example of each document; read it together, point to the important part, then have the learner fill in or find their own details.'
   },
   'Pre-A1': {
     goal:   'Help the learner recognise and say a small set of everyday words and fixed phrases.',
