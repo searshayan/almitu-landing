@@ -32,7 +32,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const BUCKET = "practice-audio";
-const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // ElevenLabs "Rachel" — clear, warm, adult
+const DEFAULT_VOICE_ID = "Nhs7eitvQWFTQBsf0yiT"; // "Sarah" — clear, gentle (added to the Almitu workspace)
 const DEFAULT_MODEL = "eleven_multilingual_v2";
 const DEFAULT_SPEED = 0.8;         // calm, deliberate learner pace (1.0 = normal; range 0.7–1.2)
 const OUTPUT_FORMAT = "mp3_44100_64"; // 64 kbps mono MP3 — spec's speech target
