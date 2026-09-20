@@ -899,18 +899,27 @@ function practiceAudioUrl(path) {
    preview sessions (no backend or no real session id) it no-ops, leaving the
    "Preparing audio…" placeholder in place. Guarded so a card only triggers one
    generation at a time. */
+/* Bump when the audio's voice/speed settings change. Clips are stamped with the
+   version they were generated under; a stored clip whose stamp is older than this
+   is refreshed the next time its card opens (see actListening), so existing
+   sessions catch up to the current voice without regenerating everything at once.
+   Keep this in step with the practice-tts function's settings. */
+const AUDIO_SETTINGS_VERSION = 2;
+
 const _ttsInFlight = {};
-async function hydratePracticeAudio(cardId, onReady) {
+async function hydratePracticeAudio(cardId, onReady, opts) {
+  opts = opts || {};
   const nb = getActiveNotebook(); if (!nb) return;
   const card = getCard(nb, cardId); if (!card || !card.audio) return;
-  if (card.audio.audioStatus === 'ready' && card.audio.audioPath) { if (onReady) onReady(card); return; }
+  // Skip the call when the clip is already current — unless a refresh is forced.
+  if (!opts.force && card.audio.audioStatus === 'ready' && card.audio.audioPath) { if (onReady) onReady(card); return; }
   const c = (typeof sb === 'function') ? sb() : null;
   if (!c || !nb.id) return;                 // demo/preview: no server to generate audio
   const key = nb.id + ':' + cardId;
   if (_ttsInFlight[key]) return;
   _ttsInFlight[key] = true;
   try {
-    const { data, error } = await c.functions.invoke('practice-tts', { body: { sessionId: nb.id, card: cardId } });
+    const { data, error } = await c.functions.invoke('practice-tts', { body: { sessionId: nb.id, card: cardId, settingsVersion: AUDIO_SETTINGS_VERSION } });
     if (error || !data || !data.audio) { console.warn('practice-tts:', (error && error.message) || (data && data.error) || 'no audio'); return; }
     card.audio = Object.assign({}, card.audio, data.audio);   // mutates the bank object → persists for this view
     if (onReady) onReady(card);
@@ -1149,7 +1158,11 @@ function actListening() {
   const nb = requireNotebook(); if (!nb) return;
   const card = getCard(nb, 'listening');
   if (!card) { showToast('No listening activity for this session yet.', 'warn'); return; }
-  const audioReady = !!(card.audio && card.audio.audioPath && card.audio.audioStatus === 'ready');
+  const a = card.audio || {};
+  const hasAudio = !!(a.audioPath && a.audioStatus === 'ready');
+  // A clip generated under older voice/speed settings — still playable, but we
+  // refresh it in the background so the student ends up on the current voice.
+  const stale = hasAudio && a.settingsVersion !== AUDIO_SETTINGS_VERSION;
 
   let html = activityHeader('🎧', 'Listening Practice', `Listen carefully and answer questions about what you hear · "${escapeHtml(nb.plan.meta.title)}"`, false);
   html += canDoBadge(card.canDo);
@@ -1159,11 +1172,11 @@ function actListening() {
   }
 
   html += `<div class="rounded-2xl p-5 mb-3 text-center" style="background:white; border:1px solid var(--line);">
-    ${practiceAudioControl(card.audio)}
-    ${card.audio && card.audio.maxPlays ? `<p class="text-[11px] mt-2" style="color:var(--muted);">You can play the audio up to ${card.audio.maxPlays} times.</p>` : ''}
+    <span id="listeningAudioSlot">${practiceAudioControl(card.audio)}</span>
+    ${a.maxPlays ? `<p class="text-[11px] mt-2" style="color:var(--muted);">You can play the audio up to ${a.maxPlays} times.</p>` : ''}
   </div>`;
 
-  if (!audioReady) {
+  if (!hasAudio) {
     // No audio yet → the questions can't be answered by listening, so we gate
     // them rather than let students guess. They unlock when the clip is ready.
     html += `<div class="rounded-xl p-4 text-center" style="background:#F8F9FD; border:1px dashed var(--line);">
@@ -1174,10 +1187,21 @@ function actListening() {
   window._listeningCard = card;
   showPracticeContent(html);
   ActivityTimer.start('listening');
-  // Generate the clip on first open; once it's ready, re-render so the audio
-  // player and the (now answerable) questions appear. hydrate only fires while
-  // audio isn't ready, so the re-render doesn't loop.
-  if (!audioReady) hydratePracticeAudio('listening', () => actListening());
+
+  if (!hasAudio) {
+    // First open: generate the clip, then re-render so the player + questions
+    // appear. hydrate only fires while audio isn't ready, so no re-render loop.
+    hydratePracticeAudio('listening', () => actListening());
+  } else if (stale) {
+    // Existing clip made with older settings: refresh in the background and swap
+    // the player in place when the new clip arrives — without disturbing the
+    // questions the student may already be answering.
+    hydratePracticeAudio('listening', (c) => {
+      const slot = document.getElementById('listeningAudioSlot');
+      if (slot) slot.innerHTML = practiceAudioControl(c.audio);
+      window._listeningCard = c;
+    }, { force: true });
+  }
 }
 
 /* Short "key language to review" — shown after completion. Deliberately phrases

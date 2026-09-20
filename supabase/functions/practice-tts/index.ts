@@ -85,10 +85,13 @@ Deno.serve(async (req) => {
   if (userErr || !user) return json({ error: "unauthorized" }, 401);
 
   // ---- 2. Validate request ----
-  let body: { sessionId?: string; card?: string };
+  let body: { sessionId?: string; card?: string; settingsVersion?: number };
   try { body = await req.json(); } catch { return json({ error: "bad_request" }, 400); }
   const sessionId = (body.sessionId || "").trim();
   const card = (body.card || "").trim();
+  // Cache-busting stamp from the client. Bumping it (in lockstep with a voice/
+  // speed change) forces already-generated clips to regenerate on next open.
+  const settingsVersion = Number.isFinite(Number(body.settingsVersion)) ? Number(body.settingsVersion) : 1;
   if (!sessionId) return json({ error: "missing_session" }, 400);
   if (card !== "reading" && card !== "listening") return json({ error: "bad_card" }, 400);
 
@@ -119,7 +122,7 @@ Deno.serve(async (req) => {
   if (sourceText.length > MAX_TTS_CHARS) return json({ error: "source_too_long" }, 422);
 
   const audio = cardObj.audio || {};
-  const scriptHash = await sha256Hex(`${sourceText}|${VOICE_ID}|${MODEL}|${SPEED}`);
+  const scriptHash = await sha256Hex(`${sourceText}|${VOICE_ID}|${MODEL}|${SPEED}|v${settingsVersion}`);
   const path = `generated/${sessionId}/${card}-${scriptHash.slice(0, 12)}.mp3`;
   const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
 
@@ -184,6 +187,7 @@ Deno.serve(async (req) => {
     audioStatus: "ready",
     audioPath: path,
     audioVersion: 1,
+    settingsVersion,
     scriptHash: `sha256:${scriptHash}`,
     voiceId: VOICE_ID,
     model: MODEL,
