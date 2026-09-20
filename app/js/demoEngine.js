@@ -92,7 +92,6 @@ function demoPracticeCards(terms, formData, exampleFn, topic) {
       canDo: `I can understand a short text about ${topic.toLowerCase()}.`,
       warmUp: { prompt: `What do you already know about ${topic.toLowerCase()}?`, responseType: 'optional_choice_or_short_text' },
       passage: { title: topic, text: passageText },
-      audio: { generationRequired: true, voiceProfile: 'almitu-learning-voice', speed: 0.9, format: 'mp3', audioStatus: 'pending', audioPath: null },
       questions: readQ,
       keyVocabulary: t.slice(0, 4).map(w => ({ word: w, simpleMeaning: `word for ${topic.toLowerCase()}`, exampleFromText: exampleFn(w) })),
       transferTask: { prompt: `Write one sentence about ${topic.toLowerCase()} using a word from the text.`, responseType: 'short_text_or_choice', exampleAnswer: t[0] ? exampleFn(t[0]) : '' }
