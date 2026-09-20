@@ -23,6 +23,8 @@ function getBank(nb) {
 }
 
 function showPracticeContent(html) {
+  // Stop any in-progress Reading speech when the student switches activities.
+  if (typeof window !== 'undefined' && window.speechSynthesis) window.speechSynthesis.cancel();
   document.getElementById('practiceEmpty').classList.add('hidden');
   const content = document.getElementById('practiceContent');
   content.innerHTML = html;
@@ -1069,7 +1071,7 @@ function actReading() {
   html += `<div class="rounded-2xl p-5 mb-3" style="background:white; border:1px solid var(--line);">
     ${card.passage.title ? `<p class="font-bold font-display mb-2" style="color:var(--navy);">${escapeHtml(card.passage.title)}</p>` : ''}
     <p style="color:var(--ink); font-size:1.05rem; line-height:1.9; white-space:pre-wrap;">${bidiText(card.passage.text)}</p>
-    <div class="mt-3" id="readingAudioSlot">${practiceAudioControl(card.audio)}</div>
+    <div class="mt-3">${readingSpeakControl()}</div>
   </div>`;
 
   if (Array.isArray(card.questions) && card.questions.length) {
@@ -1079,13 +1081,48 @@ function actReading() {
   window._readingCard = card;
   showPracticeContent(html);
   ActivityTimer.start('reading');
-  // Generate the passage audio on first open, then swap the placeholder for a
-  // real player. The reading task is fully usable meanwhile.
-  hydratePracticeAudio('reading', (c) => {
-    const slot = document.getElementById('readingAudioSlot');
-    if (slot) slot.innerHTML = practiceAudioControl(c.audio);
-    window._readingCard = c;
-  });
+}
+
+/* Reading audio uses the browser's built-in speech synthesis — free, offline,
+   and reads the exact passage on screen. (Listening still uses ElevenLabs, which
+   needs consistent quality and works from the hidden script.) */
+function readingSpeakControl() {
+  const supported = typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+  if (!supported) {
+    return `<p class="text-xs" style="color:var(--muted);">🔇 Read-aloud isn't supported in this browser.</p>`;
+  }
+  return `<button id="readingSpeakBtn" onclick="toggleReadingSpeech()" class="px-4 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-2 text-white" style="background:var(--secondary);">
+    <span>🔊</span> <span id="readingSpeakLabel">Play audio</span>
+  </button>
+  <p class="text-[11px] mt-1" style="color:var(--muted);">Read the text first, then listen to check your understanding.</p>`;
+}
+
+function setReadingSpeakLabel(text, speaking) {
+  const el = document.getElementById('readingSpeakLabel');
+  if (el) el.textContent = text;
+  const btn = document.getElementById('readingSpeakBtn');
+  if (btn) btn.style.background = speaking ? '#EF4444' : 'var(--secondary)';
+}
+
+function toggleReadingSpeech() {
+  const synth = window.speechSynthesis;
+  const card = window._readingCard;
+  if (!synth || !card || !card.passage || !card.passage.text) return;
+  if (synth.speaking || synth.pending) { synth.cancel(); setReadingSpeakLabel('Play audio', false); return; }
+  const u = new SpeechSynthesisUtterance(card.passage.text);
+  u.lang = 'en-US';
+  u.rate = 0.9;   // calm, learner-friendly pace
+  u.pitch = 1;
+  // Prefer a natural-sounding English voice when the browser offers one.
+  const voices = synth.getVoices() || [];
+  const pick = voices.find(v => /en[-_]?US/i.test(v.lang) && /natural|google|samantha|aria|jenny/i.test(v.name))
+            || voices.find(v => /en[-_]?US/i.test(v.lang))
+            || voices.find(v => /^en/i.test(v.lang));
+  if (pick) u.voice = pick;
+  u.onstart = () => setReadingSpeakLabel('Stop', true);
+  u.onend = () => setReadingSpeakLabel('Play audio', false);
+  u.onerror = () => setReadingSpeakLabel('Play audio', false);
+  synth.speak(u);
 }
 
 /* Key vocabulary + transfer task, revealed under the score when the reading
