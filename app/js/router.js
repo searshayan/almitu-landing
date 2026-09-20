@@ -484,9 +484,15 @@ function renderCurriculumSessions() {
     const blurbs = {
       vocabulary:    'Target words in context — themes, meanings and real-world use.',
       grammar:       'One structure at a time, with guided practice and examples.',
-      communication: 'Speaking scenarios and target expressions for real situations.'
+      communication: 'Speaking scenarios and target expressions for real situations.',
+      alphabet:      'Letters and the sounds they make, each with a picture.',
+      blending:      'Sounding out and blending simple words, with pictures.',
+      sightword:     'Common words taught by whole-word recognition.',
+      pictureword:   'Naming everyday things from real pictures.'
     };
-    const cards = getAllSessionTypes().filter(st => counts[st.key]).map(st => `
+    // Build from the session types actually present at this level, so both the
+    // CEFR set and the literacy set (alphabet/blending/…) resolve correctly.
+    const cards = Object.keys(counts).map(k => getSessionType(k)).map(st => `
       <button onclick="tutorPickCurriculumSkill('${st.key}')"
         class="text-left card-surface rounded-2xl p-6 card-hover transition-all">
         <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
