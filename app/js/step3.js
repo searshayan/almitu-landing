@@ -216,6 +216,15 @@ function applyActivityGating() {
     if (isLit) hide = (b.getAttribute('data-reading') === 'quiz') ? (imgItems < 3) : true;
     b.style.display = hide ? 'none' : '';
   });
+  // Expansion cards (Reading / Listening / Explore More): show a tile only when
+  // the selected session actually carries that card. Older sessions generated
+  // before this feature simply won't have the key, so their tiles stay hidden —
+  // and the pre-reading literacy tier never shows them.
+  const NEWCARD_KEY = { reading: 'reading', listening: 'listening', explore: 'externalResources' };
+  document.querySelectorAll('.sv-activity-tiles [data-newcard]').forEach(b => {
+    const present = !!(bank && bank[NEWCARD_KEY[b.getAttribute('data-newcard')]]);
+    b.style.display = (present && !isLit) ? '' : 'none';
+  });
 }
 
 function selectSession(id) {
@@ -850,4 +859,334 @@ function pickRight(i) {
     matchFeedback(bankItem, false);
     renderMatch();
   }
+}
+
+/* ═══════════ Reading / Listening / Explore More ═══════════
+   Practice Bank Expansion cards. These are SAVED content on the session's
+   practice_bank (keys: reading, listening, externalResources) — no new
+   generation call when a student opens them. Slice 0 renders text + questions;
+   audio (ElevenLabs → Supabase Storage) and verified Explore links arrive in
+   later slices, so the Play button shows a non-blocking "Preparing audio…"
+   state and Explore shows the honest empty-state until then.
+   The listening card NEVER renders audio.internalScript — that is server-only. */
+
+function getCard(nb, key) {
+  const pb = nb && nb.plan && nb.plan.content ? nb.plan.content.practice_bank : null;
+  return (pb && pb[key]) || null;
+}
+
+function canDoBadge(text) {
+  if (!text) return '';
+  return `<div class="rounded-xl px-3 py-2 mb-3 text-sm" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12); color:var(--ink);">
+    <span class="text-[10px] uppercase tracking-wider font-semibold mr-1" style="color:var(--secondary);">Can-do</span> ${escapeHtml(text)}</div>`;
+}
+
+/* Public CDN URL for a stored practice-audio object. Paths are relative to the
+   `practice-audio` bucket (e.g. "generated/<sessionId>/reading-<hash>.mp3"). */
+function practiceAudioUrl(path) {
+  if (!path) return '';
+  if (/^https?:\/\//.test(path)) return path;
+  const base = (typeof SUPABASE_URL === 'string') ? SUPABASE_URL : '';
+  return `${base}/storage/v1/object/public/practice-audio/${path}`;
+}
+
+/* Lazy, generate-once audio. Called when a Reading/Listening card opens: if the
+   clip isn't ready yet it asks the `practice-tts` Edge Function to generate it
+   (ElevenLabs → Supabase Storage, key stays server-side), then updates the
+   in-memory card and calls onReady so the UI can swap in the player. On demo/
+   preview sessions (no backend or no real session id) it no-ops, leaving the
+   "Preparing audio…" placeholder in place. Guarded so a card only triggers one
+   generation at a time. */
+const _ttsInFlight = {};
+async function hydratePracticeAudio(cardId, onReady) {
+  const nb = getActiveNotebook(); if (!nb) return;
+  const card = getCard(nb, cardId); if (!card || !card.audio) return;
+  if (card.audio.audioStatus === 'ready' && card.audio.audioPath) { if (onReady) onReady(card); return; }
+  const c = (typeof sb === 'function') ? sb() : null;
+  if (!c || !nb.id) return;                 // demo/preview: no server to generate audio
+  const key = nb.id + ':' + cardId;
+  if (_ttsInFlight[key]) return;
+  _ttsInFlight[key] = true;
+  try {
+    const { data, error } = await c.functions.invoke('practice-tts', { body: { sessionId: nb.id, card: cardId } });
+    if (error || !data || !data.audio) { console.warn('practice-tts:', (error && error.message) || (data && data.error) || 'no audio'); return; }
+    card.audio = Object.assign({}, card.audio, data.audio);   // mutates the bank object → persists for this view
+    if (onReady) onReady(card);
+  } catch (e) {
+    console.warn('practice-tts failed:', e);
+  } finally {
+    _ttsInFlight[key] = false;
+  }
+}
+
+/* A saved audio clip renders as a real player only once the TTS pipeline has
+   uploaded it (audioStatus 'ready' + a path). Until then it's a disabled,
+   non-blocking placeholder. Replay uses the stored file; the student never
+   triggers a fresh TTS call. */
+function practiceAudioControl(audio) {
+  const ready = !!(audio && audio.audioPath && audio.audioStatus === 'ready');
+  if (ready && typeof practiceAudioUrl === 'function') {
+    const url = practiceAudioUrl(audio.audioPath);
+    return `<audio controls preload="none" class="w-full mt-1" style="max-width:420px;"><source src="${escapeHtml(url)}" type="audio/mpeg"></audio>`;
+  }
+  return `<button disabled aria-disabled="true" class="mt-1 px-4 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-2" style="background:#F1F2F6; color:var(--muted); border:1px solid var(--line); cursor:not-allowed;"><span>🔊</span> Preparing audio…</button>`;
+}
+
+/* ── Shared question engine for Reading & Listening ──
+   Handles multiple_choice, true_false (rendered as two options) and
+   short_response (a self-check reveal). Scored locally and shown on completion.
+   NOTE: XP/persistence is intentionally NOT wired yet — activity_attempts has a
+   CHECK constraint limited to the original five activities, so recording
+   'reading'/'listening' needs the DB migration that lands with the audio slice.
+   Until then these cards score in-page only. */
+window._pq = window._pq || {};
+
+function normalizePracticeQuestions(questions) {
+  return (questions || []).filter(q => q && q.question).map((q, i) => {
+    const type = q.type || 'multiple_choice';
+    let options = Array.isArray(q.options) ? q.options.filter(o => o != null && o !== '') : [];
+    if (type === 'true_false' && options.length < 2) options = ['True', 'False'];
+    const isChoice = (type === 'multiple_choice' || type === 'true_false') && options.length >= 2;
+    const correct = isChoice
+      ? options.findIndex(o => String(o).trim().toLowerCase() === String(q.answer || '').trim().toLowerCase())
+      : -1;
+    const scorable = isChoice && correct >= 0;   // a choice whose answer we can locate
+    return {
+      id: q.id || `q${i + 1}`,
+      type: scorable ? type : 'short_response',
+      question: q.question,
+      options: scorable ? options : [],
+      correct,
+      answer: q.answer || '',
+      feedbackCorrect: q.feedbackCorrect || 'Correct!',
+      feedbackIncorrect: q.feedbackIncorrect || ''
+    };
+  });
+}
+
+function practiceQuestionsHtml(prefix, questions, onCompleteName) {
+  const qs = normalizePracticeQuestions(questions);
+  const total = qs.filter(q => q.type !== 'short_response').length;   // only scorable questions count toward the score
+  window._pq[prefix] = { questions: qs, total, correct: 0, answered: 0, count: qs.length, onComplete: onCompleteName || '' };
+  let html = '<div class="space-y-4">';
+  qs.forEach((q, qi) => {
+    html += `<div class="rounded-xl p-4" id="${prefix}q${qi}" style="background:#F8F9FD; border:1px solid var(--line);">
+      <p class="text-sm font-medium mb-3" style="color:var(--navy);">${qi + 1}. ${escapeHtml(q.question)}</p>`;
+    if (q.type === 'short_response') {
+      html += `<textarea rows="2" class="w-full text-sm rounded-xl px-3 py-2 mb-2" style="border:1px solid var(--line); background:white; color:var(--ink);" placeholder="Type your answer…"></textarea>
+        <button onclick="practiceReveal('${prefix}',${qi})" class="px-3 py-1.5 rounded-xl text-xs font-semibold" style="background:white; border:1px solid var(--line); color:var(--secondary);">Show model answer</button>`;
+    } else {
+      html += `<div class="space-y-2">${q.options.map((opt, oi) => `
+        <button onclick="practiceAnswer('${prefix}',${qi},${oi})" id="${prefix}o${qi}_${oi}"
+          class="quiz-option w-full text-left px-3 py-2.5 rounded-xl border text-sm" style="border-color:var(--line); background:white; color:var(--ink);">
+          <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[10px] font-bold mr-2 align-middle" style="background:#F1F2F6; color:var(--muted);">${String.fromCharCode(65 + oi)}</span>
+          ${escapeHtml(opt)}
+        </button>`).join('')}</div>`;
+    }
+    html += `<div id="${prefix}f${qi}" class="hidden mt-2 text-xs px-2 py-1.5 rounded-lg"></div></div>`;
+  });
+  html += `</div><div id="${prefix}Done" class="hidden mt-4 p-4 rounded-xl" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"></div>`;
+  return html;
+}
+
+function _pqCheckDone(prefix) {
+  const st = window._pq[prefix];
+  if (!st || st.answered < st.count || st.recorded) return;
+  st.recorded = true;   // one completion record per run
+  const done = document.getElementById(prefix + 'Done');
+  if (!done) return;
+  let inner = '';
+  if (st.total > 0) {
+    const perfect = st.correct === st.total;
+    inner = `<p class="font-bold text-center" style="color:#059669;">Score: ${st.correct}/${st.total} — ${perfect ? 'Perfect! 🎯' : st.correct >= Math.ceil(st.total * 0.6) ? 'Great job!' : 'Keep practising!'}</p>`;
+    // Reading/Listening are recorded for XP like the other activities (the
+    // activity_attempts CHECK is extended in migration_011). recordActivityCompletion
+    // itself no-ops for demo/preview/read-only contexts.
+    if ((prefix === 'reading' || prefix === 'listening') && typeof recordActivityCompletion === 'function') {
+      recordActivityCompletion(prefix, st.correct, st.total, false);
+    }
+  } else {
+    inner = `<p class="font-bold text-center" style="color:#059669;">Nice work — you finished this activity.</p>`;
+  }
+  if (st.onComplete && typeof window[st.onComplete] === 'function') inner += window[st.onComplete]();
+  done.innerHTML = inner;
+  done.classList.remove('hidden');
+}
+
+function practiceAnswer(prefix, qi, oi) {
+  const st = window._pq[prefix]; if (!st) return;
+  const box = document.getElementById(`${prefix}q${qi}`);
+  if (!box || box.dataset.answered) return;
+  box.dataset.answered = 'true';
+  const q = st.questions[qi];
+  const sel = document.getElementById(`${prefix}o${qi}_${oi}`);
+  const correctEl = document.getElementById(`${prefix}o${qi}_${q.correct}`);
+  const fb = document.getElementById(`${prefix}f${qi}`);
+  if (oi === q.correct) {
+    sel.classList.add('correct');
+    fb.innerHTML = `<span style="color:#059669;">✓ Correct!</span> ${bidiText(q.feedbackCorrect)}`;
+    st.correct++;
+  } else {
+    sel.classList.add('incorrect');
+    if (correctEl) correctEl.classList.add('correct');
+    fb.innerHTML = `<span class="text-red-500">✗ Not quite</span> — ${bidiText(q.feedbackIncorrect || ('the answer is ' + q.answer + '.'))}`;
+  }
+  fb.classList.remove('hidden');
+  box.querySelectorAll('.quiz-option').forEach(b => b.classList.add('pointer-events-none', 'opacity-70'));
+  sel.classList.remove('opacity-70'); if (correctEl) correctEl.classList.remove('opacity-70');
+  st.answered++;
+  _pqCheckDone(prefix);
+}
+
+function practiceReveal(prefix, qi) {
+  const st = window._pq[prefix]; if (!st) return;
+  const box = document.getElementById(`${prefix}q${qi}`);
+  if (!box || box.dataset.answered) return;
+  box.dataset.answered = 'true';
+  const q = st.questions[qi];
+  const fb = document.getElementById(`${prefix}f${qi}`);
+  fb.innerHTML = `<span style="color:var(--secondary);">Model answer:</span> ${bidiText(q.answer)}${q.feedbackCorrect ? ' — ' + bidiText(q.feedbackCorrect) : ''}`;
+  fb.classList.remove('hidden');
+  st.answered++;
+  _pqCheckDone(prefix);
+}
+
+/* ── Reading Practice ── */
+function actReading() {
+  const nb = requireNotebook(); if (!nb) return;
+  const card = getCard(nb, 'reading');
+  if (!card || !card.passage || !card.passage.text) { showToast('No reading activity for this session yet.', 'warn'); return; }
+
+  let html = activityHeader('📖', 'Reading Practice', `Read, check your understanding, then listen when you finish · "${escapeHtml(nb.plan.meta.title)}"`, false);
+  html += canDoBadge(card.canDo);
+
+  if (card.warmUp && card.warmUp.prompt) {
+    html += `<div class="rounded-xl p-3 mb-3" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.30);">
+      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1" style="color:#B45309;">Before you read</p>
+      <p class="text-sm" style="color:var(--ink);">${bidiText(card.warmUp.prompt)}</p></div>`;
+  }
+
+  html += `<div class="rounded-2xl p-5 mb-3" style="background:white; border:1px solid var(--line);">
+    ${card.passage.title ? `<p class="font-bold font-display mb-2" style="color:var(--navy);">${escapeHtml(card.passage.title)}</p>` : ''}
+    <p style="color:var(--ink); font-size:1.05rem; line-height:1.9; white-space:pre-wrap;">${bidiText(card.passage.text)}</p>
+    <div class="mt-3" id="readingAudioSlot">${practiceAudioControl(card.audio)}</div>
+  </div>`;
+
+  if (Array.isArray(card.questions) && card.questions.length) {
+    html += `<p class="text-[10px] uppercase tracking-wider font-semibold mb-2" style="color:var(--navy);">Comprehension</p>`;
+    html += practiceQuestionsHtml('reading', card.questions, 'readingExtrasHtml');
+  }
+  window._readingCard = card;
+  showPracticeContent(html);
+  ActivityTimer.start('reading');
+  // Generate the passage audio on first open, then swap the placeholder for a
+  // real player. The reading task is fully usable meanwhile.
+  hydratePracticeAudio('reading', (c) => {
+    const slot = document.getElementById('readingAudioSlot');
+    if (slot) slot.innerHTML = practiceAudioControl(c.audio);
+    window._readingCard = c;
+  });
+}
+
+/* Key vocabulary + transfer task, revealed under the score when the reading
+   questions are complete. */
+function readingExtrasHtml() {
+  const card = window._readingCard; if (!card) return '';
+  let html = '';
+  if (Array.isArray(card.keyVocabulary) && card.keyVocabulary.length) {
+    html += `<div class="mt-3 pt-3" style="border-top:1px solid rgba(6,214,160,.25);">
+      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--navy);">Key vocabulary</p>
+      <div class="space-y-1.5">${card.keyVocabulary.map(v => `
+        <p class="text-sm" style="color:var(--ink);"><span class="font-semibold" style="color:var(--navy);">${escapeHtml(v.word)}</span> — ${bidiText(v.simpleMeaning || '')}${v.exampleFromText ? ` <span style="color:var(--muted);">(“${escapeHtml(v.exampleFromText)}”)</span>` : ''}</p>`).join('')}</div></div>`;
+  }
+  if (card.transferTask && card.transferTask.prompt) {
+    html += `<div class="mt-3 pt-3" style="border-top:1px solid rgba(6,214,160,.25);">
+      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">Try it yourself</p>
+      <p class="text-sm" style="color:var(--ink);">${bidiText(card.transferTask.prompt)}</p></div>`;
+  }
+  return html;
+}
+
+/* ── Listening Practice ── */
+function actListening() {
+  const nb = requireNotebook(); if (!nb) return;
+  const card = getCard(nb, 'listening');
+  if (!card) { showToast('No listening activity for this session yet.', 'warn'); return; }
+  const audioReady = !!(card.audio && card.audio.audioPath && card.audio.audioStatus === 'ready');
+
+  let html = activityHeader('🎧', 'Listening Practice', `Listen carefully and answer questions about what you hear · "${escapeHtml(nb.plan.meta.title)}"`, false);
+  html += canDoBadge(card.canDo);
+
+  if (Array.isArray(card.instructions) && card.instructions.length) {
+    html += `<ul class="text-sm mb-3 space-y-1" style="color:var(--ink);">${card.instructions.map(i => `<li class="flex items-start gap-2"><span style="color:var(--secondary);">•</span> ${escapeHtml(i)}</li>`).join('')}</ul>`;
+  }
+
+  html += `<div class="rounded-2xl p-5 mb-3 text-center" style="background:white; border:1px solid var(--line);">
+    ${practiceAudioControl(card.audio)}
+    ${card.audio && card.audio.maxPlays ? `<p class="text-[11px] mt-2" style="color:var(--muted);">You can play the audio up to ${card.audio.maxPlays} times.</p>` : ''}
+  </div>`;
+
+  if (!audioReady) {
+    // No audio yet → the questions can't be answered by listening, so we gate
+    // them rather than let students guess. They unlock when the clip is ready.
+    html += `<div class="rounded-xl p-4 text-center" style="background:#F8F9FD; border:1px dashed var(--line);">
+      <p class="text-sm" style="color:var(--muted);">The listening audio is being prepared. The questions unlock as soon as it's ready.</p></div>`;
+  } else if (Array.isArray(card.questions) && card.questions.length) {
+    html += practiceQuestionsHtml('listening', card.questions, 'listeningExtrasHtml');
+  }
+  window._listeningCard = card;
+  showPracticeContent(html);
+  ActivityTimer.start('listening');
+  // Generate the clip on first open; once it's ready, re-render so the audio
+  // player and the (now answerable) questions appear. hydrate only fires while
+  // audio isn't ready, so the re-render doesn't loop.
+  if (!audioReady) hydratePracticeAudio('listening', () => actListening());
+}
+
+/* Short "key language to review" — shown after completion. Deliberately phrases
+   only, never the full script (transcriptPolicy: never_display). */
+function listeningExtrasHtml() {
+  const card = window._listeningCard; if (!card) return '';
+  const kl = card.keyLanguageAfterCompletion;
+  if (!Array.isArray(kl) || !kl.length) return '';
+  return `<div class="mt-3 pt-3" style="border-top:1px solid rgba(6,214,160,.25);">
+    <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--navy);">Key language to review</p>
+    <div class="space-y-1.5">${kl.map(k => `
+      <p class="text-sm" style="color:var(--ink);"><span class="font-semibold" style="color:var(--navy);">“${escapeHtml(k.phrase || '')}”</span>${k.focus ? ` — ${bidiText(k.focus)}` : ''}</p>`).join('')}</div></div>`;
+}
+
+/* ── Explore More ── */
+function actExplore() {
+  const nb = requireNotebook(); if (!nb) return;
+  const card = getCard(nb, 'externalResources');
+  const vids = (card && Array.isArray(card.youtubeVideos)) ? card.youtubeVideos.filter(v => v && v.verificationStatus === 'verified' && v.url) : [];
+  const article = (card && card.articleOrExplanation && card.articleOrExplanation.verificationStatus === 'verified' && card.articleOrExplanation.url) ? card.articleOrExplanation : null;
+
+  let html = activityHeader('🌐', 'Explore More', 'Continue learning with optional videos and a helpful article or explanation.', false);
+  if (card && card.intro) html += `<p class="text-sm mb-3" style="color:var(--ink);">${bidiText(card.intro)}</p>`;
+
+  if (!vids.length && !article) {
+    const msg = (card && card.emptyState) || 'No additional resource is available for this session yet. Complete the Reading and Listening Practice cards first.';
+    html += `<div class="rounded-xl p-5 text-center" style="background:#F8F9FD; border:1px dashed var(--line);">
+      <div class="text-2xl mb-2">🧭</div>
+      <p class="text-sm" style="color:var(--muted);">${escapeHtml(msg)}</p></div>`;
+  } else {
+    // Verified resources only ever render as external links — we never embed or
+    // auto-play third-party content, and never show unverified candidates.
+    html += '<div class="space-y-2">';
+    vids.forEach(v => {
+      html += `<a href="${escapeHtml(v.url)}" target="_blank" rel="noopener noreferrer" class="block rounded-xl p-3" style="background:white; border:1px solid var(--line);">
+        <p class="text-sm font-semibold" style="color:var(--navy);">▶ ${escapeHtml(v.title || 'Video')}</p>
+        <p class="text-xs mt-0.5" style="color:var(--muted);">${escapeHtml(v.channel || '')}${v.estimatedMinutes ? ' · ' + escapeHtml(String(v.estimatedMinutes)) + ' min' : ''}${v.subtitlesAvailable ? ' · subtitles' : ''}</p>
+        ${v.whyThisHelps ? `<p class="text-xs mt-1" style="color:var(--ink);">${escapeHtml(v.whyThisHelps)}</p>` : ''}</a>`;
+    });
+    if (article) {
+      html += `<a href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer" class="block rounded-xl p-3" style="background:white; border:1px solid var(--line);">
+        <p class="text-sm font-semibold" style="color:var(--navy);">📄 ${escapeHtml(article.title || 'Article')}</p>
+        <p class="text-xs mt-0.5" style="color:var(--muted);">${escapeHtml(article.publisher || '')}${article.estimatedMinutes ? ' · ' + escapeHtml(String(article.estimatedMinutes)) + ' min' : ''}</p>
+        ${article.whyThisHelps ? `<p class="text-xs mt-1" style="color:var(--ink);">${escapeHtml(article.whyThisHelps)}</p>` : ''}</a>`;
+    }
+    html += '</div>';
+  }
+  showPracticeContent(html);
 }

@@ -101,7 +101,9 @@ async function callClaudePractice(formData, slides, cfg) {
     },
     body: JSON.stringify({
       model: cfg.claudeModel || 'claude-sonnet-4-6',
-      max_tokens: 4096,
+      // Raised from 4096: the bank now also carries a reading passage, a
+      // listening script and their question sets, which the old cap truncated.
+      max_tokens: 8192,
       system: [{ type: 'text', text: buildPracticeBankSystemPrompt(formData), cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: buildPracticeBankUserPrompt(formData, slides) }]
     })
@@ -125,7 +127,7 @@ async function callCustomPractice(formData, slides, cfg) {
         { role: 'system', content: buildPracticeBankSystemPrompt(formData) },
         { role: 'user', content: buildPracticeBankUserPrompt(formData, slides) }
       ],
-      max_tokens: 4096
+      max_tokens: 8192
     })
   });
   if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
@@ -139,7 +141,15 @@ function parsePracticeJSON(text) {
   if (start === -1 || end === -1) throw new Error('No JSON in practice response');
   const parsed = JSON.parse(raw.slice(start, end + 1));
   const pb = parsed.practice_bank || parsed;
-  return { items: pb.items || [], sentences: pb.sentences || [] };
+  // items + sentences power the original 5 activities; reading/listening/
+  // externalResources are the new practice cards. Each new key is optional —
+  // an older or partial response simply yields a bank without those cards, and
+  // the dashboard hides the corresponding tiles rather than breaking.
+  const out = { items: pb.items || [], sentences: pb.sentences || [] };
+  if (pb.reading) out.reading = pb.reading;
+  if (pb.listening) out.listening = pb.listening;
+  if (pb.externalResources) out.externalResources = pb.externalResources;
+  return out;
 }
 
 /* ── Auto-fill routing ── */

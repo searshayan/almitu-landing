@@ -56,7 +56,67 @@ function practiceBank(terms, formData, exampleFn) {
       ? `[${resolveL1Language(formData.language)} explanation — via API] "${t}" → ${topic.toLowerCase()}`
       : ''
   }));
-  return { items, sentences: terms.slice(0, 8).map(exampleFn) };
+  return { items, sentences: terms.slice(0, 8).map(exampleFn), ...demoPracticeCards(terms, formData, exampleFn, topic) };
+}
+
+/* Demo-mode Reading / Listening / Explore More cards. Same shape the API engines
+   produce (see buildPracticeBankSystemPrompt), so the dashboard renders identically
+   with or without an API key. Templated from the tutor's terms — not real content. */
+function demoPracticeCards(terms, formData, exampleFn, topic) {
+  const level = formData.level || 'A1';
+  const t = terms.slice(0, 6);
+  const passageText = (t.length
+    ? `This week we practise ${topic.toLowerCase()}. ${t.map(w => exampleFn(w)).join(' ')} These words help you talk about ${topic.toLowerCase()} in real life.`
+    : `This is a short reading text about ${topic.toLowerCase()}.`);
+  const readQ = t.slice(0, 5).map((w, i) => ({
+    id: `reading-q${i + 1}`,
+    type: i % 3 === 1 ? 'true_false' : 'multiple_choice',
+    question: i % 3 === 1 ? `The text mentions "${w}".` : `Which word is in the text?`,
+    options: i % 3 === 1 ? ['True', 'False'] : shuffled([w, 'sky', 'later']).slice(0, 3),
+    answer: i % 3 === 1 ? 'True' : w,
+    feedbackCorrect: `Yes — "${w}" appears in the passage.`,
+    feedbackIncorrect: `Look again — find "${w}" in the passage.`
+  }));
+  const listenQ = t.slice(0, 5).map((w, i) => ({
+    id: `listening-q${i + 1}`,
+    type: i % 3 === 2 ? 'true_false' : 'multiple_choice',
+    question: i % 3 === 2 ? `You hear the word "${w}".` : `Which word do you hear?`,
+    options: i % 3 === 2 ? ['True', 'False'] : shuffled([w, 'never', 'green']).slice(0, 3),
+    answer: i % 3 === 2 ? 'True' : w,
+    feedbackCorrect: `Correct — you heard "${w}".`,
+    feedbackIncorrect: `Listen again for "${w}".`
+  }));
+  return {
+    reading: {
+      id: 'reading', type: 'reading_practice', title: `Read: ${topic}`, estimatedMinutes: 6, cefrLevel: level,
+      canDo: `I can understand a short text about ${topic.toLowerCase()}.`,
+      warmUp: { prompt: `What do you already know about ${topic.toLowerCase()}?`, responseType: 'optional_choice_or_short_text' },
+      passage: { title: topic, text: passageText },
+      audio: { generationRequired: true, voiceProfile: 'almitu-learning-voice', speed: 0.9, format: 'mp3', audioStatus: 'pending', audioPath: null },
+      questions: readQ,
+      keyVocabulary: t.slice(0, 4).map(w => ({ word: w, simpleMeaning: `word for ${topic.toLowerCase()}`, exampleFromText: exampleFn(w) })),
+      transferTask: { prompt: `Write one sentence about ${topic.toLowerCase()} using a word from the text.`, responseType: 'short_text_or_choice', exampleAnswer: t[0] ? exampleFn(t[0]) : '' }
+    },
+    listening: {
+      id: 'listening', type: 'listening_practice', title: `Listen: ${topic}`, estimatedMinutes: 6, cefrLevel: level,
+      canDo: `I can understand a short conversation about ${topic.toLowerCase()}.`,
+      instructions: ['Listen carefully.', 'Choose the best answer.', 'Listen again if you need to.'],
+      audio: {
+        generationRequired: true,
+        internalScript: `[demo internal script — never shown] A short spoken clip about ${topic.toLowerCase()} using: ${t.join(', ')}.`,
+        voiceProfile: 'almitu-learning-voice', speakerPlan: ['narrator'], speed: 0.9, format: 'mp3',
+        audioStatus: 'pending', audioPath: null, durationTargetSeconds: 80, maxPlays: 3, transcriptPolicy: 'never_display'
+      },
+      questions: listenQ,
+      keyLanguageAfterCompletion: t.slice(0, 3).map(w => ({ phrase: w, focus: `notice how "${w}" is used` }))
+    },
+    externalResources: {
+      id: 'external_resources', type: 'explore_more', title: 'Explore More', estimatedMinutes: 'Optional',
+      intro: `Want more practice with ${topic.toLowerCase()}? Verified resources appear here once reviewed.`,
+      youtubeVideos: [], articleOrExplanation: null,
+      emptyState: 'No additional resource is available for this session yet. Complete the Reading and Listening Practice cards first.'
+    }
+  };
 }
 
 /* ── Auto-fill (rule-based, tier-calibrated) ── */
