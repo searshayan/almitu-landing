@@ -23,6 +23,8 @@
 //   • ELEVENLABS_API_KEY   (required) — your ElevenLabs key. Kept server-side.
 //   • ELEVENLABS_VOICE_ID  (optional) — defaults to DEFAULT_VOICE_ID below.
 //   • ELEVENLABS_MODEL     (optional) — defaults to "eleven_multilingual_v2".
+//   • ELEVENLABS_SPEED     (optional) — 0.7–1.2, defaults to 0.8 (slower =
+//                          clearer for learners). Tune without redeploying.
 // SUPABASE_URL / SUPABASE_ANON_KEY / SUPABASE_SERVICE_ROLE_KEY are injected
 // automatically.
 // ═══════════════════════════════════════════════════════════════════
@@ -30,9 +32,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const BUCKET = "practice-audio";
-const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // ElevenLabs "Rachel" — clear, warm, adult
+const DEFAULT_VOICE_ID = "Nhs7eitvQWFTQBsf0yiT"; // "Sarah" — clear, gentle (added to the Almitu workspace)
 const DEFAULT_MODEL = "eleven_multilingual_v2";
-const SPEED = 0.9;                 // spec: calm, learner-friendly pace
+const DEFAULT_SPEED = 0.8;         // calm, deliberate learner pace (1.0 = normal; range 0.7–1.2)
 const OUTPUT_FORMAT = "mp3_44100_64"; // 64 kbps mono MP3 — spec's speech target
 const MAX_TTS_CHARS = 5000;        // guardrail against an over-long script
 
@@ -64,6 +66,10 @@ Deno.serve(async (req) => {
   const ELEVEN_KEY = Deno.env.get("ELEVENLABS_API_KEY");
   const VOICE_ID = Deno.env.get("ELEVENLABS_VOICE_ID") || DEFAULT_VOICE_ID;
   const MODEL = Deno.env.get("ELEVENLABS_MODEL") || DEFAULT_MODEL;
+  // Speed is tunable without a code change via the ELEVENLABS_SPEED secret.
+  // Clamped to the API's supported 0.7–1.2 range; lower = slower/clearer.
+  const rawSpeed = Number(Deno.env.get("ELEVENLABS_SPEED"));
+  const SPEED = Math.min(1.2, Math.max(0.7, Number.isFinite(rawSpeed) && rawSpeed > 0 ? rawSpeed : DEFAULT_SPEED));
 
   const authHeader = req.headers.get("Authorization") || "";
   if (!authHeader) return json({ error: "unauthorized" }, 401);
@@ -143,7 +149,16 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           text: sourceText,
           model_id: MODEL,
-          voice_settings: { stability: 0.5, similarity_boost: 0.75, speed: SPEED },
+          // Tuned for warm, steady narration: moderate stability keeps it from
+          // wandering, higher similarity + speaker boost keep it human, and a
+          // slower speed gives learners time to process each word.
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.85,
+            style: 0.0,
+            use_speaker_boost: true,
+            speed: SPEED,
+          },
         }),
       },
     );
