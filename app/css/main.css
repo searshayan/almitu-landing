@@ -1024,6 +1024,19 @@ textarea:focus-visible,
    Literacy slides (renders.js letters / blend / picwords / sightwords).
    Picture-first, large and high-contrast for pre-readers.
    ═══════════════════════════════════════════════════════ */
+.lit-stage {
+  display: inline-block; font-family: 'Space Mono', ui-monospace, monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: #0E8C7F;
+  background: rgba(14,140,127,.10); border: 1px solid rgba(14,140,127,.22);
+  padding: 3px 10px; border-radius: 999px; margin-bottom: 8px;
+}
+.lit-speak {
+  display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;
+  margin-left: 6px; vertical-align: middle; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--surface-2, #f4f6f8); color: var(--secondary); cursor: pointer; padding: 0; flex: 0 0 auto;
+}
+.lit-speak svg { width: 13px; height: 13px; }
+.lit-speak:hover { background: var(--secondary); color: #fff; border-color: var(--secondary); }
 .lit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
 .lit-grid-sight { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
 .lit-card {
@@ -1067,3 +1080,9 @@ textarea:focus-visible,
 .match-token-pic { padding: 8px !important; }
 .match-pic { width: 72px; height: 72px; margin: 0 auto; border-radius: 10px; overflow: hidden; background: var(--surface-2, #f4f6f8); }
 .match-token-pic .lit-img { width: 100%; height: 100%; }
+/* literacy picture quiz */
+.quiz-qpic { width: 112px; height: 112px; border-radius: 12px; overflow: hidden; margin: 8px 0; background: var(--surface-2, #f4f6f8); border: 1px solid var(--line); }
+.quiz-qpic .lit-img { width: 100%; height: 100%; }
+.quiz-option-pic { text-align: center; }
+.quiz-pic { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; margin-top: 6px; background: var(--surface-2, #f4f6f8); border: 1px solid var(--line); }
+.quiz-pic .lit-img { width: 100%; height: 100%; }
