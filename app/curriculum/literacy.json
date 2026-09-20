@@ -1268,179 +1268,1387 @@
    "homePractice": "Teach one new word to someone at home."
   },
   {
-   "curriculum_id": "LIT-A-01",
-   "skill": "alphabet",
+   "curriculum_id": "LIT-2-01",
    "level": "LIT2",
-   "title": "Group 1 — s a t p i n",
-   "objective": "Recognise each letter and say its sound, with an example word for each.",
-   "letters": [
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters s, a, t",
+   "goal": "Today I can read and write s, a, and t.",
+   "slides": [
     {
-     "letter": "s",
-     "sound": "/s/",
-     "word": "sun"
+     "type": "welcome",
+     "goal": "Today I can read and write s, a, and t."
     },
     {
-     "letter": "a",
-     "sound": "/a/",
-     "word": "apple"
+     "type": "context",
+     "word": "sun",
+     "oral": "Listen: /s/ ... sun. Sun starts with /s/."
     },
     {
-     "letter": "t",
-     "sound": "/t/",
-     "word": "tent"
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter name, then its sound.",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      }
+     ]
     },
     {
-     "letter": "p",
-     "sound": "/p/",
-     "word": "pig"
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      }
+     ]
     },
     {
-     "letter": "i",
-     "sound": "/i/",
-     "word": "igloo"
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
     },
     {
-     "letter": "n",
-     "sound": "/n/",
-     "word": "nest"
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "sun"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "tent"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Find the letters s, a or t in your name or around the room.",
+     "exit": "Says the sound of s, a and t and writes each one."
     }
-   ]
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
   },
   {
-   "curriculum_id": "LIT-A-02",
-   "skill": "alphabet",
+   "curriculum_id": "LIT-2-02",
    "level": "LIT2",
-   "title": "Group 2 — c k e h r m d",
-   "objective": "Recognise each letter and say its sound, with an example word for each.",
-   "letters": [
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters p, i, n",
+   "goal": "Today I can read and write p, i, and n, and blend s-a-t.",
+   "slides": [
     {
-     "letter": "c",
-     "sound": "/k/",
-     "word": "cat"
+     "type": "welcome",
+     "goal": "Today I can read and write p, i, and n, and blend s-a-t."
     },
     {
-     "letter": "k",
-     "sound": "/k/",
-     "word": "kite"
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      }
+     ]
     },
     {
-     "letter": "e",
-     "sound": "/e/",
-     "word": "egg"
+     "type": "context",
+     "word": "pig",
+     "oral": "Listen: /p/ ... pig. Pig starts with /p/."
     },
     {
-     "letter": "h",
-     "sound": "/h/",
-     "word": "hat"
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter and sound. Then blend s-a-t together: sat.",
+     "items": [
+      {
+       "letter": "p",
+       "sound": "/p/",
+       "word": "pig"
+      },
+      {
+       "letter": "i",
+       "sound": "/i/",
+       "word": "igloo"
+      },
+      {
+       "letter": "n",
+       "sound": "/n/",
+       "word": "nest"
+      }
+     ]
     },
     {
-     "letter": "r",
-     "sound": "/r/",
-     "word": "ring"
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "p",
+       "sound": "/p/",
+       "word": "pig"
+      },
+      {
+       "letter": "i",
+       "sound": "/i/",
+       "word": "igloo"
+      },
+      {
+       "letter": "n",
+       "sound": "/n/",
+       "word": "nest"
+      }
+     ]
     },
     {
-     "letter": "m",
-     "sound": "/m/",
-     "word": "moon"
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "p",
+       "sound": "/p/",
+       "word": "pig"
+      },
+      {
+       "letter": "i",
+       "sound": "/i/",
+       "word": "igloo"
+      },
+      {
+       "letter": "n",
+       "sound": "/n/",
+       "word": "nest"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
     },
     {
-     "letter": "d",
-     "sound": "/d/",
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "pig"
+      },
+      {
+       "word": "igloo"
+      },
+      {
+       "word": "nest"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Trace p, i, n. Then blend the sounds: s-a-t. What is the word?",
+     "exit": "Forms p, i, n and blends s-a-t aloud into 'sat'."
+    }
+   ],
+   "teacherNote": "First oral blending: push the sounds together slowly, then faster.",
+   "homePractice": "Write today's letters three times each at home."
+  },
+  {
+   "curriculum_id": "LIT-2-03",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "First sounds",
+   "goal": "Today I can hear a word's first sound and find its letter.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can match a word to its first letter."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Say each sound.",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      },
+      {
+       "letter": "p",
+       "sound": "/p/",
+       "word": "pig"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "pig",
+     "oral": "p - p - pig. Pig starts with /p/."
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Which picture starts with /s/? Point to it.",
+     "items": [
+      {
+       "word": "sun"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "nest"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Now find the one that starts with /p/.",
+     "items": [
+      {
+       "word": "sun"
+      },
+      {
+       "word": "pig"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "nest"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say your name. What is the first sound? Which letter is it?",
+     "exit": "Says the first sound of a word and points to its letter."
+    }
+   ],
+   "teacherNote": "Oral first-sound work + letter link. Exaggerate the first sound.",
+   "homePractice": "Find two things at home. Say each first sound."
+  },
+  {
+   "curriculum_id": "LIT-2-04",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters c, k, e, h",
+   "goal": "Today I can read and write c, k, e, and h.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read and write c, k, e, and h."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      },
+      {
+       "letter": "n",
+       "sound": "/n/",
+       "word": "nest"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "Listen: /k/ ... cat. Cat starts with /k/."
+    },
+    {
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter and sound. c and k make the same sound: /k/.",
+     "items": [
+      {
+       "letter": "c",
+       "sound": "/k/",
+       "word": "cat"
+      },
+      {
+       "letter": "k",
+       "sound": "/k/",
+       "word": "kite"
+      },
+      {
+       "letter": "e",
+       "sound": "/e/",
+       "word": "egg"
+      },
+      {
+       "letter": "h",
+       "sound": "/h/",
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "c",
+       "sound": "/k/",
+       "word": "cat"
+      },
+      {
+       "letter": "k",
+       "sound": "/k/",
+       "word": "kite"
+      },
+      {
+       "letter": "e",
+       "sound": "/e/",
+       "word": "egg"
+      },
+      {
+       "letter": "h",
+       "sound": "/h/",
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "c",
+       "sound": "/k/",
+       "word": "cat"
+      },
+      {
+       "letter": "k",
+       "sound": "/k/",
+       "word": "kite"
+      },
+      {
+       "letter": "e",
+       "sound": "/e/",
+       "word": "egg"
+      },
+      {
+       "letter": "h",
+       "sound": "/h/",
+       "word": "hat"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "kite"
+      },
+      {
+       "word": "egg"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say a word that starts with /k/. Write the letter c.",
+     "exit": "Writes c, k, e, h and says each sound."
+    }
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
+  },
+  {
+   "curriculum_id": "LIT-2-05",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters r, m, d",
+   "goal": "Today I can read and write r, m, and d, and break a word into sounds.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read and write r, m, and d, and break a word into sounds."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "c",
+       "sound": "/k/",
+       "word": "cat"
+      },
+      {
+       "letter": "e",
+       "sound": "/e/",
+       "word": "egg"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "ring",
+     "oral": "Listen: /r/ ... ring. Ring starts with /r/."
+    },
+    {
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter and sound. Then break 'cat' into c-a-t.",
+     "items": [
+      {
+       "letter": "r",
+       "sound": "/r/",
+       "word": "ring"
+      },
+      {
+       "letter": "m",
+       "sound": "/m/",
+       "word": "moon"
+      },
+      {
+       "letter": "d",
+       "sound": "/d/",
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "r",
+       "sound": "/r/",
+       "word": "ring"
+      },
+      {
+       "letter": "m",
+       "sound": "/m/",
+       "word": "moon"
+      },
+      {
+       "letter": "d",
+       "sound": "/d/",
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "r",
+       "sound": "/r/",
+       "word": "ring"
+      },
+      {
+       "letter": "m",
+       "sound": "/m/",
+       "word": "moon"
+      },
+      {
+       "letter": "d",
+       "sound": "/d/",
+       "word": "dog"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "ring"
+      },
+      {
+       "word": "moon"
+      },
+      {
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Break 'cat' into its sounds: c-a-t. Then write d.",
+     "exit": "Segments a CVC word into sounds and writes r, m, d."
+    }
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
+  },
+  {
+   "curriculum_id": "LIT-2-06",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Last sounds",
+   "goal": "Today I can hear the last sound in a word.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can hear and match the last sound in a word."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Say each sound.",
+     "items": [
+      {
+       "letter": "r",
+       "sound": "/r/",
+       "word": "ring"
+      },
+      {
+       "letter": "m",
+       "sound": "/m/",
+       "word": "moon"
+      },
+      {
+       "letter": "d",
+       "sound": "/d/",
+       "word": "dog"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "cat",
+     "oral": "ca - t. Cat ends with /t/."
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Which word ends with /t/? Point to it.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "sun"
+      },
+      {
+       "word": "ring"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Now find the word that ends with /g/.",
+     "items": [
+      {
+       "word": "cat"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "sun"
+      },
+      {
+       "word": "ring"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say the word 'dog'. What is the last sound?",
+     "exit": "Says the last sound of a spoken word."
+    }
+   ],
+   "teacherNote": "Final-sound awareness prepares for spelling. Stretch the end of the word.",
+   "homePractice": "Say three words. Hear the last sound of each."
+  },
+  {
+   "curriculum_id": "LIT-2-07",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters g, o, u + build a word",
+   "goal": "Today I can read g, o, u and build a word.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can read g, o, u and build a word."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "r",
+       "sound": "/r/",
+       "word": "ring"
+      },
+      {
+       "letter": "d",
+       "sound": "/d/",
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "goat",
+     "oral": "Listen: /g/ ... goat. Goat starts with /g/."
+    },
+    {
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter name, then its sound.",
+     "items": [
+      {
+       "letter": "g",
+       "sound": "/g/",
+       "word": "goat"
+      },
+      {
+       "letter": "o",
+       "sound": "/o/",
+       "word": "orange"
+      },
+      {
+       "letter": "u",
+       "sound": "/u/",
+       "word": "umbrella"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "g",
+       "sound": "/g/",
+       "word": "goat"
+      },
+      {
+       "letter": "o",
+       "sound": "/o/",
+       "word": "orange"
+      },
+      {
+       "letter": "u",
+       "sound": "/u/",
+       "word": "umbrella"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "g",
+       "sound": "/g/",
+       "word": "goat"
+      },
+      {
+       "letter": "o",
+       "sound": "/o/",
+       "word": "orange"
+      },
+      {
+       "letter": "u",
+       "sound": "/u/",
+       "word": "umbrella"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "build",
      "word": "dog"
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "goat"
+      },
+      {
+       "word": "orange"
+      },
+      {
+       "word": "umbrella"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Build the word 'dog' with letter tiles. Then read it.",
+     "exit": "Builds and reads a CVC word using letter tiles."
     }
-   ]
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
   },
   {
-   "curriculum_id": "LIT-A-03",
-   "skill": "alphabet",
+   "curriculum_id": "LIT-2-08",
    "level": "LIT2",
-   "title": "Group 3 — g o u l f b",
-   "objective": "Recognise each letter and say its sound, with an example word for each.",
-   "letters": [
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters l, f, b + dictation",
+   "goal": "Today I can read l, f, b, hear a sound and pick its letter.",
+   "slides": [
     {
-     "letter": "g",
-     "sound": "/g/",
-     "word": "goat"
+     "type": "welcome",
+     "goal": "Today I can read l, f, b, hear a sound and pick its letter."
     },
     {
-     "letter": "o",
-     "sound": "/o/",
-     "word": "orange"
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "g",
+       "sound": "/g/",
+       "word": "goat"
+      },
+      {
+       "letter": "u",
+       "sound": "/u/",
+       "word": "umbrella"
+      }
+     ]
     },
     {
-     "letter": "u",
-     "sound": "/u/",
-     "word": "umbrella"
+     "type": "context",
+     "word": "leaf",
+     "oral": "Listen: /l/ ... leaf. Leaf starts with /l/."
     },
     {
-     "letter": "l",
-     "sound": "/l/",
-     "word": "leaf"
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter name, then its sound.",
+     "items": [
+      {
+       "letter": "l",
+       "sound": "/l/",
+       "word": "leaf"
+      },
+      {
+       "letter": "f",
+       "sound": "/f/",
+       "word": "fish"
+      },
+      {
+       "letter": "b",
+       "sound": "/b/",
+       "word": "ball"
+      }
+     ]
     },
     {
-     "letter": "f",
-     "sound": "/f/",
-     "word": "fish"
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "l",
+       "sound": "/l/",
+       "word": "leaf"
+      },
+      {
+       "letter": "f",
+       "sound": "/f/",
+       "word": "fish"
+      },
+      {
+       "letter": "b",
+       "sound": "/b/",
+       "word": "ball"
+      }
+     ]
     },
     {
-     "letter": "b",
-     "sound": "/b/",
-     "word": "ball"
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "l",
+       "sound": "/l/",
+       "word": "leaf"
+      },
+      {
+       "letter": "f",
+       "sound": "/f/",
+       "word": "fish"
+      },
+      {
+       "letter": "b",
+       "sound": "/b/",
+       "word": "ball"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "title": "Tap the letter you hear",
+     "intro": "I say a sound. Tap the letter that makes it.",
+     "items": [
+      {
+       "letter": "l",
+       "sound": "/l/",
+       "word": "leaf"
+      },
+      {
+       "letter": "f",
+       "sound": "/f/",
+       "word": "fish"
+      },
+      {
+       "letter": "b",
+       "sound": "/b/",
+       "word": "ball"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true,
+     "hideSound": true
+    },
+    {
+     "type": "build",
+     "word": "leg"
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "leaf"
+      },
+      {
+       "word": "fish"
+      },
+      {
+       "word": "ball"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Build the word 'leg'. Then read it.",
+     "exit": "Chooses the right letter for a spoken sound and builds a word."
     }
-   ]
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
   },
   {
-   "curriculum_id": "LIT-A-04",
-   "skill": "alphabet",
+   "curriculum_id": "LIT-2-09",
    "level": "LIT2",
-   "title": "Group 4 — j v w x y z",
-   "objective": "Recognise each letter and say its sound, with an example word for each.",
-   "letters": [
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters j, v, w",
+   "goal": "Today I can read and write j, v, and w.",
+   "slides": [
     {
-     "letter": "j",
-     "sound": "/j/",
-     "word": "jug"
+     "type": "welcome",
+     "goal": "Today I can read and write j, v, and w."
     },
     {
-     "letter": "v",
-     "sound": "/v/",
-     "word": "van"
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "l",
+       "sound": "/l/",
+       "word": "leaf"
+      },
+      {
+       "letter": "b",
+       "sound": "/b/",
+       "word": "ball"
+      }
+     ]
     },
     {
-     "letter": "w",
-     "sound": "/w/",
-     "word": "watch"
+     "type": "context",
+     "word": "jug",
+     "oral": "Listen: /j/ ... jug. Jug starts with /j/."
     },
     {
-     "letter": "x",
-     "sound": "/ks/",
-     "word": "fox"
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter name, then its sound.",
+     "items": [
+      {
+       "letter": "j",
+       "sound": "/j/",
+       "word": "jug"
+      },
+      {
+       "letter": "v",
+       "sound": "/v/",
+       "word": "van"
+      },
+      {
+       "letter": "w",
+       "sound": "/w/",
+       "word": "watch"
+      }
+     ]
     },
     {
-     "letter": "y",
-     "sound": "/y/",
-     "word": "yak"
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "j",
+       "sound": "/j/",
+       "word": "jug"
+      },
+      {
+       "letter": "v",
+       "sound": "/v/",
+       "word": "van"
+      },
+      {
+       "letter": "w",
+       "sound": "/w/",
+       "word": "watch"
+      }
+     ]
     },
     {
-     "letter": "z",
-     "sound": "/z/",
-     "word": "zebra"
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "j",
+       "sound": "/j/",
+       "word": "jug"
+      },
+      {
+       "letter": "v",
+       "sound": "/v/",
+       "word": "van"
+      },
+      {
+       "letter": "w",
+       "sound": "/w/",
+       "word": "watch"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "jug"
+      },
+      {
+       "word": "van"
+      },
+      {
+       "word": "watch"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Write j, v, w. Say a word for each.",
+     "exit": "Writes j, v, w and says each sound."
     }
-   ]
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
   },
   {
-   "curriculum_id": "LIT-A-05",
-   "skill": "alphabet",
+   "curriculum_id": "LIT-2-10",
    "level": "LIT2",
-   "title": "Group 5 — qu + review",
-   "objective": "Recognise each letter and say its sound, with an example word for each.",
-   "letters": [
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Letters x, y, z, qu",
+   "goal": "Today I can read and write x, y, z, and qu.",
+   "slides": [
     {
-     "letter": "qu",
-     "sound": "/kw/",
-     "word": "queen"
+     "type": "welcome",
+     "goal": "Today I can read and write x, y, z, and qu."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Do you remember these letters?",
+     "items": [
+      {
+       "letter": "j",
+       "sound": "/j/",
+       "word": "jug"
+      },
+      {
+       "letter": "w",
+       "sound": "/w/",
+       "word": "watch"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "word": "fox",
+     "oral": "Listen: /ks/ ... fox. Fox starts with /ks/."
+    },
+    {
+     "type": "teach",
+     "layout": "letters",
+     "intro": "Say each letter name, then its sound.",
+     "items": [
+      {
+       "letter": "x",
+       "sound": "/ks/",
+       "word": "fox"
+      },
+      {
+       "letter": "y",
+       "sound": "/y/",
+       "word": "yak"
+      },
+      {
+       "letter": "z",
+       "sound": "/z/",
+       "word": "zebra"
+      },
+      {
+       "letter": "qu",
+       "sound": "/kw/",
+       "word": "queen"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "intro": "Point to a letter. Say its sound and the word.",
+     "items": [
+      {
+       "letter": "x",
+       "sound": "/ks/",
+       "word": "fox"
+      },
+      {
+       "letter": "y",
+       "sound": "/y/",
+       "word": "yak"
+      },
+      {
+       "letter": "z",
+       "sound": "/z/",
+       "word": "zebra"
+      },
+      {
+       "letter": "qu",
+       "sound": "/kw/",
+       "word": "queen"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write the letters",
+     "intro": "Trace each letter. Start at the top. Now write it on paper.",
+     "items": [
+      {
+       "letter": "x",
+       "sound": "/ks/",
+       "word": "fox"
+      },
+      {
+       "letter": "y",
+       "sound": "/y/",
+       "word": "yak"
+      },
+      {
+       "letter": "z",
+       "sound": "/z/",
+       "word": "zebra"
+      },
+      {
+       "letter": "qu",
+       "sound": "/kw/",
+       "word": "queen"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "fox"
+      },
+      {
+       "word": "yak"
+      },
+      {
+       "word": "zebra"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Write y and z. x comes at the end of 'fox'.",
+     "exit": "Writes the final letters and knows qu makes /kw/."
     }
-   ]
+   ],
+   "teacherNote": "Teach the letter name AND its sound together with the picture. Model formation; learners trace, then write.",
+   "homePractice": "Write today's letters three times each at home."
+  },
+  {
+   "curriculum_id": "LIT-2-11",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Writing my name",
+   "goal": "Today I can write my own name with a capital letter.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can write my name. It starts with a big (capital) letter."
+    },
+    {
+     "type": "context",
+     "oral": "My name is Sara. Sara starts with a big S: S-a-r-a."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "A name starts with a CAPITAL letter. The rest are small letters.",
+     "items": [
+      {
+       "word": "name"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "My name is ___.",
+     "words": [
+      {
+       "word": "name"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Write your name",
+     "task": "Write your own name. Start with a big (capital) letter. Say each letter as you write.",
+     "exit": "Writes their own name starting with a capital letter."
+    }
+   ],
+   "teacherNote": "Personal and motivating. Provide a name card to copy if needed. Praise the capital letter.",
+   "homePractice": "Write your name five times at home."
+  },
+  {
+   "curriculum_id": "LIT-2-12",
+   "level": "LIT2",
+   "arc": "v2",
+   "skill": "alphabet",
+   "title": "Level 2 checkpoint",
+   "goal": "Today I can show my letters, sounds, and a word I can build.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can say sounds, write letters, and build a word."
+    },
+    {
+     "type": "review",
+     "layout": "letters",
+     "intro": "Say the sound for each letter.",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      },
+      {
+       "letter": "m",
+       "sound": "/m/",
+       "word": "moon"
+      },
+      {
+       "letter": "d",
+       "sound": "/d/",
+       "word": "dog"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "letters",
+     "title": "Write these letters",
+     "intro": "Write each letter on paper.",
+     "items": [
+      {
+       "letter": "s",
+       "sound": "/s/",
+       "word": "sun"
+      },
+      {
+       "letter": "a",
+       "sound": "/a/",
+       "word": "apple"
+      },
+      {
+       "letter": "t",
+       "sound": "/t/",
+       "word": "tent"
+      }
+     ],
+     "hideImage": true,
+     "hideWord": true
+    },
+    {
+     "type": "build",
+     "word": "mat"
+    },
+    {
+     "type": "functional",
+     "title": "Show what you can do",
+     "task": "Say your name. Write three letters. Build one word with tiles.",
+     "exit": "Writes at least three letters and builds one CVC word with support."
+    }
+   ],
+   "teacherNote": "Low-stakes checkpoint. Record secure / developing / needs support.",
+   "homePractice": "Build one word at home with paper letters."
   },
   {
    "curriculum_id": "LIT-W-01",
