@@ -120,10 +120,19 @@ function isAlreadyGeneratedError(e) {
 /* Generate ONE curriculum session and store it. Mirrors generatePlan().
    With overwrite=true, an existing library entry is deleted first so the
    session is rebuilt with the current design specs. */
+/* A literacy record is recognised by its authored flag, its LIT-numbered level,
+   or the tier lookup. The first two must hold even if levels.js is stale, so a
+   literacy session can never silently fall through to the AI vocabulary path. */
+function isLiteracyRecord(rec) {
+  return !!rec && (rec.arc === 'v2'
+    || /^LIT\d/i.test(rec.level || '')
+    || (typeof isLiteracyLevel === 'function' && isLiteracyLevel(rec.level)));
+}
+
 async function generateCurriculumSession(rec, overwrite) {
   // Literacy sessions are authored deterministically (buildLiteracyPlan) — no
   // AI call, no engine needed — then stored the same way as any curriculum plan.
-  if (typeof isLiteracyLevel === 'function' && isLiteracyLevel(rec.level)) {
+  if (isLiteracyRecord(rec)) {
     const plan = buildLiteracyPlan(rec);
     if (overwrite) await dataDeleteCurriculumPlan(rec.curriculum_id);
     await dataCreateCurriculumPlan({
