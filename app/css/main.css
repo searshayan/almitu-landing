@@ -1019,3 +1019,51 @@ textarea:focus-visible,
   .guide-card { width: calc(100% - 20px); max-height: 92vh; }
   .guide-scroll { padding: 16px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   Literacy slides (renders.js letters / blend / picwords / sightwords).
+   Picture-first, large and high-contrast for pre-readers.
+   ═══════════════════════════════════════════════════════ */
+.lit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.lit-grid-sight { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+.lit-card {
+  background: var(--card, #fff); border: 1px solid var(--line); border-radius: 16px;
+  padding: 14px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.lit-card-sight { flex-direction: row; justify-content: center; gap: 12px; padding: 16px; }
+.lit-letter {
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 34px; line-height: 1;
+  color: var(--navy); letter-spacing: .04em;
+}
+.lit-letter span { color: var(--muted); margin-left: 2px; }
+.lit-sound { font-family: 'Space Mono', ui-monospace, monospace; font-weight: 700; font-size: 15px; color: var(--primary); }
+.lit-frame {
+  width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden;
+  background: var(--surface-2, #f4f6f8); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+}
+.lit-frame-lg { border-radius: 14px; }
+.lit-frame-sm { width: 64px; height: 64px; aspect-ratio: 1 / 1; flex: 0 0 auto; }
+.lit-img { width: 100%; height: 100%; display: block; }
+.lit-img-none {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: var(--muted); font-size: 15px; text-transform: capitalize;
+}
+.lit-word { font-size: 17px; font-weight: 700; color: var(--ink); text-transform: capitalize; }
+.lit-blend { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap; }
+.lit-sound-chip {
+  font-family: 'Space Mono', ui-monospace, monospace; font-weight: 700; font-size: 15px; color: var(--navy);
+  background: var(--surface-2, #f4f6f8); border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; min-width: 26px;
+}
+.lit-plus { color: var(--muted); font-weight: 700; font-size: 13px; }
+.lit-sightword {
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 30px; color: var(--navy);
+  letter-spacing: .01em; text-transform: lowercase;
+}
+/* literacy flashcard faces */
+.fc-pic { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background: var(--surface-2, #f4f6f8); border: 1px solid var(--line); }
+.fc-word { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; color: var(--navy); text-transform: capitalize; }
+/* literacy matching: picture tiles */
+.match-token-pic { padding: 8px !important; }
+.match-pic { width: 72px; height: 72px; margin: 0 auto; border-radius: 10px; overflow: hidden; background: var(--surface-2, #f4f6f8); }
+.match-token-pic .lit-img { width: 100%; height: 100%; }

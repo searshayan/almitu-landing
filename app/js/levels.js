@@ -6,6 +6,9 @@
    ═══════════════════════════════════════════════════════ */
 
 const LEVELS = [
+  { value: 'LIT1',   label: 'Literacy 1 · Sounds & Pictures', tier: 'literacy' },
+  { value: 'LIT2',   label: 'Literacy 2 · Letters & Sounds',  tier: 'literacy' },
+  { value: 'LIT3',   label: 'Literacy 3 · Word Building',      tier: 'literacy' },
   { value: 'Pre-A1', label: 'Beginner (Pre-A1)',          tier: 'foundation' },
   { value: 'A1',     label: 'Elementary (A1)',            tier: 'foundation' },
   { value: 'A2',     label: 'Pre-Intermediate (A2)',      tier: 'development' },
@@ -16,6 +19,22 @@ const LEVELS = [
 ];
 
 const TIERS = {
+  literacy: {
+    key: 'literacy',
+    label: 'Literacy',
+    levels: 'Pre-reading',
+    color: '#0E8C7F',
+    bg: 'rgba(14,140,127,.08)',
+    border: 'rgba(14,140,127,.25)',
+    desc: 'Brand-new readers: letters, sounds and first words, taught with real pictures and lots of repetition.',
+    rules: [
+      'Pre-reading: teach letter names AND letter sounds, and blend simple CVC words',
+      'One letter or a small set of items per session — never a wall of text',
+      'Every target item is paired with a picture; no sentences beyond CVC',
+      'Oral-first and multisensory; heavy repetition and high success',
+      'L1 support and images throughout; no grammar explanations'
+    ]
+  },
   foundation: {
     key: 'foundation',
     label: 'Foundation',
@@ -81,6 +100,11 @@ function getTier(tierKey) {
   return TIERS[tierKey] || TIERS.foundation;
 }
 
+/* Literacy is the pre-reading tier below Pre-A1; it drives a distinct set of
+   session types, render templates and picture-first slides. */
+function isLiteracyTier(tierKey) { return tierKey === 'literacy'; }
+function isLiteracyLevel(levelValue) { return tierForLevel(levelValue) === 'literacy'; }
+
 /* Render matrix: skill × tier → render id (for labeling/debug) */
 const RENDER_MATRIX = {
   vocabulary:    { foundation: 'R1', development: 'R2', proficiency: 'R3' },
@@ -123,6 +147,9 @@ function l1Allowed(tierKey) {
    Injected into prompts so generation calibrates to the precise level,
    not just the tier. This is what makes A2 ≠ B1 and B2 ≠ C1 ≠ C2. */
 const LEVEL_DESCRIPTORS = {
+  'LIT1': 'Pre-alphabet. No reading yet. Learner hears and says everyday words anchored to a real picture; builds spoken vocabulary and the idea that a word names a thing. Everything oral, image-first, with L1 support.',
+  'LIT2': 'Letters and sounds. Learner recognises letters and their sounds (name AND phonic sound), one small group at a time, each anchored to a picture example. Begins to blend two or three sounds. No connected text.',
+  'LIT3': 'Word building. Learner blends and reads simple CVC words and a few high-frequency sight words, checking meaning against a picture. Short, decodable items only — no sentences beyond CVC.',
   'Pre-A1': 'Absolute beginner. Isolated high-frequency words, fixed greetings, and memorised chunks only. No independent sentence building yet. Everything supported by images and L1.',
   'A1':     'Basic user. Simple present-tense statements and questions about immediate, concrete needs. Very short turns, heavy scaffolding, familiar everyday words.',
   'A2':     'Elementary. Simple connected sentences about routine matters; can use past and near-future with support. Short paragraph contexts, light scaffolding, common collocations.',
@@ -141,6 +168,21 @@ function levelDescriptor(level) {
    the level, what to expect from the learner, and how to teach at it. One
    entry per CEFR level (kept separate from the prompt-facing descriptors). */
 const LEVEL_GUIDE = {
+  'LIT1': {
+    goal:   'Build spoken words and the idea that every picture has a name — before any letters.',
+    expect: 'Pointing, naming and repeating; answers of one or two words, fully supported by pictures and first language.',
+    teach:  'Say the word, show the picture, have the learner repeat — lots of times. Keep it playful and all spoken.'
+  },
+  'LIT2': {
+    goal:   'Recognise letters and the sounds they make, one small group at a time.',
+    expect: 'Matching a letter to its sound and to a picture word; first attempts at blending two or three sounds.',
+    teach:  'Teach the letter name and its sound together with the example picture; model blending aloud; repeat daily.'
+  },
+  'LIT3': {
+    goal:   'Sound out and read simple CVC words and a few common sight words.',
+    expect: 'Blending c-a-t → cat, then checking the picture; recognising a handful of whole words on sight.',
+    teach:  'Blend slowly then quickly, always confirming meaning with the picture; keep every item short and high-success.'
+  },
   'Pre-A1': {
     goal:   'Help the learner recognise and say a small set of everyday words and fixed phrases.',
     expect: 'Very short spoken answers, lots of repetition, and full support from images and their first language.',

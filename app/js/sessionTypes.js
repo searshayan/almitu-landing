@@ -74,5 +74,75 @@ const SESSION_TYPES = {
   }
 };
 
-function getSessionType(key) { return SESSION_TYPES[key] || SESSION_TYPES.vocabulary; }
+/* ═══════════════════════════════════════════════════════
+   Literacy session types — shown only when a Literacy level is chosen.
+   Pre-reading skills: letters/sounds, CVC blending, sight words, picture-word.
+   Every target item is rendered with a picture from the literacy pack.
+   ═══════════════════════════════════════════════════════ */
+const _litIcon = `<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h7"/></svg>`;
+const LITERACY_SESSION_TYPES = {
+  alphabet: {
+    key: 'alphabet', label: 'Alphabet & Sounds', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'targetLetters', label: 'Target Letters', type: 'text', required: true,
+        placeholder: 'e.g. s, a, t, p, i, n', hint: 'The letters to teach this session, in phonics order.' },
+      { id: 'exampleWords', label: 'Example Words (one per letter)', type: 'text', required: true,
+        placeholder: 'e.g. sun, apple, tent, pig, igloo, nest', hint: 'A clear, picturable word for each letter — a real picture is shown for each.' },
+      { id: 'objective', label: 'Learning Objective', type: 'textarea', required: true, rows: 2,
+        placeholder: 'Recognise each letter and say its sound', hint: 'What should the learner be able to DO by the end?' },
+      { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
+        placeholder: 'Anything else to be considered…', hint: '' }
+    ]
+  },
+  blending: {
+    key: 'blending', label: 'Word Building', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'targetWords', label: 'Target Words (CVC, comma-separated)', type: 'textarea', required: true, rows: 2, counter: true,
+        placeholder: 'cat, hat, map, pan, bag, van', hint: 'Simple decodable words — each shown with a picture. No items are added or replaced.' },
+      { id: 'vowelFocus', label: 'Sound / Vowel Focus', type: 'text', required: false,
+        placeholder: 'e.g. short a', hint: 'The sound pattern these words share.' },
+      { id: 'objective', label: 'Learning Objective', type: 'textarea', required: true, rows: 2,
+        placeholder: 'Blend and read simple words with the short-a sound', hint: 'What should the learner be able to DO by the end?' },
+      { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
+        placeholder: 'Anything else to be considered…', hint: '' }
+    ]
+  },
+  sightword: {
+    key: 'sightword', label: 'Sight Words', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'sightWords', label: 'Sight Words (comma-separated)', type: 'textarea', required: true, rows: 2, counter: true,
+        placeholder: 'the, and, is, to, you, come', hint: 'Common words taught by whole-word recognition. Picturable ones show a symbol; the rest show the word.' },
+      { id: 'objective', label: 'Learning Objective', type: 'textarea', required: true, rows: 2,
+        placeholder: 'Recognise the first ten sight words on sight', hint: 'What should the learner be able to DO by the end?' },
+      { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
+        placeholder: 'Anything else to be considered…', hint: '' }
+    ]
+  },
+  pictureword: {
+    key: 'pictureword', label: 'Picture–Word', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'theme', label: 'Picture Theme', type: 'text', required: true,
+        placeholder: 'e.g. Family, Food, Animals', hint: 'The everyday theme for this set.' },
+      { id: 'targetWords', label: 'Words to Name (comma-separated)', type: 'textarea', required: true, rows: 2, counter: true,
+        placeholder: 'mother, father, baby, sister, brother', hint: 'Each word is shown as a real picture for the learner to name.' },
+      { id: 'objective', label: 'Learning Objective', type: 'textarea', required: true, rows: 2,
+        placeholder: 'Name common family members from a photo', hint: 'What should the learner be able to DO by the end?' },
+      { id: 'notes', label: 'Additional Notes', type: 'textarea', required: false, rows: 2,
+        placeholder: 'Anything else to be considered…', hint: '' }
+    ]
+  }
+};
+
+/* Lookups search both sets, so a key resolves the same everywhere (UI, render,
+   curriculum). getSessionType falls back to vocabulary for unknown keys. */
+function getSessionType(key) { return SESSION_TYPES[key] || LITERACY_SESSION_TYPES[key] || SESSION_TYPES.vocabulary; }
 function getAllSessionTypes() { return Object.values(SESSION_TYPES); }
+
+/* The session types to OFFER for a given level: the literacy set for Literacy
+   levels, the standard CEFR set otherwise. */
+function sessionTypesForLevel(levelValue) {
+  return (typeof isLiteracyLevel === 'function' && isLiteracyLevel(levelValue))
+    ? Object.values(LITERACY_SESSION_TYPES)
+    : Object.values(SESSION_TYPES);
+}
+function isLiteracySessionType(key) { return !!LITERACY_SESSION_TYPES[key]; }

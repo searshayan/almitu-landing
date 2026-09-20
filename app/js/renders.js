@@ -19,7 +19,91 @@ function md(text) {
   return `<bdi dir="${textDir(raw)}">${html}</bdi>`;
 }
 
+/* Literacy picture for a word, from the curated pack (photos = Pexels,
+   symbols = ARASAAC). Photos fill the frame; symbols sit contained on a soft
+   ground. Falls back to the printed word when no image exists. */
+function litImg(word, prefer) {
+  const a = (typeof literacyImage === 'function') ? literacyImage(word, prefer) : null;
+  if (!a) {
+    return `<div class="lit-img lit-img-none" role="img" aria-label="${escapeHtml(word)}">${escapeHtml(word)}</div>`;
+  }
+  const fit = a.type === 'symbol' ? 'contain' : 'cover';
+  const pad = a.type === 'symbol' ? 'padding:8%;' : '';
+  return `<img class="lit-img" src="${a.file}" alt="${escapeHtml(word)}" loading="lazy" style="object-fit:${fit};${pad}">`;
+}
+
 const LAYOUT_BUILDERS = {
+
+  /* ── Literacy: letter cards (Alphabet & Sounds) ──
+     Each item: { letter, sound, word } → big Aa, the sound, an example picture
+     and the word. Picture-first, minimal text; used by pre-reading sessions. */
+  letters(d, ctx, slide) {
+    const items = d.items || [];
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
+      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+      <div class="lit-grid">
+        ${items.map(it => `
+          <div class="lit-card">
+            <div class="lit-letter">${escapeHtml((it.letter || '').toLowerCase())}<span>${escapeHtml((it.letter || '').toUpperCase())}</span></div>
+            ${it.sound ? `<div class="lit-sound">${escapeHtml(it.sound)}</div>` : ''}
+            <div class="lit-frame">${litImg(it.word, 'photo')}</div>
+            <div class="lit-word">${escapeHtml(it.word || '')}</div>
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy: blending (Word Building) ──
+     Each CVC word: sounds spaced out, then the whole word, with its picture. */
+  blend(d, ctx, slide) {
+    const items = d.items || [];
+    const split = (w) => (w || '').split('').map(c => `<span class="lit-sound-chip">${escapeHtml(c)}</span>`).join('<span class="lit-plus">+</span>');
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
+      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+      <div class="lit-grid">
+        ${items.map(it => `
+          <div class="lit-card">
+            <div class="lit-frame">${litImg(it.word, 'photo')}</div>
+            <div class="lit-blend">${split(it.word)}</div>
+            <div class="lit-word">${escapeHtml(it.word || '')}</div>
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy: picture–word (naming) ──  Each item: { word } → big picture + word. */
+  picwords(d, ctx, slide) {
+    const items = d.items || [];
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
+      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+      <div class="lit-grid">
+        ${items.map(it => `
+          <div class="lit-card">
+            <div class="lit-frame lit-frame-lg">${litImg(it.word, it.prefer || 'photo')}</div>
+            <div class="lit-word">${escapeHtml(it.word || '')}</div>
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy: sight words (whole-word) ──
+     The printed word is the star; a symbol sits beside it when the pack has one. */
+  sightwords(d, ctx, slide) {
+    const items = d.items || [];
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
+      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+      <div class="lit-grid lit-grid-sight">
+        ${items.map(it => {
+          const a = (typeof literacyImage === 'function') ? literacyImage(it.word, 'symbol') : null;
+          return `
+          <div class="lit-card lit-card-sight">
+            ${a ? `<div class="lit-frame lit-frame-sm">${litImg(it.word, 'symbol')}</div>` : ''}
+            <div class="lit-sightword">${escapeHtml(it.word || '')}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+  },
 
   hero(d, ctx, slide) {
     const durationLabel = d.duration_label || (ctx && ctx.durationLabel) || '25-Minute Live Micro-Session';
