@@ -23,6 +23,8 @@ function getBank(nb) {
 }
 
 function showPracticeContent(html) {
+  // Stop any in-progress Reading speech when the student switches activities.
+  if (typeof window !== 'undefined' && window.speechSynthesis) window.speechSynthesis.cancel();
   document.getElementById('practiceEmpty').classList.add('hidden');
   const content = document.getElementById('practiceContent');
   content.innerHTML = html;
@@ -1069,7 +1071,7 @@ function actReading() {
   html += `<div class="rounded-2xl p-5 mb-3" style="background:white; border:1px solid var(--line);">
     ${card.passage.title ? `<p class="font-bold font-display mb-2" style="color:var(--navy);">${escapeHtml(card.passage.title)}</p>` : ''}
     <p style="color:var(--ink); font-size:1.05rem; line-height:1.9; white-space:pre-wrap;">${bidiText(card.passage.text)}</p>
-    <div class="mt-3" id="readingAudioSlot">${practiceAudioControl(card.audio)}</div>
+    <div class="mt-3">${readingSpeakControl()}</div>
   </div>`;
 
   if (Array.isArray(card.questions) && card.questions.length) {
@@ -1079,13 +1081,48 @@ function actReading() {
   window._readingCard = card;
   showPracticeContent(html);
   ActivityTimer.start('reading');
-  // Generate the passage audio on first open, then swap the placeholder for a
-  // real player. The reading task is fully usable meanwhile.
-  hydratePracticeAudio('reading', (c) => {
-    const slot = document.getElementById('readingAudioSlot');
-    if (slot) slot.innerHTML = practiceAudioControl(c.audio);
-    window._readingCard = c;
-  });
+}
+
+/* Reading audio uses the browser's built-in speech synthesis — free, offline,
+   and reads the exact passage on screen. (Listening still uses ElevenLabs, which
+   needs consistent quality and works from the hidden script.) */
+function readingSpeakControl() {
+  const supported = typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+  if (!supported) {
+    return `<p class="text-xs" style="color:var(--muted);">🔇 Read-aloud isn't supported in this browser.</p>`;
+  }
+  return `<button id="readingSpeakBtn" onclick="toggleReadingSpeech()" class="px-4 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-2 text-white" style="background:var(--secondary);">
+    <span>🔊</span> <span id="readingSpeakLabel">Play audio</span>
+  </button>
+  <p class="text-[11px] mt-1" style="color:var(--muted);">Read the text first, then listen to check your understanding.</p>`;
+}
+
+function setReadingSpeakLabel(text, speaking) {
+  const el = document.getElementById('readingSpeakLabel');
+  if (el) el.textContent = text;
+  const btn = document.getElementById('readingSpeakBtn');
+  if (btn) btn.style.background = speaking ? '#EF4444' : 'var(--secondary)';
+}
+
+function toggleReadingSpeech() {
+  const synth = window.speechSynthesis;
+  const card = window._readingCard;
+  if (!synth || !card || !card.passage || !card.passage.text) return;
+  if (synth.speaking || synth.pending) { synth.cancel(); setReadingSpeakLabel('Play audio', false); return; }
+  const u = new SpeechSynthesisUtterance(card.passage.text);
+  u.lang = 'en-US';
+  u.rate = 0.9;   // calm, learner-friendly pace
+  u.pitch = 1;
+  // Prefer a natural-sounding English voice when the browser offers one.
+  const voices = synth.getVoices() || [];
+  const pick = voices.find(v => /en[-_]?US/i.test(v.lang) && /natural|google|samantha|aria|jenny/i.test(v.name))
+            || voices.find(v => /en[-_]?US/i.test(v.lang))
+            || voices.find(v => /^en/i.test(v.lang));
+  if (pick) u.voice = pick;
+  u.onstart = () => setReadingSpeakLabel('Stop', true);
+  u.onend = () => setReadingSpeakLabel('Play audio', false);
+  u.onerror = () => setReadingSpeakLabel('Play audio', false);
+  synth.speak(u);
 }
 
 /* Key vocabulary + transfer task, revealed under the score when the reading
@@ -1156,37 +1193,46 @@ function listeningExtrasHtml() {
 }
 
 /* ── Explore More ── */
+/* Explore More is optional and never scored. It shares real, always-valid links
+   by building SEARCH URLs from AI-written queries (never invented video/article
+   URLs, which are usually dead). Lower levels get one video link; B2+ get a
+   second, TED-style link. Every session also gets one article/explanation link. */
+function ytSearchUrl(q)   { return `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`; }
+function tedSearchUrl(q)  { return `https://www.ted.com/search?q=${encodeURIComponent(q)}`; }
+function webSearchUrl(q)  { return `https://www.google.com/search?q=${encodeURIComponent(q)}`; }
+
 function actExplore() {
   const nb = requireNotebook(); if (!nb) return;
-  const card = getCard(nb, 'externalResources');
-  const vids = (card && Array.isArray(card.youtubeVideos)) ? card.youtubeVideos.filter(v => v && v.verificationStatus === 'verified' && v.url) : [];
-  const article = (card && card.articleOrExplanation && card.articleOrExplanation.verificationStatus === 'verified' && card.articleOrExplanation.url) ? card.articleOrExplanation : null;
+  const card = getCard(nb, 'externalResources') || {};
+  const meta = (nb.plan && nb.plan.meta) || {};
+  const level = card.cefrLevel || meta.level || 'A1';
+  const higher = ['B2', 'C1', 'C2'].includes(level);
+  const topic = meta.title || 'this topic';
 
-  let html = activityHeader('🌐', 'Explore More', 'Continue learning with optional videos and a helpful article or explanation.', false);
-  if (card && card.intro) html += `<p class="text-sm mb-3" style="color:var(--ink);">${bidiText(card.intro)}</p>`;
+  // Fall back to topic-derived queries if an older card lacks them.
+  const videoQuery = card.videoQuery || `${topic} English conversation practice`;
+  const tedQuery = card.tedQuery || `TED talk ${topic}`;
+  const articleQuery = card.articleQuery || `${topic} explanation for English learners`;
 
-  if (!vids.length && !article) {
-    const msg = (card && card.emptyState) || 'No additional resource is available for this session yet. Complete the Reading and Listening Practice cards first.';
-    html += `<div class="rounded-xl p-5 text-center" style="background:#F8F9FD; border:1px dashed var(--line);">
-      <div class="text-2xl mb-2">🧭</div>
-      <p class="text-sm" style="color:var(--muted);">${escapeHtml(msg)}</p></div>`;
-  } else {
-    // Verified resources only ever render as external links — we never embed or
-    // auto-play third-party content, and never show unverified candidates.
-    html += '<div class="space-y-2">';
-    vids.forEach(v => {
-      html += `<a href="${escapeHtml(v.url)}" target="_blank" rel="noopener noreferrer" class="block rounded-xl p-3" style="background:white; border:1px solid var(--line);">
-        <p class="text-sm font-semibold" style="color:var(--navy);">▶ ${escapeHtml(v.title || 'Video')}</p>
-        <p class="text-xs mt-0.5" style="color:var(--muted);">${escapeHtml(v.channel || '')}${v.estimatedMinutes ? ' · ' + escapeHtml(String(v.estimatedMinutes)) + ' min' : ''}${v.subtitlesAvailable ? ' · subtitles' : ''}</p>
-        ${v.whyThisHelps ? `<p class="text-xs mt-1" style="color:var(--ink);">${escapeHtml(v.whyThisHelps)}</p>` : ''}</a>`;
-    });
-    if (article) {
-      html += `<a href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer" class="block rounded-xl p-3" style="background:white; border:1px solid var(--line);">
-        <p class="text-sm font-semibold" style="color:var(--navy);">📄 ${escapeHtml(article.title || 'Article')}</p>
-        <p class="text-xs mt-0.5" style="color:var(--muted);">${escapeHtml(article.publisher || '')}${article.estimatedMinutes ? ' · ' + escapeHtml(String(article.estimatedMinutes)) + ' min' : ''}</p>
-        ${article.whyThisHelps ? `<p class="text-xs mt-1" style="color:var(--ink);">${escapeHtml(article.whyThisHelps)}</p>` : ''}</a>`;
-    }
-    html += '</div>';
-  }
+  const links = [];
+  links.push({ icon: '▶️', label: card.videoLabel || `Watch: ${topic}`, sub: 'YouTube video search', url: ytSearchUrl(videoQuery) });
+  if (higher) links.push({ icon: '🎤', label: `TED-style talk: ${topic}`, sub: 'TED search', url: tedSearchUrl(tedQuery) });
+  links.push({ icon: '📄', label: card.articleLabel || `Read about ${topic}`, sub: 'Article search', url: webSearchUrl(articleQuery) });
+
+  let html = activityHeader('🌐', 'Explore More', 'Optional videos and a short read to go further — not graded.', false);
+  if (card.intro) html += `<p class="text-sm mb-3" style="color:var(--ink);">${bidiText(card.intro)}</p>`;
+  html += '<div class="space-y-2">';
+  links.forEach(l => {
+    html += `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 rounded-xl p-3" style="background:white; border:1px solid var(--line);">
+      <span class="text-xl">${l.icon}</span>
+      <span class="flex-1 min-w-0">
+        <span class="block text-sm font-semibold" style="color:var(--navy);">${escapeHtml(l.label)}</span>
+        <span class="block text-[11px]" style="color:var(--muted);">${escapeHtml(l.sub)} · opens in a new tab</span>
+      </span>
+      <span style="color:var(--muted);">↗</span>
+    </a>`;
+  });
+  html += '</div>';
+  html += `<p class="text-[11px] mt-3" style="color:var(--muted);">These open a fresh search, so the results are always live and working — pick whichever looks most helpful.</p>`;
   showPracticeContent(html);
 }
