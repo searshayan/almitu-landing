@@ -1193,37 +1193,46 @@ function listeningExtrasHtml() {
 }
 
 /* ── Explore More ── */
+/* Explore More is optional and never scored. It shares real, always-valid links
+   by building SEARCH URLs from AI-written queries (never invented video/article
+   URLs, which are usually dead). Lower levels get one video link; B2+ get a
+   second, TED-style link. Every session also gets one article/explanation link. */
+function ytSearchUrl(q)   { return `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`; }
+function tedSearchUrl(q)  { return `https://www.ted.com/search?q=${encodeURIComponent(q)}`; }
+function webSearchUrl(q)  { return `https://www.google.com/search?q=${encodeURIComponent(q)}`; }
+
 function actExplore() {
   const nb = requireNotebook(); if (!nb) return;
-  const card = getCard(nb, 'externalResources');
-  const vids = (card && Array.isArray(card.youtubeVideos)) ? card.youtubeVideos.filter(v => v && v.verificationStatus === 'verified' && v.url) : [];
-  const article = (card && card.articleOrExplanation && card.articleOrExplanation.verificationStatus === 'verified' && card.articleOrExplanation.url) ? card.articleOrExplanation : null;
+  const card = getCard(nb, 'externalResources') || {};
+  const meta = (nb.plan && nb.plan.meta) || {};
+  const level = card.cefrLevel || meta.level || 'A1';
+  const higher = ['B2', 'C1', 'C2'].includes(level);
+  const topic = meta.title || 'this topic';
 
-  let html = activityHeader('🌐', 'Explore More', 'Continue learning with optional videos and a helpful article or explanation.', false);
-  if (card && card.intro) html += `<p class="text-sm mb-3" style="color:var(--ink);">${bidiText(card.intro)}</p>`;
+  // Fall back to topic-derived queries if an older card lacks them.
+  const videoQuery = card.videoQuery || `${topic} English conversation practice`;
+  const tedQuery = card.tedQuery || `TED talk ${topic}`;
+  const articleQuery = card.articleQuery || `${topic} explanation for English learners`;
 
-  if (!vids.length && !article) {
-    const msg = (card && card.emptyState) || 'No additional resource is available for this session yet. Complete the Reading and Listening Practice cards first.';
-    html += `<div class="rounded-xl p-5 text-center" style="background:#F8F9FD; border:1px dashed var(--line);">
-      <div class="text-2xl mb-2">🧭</div>
-      <p class="text-sm" style="color:var(--muted);">${escapeHtml(msg)}</p></div>`;
-  } else {
-    // Verified resources only ever render as external links — we never embed or
-    // auto-play third-party content, and never show unverified candidates.
-    html += '<div class="space-y-2">';
-    vids.forEach(v => {
-      html += `<a href="${escapeHtml(v.url)}" target="_blank" rel="noopener noreferrer" class="block rounded-xl p-3" style="background:white; border:1px solid var(--line);">
-        <p class="text-sm font-semibold" style="color:var(--navy);">▶ ${escapeHtml(v.title || 'Video')}</p>
-        <p class="text-xs mt-0.5" style="color:var(--muted);">${escapeHtml(v.channel || '')}${v.estimatedMinutes ? ' · ' + escapeHtml(String(v.estimatedMinutes)) + ' min' : ''}${v.subtitlesAvailable ? ' · subtitles' : ''}</p>
-        ${v.whyThisHelps ? `<p class="text-xs mt-1" style="color:var(--ink);">${escapeHtml(v.whyThisHelps)}</p>` : ''}</a>`;
-    });
-    if (article) {
-      html += `<a href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer" class="block rounded-xl p-3" style="background:white; border:1px solid var(--line);">
-        <p class="text-sm font-semibold" style="color:var(--navy);">📄 ${escapeHtml(article.title || 'Article')}</p>
-        <p class="text-xs mt-0.5" style="color:var(--muted);">${escapeHtml(article.publisher || '')}${article.estimatedMinutes ? ' · ' + escapeHtml(String(article.estimatedMinutes)) + ' min' : ''}</p>
-        ${article.whyThisHelps ? `<p class="text-xs mt-1" style="color:var(--ink);">${escapeHtml(article.whyThisHelps)}</p>` : ''}</a>`;
-    }
-    html += '</div>';
-  }
+  const links = [];
+  links.push({ icon: '▶️', label: card.videoLabel || `Watch: ${topic}`, sub: 'YouTube video search', url: ytSearchUrl(videoQuery) });
+  if (higher) links.push({ icon: '🎤', label: `TED-style talk: ${topic}`, sub: 'TED search', url: tedSearchUrl(tedQuery) });
+  links.push({ icon: '📄', label: card.articleLabel || `Read about ${topic}`, sub: 'Article search', url: webSearchUrl(articleQuery) });
+
+  let html = activityHeader('🌐', 'Explore More', 'Optional videos and a short read to go further — not graded.', false);
+  if (card.intro) html += `<p class="text-sm mb-3" style="color:var(--ink);">${bidiText(card.intro)}</p>`;
+  html += '<div class="space-y-2">';
+  links.forEach(l => {
+    html += `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 rounded-xl p-3" style="background:white; border:1px solid var(--line);">
+      <span class="text-xl">${l.icon}</span>
+      <span class="flex-1 min-w-0">
+        <span class="block text-sm font-semibold" style="color:var(--navy);">${escapeHtml(l.label)}</span>
+        <span class="block text-[11px]" style="color:var(--muted);">${escapeHtml(l.sub)} · opens in a new tab</span>
+      </span>
+      <span style="color:var(--muted);">↗</span>
+    </a>`;
+  });
+  html += '</div>';
+  html += `<p class="text-[11px] mt-3" style="color:var(--muted);">These open a fresh search, so the results are always live and working — pick whichever looks most helpful.</p>`;
   showPracticeContent(html);
 }

@@ -111,10 +111,13 @@ function demoPracticeCards(terms, formData, exampleFn, topic) {
       keyLanguageAfterCompletion: t.slice(0, 3).map(w => ({ phrase: w, focus: `notice how "${w}" is used` }))
     },
     externalResources: {
-      id: 'external_resources', type: 'explore_more', title: 'Explore More', estimatedMinutes: 'Optional',
-      intro: `Want more practice with ${topic.toLowerCase()}? Verified resources appear here once reviewed.`,
-      youtubeVideos: [], articleOrExplanation: null,
-      emptyState: 'No additional resource is available for this session yet. Complete the Reading and Listening Practice cards first.'
+      id: 'external_resources', type: 'explore_more', title: 'Explore More', estimatedMinutes: 'Optional', cefrLevel: level,
+      intro: `Want more practice with ${topic.toLowerCase()}? Explore a video and a short read.`,
+      videoQuery: `${topic} English conversation practice`,
+      videoLabel: `Video: ${topic} in real situations`,
+      tedQuery: ['B2', 'C1', 'C2'].includes(level) ? `TED talk ${topic}` : '',
+      articleQuery: `${topic} explanation for English learners`,
+      articleLabel: `Read more about ${topic}`
     }
   };
 }
