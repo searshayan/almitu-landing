@@ -1600,5 +1600,50 @@
   "id": 2312,
   "attribution": "ARASAAC (CC BY-NC-SA)",
   "url": "https://static.arasaac.org/pictograms/2312/2312_500.png"
+ },
+ "symbol/happy.png": {
+  "word": "happy",
+  "type": "symbol",
+  "session": "Grammar words",
+  "source": "arasaac",
+  "id": 35547,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/35547/35547_500.png"
+ },
+ "symbol/tired.png": {
+  "word": "tired",
+  "type": "symbol",
+  "session": "Grammar words",
+  "source": "arasaac",
+  "id": 35537,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/35537/35537_500.png"
+ },
+ "symbol/work.png": {
+  "word": "work",
+  "type": "symbol",
+  "session": "Grammar words",
+  "source": "arasaac",
+  "id": 6624,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6624/6624_500.png"
+ },
+ "symbol/read.png": {
+  "word": "read",
+  "type": "symbol",
+  "session": "Grammar words",
+  "source": "arasaac",
+  "id": 7141,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7141/7141_500.png"
+ },
+ "symbol/tea.png": {
+  "word": "tea",
+  "type": "symbol",
+  "session": "Grammar words",
+  "source": "arasaac",
+  "id": 29802,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/29802/29802_500.png"
  }
 }
