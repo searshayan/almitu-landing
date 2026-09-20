@@ -485,9 +485,24 @@ Output ONLY the slides payload as a single, syntactically perfect JSON object. D
    tutor's target items and the FINAL (possibly edited) slides.
    ═══════════════════════════════════════════════════════ */
 
+/* Per-CEFR targets for the Reading & Listening practice cards, straight from the
+   Practice Bank Expansion spec. Reading length + question count, listening
+   duration + question count, and the replay allowance for listening audio. */
+const PRACTICE_CARD_SPEC = {
+  'Pre-A1': { readWords: '15–40 words (labels, captions, or 2–4 controlled sentences)', readQ: '5',    listenSecs: '60–75',        listenTarget: 70,  listenQ: '5',    maxPlays: 3 },
+  'A1':     { readWords: '40–80 words',   readQ: '5–6',  listenSecs: '60–90',         listenTarget: 80,  listenQ: '5–6',  maxPlays: 3 },
+  'A2':     { readWords: '80–140 words',  readQ: '6–7',  listenSecs: '90–120',        listenTarget: 105, listenQ: '6–7',  maxPlays: 2 },
+  'B1':     { readWords: '140–220 words', readQ: '7–8',  listenSecs: '120–150',       listenTarget: 135, listenQ: '7–8',  maxPlays: 2 },
+  'B2':     { readWords: '220–320 words', readQ: '8–10', listenSecs: '150–180',       listenTarget: 165, listenQ: '8–10', maxPlays: 2 },
+  'C1':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenQ: '8–10', maxPlays: 2 },
+  'C2':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenQ: '8–10', maxPlays: 2 }
+};
+function practiceCardSpec(level) { return PRACTICE_CARD_SPEC[level] || PRACTICE_CARD_SPEC['A1']; }
+
 function buildPracticeBankSystemPrompt(formData) {
   const l1Lang = resolveL1Language(formData.language);
-  return `You are the Almitu Practice Engine. Build the post-session practice bank that powers a learner's self-study activities (flashcards, MCQ, gap-fill, reorder, matching). Calibrate everything to CEFR ${formData.level}.
+  const spec = practiceCardSpec(formData.level);
+  return `You are the Almitu Practice Engine. Build the post-session practice bank that powers a learner's self-study activities (flashcards, MCQ, gap-fill, reorder, matching, PLUS a Reading, a Listening and an Explore More card). Calibrate everything to CEFR ${formData.level}.
 
 RULES:
 - Cover EVERY target item the tutor supplied — no more, no fewer.
@@ -495,8 +510,30 @@ RULES:
 - ${formData.l1Support ? 'L1 support is ON: give an accurate ' + l1Lang + ' translation for each item.' : 'L1 support is OFF: leave every "l1" and "l1_explanation" field as an empty string.'}
 - Return ONLY one valid JSON object. No markdown, no commentary.
 
+READING, LISTENING & EXPLORE MORE — align all three tightly with THIS session's CEFR level, topic, objective, target vocabulary, grammar/language target, target phrases and real-life context. Reinforce the session; never generic homework. Use respectful, adult-appropriate, practical, clear international English. Reuse target language naturally — do NOT copy the tutor slides or duplicate the quiz questions word-for-word. Give specific feedback on every question. Each card needs a visible learner-friendly Can-Do statement.
+
+READING PRACTICE
+- One passage, ${spec.readWords}, at exactly ${formData.level}. The passage text is also the exact source for an optional Play Audio button, so keep it clean and speakable.
+- ${spec.readQ} comprehension questions. Vary the types — do NOT make every question multiple_choice. Allowed "type" values: "multiple_choice", "true_false", "short_response". No trick questions, no "Which is NOT…?" negatives, nothing that needs language absent from the passage. For Pre-A1/A1 keep wording short and concrete.
+- Include a short optional warm-up prompt, a small keyVocabulary list drawn from the passage, and one short transferTask.
+
+LISTENING PRACTICE
+- Write an "internalScript": a natural spoken script for TTS, roughly ${spec.listenTarget}s of speech (level range: ${spec.listenSecs}s; NEVER exceed 180s). This script is INTERNAL — it is for audio generation only and must NEVER be shown to the student. Do NOT output a student-facing transcript anywhere.
+- New but closely related context — do NOT reuse the reading passage verbatim. Recycle key vocabulary, grammar and function naturally. Clear pronunciation and pacing. Pre-A1/A1: very predictable language, no idioms/slang/sarcasm.
+- ${spec.listenQ} questions that assess LISTENING, not reading. Allowed "type" values: "multiple_choice", "true_false", "short_response". Feedback may quote at most a very short phrase — NEVER reveal the whole script.
+- Include a small "keyLanguageAfterCompletion" list (short phrases only). This is not TOEFL/TOEIC test prep unless the session itself is exam preparation.
+
+EXPLORE MORE
+- Do NOT invent URLs, video titles, channels or publishers. Return the empty-state structure below with an empty "youtubeVideos" array and null "articleOrExplanation"; only the "intro" is written (one concise invitation tied to the session goal). Verified links are added by a later moderation step, not by you.
+
 OUTPUT SCHEMA:
-{ "practice_bank": { "items": [ { "term": "target item", "meaning": "clear ${formData.level}-appropriate definition", "l1": "${formData.l1Support ? l1Lang + ' translation' : ''}", "example": "one natural sentence using the term", "explanation": "short ${formData.level}-appropriate English note on meaning/form/use", "l1_explanation": "${formData.tier === 'foundation' ? 'the explanation in ' + l1Lang + ' (REQUIRED — powers answer feedback)' : ''}" } ], "sentences": [ "6-8 standalone practice sentences, each containing exactly one target term" ] } }`;
+{ "practice_bank": {
+  "items": [ { "term": "target item", "meaning": "clear ${formData.level}-appropriate definition", "l1": "${formData.l1Support ? l1Lang + ' translation' : ''}", "example": "one natural sentence using the term", "explanation": "short ${formData.level}-appropriate English note on meaning/form/use", "l1_explanation": "${formData.tier === 'foundation' ? 'the explanation in ' + l1Lang + ' (REQUIRED — powers answer feedback)' : ''}" } ],
+  "sentences": [ "6-8 standalone practice sentences, each containing exactly one target term" ],
+  "reading": { "id": "reading", "type": "reading_practice", "title": "Read: [specific title]", "estimatedMinutes": 6, "cefrLevel": "${formData.level}", "canDo": "I can understand a short text about [context].", "warmUp": { "prompt": "[one short prediction prompt]", "responseType": "optional_choice_or_short_text" }, "passage": { "title": "[passage title]", "text": "[exact final text to display and read aloud]" }, "audio": { "generationRequired": true, "voiceProfile": "almitu-learning-voice", "speed": 0.9, "format": "mp3", "audioStatus": "pending", "audioPath": null }, "questions": [ { "id": "reading-q1", "type": "multiple_choice", "question": "[clear question]", "options": ["[option]","[option]","[option]"], "answer": "[exact correct option; for true_false use \\"True\\" or \\"False\\"; for short_response a model answer]", "feedbackCorrect": "[specific explanation using the passage]", "feedbackIncorrect": "[specific clue pointing to the relevant sentence]" } ], "keyVocabulary": [ { "word": "[word]", "simpleMeaning": "[plain meaning]", "exampleFromText": "[short exact example]" } ], "transferTask": { "prompt": "[short personal/practical application]", "responseType": "short_text_or_choice", "exampleAnswer": "[optional model]" } },
+  "listening": { "id": "listening", "type": "listening_practice", "title": "Listen: [specific title]", "estimatedMinutes": 6, "cefrLevel": "${formData.level}", "canDo": "I can understand a short conversation about [context].", "instructions": ["Listen carefully.","Choose the best answer.","Listen again if you need to."], "audio": { "generationRequired": true, "internalScript": "[INTERNAL ONLY — spoken script for TTS; never shown to the student]", "voiceProfile": "almitu-learning-voice", "speakerPlan": ["narrator"], "speed": 0.9, "format": "mp3", "audioStatus": "pending", "audioPath": null, "durationTargetSeconds": ${spec.listenTarget}, "maxPlays": ${spec.maxPlays}, "transcriptPolicy": "never_display" }, "questions": [ { "id": "listening-q1", "type": "multiple_choice", "question": "[clear question]", "options": ["[option]","[option]","[option]"], "answer": "[exact correct option]", "feedbackCorrect": "[short confirmation]", "feedbackIncorrect": "[short listening clue without revealing the full script]" } ], "keyLanguageAfterCompletion": [ { "phrase": "[short phrase only]", "focus": "[what to notice or practise]" } ] },
+  "externalResources": { "id": "external_resources", "type": "explore_more", "title": "Explore More", "estimatedMinutes": "Optional", "intro": "[one concise invitation tied to the session goal]", "youtubeVideos": [], "articleOrExplanation": null, "emptyState": "No additional resource is available for this session yet. Complete the Reading and Listening Practice cards first." }
+} }`;
 }
 
 function buildPracticeBankUserPrompt(formData, slides) {
@@ -515,7 +552,7 @@ TARGET ITEMS (inviolable — cover all, add none):
 ${detailLines}
 The session was delivered as these slides (reflect any of the tutor's wording): ${slideDigest}
 
-Produce the practice_bank per the schema. Return ONLY the JSON object.`;
+Produce the practice_bank per the schema — the vocabulary items and sentences AND the reading, listening and externalResources cards, all aligned to this exact session. Return ONLY the JSON object.`;
 }
 
 /* ═══════════════════════════════════════════════════════
