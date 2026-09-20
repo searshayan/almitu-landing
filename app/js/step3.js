@@ -881,10 +881,48 @@ function canDoBadge(text) {
     <span class="text-[10px] uppercase tracking-wider font-semibold mr-1" style="color:var(--secondary);">Can-do</span> ${escapeHtml(text)}</div>`;
 }
 
+/* Public CDN URL for a stored practice-audio object. Paths are relative to the
+   `practice-audio` bucket (e.g. "generated/<sessionId>/reading-<hash>.mp3"). */
+function practiceAudioUrl(path) {
+  if (!path) return '';
+  if (/^https?:\/\//.test(path)) return path;
+  const base = (typeof SUPABASE_URL === 'string') ? SUPABASE_URL : '';
+  return `${base}/storage/v1/object/public/practice-audio/${path}`;
+}
+
+/* Lazy, generate-once audio. Called when a Reading/Listening card opens: if the
+   clip isn't ready yet it asks the `practice-tts` Edge Function to generate it
+   (ElevenLabs → Supabase Storage, key stays server-side), then updates the
+   in-memory card and calls onReady so the UI can swap in the player. On demo/
+   preview sessions (no backend or no real session id) it no-ops, leaving the
+   "Preparing audio…" placeholder in place. Guarded so a card only triggers one
+   generation at a time. */
+const _ttsInFlight = {};
+async function hydratePracticeAudio(cardId, onReady) {
+  const nb = getActiveNotebook(); if (!nb) return;
+  const card = getCard(nb, cardId); if (!card || !card.audio) return;
+  if (card.audio.audioStatus === 'ready' && card.audio.audioPath) { if (onReady) onReady(card); return; }
+  const c = (typeof sb === 'function') ? sb() : null;
+  if (!c || !nb.id) return;                 // demo/preview: no server to generate audio
+  const key = nb.id + ':' + cardId;
+  if (_ttsInFlight[key]) return;
+  _ttsInFlight[key] = true;
+  try {
+    const { data, error } = await c.functions.invoke('practice-tts', { body: { sessionId: nb.id, card: cardId } });
+    if (error || !data || !data.audio) { console.warn('practice-tts:', (error && error.message) || (data && data.error) || 'no audio'); return; }
+    card.audio = Object.assign({}, card.audio, data.audio);   // mutates the bank object → persists for this view
+    if (onReady) onReady(card);
+  } catch (e) {
+    console.warn('practice-tts failed:', e);
+  } finally {
+    _ttsInFlight[key] = false;
+  }
+}
+
 /* A saved audio clip renders as a real player only once the TTS pipeline has
-   uploaded it (audioStatus 'ready' + a path). Until then — the case in Slice 0 —
-   it's a disabled, non-blocking placeholder. Replay uses the stored file; the
-   student never triggers a fresh TTS call. */
+   uploaded it (audioStatus 'ready' + a path). Until then it's a disabled,
+   non-blocking placeholder. Replay uses the stored file; the student never
+   triggers a fresh TTS call. */
 function practiceAudioControl(audio) {
   const ready = !!(audio && audio.audioPath && audio.audioStatus === 'ready');
   if (ready && typeof practiceAudioUrl === 'function') {
@@ -953,13 +991,20 @@ function practiceQuestionsHtml(prefix, questions, onCompleteName) {
 
 function _pqCheckDone(prefix) {
   const st = window._pq[prefix];
-  if (!st || st.answered < st.count) return;
+  if (!st || st.answered < st.count || st.recorded) return;
+  st.recorded = true;   // one completion record per run
   const done = document.getElementById(prefix + 'Done');
   if (!done) return;
   let inner = '';
   if (st.total > 0) {
     const perfect = st.correct === st.total;
     inner = `<p class="font-bold text-center" style="color:#059669;">Score: ${st.correct}/${st.total} — ${perfect ? 'Perfect! 🎯' : st.correct >= Math.ceil(st.total * 0.6) ? 'Great job!' : 'Keep practising!'}</p>`;
+    // Reading/Listening are recorded for XP like the other activities (the
+    // activity_attempts CHECK is extended in migration_011). recordActivityCompletion
+    // itself no-ops for demo/preview/read-only contexts.
+    if ((prefix === 'reading' || prefix === 'listening') && typeof recordActivityCompletion === 'function') {
+      recordActivityCompletion(prefix, st.correct, st.total, false);
+    }
   } else {
     inner = `<p class="font-bold text-center" style="color:#059669;">Nice work — you finished this activity.</p>`;
   }
@@ -1024,7 +1069,7 @@ function actReading() {
   html += `<div class="rounded-2xl p-5 mb-3" style="background:white; border:1px solid var(--line);">
     ${card.passage.title ? `<p class="font-bold font-display mb-2" style="color:var(--navy);">${escapeHtml(card.passage.title)}</p>` : ''}
     <p style="color:var(--ink); font-size:1.05rem; line-height:1.9; white-space:pre-wrap;">${bidiText(card.passage.text)}</p>
-    <div class="mt-3">${practiceAudioControl(card.audio)}</div>
+    <div class="mt-3" id="readingAudioSlot">${practiceAudioControl(card.audio)}</div>
   </div>`;
 
   if (Array.isArray(card.questions) && card.questions.length) {
@@ -1034,6 +1079,13 @@ function actReading() {
   window._readingCard = card;
   showPracticeContent(html);
   ActivityTimer.start('reading');
+  // Generate the passage audio on first open, then swap the placeholder for a
+  // real player. The reading task is fully usable meanwhile.
+  hydratePracticeAudio('reading', (c) => {
+    const slot = document.getElementById('readingAudioSlot');
+    if (slot) slot.innerHTML = practiceAudioControl(c.audio);
+    window._readingCard = c;
+  });
 }
 
 /* Key vocabulary + transfer task, revealed under the score when the reading
@@ -1085,6 +1137,10 @@ function actListening() {
   window._listeningCard = card;
   showPracticeContent(html);
   ActivityTimer.start('listening');
+  // Generate the clip on first open; once it's ready, re-render so the audio
+  // player and the (now answerable) questions appear. hydrate only fires while
+  // audio isn't ready, so the re-render doesn't loop.
+  if (!audioReady) hydratePracticeAudio('listening', () => actListening());
 }
 
 /* Short "key language to review" — shown after completion. Deliberately phrases
