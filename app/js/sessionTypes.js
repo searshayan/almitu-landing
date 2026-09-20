@@ -81,6 +81,12 @@ const SESSION_TYPES = {
    ═══════════════════════════════════════════════════════ */
 const _litIcon = `<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h7"/></svg>`;
 const LITERACY_SESSION_TYPES = {
+  oral: {
+    key: 'oral', label: 'Listening & Speaking', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. Hello and my name', hint: 'Authored session.' }
+    ]
+  },
   alphabet: {
     key: 'alphabet', label: 'Alphabet & Sounds', literacy: true, icon: _litIcon,
     fields: [
