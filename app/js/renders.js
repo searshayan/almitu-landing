@@ -48,6 +48,57 @@ function speakBtn(word) {
   return `<button type="button" class="lit-speak" aria-label="Hear the word ${escapeHtml(word)}" onclick="event.stopPropagation();speak('${w}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>`;
 }
 
+/* Small consistent activity icons (the brief's set): listen / say / read /
+   write / look / check. */
+const _LIT_ICONS = {
+  listen: 'M11 5 6 9H2v6h4l5 4V5z|M15.5 8.5a5 5 0 0 1 0 7',
+  say:    'M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z',
+  read:   'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+  write:  'M12 20h9|M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',
+  look:   'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z|M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  check:  'M20 6 9 17l-5-5'
+};
+function litIco(name) {
+  const p = _LIT_ICONS[name]; if (!p) return '';
+  const paths = p.split('|').map(d => `<path d="${d}"/>`).join('');
+  return `<svg class="lit-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+}
+function _litShuffle(str) {
+  const a = String(str).split('');
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+/* ── Interactive "build the word" widget runtime (Present + student view) ──
+   State lives in the DOM, so it works wherever the slide HTML is injected. */
+function litBuildPick(btn) {
+  const w = btn.closest('.lit-build'); if (!w || btn.disabled || w.classList.contains('done')) return;
+  const slot = [...w.querySelectorAll('.lit-bslot')].find(s => !s.textContent);
+  if (!slot) return;
+  slot.textContent = btn.dataset.l; slot.dataset.tile = btn.dataset.i;
+  btn.disabled = true; btn.classList.add('used');
+  const slots = [...w.querySelectorAll('.lit-bslot')];
+  if (slots.every(s => s.textContent)) {
+    const built = slots.map(s => s.textContent).join('');
+    const msg = w.querySelector('.lit-build-msg');
+    if (built === w.dataset.word) {
+      w.classList.add('done');
+      msg.innerHTML = `<span class="ok">${litIco('check')} ${escapeHtml(w.dataset.word)}</span>`;
+      if (typeof speak === 'function') speak(w.dataset.word);
+    } else {
+      w.classList.add('wrong'); msg.innerHTML = `<span class="no">Try again</span>`;
+      setTimeout(() => w.classList.remove('wrong'), 500);
+    }
+  }
+}
+function litBuildReset(btn) {
+  const w = btn.closest('.lit-build'); if (!w) return;
+  w.classList.remove('done', 'wrong');
+  w.querySelectorAll('.lit-bslot').forEach(s => { s.textContent = ''; delete s.dataset.tile; });
+  w.querySelectorAll('.lit-btile').forEach(t => { t.disabled = false; t.classList.remove('used'); });
+  const m = w.querySelector('.lit-build-msg'); if (m) m.innerHTML = '';
+}
+
 /* Shared literacy slide header: the PPP stage label (eyebrow), the title, and
    an optional instruction line. */
 function litHead(slide, d) {
@@ -122,6 +173,56 @@ const LAYOUT_BUILDERS = {
             ${speakBtn(it.word)}
           </div>`;
         }).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy: context / oral warm-up ── one big picture + a modelled line. */
+  context(d, ctx, slide) {
+    return `${litHead(slide, d)}
+      <div class="lit-context">
+        ${d.word ? `<div class="lit-frame lit-frame-lg lit-context-pic">${litImg(d.word, d.prefer || 'photo')}</div>` : ''}
+        ${d.oral ? `<div class="lit-context-oral">${litIco('say')} <span>${md(d.oral)}</span> ${speakBtn(d.oral)}</div>` : ''}
+      </div>`;
+  },
+
+  /* ── Literacy: sentence frame ── the frame with a blank, then picture chips. */
+  frame(d, ctx, slide) {
+    const parts = String(d.frame || '').split('___');
+    const sentence = parts.map((p, i) => escapeHtml(p) + (i < parts.length - 1 ? '<span class="lit-blank">&nbsp;&nbsp;&nbsp;</span>' : '')).join('');
+    const words = (d.words || []).map(w => (typeof w === 'string' ? { word: w } : w));
+    return `${litHead(slide, d)}
+      <div class="lit-frame-sentence">${litIco('say')} <span>${sentence}</span></div>
+      <div class="lit-grid">
+        ${words.map(w => `
+          <div class="lit-card">
+            <div class="lit-frame lit-frame-lg">${litImg(w.word, w.prefer || 'photo')}</div>
+            <div class="lit-word">${escapeHtml(w.word)}${speakBtn(w.word)}</div>
+          </div>`).join('')}
+      </div>`;
+  },
+
+  /* ── Literacy: real-life task + exit check ── */
+  functional(d, ctx, slide) {
+    return `${litHead(slide, d)}
+      <div class="lit-task">
+        <div class="lit-task-label">${litIco('write')} Your task</div>
+        <p>${md(d.task || '')}</p>
+      </div>
+      ${d.exit ? `<div class="lit-exit">${litIco('check')} <span><b>Show you can:</b> ${md(d.exit)}</span></div>` : ''}`;
+  },
+
+  /* ── Literacy: interactive build-the-word (encoding) ── tap letters in order. */
+  buildword(d, ctx, slide) {
+    const word = String(d.word || '').toLowerCase();
+    const tiles = _litShuffle(word).map((l, i) => `<button type="button" class="lit-btile" data-l="${escapeHtml(l)}" data-i="${i}" onclick="litBuildPick(this)">${escapeHtml(l)}</button>`).join('');
+    const slots = word.split('').map(() => `<span class="lit-bslot"></span>`).join('');
+    return `${litHead(slide, d)}
+      <div class="lit-build" data-word="${escapeHtml(word)}">
+        <div class="lit-frame lit-frame-lg lit-build-pic">${litImg(word, 'photo')}</div>
+        <div class="lit-slots">${slots}</div>
+        <div class="lit-tiles">${tiles}</div>
+        <div class="lit-build-msg"></div>
+        <button type="button" class="lit-build-reset" onclick="litBuildReset(this)">Start again</button>
       </div>`;
   },
 

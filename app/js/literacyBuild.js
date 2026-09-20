@@ -66,9 +66,47 @@ const LITERACY_STAGE_COPY = {
   }
 };
 
+/* ── Authored (v2) arc ──
+   Enriched sessions carry an ordered `slides` list of authored steps; the
+   builder is a thin mapper from each step type to a render layout + stage label
+   (I do → We do → You do → Use it). AI drafts the content; humans vet it. */
+const V2_MAP = {
+  welcome:    { stage: 'Preparation', label: 'Welcome & goal', layout: 'hero' },
+  review:     { stage: 'Review',      label: 'Quick review',   layout: 'picwords' },
+  context:    { stage: 'Warm-up',     label: 'Look & listen',  layout: 'context' },
+  teach:      { stage: 'Presentation',label: 'Teach',          layout: 'picwords' },
+  practice:   { stage: 'Practice',    label: 'Guided practice',layout: 'picwords' },
+  listen:     { stage: 'Practice',    label: 'Listen & find',  layout: 'picwords' },
+  read:       { stage: 'Read',        label: 'Read for meaning', layout: 'microtext' },
+  frame:      { stage: 'Speak',       label: 'Speak with a frame', layout: 'frame' },
+  build:      { stage: 'Build',       label: 'Build & write',  layout: 'buildword' },
+  functional: { stage: 'Use it',      label: 'Real-life task', layout: 'functional' }
+};
+function _v2Items(arr) {
+  return (arr || []).map(it => (typeof it === 'string' ? { word: it } : it));
+}
+function buildLiteracyContentV2(rec) {
+  const slides = (rec.slides || []).map(s => {
+    const m = V2_MAP[s.type] || { stage: '', label: s.type, layout: 'picwords' };
+    const layout = s.layout || m.layout;
+    const title = s.title || m.label;
+    let data;
+    if (s.type === 'welcome') {
+      data = { heading: rec.title, goal: s.goal || rec.goal || '', warmup: s.warmup || '', duration_label: 'Literacy session' };
+    } else {
+      data = Object.assign({}, s);
+      if (data.items) data.items = _v2Items(data.items);
+      if (data.words) data.words = _v2Items(data.words);
+    }
+    return { layout, stage: m.stage, title, label: m.label, icon: '', data };
+  });
+  return { slides };
+}
+
 /* Slides — the full PPP arc: Preparation → Presentation → Practice (receptive,
    then productive) → Production (low support) → Review. Deterministic. */
 function buildLiteracyContent(rec) {
+  if (rec.arc === 'v2' || Array.isArray(rec.slides)) return buildLiteracyContentV2(rec);
   const c = LITERACY_STAGE_COPY[rec.skill] || LITERACY_STAGE_COPY.pictureword;
   const items = c.items(rec);
   const layout = c.layout;
@@ -95,7 +133,17 @@ function buildLiteracyContent(rec) {
    activities (flashcards, matching) can show it. term is required by getBank(). */
 function buildLiteracyPractice(rec) {
   const prefer = rec.skill === 'sightword' ? 'symbol' : 'photo';
-  const items = _litWords(rec).map(w => {
+  let words;
+  if (rec.arc === 'v2' || Array.isArray(rec.slides)) {
+    if (rec.practiceWords) words = rec.practiceWords;
+    else {
+      const teach = (rec.slides || []).find(s => s.type === 'teach');
+      words = ((teach && teach.items) || []).map(it => (typeof it === 'string' ? it : it.word)).filter(Boolean);
+    }
+  } else {
+    words = _litWords(rec);
+  }
+  const items = (words || []).map(w => {
     const img = (typeof literacyImage === 'function') ? literacyImage(w, prefer) : null;
     return { term: w, meaning: '', image: img ? { file: img.file, type: img.type } : null };
   });

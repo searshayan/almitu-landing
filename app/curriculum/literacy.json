@@ -3,199 +3,1269 @@
  "tier": "literacy",
  "sessions": [
   {
-   "curriculum_id": "LIT-P-01",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-01",
    "level": "LIT1",
-   "title": "Family",
-   "objective": "Name each family word from a real picture.",
-   "theme": "Family",
-   "words": [
-    "mother",
-    "father",
-    "sister",
-    "brother",
-    "baby",
-    "grandmother",
-    "grandfather"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Hello and my name",
+   "goal": "Today I can say hello and my name.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can say hello and my name."
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "oral": "Hello! My name is Sara. What is your name?"
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say.",
+     "items": [
+      {
+       "word": "hello"
+      },
+      {
+       "word": "name"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Say it with me.",
+     "items": [
+      {
+       "word": "hello"
+      },
+      {
+       "word": "name"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "Hello. My name is ___.",
+     "words": [
+      {
+       "word": "hello"
+      },
+      {
+       "word": "name"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Turn to a partner. Say: “Hello. My name is ___.” Then ask their name.",
+     "exit": "Says hello and their own name when asked."
+    }
+   ],
+   "teacherNote": "Pure oral session. Model the handshake/greeting; learners echo. No print pressure.",
+   "homePractice": "Greet two people today and say your name."
   },
   {
-   "curriculum_id": "LIT-P-02",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-02",
    "level": "LIT1",
-   "title": "Food & Drink",
-   "objective": "Name each food & drink word from a real picture.",
-   "theme": "Food & Drink",
-   "words": [
-    "bread",
-    "water",
-    "milk",
-    "rice",
-    "apple",
-    "egg",
-    "fish"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "This is my family",
+   "goal": "Today I can name my family.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can name my family."
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "mother",
+     "oral": "This is my mother. This is my father."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "sister"
+      },
+      {
+       "word": "brother"
+      },
+      {
+       "word": "baby"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "sister"
+      },
+      {
+       "word": "brother"
+      },
+      {
+       "word": "baby"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen to the sentence. Point to the picture.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "sister"
+      },
+      {
+       "word": "brother"
+      },
+      {
+       "word": "baby"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is my ___.",
+     "words": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "father"
+      },
+      {
+       "word": "baby"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Show a photo or point. Say: “This is my ___.” for three people.",
+     "exit": "Names three family members from a picture."
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-03",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-03",
    "level": "LIT1",
-   "title": "My Body",
-   "objective": "Name each my body word from a real picture.",
-   "theme": "My Body",
-   "words": [
-    "head",
-    "hand",
-    "eye",
-    "ear",
-    "nose",
-    "mouth",
-    "foot"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Our classroom",
+   "goal": "Today I can name things in the classroom.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can name things in the classroom."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "baby"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "book",
+     "oral": "This is a book. This is a pen."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "chair"
+      },
+      {
+       "word": "table"
+      },
+      {
+       "word": "door"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "chair"
+      },
+      {
+       "word": "table"
+      },
+      {
+       "word": "door"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen: “Open the book.” Point to the book.",
+     "items": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "chair"
+      },
+      {
+       "word": "table"
+      },
+      {
+       "word": "door"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "pen"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Point to three real things in the room and name them.",
+     "exit": "Points to and names three classroom objects."
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-04",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-04",
    "level": "LIT1",
-   "title": "My Home",
-   "objective": "Name each my home word from a real picture.",
-   "theme": "My Home",
-   "words": [
-    "door",
-    "window",
-    "bed",
-    "chair",
-    "table",
-    "cup",
-    "lamp"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Food and drink",
+   "goal": "Today I can say food I like.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say food I like."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "chair"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "bread",
+     "oral": "I like bread. I like milk."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "bread"
+      },
+      {
+       "word": "water"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "rice"
+      },
+      {
+       "word": "apple"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "bread"
+      },
+      {
+       "word": "water"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "rice"
+      },
+      {
+       "word": "apple"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen to the sentence. Point to the picture.",
+     "items": [
+      {
+       "word": "bread"
+      },
+      {
+       "word": "water"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "rice"
+      },
+      {
+       "word": "apple"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I like ___.",
+     "words": [
+      {
+       "word": "bread"
+      },
+      {
+       "word": "milk"
+      },
+      {
+       "word": "apple"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say two foods you like: “I like ___.”",
+     "exit": "Says two foods using “I like ___.”"
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-05",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-05",
    "level": "LIT1",
+   "arc": "v2",
+   "skill": "oral",
+   "title": "My body",
+   "goal": "Today I can name parts of my body.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can name parts of my body."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "apple"
+      },
+      {
+       "word": "milk"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "head",
+     "oral": "This is my head. This is my hand."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "head"
+      },
+      {
+       "word": "hand"
+      },
+      {
+       "word": "eye"
+      },
+      {
+       "word": "nose"
+      },
+      {
+       "word": "foot"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "head"
+      },
+      {
+       "word": "hand"
+      },
+      {
+       "word": "eye"
+      },
+      {
+       "word": "nose"
+      },
+      {
+       "word": "foot"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen and point: “Touch your nose.”",
+     "items": [
+      {
+       "word": "head"
+      },
+      {
+       "word": "hand"
+      },
+      {
+       "word": "eye"
+      },
+      {
+       "word": "nose"
+      },
+      {
+       "word": "foot"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is my ___.",
+     "words": [
+      {
+       "word": "head"
+      },
+      {
+       "word": "hand"
+      },
+      {
+       "word": "eye"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Touch and name three parts of your body.",
+     "exit": "Touches and names three body parts on command."
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
+  },
+  {
+   "curriculum_id": "LIT-1-06",
+   "level": "LIT1",
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Review and first sounds",
+   "goal": "Today I can hear the first sound in a word.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can hear the first sound in a word."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "book"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "head"
+      },
+      {
+       "word": "hand"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Listen to the first sound.",
+     "word": "sun",
+     "oral": "s – s – sun. Sun starts with /s/."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Say the word. Hear the first sound.",
+     "items": [
+      {
+       "word": "sun"
+      },
+      {
+       "word": "mother"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "hand"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Which one starts with /m/? Point to it.",
+     "items": [
+      {
+       "word": "sun"
+      },
+      {
+       "word": "mother"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "hand"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "___ starts with the same sound.",
+     "words": [
+      {
+       "word": "sun"
+      },
+      {
+       "word": "apple"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Clap the syllables in your name. Say the first sound of your name.",
+     "exit": "Says the first sound of at least one word."
+    }
+   ],
+   "teacherNote": "Phonemic awareness is oral only — no letters yet. Exaggerate the first sound.",
+   "homePractice": "Find one thing at home. Say its first sound."
+  },
+  {
+   "curriculum_id": "LIT-1-07",
+   "level": "LIT1",
+   "arc": "v2",
+   "skill": "oral",
    "title": "Animals",
-   "objective": "Name each animals word from a real picture.",
-   "theme": "Animals",
-   "words": [
-    "dog",
-    "cat",
-    "cow",
-    "horse",
-    "sheep",
-    "bird",
-    "rabbit"
-   ]
+   "goal": "Today I can name animals.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can name animals."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "head"
+      },
+      {
+       "word": "hand"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "dog",
+     "oral": "I see a dog. I see a cat."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      },
+      {
+       "word": "cow"
+      },
+      {
+       "word": "bird"
+      },
+      {
+       "word": "sheep"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      },
+      {
+       "word": "cow"
+      },
+      {
+       "word": "bird"
+      },
+      {
+       "word": "sheep"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen to the sentence. Point to the picture.",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      },
+      {
+       "word": "cow"
+      },
+      {
+       "word": "bird"
+      },
+      {
+       "word": "sheep"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I see a ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      },
+      {
+       "word": "cow"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Look at the pictures. Say: “I see a ___.” for three animals.",
+     "exit": "Names three animals using “I see a ___.”"
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-06",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-08",
    "level": "LIT1",
-   "title": "Clothes",
-   "objective": "Name each clothes word from a real picture.",
-   "theme": "Clothes",
-   "words": [
-    "shirt",
-    "trousers",
-    "shoes",
-    "hat",
-    "coat",
-    "socks",
-    "dress",
-    "scarf"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Clothes and colours",
+   "goal": "Today I can name clothes and a colour.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can name clothes and a colour."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "cat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "shirt",
+     "oral": "It is a red shirt. It is a blue coat."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "shirt"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "coat"
+      },
+      {
+       "word": "red"
+      },
+      {
+       "word": "blue"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "shirt"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "coat"
+      },
+      {
+       "word": "red"
+      },
+      {
+       "word": "blue"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen to the sentence. Point to the picture.",
+     "items": [
+      {
+       "word": "shirt"
+      },
+      {
+       "word": "hat"
+      },
+      {
+       "word": "coat"
+      },
+      {
+       "word": "red"
+      },
+      {
+       "word": "blue"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "It is a ___ shirt.",
+     "words": [
+      {
+       "word": "red"
+      },
+      {
+       "word": "blue"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Point to what you are wearing. Say the clothes and a colour.",
+     "exit": "Names one item of clothing and one colour."
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-07",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-09",
    "level": "LIT1",
-   "title": "Transport",
-   "objective": "Name each transport word from a real picture.",
-   "theme": "Transport",
-   "words": [
-    "car",
-    "bus",
-    "bike",
-    "train",
-    "plane",
-    "boat",
-    "truck",
-    "van"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Numbers one to ten",
+   "goal": "Today I can count and say how many.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can count and say how many."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "shirt"
+      },
+      {
+       "word": "hat"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "one",
+     "oral": "One, two, three. I have three."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Count together: one, two, three, four, five.",
+     "items": [
+      {
+       "word": "one"
+      },
+      {
+       "word": "two"
+      },
+      {
+       "word": "three"
+      },
+      {
+       "word": "four"
+      },
+      {
+       "word": "five"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "one"
+      },
+      {
+       "word": "two"
+      },
+      {
+       "word": "three"
+      },
+      {
+       "word": "four"
+      },
+      {
+       "word": "five"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen to the sentence. Point to the picture.",
+     "items": [
+      {
+       "word": "one"
+      },
+      {
+       "word": "two"
+      },
+      {
+       "word": "three"
+      },
+      {
+       "word": "four"
+      },
+      {
+       "word": "five"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I have ___.",
+     "words": [
+      {
+       "word": "two"
+      },
+      {
+       "word": "three"
+      },
+      {
+       "word": "five"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Count objects on your table. Say: “I have ___.”",
+     "exit": "Counts to five and says a number."
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-08",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-10",
    "level": "LIT1",
-   "title": "Numbers 1-10",
-   "objective": "Name each numbers 1-10 word from a real picture.",
-   "theme": "Numbers 1-10",
-   "words": [
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-    "ten"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Getting around",
+   "goal": "Today I can say how I travel.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Today I can say how I travel."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember these?",
+     "items": [
+      {
+       "word": "one"
+      },
+      {
+       "word": "three"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Look and listen.",
+     "word": "bus",
+     "oral": "I go by bus. I go by car."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "Listen and say each one.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "car"
+      },
+      {
+       "word": "bike"
+      },
+      {
+       "word": "train"
+      }
+     ]
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Listen and point to the one I say.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "car"
+      },
+      {
+       "word": "bike"
+      },
+      {
+       "word": "train"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "layout": "picwords",
+     "intro": "Listen to the sentence. Point to the picture.",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "car"
+      },
+      {
+       "word": "bike"
+      },
+      {
+       "word": "train"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "I go by ___.",
+     "words": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "car"
+      },
+      {
+       "word": "bike"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Say how you come to class: “I go by ___.”",
+     "exit": "Says one way they travel."
+    }
+   ],
+   "teacherNote": "Keep it oral and warm: model first, then let the learner echo. Praise every attempt.",
+   "homePractice": "Say today's words aloud with someone at home."
   },
   {
-   "curriculum_id": "LIT-P-09",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-11",
    "level": "LIT1",
-   "title": "Colours",
-   "objective": "Name each colours word from a real picture.",
-   "theme": "Colours",
-   "words": [
-    "red",
-    "blue",
-    "green",
-    "yellow",
-    "black",
-    "white",
-    "orange",
-    "pink"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "How a book works",
+   "goal": "Today I can find a word, a letter, and a space.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can find a word, a letter, and a space."
+    },
+    {
+     "type": "review",
+     "intro": "Do you remember?",
+     "items": [
+      {
+       "word": "bus"
+      },
+      {
+       "word": "car"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "This is a book. We read from left to right.",
+     "word": "book",
+     "oral": "This is a book. This is a page. We read this way →."
+    },
+    {
+     "type": "teach",
+     "layout": "picwords",
+     "intro": "A page has words. A word has letters. A space is between words.",
+     "items": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "door"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___.",
+     "words": [
+      {
+       "word": "book"
+      },
+      {
+       "word": "door"
+      },
+      {
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your turn",
+     "task": "Open a book. Point to a page, one word, one letter, and a space between two words.",
+     "exit": "Points to a word, a letter, and a space when asked."
+    }
+   ],
+   "teacherNote": "Concepts of print. Use any real book. Sweep your finger left→right, top→bottom.",
+   "homePractice": "Hold a book the right way and turn three pages."
   },
   {
-   "curriculum_id": "LIT-P-10",
-   "skill": "pictureword",
+   "curriculum_id": "LIT-1-12",
    "level": "LIT1",
-   "title": "Weather",
-   "objective": "Name each weather word from a real picture.",
-   "theme": "Weather",
-   "words": [
-    "sun",
-    "rain",
-    "cloud",
-    "snow",
-    "wind",
-    "storm",
-    "hot",
-    "cold"
-   ]
-  },
-  {
-   "curriculum_id": "LIT-P-11",
-   "skill": "pictureword",
-   "level": "LIT1",
-   "title": "Everyday Actions",
-   "objective": "Name each everyday actions word from a real picture.",
-   "theme": "Everyday Actions",
-   "words": [
-    "eat",
-    "drink",
-    "sit",
-    "stand",
-    "sleep",
-    "walk",
-    "run",
-    "look"
-   ]
+   "arc": "v2",
+   "skill": "oral",
+   "title": "Level 1 checkpoint",
+   "goal": "Today I can show what I have learned.",
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "I can name, listen, and use my new words."
+    },
+    {
+     "type": "review",
+     "intro": "Name each one.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "bus"
+      },
+      {
+       "word": "shirt"
+      }
+     ]
+    },
+    {
+     "type": "context",
+     "intro": "Listen and point.",
+     "word": "cat",
+     "oral": "Point to the animal. Point to the food. Point to your hand."
+    },
+    {
+     "type": "practice",
+     "layout": "picwords",
+     "intro": "Point to the one I say.",
+     "items": [
+      {
+       "word": "mother"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "dog"
+      },
+      {
+       "word": "bus"
+      },
+      {
+       "word": "hand"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "frame": "This is a ___. / I like ___.",
+     "words": [
+      {
+       "word": "dog"
+      },
+      {
+       "word": "apple"
+      },
+      {
+       "word": "bus"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Show what you can do",
+     "task": "Say your name. Name two family members, two foods, and one animal.",
+     "exit": "Says name and names at least five taught words with support."
+    }
+   ],
+   "teacherNote": "Low-stakes checkpoint. Note who is secure / developing / needs support.",
+   "homePractice": "Teach one new word to someone at home."
   },
   {
    "curriculum_id": "LIT-A-01",
