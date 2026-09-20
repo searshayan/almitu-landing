@@ -32,74 +32,94 @@ function litImg(word, prefer) {
   return `<img class="lit-img" src="${a.file}" alt="${escapeHtml(word)}" loading="lazy" style="object-fit:${fit};${pad}">`;
 }
 
+/* Say a word aloud with the browser's built-in speech synthesis — helps
+   pre-readers hear each target word. Slowed a little for clarity. */
+function speak(text) {
+  try {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(String(text || ''));
+    u.lang = 'en-US'; u.rate = 0.8;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function speakBtn(word) {
+  const w = String(word || '').replace(/\\/g, '').replace(/'/g, "\\'");
+  return `<button type="button" class="lit-speak" aria-label="Hear the word ${escapeHtml(word)}" onclick="event.stopPropagation();speak('${w}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>`;
+}
+
+/* Shared literacy slide header: the PPP stage label (eyebrow), the title, and
+   an optional instruction line. */
+function litHead(slide, d) {
+  return `${slide.stage ? `<div class="lit-stage">${escapeHtml(slide.stage)}</div>` : ''}
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
+      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}`;
+}
+
 const LAYOUT_BUILDERS = {
 
   /* ── Literacy: letter cards (Alphabet & Sounds) ──
-     Each item: { letter, sound, word } → big Aa, the sound, an example picture
-     and the word. Picture-first, minimal text; used by pre-reading sessions. */
+     { letter, sound, word } → big Aa, the sound, an example picture, the word.
+     Scaffolding flags (for the Production stage): hideSound / hideImage / hideWord. */
   letters(d, ctx, slide) {
     const items = d.items || [];
-    return `
-      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
-      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+    return `${litHead(slide, d)}
       <div class="lit-grid">
         ${items.map(it => `
           <div class="lit-card">
             <div class="lit-letter">${escapeHtml((it.letter || '').toLowerCase())}<span>${escapeHtml((it.letter || '').toUpperCase())}</span></div>
-            ${it.sound ? `<div class="lit-sound">${escapeHtml(it.sound)}</div>` : ''}
-            <div class="lit-frame">${litImg(it.word, 'photo')}</div>
-            <div class="lit-word">${escapeHtml(it.word || '')}</div>
+            ${(!d.hideSound && it.sound) ? `<div class="lit-sound">${escapeHtml(it.sound)}</div>` : ''}
+            ${!d.hideImage ? `<div class="lit-frame">${litImg(it.word, 'photo')}</div>` : ''}
+            ${!d.hideWord ? `<div class="lit-word">${escapeHtml(it.word || '')}${speakBtn(it.word)}</div>` : ''}
           </div>`).join('')}
       </div>`;
   },
 
   /* ── Literacy: blending (Word Building) ──
-     Each CVC word: sounds spaced out, then the whole word, with its picture. */
+     Sounds spaced out, then the whole word, with its picture.
+     Flags: hideChips (no sound-by-sound help) / hideImage / hideWord. */
   blend(d, ctx, slide) {
     const items = d.items || [];
     const split = (w) => (w || '').split('').map(c => `<span class="lit-sound-chip">${escapeHtml(c)}</span>`).join('<span class="lit-plus">+</span>');
-    return `
-      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
-      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+    return `${litHead(slide, d)}
       <div class="lit-grid">
         ${items.map(it => `
           <div class="lit-card">
-            <div class="lit-frame">${litImg(it.word, 'photo')}</div>
-            <div class="lit-blend">${split(it.word)}</div>
-            <div class="lit-word">${escapeHtml(it.word || '')}</div>
+            ${!d.hideImage ? `<div class="lit-frame">${litImg(it.word, 'photo')}</div>` : ''}
+            ${!d.hideChips ? `<div class="lit-blend">${split(it.word)}</div>` : ''}
+            ${!d.hideWord ? `<div class="lit-word">${escapeHtml(it.word || '')}${speakBtn(it.word)}</div>` : ''}
           </div>`).join('')}
       </div>`;
   },
 
-  /* ── Literacy: picture–word (naming) ──  Each item: { word } → big picture + word. */
+  /* ── Literacy: picture–word (naming) ──  { word } → big picture + word.
+     Flag: hideWord (name the picture from memory). */
   picwords(d, ctx, slide) {
     const items = d.items || [];
-    return `
-      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
-      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+    return `${litHead(slide, d)}
       <div class="lit-grid">
         ${items.map(it => `
           <div class="lit-card">
             <div class="lit-frame lit-frame-lg">${litImg(it.word, it.prefer || 'photo')}</div>
-            <div class="lit-word">${escapeHtml(it.word || '')}</div>
+            ${!d.hideWord ? `<div class="lit-word">${escapeHtml(it.word || '')}${speakBtn(it.word)}</div>` : ''}
           </div>`).join('')}
       </div>`;
   },
 
   /* ── Literacy: sight words (whole-word) ──
-     The printed word is the star; a symbol sits beside it when the pack has one. */
+     The printed word is the star; a symbol sits beside it when the pack has one.
+     Flag: hideSymbol (pure whole-word recognition). */
   sightwords(d, ctx, slide) {
     const items = d.items || [];
-    return `
-      <h3 class="text-lg mb-1">${escapeHtml(slide.title || '')}</h3>
-      ${d.intro ? `<p class="text-sm mb-3" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-3"></div>'}
+    return `${litHead(slide, d)}
       <div class="lit-grid lit-grid-sight">
         ${items.map(it => {
           const a = (typeof literacyImage === 'function') ? literacyImage(it.word, 'symbol') : null;
           return `
           <div class="lit-card lit-card-sight">
-            ${a ? `<div class="lit-frame lit-frame-sm">${litImg(it.word, 'symbol')}</div>` : ''}
+            ${(!d.hideSymbol && a) ? `<div class="lit-frame lit-frame-sm">${litImg(it.word, 'symbol')}</div>` : ''}
             <div class="lit-sightword">${escapeHtml(it.word || '')}</div>
+            ${speakBtn(it.word)}
           </div>`;
         }).join('')}
       </div>`;

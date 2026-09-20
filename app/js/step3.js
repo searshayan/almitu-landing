@@ -203,13 +203,19 @@ function renderNotebooks() {
 
 /* Select a specific session for practice. The Overview is shown by default so
    the student lands on the session summary before choosing an activity. */
-/* Literacy sessions are pre-reading, so the reading-dependent activities
-   (Quiz, Reorder, Gap Fill) are hidden — only Overview, Flashcards and Matching
-   (picture-based) are offered. */
+/* Literacy sessions are pre-reading: the sentence-based activities (Reorder,
+   Gap Fill) are hidden, and Quiz runs as a picture MCQ when the session has
+   enough pictures (≥3). Overview, Flashcards and Matching are always offered. */
 function applyActivityGating() {
   const nb = getActiveNotebook();
   const isLit = !!(nb && nb.plan && nb.plan.meta && nb.plan.meta.tier === 'literacy');
-  document.querySelectorAll('.sv-activity-tiles [data-reading]').forEach(b => { b.style.display = isLit ? 'none' : ''; });
+  const bank = nb && nb.plan && nb.plan.content ? nb.plan.content.practice_bank : null;
+  const imgItems = bank && Array.isArray(bank.items) ? bank.items.filter(i => i.image).length : 0;
+  document.querySelectorAll('.sv-activity-tiles [data-reading]').forEach(b => {
+    let hide = false;
+    if (isLit) hide = (b.getAttribute('data-reading') === 'quiz') ? (imgItems < 3) : true;
+    b.style.display = hide ? 'none' : '';
+  });
 }
 
 function selectSession(id) {
@@ -364,7 +370,7 @@ function actFlashcards(challenge) {
     // the word from the image, or the image from the word in challenge mode).
     if (it.image && typeof litImg === 'function') {
       const pic = `<div class="fc-pic">${litImg(it.term, it.image.type)}</div>`;
-      const word = `<span class="fc-word">${escapeHtml(it.term)}</span>`;
+      const word = `<span class="fc-word">${escapeHtml(it.term)}${typeof speakBtn === 'function' ? speakBtn(it.term) : ''}</span>`;
       return challenge ? { front: word, back: pic } : { front: pic, back: word };
     }
     const term = it.term;
@@ -432,37 +438,54 @@ function flipCard(el, i) {
 function actQuiz(challenge) {
   const nb = requireNotebook(); if (!nb) return;
   const bank = getBank(nb);
-  if (bank.items.length < 3) { showToast('Need at least 3 practice items for a quiz.', 'warn'); return; }
+  // Literacy: picture MCQ. Normal = show the word, pick its picture. Challenge =
+  // show a picture, pick the word. (CEFR uses the word↔meaning text MCQ.)
+  const litItems = bank.items.filter(i => i.image);
+  const isLit = litItems.length >= 3 && typeof litImg === 'function';
+  const pool = isLit ? litItems : bank.items;
+  if (pool.length < 3) { showToast('Need at least 3 practice items for a quiz.', 'warn'); return; }
 
-  const count = challenge ? Math.min(7, bank.items.length) : Math.min(5, bank.items.length);
-  const picks = shuffled(bank.items).slice(0, count);
+  const count = challenge ? Math.min(7, pool.length) : Math.min(5, pool.length);
+  const picks = shuffled(pool).slice(0, count);
   const questions = picks.map(item => {
-    if (challenge) {
-      // reversed: meaning → choose the term
+    if (isLit && challenge) {                       // picture → choose the word
+      const distractors = shuffled(litItems.filter(i => i.term !== item.term)).slice(0, 2).map(i => i.term);
+      const options = shuffled([item.term, ...distractors]);
+      return { qHtml: `Which word?<div class="quiz-qpic">${litImg(item.term, item.image.type)}</div>`,
+        options, optHtml: false, correct: options.indexOf(item.term), item };
+    }
+    if (isLit) {                                    // word → choose the picture
+      const distractors = shuffled(litItems.filter(i => i.term !== item.term)).slice(0, 2);
+      const opts = shuffled([item, ...distractors]);
+      return { qHtml: `Which picture is &ldquo;${escapeHtml(item.term)}&rdquo;? ${speakBtn(item.term)}`,
+        options: opts.map(o => `<div class="quiz-pic">${litImg(o.term, o.image.type)}</div>`),
+        optHtml: true, correct: opts.indexOf(item), item };
+    }
+    if (challenge) {                                // CEFR reversed: meaning → term
       const distractors = shuffled(bank.items.filter(i => i.term !== item.term)).slice(0, 2).map(i => i.term);
       const options = shuffled([item.term, ...distractors]);
-      return { q: `Which word means: "${item.meaning}"?`, options, correct: options.indexOf(item.term), item };
+      return { qHtml: escapeHtml(`Which word means: "${item.meaning}"?`), options, optHtml: false, correct: options.indexOf(item.term), item };
     }
     const distractors = shuffled(bank.items.filter(i => i.term !== item.term)).slice(0, 2).map(i => i.meaning);
     const options = shuffled([item.meaning, ...distractors]);
-    return { q: `What does "${item.term}" mean?`, options, correct: options.indexOf(item.meaning), item };
+    return { qHtml: escapeHtml(`What does "${item.term}" mean?`), options, optHtml: false, correct: options.indexOf(item.meaning), item };
   });
 
   window._quizQuestions = questions;
   window._quizChallenge = !!challenge;
 
-  let html = activityHeader('❓', 'Quiz', `${questions.length} questions · 3 options each · from "${nb.plan.meta.title}"`, challenge);
+  let html = activityHeader('❓', 'Quiz', `${questions.length} questions · from "${escapeHtml(nb.plan.meta.title)}"`, challenge);
   html += '<div class="space-y-4">';
   questions.forEach((q, qi) => {
     html += `
       <div class="rounded-xl p-4" id="qq${qi}" style="background:#F8F9FD; border:1px solid var(--line);">
-        <p class="text-sm font-medium mb-3" style="color:var(--navy);">${qi + 1}. ${escapeHtml(q.q)}</p>
-        <div class="space-y-2">
+        <p class="text-sm font-medium mb-3" style="color:var(--navy);">${qi + 1}. ${q.qHtml}</p>
+        <div class="${q.optHtml ? 'grid grid-cols-3 gap-2' : 'space-y-2'}">
           ${q.options.map((opt, oi) => `
             <button onclick="quizAnswer(${qi},${oi},${q.correct})" id="qo${qi}_${oi}"
-              class="quiz-option w-full text-left px-4 py-2.5 rounded-xl border text-sm" style="border-color:var(--line); background:white; color:var(--ink);">
-              <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[10px] font-bold mr-2" style="background:#F1F2F6; color:var(--muted);">${String.fromCharCode(65 + oi)}</span>
-              ${escapeHtml(opt)}
+              class="quiz-option ${q.optHtml ? 'quiz-option-pic' : 'w-full text-left'} px-3 py-2.5 rounded-xl border text-sm" style="border-color:var(--line); background:white; color:var(--ink);">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[10px] font-bold mr-2 align-middle" style="background:#F1F2F6; color:var(--muted);">${String.fromCharCode(65 + oi)}</span>
+              ${q.optHtml ? opt : escapeHtml(opt)}
             </button>`).join('')}
         </div>
         <div id="qf${qi}" class="hidden mt-2 text-xs px-2 py-1.5 rounded-lg"></div>
@@ -486,12 +509,12 @@ function quizAnswer(qi, oi, correctIdx) {
 
   if (oi === correctIdx) {
     selected.classList.add('correct');
-    feedback.innerHTML = '<span style="color:#059669;">✓ Correct!</span>' + explainAnswer(nb, item);
+    feedback.innerHTML = '<span style="color:#059669;">✓ Correct!</span>' + (item && item.image ? '' : explainAnswer(nb, item));
     window._quizState.correct++;
   } else {
     selected.classList.add('incorrect');
     correctEl.classList.add('correct');
-    feedback.innerHTML = `<span class="text-red-500">✗ Not quite</span> — the answer is <strong style="color:#059669;">${String.fromCharCode(65 + correctIdx)}</strong>.` + explainAnswer(nb, item);
+    feedback.innerHTML = `<span class="text-red-500">✗ Not quite</span> — the answer is <strong style="color:#059669;">${String.fromCharCode(65 + correctIdx)}</strong>.` + (item && item.image ? '' : explainAnswer(nb, item));
   }
   feedback.classList.remove('hidden');
   window._quizState.answered++;
@@ -684,12 +707,12 @@ function gapAnswer(ri, oi, correctIdx) {
   const item = window._gapRounds?.[ri]?.item;
   if (oi === correctIdx) {
     selected.classList.add('correct');
-    fb.innerHTML = '<span style="color:#059669;">✓ Correct!</span>' + explainAnswer(nb, item);
+    fb.innerHTML = '<span style="color:#059669;">✓ Correct!</span>' + (item && item.image ? '' : explainAnswer(nb, item));
     window._gapState.correct++;
   } else {
     selected.classList.add('incorrect');
     correctEl.classList.add('correct');
-    fb.innerHTML = `<span class="text-red-500">✗ The answer was "${escapeHtml(correctEl.textContent.trim())}"</span>` + explainAnswer(nb, item);
+    fb.innerHTML = `<span class="text-red-500">✗ The answer was "${escapeHtml(correctEl.textContent.trim())}"</span>` + (item && item.image ? '' : explainAnswer(nb, item));
   }
   fb.classList.remove('hidden');
   window._gapState.answered++;
