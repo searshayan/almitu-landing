@@ -9,6 +9,7 @@ const LEVELS = [
   { value: 'LIT1',   label: 'Literacy 1 · Sounds & Pictures', tier: 'literacy' },
   { value: 'LIT2',   label: 'Literacy 2 · Letters & Sounds',  tier: 'literacy' },
   { value: 'LIT3',   label: 'Literacy 3 · Word Building',      tier: 'literacy' },
+  { value: 'LIT4',   label: 'Literacy 4 · Sentences & Grammar', tier: 'literacy' },
   { value: 'Pre-A1', label: 'Beginner (Pre-A1)',          tier: 'foundation' },
   { value: 'A1',     label: 'Elementary (A1)',            tier: 'foundation' },
   { value: 'A2',     label: 'Pre-Intermediate (A2)',      tier: 'development' },
@@ -150,6 +151,7 @@ const LEVEL_DESCRIPTORS = {
   'LIT1': 'Pre-alphabet. No reading yet. Learner hears and says everyday words anchored to a real picture; builds spoken vocabulary and the idea that a word names a thing. Everything oral, image-first, with L1 support.',
   'LIT2': 'Letters and sounds. Learner recognises letters and their sounds (name AND phonic sound), one small group at a time, each anchored to a picture example. Begins to blend two or three sounds. No connected text.',
   'LIT3': 'Word building. Learner blends and reads simple CVC words and a few high-frequency sight words, checking meaning against a picture. Short, decodable items only — no sentences beyond CVC.',
+  'LIT4': 'Sentences and grammar. Learner moves from words to accurate simple sentences — subject + verb, articles, plurals, adjectives, prepositions, questions and negatives — always through pictures, oral models, reading and guided writing.',
   'Pre-A1': 'Absolute beginner. Isolated high-frequency words, fixed greetings, and memorised chunks only. No independent sentence building yet. Everything supported by images and L1.',
   'A1':     'Basic user. Simple present-tense statements and questions about immediate, concrete needs. Very short turns, heavy scaffolding, familiar everyday words.',
   'A2':     'Elementary. Simple connected sentences about routine matters; can use past and near-future with support. Short paragraph contexts, light scaffolding, common collocations.',
@@ -182,6 +184,11 @@ const LEVEL_GUIDE = {
     goal:   'Sound out and read simple CVC words and a few common sight words.',
     expect: 'Blending c-a-t → cat, then checking the picture; recognising a handful of whole words on sight.',
     teach:  'Blend slowly then quickly, always confirming meaning with the picture; keep every item short and high-success.'
+  },
+  'LIT4': {
+    goal:   'Read and write simple, correct sentences about everyday life.',
+    expect: 'Building and reading short sentences with a frame; first use of grammar (be, verbs, articles, plurals, prepositions, questions).',
+    teach:  'Teach each pattern through a picture, an oral model, a readable sentence and word cards — never a definition alone.'
   },
   'Pre-A1': {
     goal:   'Help the learner recognise and say a small set of everyday words and fixed phrases.',
