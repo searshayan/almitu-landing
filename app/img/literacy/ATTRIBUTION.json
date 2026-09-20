@@ -1,0 +1,1604 @@
+{
+ "photo/mother.jpg": {
+  "word": "mother",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 32989454,
+  "attribution": "Maria Alekseyev",
+  "url": "https://images.pexels.com/photos/32989454/pexels-photo-32989454.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/father.jpg": {
+  "word": "father",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 33944802,
+  "attribution": "Son Hoa Nguyen",
+  "url": "https://images.pexels.com/photos/33944802/pexels-photo-33944802.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/sister.jpg": {
+  "word": "sister",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 2469645,
+  "attribution": "Janko Ferlic",
+  "url": "https://images.pexels.com/photos/2469645/pexels-photo-2469645.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/brother.jpg": {
+  "word": "brother",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 590472,
+  "attribution": "Janko Ferlic",
+  "url": "https://images.pexels.com/photos/590472/pexels-photo-590472.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/baby.jpg": {
+  "word": "baby",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 38008350,
+  "attribution": "Benoit Vacherie",
+  "url": "https://images.pexels.com/photos/38008350/pexels-photo-38008350.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/grandmother.jpg": {
+  "word": "grandmother",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 18671527,
+  "attribution": "Q. Hung Pham",
+  "url": "https://images.pexels.com/photos/18671527/pexels-photo-18671527.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/grandfather.jpg": {
+  "word": "grandfather",
+  "type": "photo",
+  "session": "Family",
+  "source": "pexels",
+  "id": 22601340,
+  "attribution": "Anderson Portella",
+  "url": "https://images.pexels.com/photos/22601340/pexels-photo-22601340.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bread.jpg": {
+  "word": "bread",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 5567093,
+  "attribution": "Sarah",
+  "url": "https://images.pexels.com/photos/5567093/pexels-photo-5567093.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/milk.jpg": {
+  "word": "milk",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 5967316,
+  "attribution": "elif tekkaya",
+  "url": "https://images.pexels.com/photos/5967316/pexels-photo-5967316.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/rice.jpg": {
+  "word": "rice",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 28674713,
+  "attribution": "Kunal Lakhotia",
+  "url": "https://images.pexels.com/photos/28674713/pexels-photo-28674713.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/apple.jpg": {
+  "word": "apple",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 3746517,
+  "attribution": "Andie",
+  "url": "https://images.pexels.com/photos/3746517/pexels-photo-3746517.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/egg.jpg": {
+  "word": "egg",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 161496,
+  "attribution": "Pixabay",
+  "url": "https://images.pexels.com/photos/161496/eggs-happen-food-ecology-161496.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/hand.jpg": {
+  "word": "hand",
+  "type": "photo",
+  "session": "My Body",
+  "source": "pexels",
+  "id": 1454797,
+  "attribution": "Min An",
+  "url": "https://images.pexels.com/photos/1454797/pexels-photo-1454797.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/eye.jpg": {
+  "word": "eye",
+  "type": "photo",
+  "session": "My Body",
+  "source": "pexels",
+  "id": 6089487,
+  "attribution": "manoj anasuri",
+  "url": "https://images.pexels.com/photos/6089487/pexels-photo-6089487.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/nose.jpg": {
+  "word": "nose",
+  "type": "photo",
+  "session": "My Body",
+  "source": "pexels",
+  "id": 7460707,
+  "attribution": "Engin Binbas",
+  "url": "https://images.pexels.com/photos/7460707/pexels-photo-7460707.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/mouth.jpg": {
+  "word": "mouth",
+  "type": "photo",
+  "session": "My Body",
+  "source": "pexels",
+  "id": 11956948,
+  "attribution": "Amir SeilSepour",
+  "url": "https://images.pexels.com/photos/11956948/pexels-photo-11956948.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/foot.jpg": {
+  "word": "foot",
+  "type": "photo",
+  "session": "My Body",
+  "source": "pexels",
+  "id": 356175,
+  "attribution": "Pixabay",
+  "url": "https://images.pexels.com/photos/356175/pexels-photo-356175.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/door.jpg": {
+  "word": "door",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 10415606,
+  "attribution": "Donatello Trisolino",
+  "url": "https://images.pexels.com/photos/10415606/pexels-photo-10415606.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/window.jpg": {
+  "word": "window",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 11784605,
+  "attribution": "Jorge A Baez",
+  "url": "https://images.pexels.com/photos/11784605/pexels-photo-11784605.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bed.jpg": {
+  "word": "bed",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 19672569,
+  "attribution": "tiago alves",
+  "url": "https://images.pexels.com/photos/19672569/pexels-photo-19672569.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/chair.jpg": {
+  "word": "chair",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 35589991,
+  "attribution": "Puscas Adryan",
+  "url": "https://images.pexels.com/photos/35589991/pexels-photo-35589991.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/cup.png": {
+  "word": "cup",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 2168346,
+  "attribution": "Gabriel Bento",
+  "url": "https://images.pexels.com/photos/2168346/pexels-photo-2168346.png?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/lamp.jpg": {
+  "word": "lamp",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 31410610,
+  "attribution": "Puscas Adryan",
+  "url": "https://images.pexels.com/photos/31410610/pexels-photo-31410610.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/dog.jpg": {
+  "word": "dog",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 38398913,
+  "attribution": "_ Whittington",
+  "url": "https://images.pexels.com/photos/38398913/pexels-photo-38398913.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/cat.jpg": {
+  "word": "cat",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 39407407,
+  "attribution": "Esra Akin",
+  "url": "https://images.pexels.com/photos/39407407/pexels-photo-39407407.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/cow.jpg": {
+  "word": "cow",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 27916384,
+  "attribution": "Ruben Boekeloo",
+  "url": "https://images.pexels.com/photos/27916384/pexels-photo-27916384.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/horse.jpg": {
+  "word": "horse",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 5098968,
+  "attribution": "Obryan Poyser",
+  "url": "https://images.pexels.com/photos/5098968/pexels-photo-5098968.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/sheep.jpg": {
+  "word": "sheep",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 667225,
+  "attribution": "Min An",
+  "url": "https://images.pexels.com/photos/667225/pexels-photo-667225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bird.jpg": {
+  "word": "bird",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 6753894,
+  "attribution": "Joeri Leeuwerik",
+  "url": "https://images.pexels.com/photos/6753894/pexels-photo-6753894.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/rabbit.jpg": {
+  "word": "rabbit",
+  "type": "photo",
+  "session": "Animals",
+  "source": "pexels",
+  "id": 13301062,
+  "attribution": "Chrtlmn",
+  "url": "https://images.pexels.com/photos/13301062/pexels-photo-13301062.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/shirt.jpg": {
+  "word": "shirt",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 15047379,
+  "attribution": "Jaswant Shekhawat",
+  "url": "https://images.pexels.com/photos/15047379/pexels-photo-15047379.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/trousers.jpg": {
+  "word": "trousers",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 3977441,
+  "attribution": "Milad Heran",
+  "url": "https://images.pexels.com/photos/3977441/pexels-photo-3977441.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/shoes.jpg": {
+  "word": "shoes",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 19166246,
+  "attribution": "Danyal Malik",
+  "url": "https://images.pexels.com/photos/19166246/pexels-photo-19166246.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/hat.jpg": {
+  "word": "hat",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 15502152,
+  "attribution": "Teodora Popa photographer.",
+  "url": "https://images.pexels.com/photos/15502152/pexels-photo-15502152.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/coat.jpg": {
+  "word": "coat",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 4398944,
+  "attribution": "PIZHONBY",
+  "url": "https://images.pexels.com/photos/4398944/pexels-photo-4398944.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/socks.jpg": {
+  "word": "socks",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 17542996,
+  "attribution": "Aleksandra Krivdic",
+  "url": "https://images.pexels.com/photos/17542996/pexels-photo-17542996.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/dress.jpg": {
+  "word": "dress",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 16358959,
+  "attribution": "jhon macias",
+  "url": "https://images.pexels.com/photos/16358959/pexels-photo-16358959.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/scarf.jpg": {
+  "word": "scarf",
+  "type": "photo",
+  "session": "Clothes",
+  "source": "pexels",
+  "id": 9033324,
+  "attribution": "Sherwin Tuibuen",
+  "url": "https://images.pexels.com/photos/9033324/pexels-photo-9033324.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/car.jpg": {
+  "word": "car",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 31952747,
+  "attribution": "Aswin R S",
+  "url": "https://images.pexels.com/photos/31952747/pexels-photo-31952747.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bus.jpg": {
+  "word": "bus",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 14568202,
+  "attribution": "Victor Silva",
+  "url": "https://images.pexels.com/photos/14568202/pexels-photo-14568202.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bike.jpg": {
+  "word": "bike",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 11593575,
+  "attribution": "Alina Autumn",
+  "url": "https://images.pexels.com/photos/11593575/pexels-photo-11593575.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/train.jpg": {
+  "word": "train",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 5059248,
+  "attribution": "Max Avans",
+  "url": "https://images.pexels.com/photos/5059248/pexels-photo-5059248.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/plane.jpg": {
+  "word": "plane",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 16757167,
+  "attribution": "abdullah shareef6602",
+  "url": "https://images.pexels.com/photos/16757167/pexels-photo-16757167.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/boat.jpg": {
+  "word": "boat",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 35673362,
+  "attribution": "Aysegul Aytoren",
+  "url": "https://images.pexels.com/photos/35673362/pexels-photo-35673362.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/truck.jpg": {
+  "word": "truck",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 37186960,
+  "attribution": "DuaEnam KosongLima",
+  "url": "https://images.pexels.com/photos/37186960/pexels-photo-37186960.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/van.jpg": {
+  "word": "van",
+  "type": "photo",
+  "session": "Transport",
+  "source": "pexels",
+  "id": 11356987,
+  "attribution": "hans middendorp",
+  "url": "https://images.pexels.com/photos/11356987/pexels-photo-11356987.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/sun.jpg": {
+  "word": "sun",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 15644350,
+  "attribution": "Radarsky 1984",
+  "url": "https://images.pexels.com/photos/15644350/pexels-photo-15644350.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/tent.jpg": {
+  "word": "tent",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 31861359,
+  "attribution": "Vadim Malitskii",
+  "url": "https://images.pexels.com/photos/31861359/pexels-photo-31861359.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/pig.jpg": {
+  "word": "pig",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 7879402,
+  "attribution": "Brett Sayles",
+  "url": "https://images.pexels.com/photos/7879402/pexels-photo-7879402.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/igloo.jpg": {
+  "word": "igloo",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 38240971,
+  "attribution": "Plato Terentev",
+  "url": "https://images.pexels.com/photos/38240971/pexels-photo-38240971.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/nest.jpg": {
+  "word": "nest",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 38011018,
+  "attribution": "Ankit Mitra",
+  "url": "https://images.pexels.com/photos/38011018/pexels-photo-38011018.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/kite.jpg": {
+  "word": "kite",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 37033097,
+  "attribution": "Mone Kostner",
+  "url": "https://images.pexels.com/photos/37033097/pexels-photo-37033097.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/ring.jpg": {
+  "word": "ring",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 10799226,
+  "attribution": "The Glorious Studio",
+  "url": "https://images.pexels.com/photos/10799226/pexels-photo-10799226.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/moon.jpg": {
+  "word": "moon",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 28718945,
+  "attribution": "Diego Fraga",
+  "url": "https://images.pexels.com/photos/28718945/pexels-photo-28718945.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/goat.jpg": {
+  "word": "goat",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 34565448,
+  "attribution": "Miranda Zuurbier",
+  "url": "https://images.pexels.com/photos/34565448/pexels-photo-34565448.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/orange.jpg": {
+  "word": "orange",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 37543950,
+  "attribution": "Maira Matsui",
+  "url": "https://images.pexels.com/photos/37543950/pexels-photo-37543950.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/umbrella.jpg": {
+  "word": "umbrella",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 14008465,
+  "attribution": "Alexis B",
+  "url": "https://images.pexels.com/photos/14008465/pexels-photo-14008465.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/leaf.jpg": {
+  "word": "leaf",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 17914586,
+  "attribution": "Petr Ganaj",
+  "url": "https://images.pexels.com/photos/17914586/pexels-photo-17914586.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/ball.jpg": {
+  "word": "ball",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 13849500,
+  "attribution": "Bryan Alba",
+  "url": "https://images.pexels.com/photos/13849500/pexels-photo-13849500.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/jug.jpg": {
+  "word": "jug",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 34263266,
+  "attribution": "Fernanda Neitzel",
+  "url": "https://images.pexels.com/photos/34263266/pexels-photo-34263266.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/watch.jpg": {
+  "word": "watch",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 37488721,
+  "attribution": "Deepak Singh",
+  "url": "https://images.pexels.com/photos/37488721/pexels-photo-37488721.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/fox.jpg": {
+  "word": "fox",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 36375699,
+  "attribution": "Beat Bieri",
+  "url": "https://images.pexels.com/photos/36375699/pexels-photo-36375699.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/yak.jpg": {
+  "word": "yak",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 14505876,
+  "attribution": "chris clark",
+  "url": "https://images.pexels.com/photos/14505876/pexels-photo-14505876.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/zebra.jpg": {
+  "word": "zebra",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 13375392,
+  "attribution": "Kflow Moji",
+  "url": "https://images.pexels.com/photos/13375392/pexels-photo-13375392.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "symbol/one.png": {
+  "word": "one",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7291,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7291/7291_500.png"
+ },
+ "symbol/two.png": {
+  "word": "two",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7027,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7027/7027_500.png"
+ },
+ "symbol/three.png": {
+  "word": "three",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7283,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7283/7283_500.png"
+ },
+ "symbol/four.png": {
+  "word": "four",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7005,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7005/7005_500.png"
+ },
+ "symbol/six.png": {
+  "word": "six",
+  "type": "symbol",
+  "session": "Short i",
+  "source": "arasaac",
+  "id": 7241,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7241/7241_500.png"
+ },
+ "symbol/seven.png": {
+  "word": "seven",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7248,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7248/7248_500.png"
+ },
+ "symbol/eight.png": {
+  "word": "eight",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7189,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7189/7189_500.png"
+ },
+ "symbol/nine.png": {
+  "word": "nine",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 7188,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7188/7188_500.png"
+ },
+ "symbol/ten.png": {
+  "word": "ten",
+  "type": "symbol",
+  "session": "Short e",
+  "source": "arasaac",
+  "id": 7025,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7025/7025_500.png"
+ },
+ "symbol/red.png": {
+  "word": "red",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 2808,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2808/2808_500.png"
+ },
+ "symbol/blue.png": {
+  "word": "blue",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 4869,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/4869/4869_500.png"
+ },
+ "symbol/green.png": {
+  "word": "green",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 4887,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/4887/4887_500.png"
+ },
+ "symbol/yellow.png": {
+  "word": "yellow",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 2648,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2648/2648_500.png"
+ },
+ "symbol/black.png": {
+  "word": "black",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 2886,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2886/2886_500.png"
+ },
+ "symbol/white.png": {
+  "word": "white",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 8043,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/8043/8043_500.png"
+ },
+ "symbol/orange.png": {
+  "word": "orange",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 2888,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2888/2888_500.png"
+ },
+ "symbol/pink.png": {
+  "word": "pink",
+  "type": "symbol",
+  "session": "Colours",
+  "source": "arasaac",
+  "id": 2807,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2807/2807_500.png"
+ },
+ "symbol/sun.png": {
+  "word": "sun",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 7252,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7252/7252_500.png"
+ },
+ "symbol/rain.png": {
+  "word": "rain",
+  "type": "symbol",
+  "session": "Long vowels ai ee oa",
+  "source": "arasaac",
+  "id": 7148,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7148/7148_500.png"
+ },
+ "symbol/cloud.png": {
+  "word": "cloud",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 34383,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/34383/34383_500.png"
+ },
+ "symbol/snow.png": {
+  "word": "snow",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 7172,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7172/7172_500.png"
+ },
+ "symbol/wind.png": {
+  "word": "wind",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 7259,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/7259/7259_500.png"
+ },
+ "symbol/storm.png": {
+  "word": "storm",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 34892,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/34892/34892_500.png"
+ },
+ "symbol/hot.png": {
+  "word": "hot",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 2300,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2300/2300_500.png"
+ },
+ "symbol/cold.png": {
+  "word": "cold",
+  "type": "symbol",
+  "session": "Weather",
+  "source": "arasaac",
+  "id": 4652,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/4652/4652_500.png"
+ },
+ "symbol/eat.png": {
+  "word": "eat",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 6456,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6456/6456_500.png"
+ },
+ "symbol/drink.png": {
+  "word": "drink",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 6061,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6061/6061_500.png"
+ },
+ "symbol/sit.png": {
+  "word": "sit",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 6611,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6611/6611_500.png"
+ },
+ "symbol/stand.png": {
+  "word": "stand",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 13370,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/13370/13370_500.png"
+ },
+ "symbol/sleep.png": {
+  "word": "sleep",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 6479,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6479/6479_500.png"
+ },
+ "symbol/walk.png": {
+  "word": "walk",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 29951,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/29951/29951_500.png"
+ },
+ "symbol/run.png": {
+  "word": "run",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 8544,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/8544/8544_500.png"
+ },
+ "symbol/look.png": {
+  "word": "look",
+  "type": "symbol",
+  "session": "Everyday Actions",
+  "source": "arasaac",
+  "id": 2474,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2474/2474_500.png"
+ },
+ "photo/water.jpg": {
+  "word": "water",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 6593237,
+  "attribution": "Jan Kopriva",
+  "url": "https://images.pexels.com/photos/6593237/pexels-photo-6593237.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/fish.jpg": {
+  "word": "fish",
+  "type": "photo",
+  "session": "Food & Drink",
+  "source": "pexels",
+  "id": 39525500,
+  "attribution": "Anuj Kumar",
+  "url": "https://images.pexels.com/photos/39525500/pexels-photo-39525500.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/table.jpg": {
+  "word": "table",
+  "type": "photo",
+  "session": "My Home",
+  "source": "pexels",
+  "id": 11112739,
+  "attribution": "Ksenia Chernaya",
+  "url": "https://images.pexels.com/photos/11112739/pexels-photo-11112739.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/head.jpg": {
+  "word": "head",
+  "type": "photo",
+  "session": "My Body",
+  "source": "pexels",
+  "id": 29632684,
+  "attribution": "Duc Nguyen",
+  "url": "https://images.pexels.com/photos/29632684/pexels-photo-29632684.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "symbol/ear.png": {
+  "word": "ear",
+  "type": "symbol",
+  "session": "My Body",
+  "source": "arasaac",
+  "id": 2871,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2871/2871_500.png"
+ },
+ "photo/queen.jpg": {
+  "word": "queen",
+  "type": "photo",
+  "session": "Alphabet",
+  "source": "pexels",
+  "id": 18907048,
+  "attribution": "eduardo199o9",
+  "url": "https://images.pexels.com/photos/18907048/pexels-photo-18907048.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "symbol/five.png": {
+  "word": "five",
+  "type": "symbol",
+  "session": "Numbers",
+  "source": "arasaac",
+  "id": 6979,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6979/6979_500.png"
+ },
+ "photo/bat.jpg": {
+  "word": "bat",
+  "type": "photo",
+  "session": "Short a",
+  "source": "pexels",
+  "id": 33020234,
+  "attribution": "Steven Paton",
+  "url": "https://images.pexels.com/photos/33020234/pexels-photo-33020234.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/map.jpg": {
+  "word": "map",
+  "type": "photo",
+  "session": "Short a",
+  "source": "pexels",
+  "id": 6288284,
+  "attribution": "Marco Sebastian Mueller",
+  "url": "https://images.pexels.com/photos/6288284/pexels-photo-6288284.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/pan.jpg": {
+  "word": "pan",
+  "type": "photo",
+  "session": "Short a",
+  "source": "pexels",
+  "id": 8916610,
+  "attribution": "Nurgul Kelebek",
+  "url": "https://images.pexels.com/photos/8916610/pexels-photo-8916610.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bag.jpg": {
+  "word": "bag",
+  "type": "photo",
+  "session": "Short a",
+  "source": "pexels",
+  "id": 27174573,
+  "attribution": "Jose Martin Segura Benites",
+  "url": "https://images.pexels.com/photos/27174573/pexels-photo-27174573.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/ham.jpg": {
+  "word": "ham",
+  "type": "photo",
+  "session": "Short a",
+  "source": "pexels",
+  "id": 12567335,
+  "attribution": "Mehrdad Badr",
+  "url": "https://images.pexels.com/photos/12567335/pexels-photo-12567335.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/pin.jpg": {
+  "word": "pin",
+  "type": "photo",
+  "session": "Short i",
+  "source": "pexels",
+  "id": 38054095,
+  "attribution": "Curtis Mwarema",
+  "url": "https://images.pexels.com/photos/38054095/pexels-photo-38054095.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/lip.jpg": {
+  "word": "lip",
+  "type": "photo",
+  "session": "Short i",
+  "source": "pexels",
+  "id": 11956948,
+  "attribution": "Amir SeilSepour",
+  "url": "https://images.pexels.com/photos/11956948/pexels-photo-11956948.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/sit.jpg": {
+  "word": "sit",
+  "type": "photo",
+  "session": "Short i",
+  "source": "pexels",
+  "id": 179221,
+  "attribution": "Dorte Fjalland",
+  "url": "https://images.pexels.com/photos/179221/pexels-photo-179221.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/fin.jpg": {
+  "word": "fin",
+  "type": "photo",
+  "session": "Short i",
+  "source": "pexels",
+  "id": 5326155,
+  "attribution": "Teresa",
+  "url": "https://images.pexels.com/photos/5326155/pexels-photo-5326155.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bib.jpg": {
+  "word": "bib",
+  "type": "photo",
+  "session": "Short i",
+  "source": "pexels",
+  "id": 32299511,
+  "attribution": "Clarence Gaspar",
+  "url": "https://images.pexels.com/photos/32299511/pexels-photo-32299511.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/zip.jpg": {
+  "word": "zip",
+  "type": "photo",
+  "session": "Short i",
+  "source": "pexels",
+  "id": 27289133,
+  "attribution": "Jose Martin Segura Benites",
+  "url": "https://images.pexels.com/photos/27289133/pexels-photo-27289133.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/box.jpg": {
+  "word": "box",
+  "type": "photo",
+  "session": "Short o",
+  "source": "pexels",
+  "id": 39444570,
+  "attribution": "FENG HE",
+  "url": "https://images.pexels.com/photos/39444570/pexels-photo-39444570.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/mop.jpg": {
+  "word": "mop",
+  "type": "photo",
+  "session": "Short o",
+  "source": "pexels",
+  "id": 33300345,
+  "attribution": "Ramazan Gun",
+  "url": "https://images.pexels.com/photos/33300345/pexels-photo-33300345.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/pot.png": {
+  "word": "pot",
+  "type": "photo",
+  "session": "Short o",
+  "source": "pexels",
+  "id": 36552082,
+  "attribution": "juan pinales",
+  "url": "https://images.pexels.com/photos/36552082/pexels-photo-36552082.png?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/log.jpg": {
+  "word": "log",
+  "type": "photo",
+  "session": "Short o",
+  "source": "pexels",
+  "id": 10005648,
+  "attribution": "Nikolaeva Nastia",
+  "url": "https://images.pexels.com/photos/10005648/pexels-photo-10005648.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bug.jpg": {
+  "word": "bug",
+  "type": "photo",
+  "session": "Short u",
+  "source": "pexels",
+  "id": 26842202,
+  "attribution": "VEERA vm",
+  "url": "https://images.pexels.com/photos/26842202/pexels-photo-26842202.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/mug.jpg": {
+  "word": "mug",
+  "type": "photo",
+  "session": "Short u",
+  "source": "pexels",
+  "id": 16033792,
+  "attribution": "Ajit Bari",
+  "url": "https://images.pexels.com/photos/16033792/pexels-photo-16033792.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/nut.jpg": {
+  "word": "nut",
+  "type": "photo",
+  "session": "Short u",
+  "source": "pexels",
+  "id": 8705561,
+  "attribution": "Pranjall Kumar",
+  "url": "https://images.pexels.com/photos/8705561/pexels-photo-8705561.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/cub.jpg": {
+  "word": "cub",
+  "type": "photo",
+  "session": "Short u",
+  "source": "pexels",
+  "id": 12004888,
+  "attribution": "Ahmed Galal",
+  "url": "https://images.pexels.com/photos/12004888/pexels-photo-12004888.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/rug.jpg": {
+  "word": "rug",
+  "type": "photo",
+  "session": "Short u",
+  "source": "pexels",
+  "id": 34113608,
+  "attribution": "Aysegul Aytoren",
+  "url": "https://images.pexels.com/photos/34113608/pexels-photo-34113608.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/pen.jpg": {
+  "word": "pen",
+  "type": "photo",
+  "session": "Short e",
+  "source": "pexels",
+  "id": 16282318,
+  "attribution": "Mohamed hamdi",
+  "url": "https://images.pexels.com/photos/16282318/pexels-photo-16282318.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/net.jpg": {
+  "word": "net",
+  "type": "photo",
+  "session": "Short e",
+  "source": "pexels",
+  "id": 39460943,
+  "attribution": "Mhmd Drweesh",
+  "url": "https://images.pexels.com/photos/39460943/pexels-photo-39460943.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/hen.jpg": {
+  "word": "hen",
+  "type": "photo",
+  "session": "Short e",
+  "source": "pexels",
+  "id": 38278287,
+  "attribution": "Erwin Bosman",
+  "url": "https://images.pexels.com/photos/38278287/pexels-photo-38278287.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/leg.jpg": {
+  "word": "leg",
+  "type": "photo",
+  "session": "Short e",
+  "source": "pexels",
+  "id": 13537948,
+  "attribution": "Carolina Basi",
+  "url": "https://images.pexels.com/photos/13537948/pexels-photo-13537948.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/web.jpg": {
+  "word": "web",
+  "type": "photo",
+  "session": "Short e",
+  "source": "pexels",
+  "id": 18686035,
+  "attribution": "Tom Fisk",
+  "url": "https://images.pexels.com/photos/18686035/pexels-photo-18686035.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/jet.jpg": {
+  "word": "jet",
+  "type": "photo",
+  "session": "Short e",
+  "source": "pexels",
+  "id": 27972441,
+  "attribution": "Jimmyk photos",
+  "url": "https://images.pexels.com/photos/27972441/pexels-photo-27972441.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/frog.jpg": {
+  "word": "frog",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 37164032,
+  "attribution": "Rene Lussi",
+  "url": "https://images.pexels.com/photos/37164032/pexels-photo-37164032.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/drum.jpg": {
+  "word": "drum",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 38582977,
+  "attribution": "Krepesh Chandra Sarker",
+  "url": "https://images.pexels.com/photos/38582977/pexels-photo-38582977.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/flag.png": {
+  "word": "flag",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 16132607,
+  "attribution": "Paul Buijs",
+  "url": "https://images.pexels.com/photos/16132607/pexels-photo-16132607.png?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/snail.jpg": {
+  "word": "snail",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 20954387,
+  "attribution": "Petr Ganaj",
+  "url": "https://images.pexels.com/photos/20954387/pexels-photo-20954387.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/star.jpg": {
+  "word": "star",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 13325931,
+  "attribution": "Micky Jone",
+  "url": "https://images.pexels.com/photos/13325931/pexels-photo-13325931.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/plum.jpg": {
+  "word": "plum",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 12889634,
+  "attribution": "Lany-Jade Mondou",
+  "url": "https://images.pexels.com/photos/12889634/pexels-photo-12889634.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/sled.jpg": {
+  "word": "sled",
+  "type": "photo",
+  "session": "Beginning blends",
+  "source": "pexels",
+  "id": 36832283,
+  "attribution": "Jean-Paul Wettstein",
+  "url": "https://images.pexels.com/photos/36832283/pexels-photo-36832283.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/belt.jpg": {
+  "word": "belt",
+  "type": "photo",
+  "session": "Ending blends",
+  "source": "pexels",
+  "id": 38652622,
+  "attribution": "Reza Roshan",
+  "url": "https://images.pexels.com/photos/38652622/pexels-photo-38652622.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/gift.jpg": {
+  "word": "gift",
+  "type": "photo",
+  "session": "Ending blends",
+  "source": "pexels",
+  "id": 29463065,
+  "attribution": "Marcelo Verfe",
+  "url": "https://images.pexels.com/photos/29463065/pexels-photo-29463065.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/mask.jpg": {
+  "word": "mask",
+  "type": "photo",
+  "session": "Ending blends",
+  "source": "pexels",
+  "id": 695954,
+  "attribution": "Janko Ferlic",
+  "url": "https://images.pexels.com/photos/695954/pexels-photo-695954.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/ship.jpg": {
+  "word": "ship",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 672460,
+  "attribution": "Bahadir CIVAN",
+  "url": "https://images.pexels.com/photos/672460/pexels-photo-672460.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/shell.jpg": {
+  "word": "shell",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 38746784,
+  "attribution": "Mustafa Akin",
+  "url": "https://images.pexels.com/photos/38746784/pexels-photo-38746784.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/chip.jpg": {
+  "word": "chip",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 6485538,
+  "attribution": "Rebbit Visual",
+  "url": "https://images.pexels.com/photos/6485538/pexels-photo-6485538.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/thumb.jpg": {
+  "word": "thumb",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 8831809,
+  "attribution": "cottonbro CG studio",
+  "url": "https://images.pexels.com/photos/8831809/pexels-photo-8831809.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bath.jpg": {
+  "word": "bath",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 20276493,
+  "attribution": "Yusuf P",
+  "url": "https://images.pexels.com/photos/20276493/pexels-photo-20276493.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/king.jpg": {
+  "word": "king",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 6030460,
+  "attribution": "Mungai Mutugi",
+  "url": "https://images.pexels.com/photos/6030460/pexels-photo-6030460.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/duck.jpg": {
+  "word": "duck",
+  "type": "photo",
+  "session": "Consonant digraphs",
+  "source": "pexels",
+  "id": 17641960,
+  "attribution": "Nesshi Oliveira",
+  "url": "https://images.pexels.com/photos/17641960/pexels-photo-17641960.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/tree.jpg": {
+  "word": "tree",
+  "type": "photo",
+  "session": "Long vowels ai ee oa",
+  "source": "pexels",
+  "id": 16973772,
+  "attribution": "ofarias g",
+  "url": "https://images.pexels.com/photos/16973772/pexels-photo-16973772.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/bee.jpg": {
+  "word": "bee",
+  "type": "photo",
+  "session": "Long vowels ai ee oa",
+  "source": "pexels",
+  "id": 6758191,
+  "attribution": "Johanna Koncsek",
+  "url": "https://images.pexels.com/photos/6758191/pexels-photo-6758191.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/snow.jpg": {
+  "word": "snow",
+  "type": "photo",
+  "session": "Long vowels ai ee oa",
+  "source": "pexels",
+  "id": 35796947,
+  "attribution": "FAVOURFRANCIS CHINONSO OFILI",
+  "url": "https://images.pexels.com/photos/35796947/pexels-photo-35796947.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/book.jpg": {
+  "word": "book",
+  "type": "photo",
+  "session": "More vowels oo ar or igh",
+  "source": "pexels",
+  "id": 9649655,
+  "attribution": "Nataly Q.",
+  "url": "https://images.pexels.com/photos/9649655/pexels-photo-9649655.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/fork.jpg": {
+  "word": "fork",
+  "type": "photo",
+  "session": "More vowels oo ar or igh",
+  "source": "pexels",
+  "id": 34687010,
+  "attribution": "Valentin Ivantsov",
+  "url": "https://images.pexels.com/photos/34687010/pexels-photo-34687010.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/corn.jpg": {
+  "word": "corn",
+  "type": "photo",
+  "session": "More vowels oo ar or igh",
+  "source": "pexels",
+  "id": 18142958,
+  "attribution": "Andreas Ebner",
+  "url": "https://images.pexels.com/photos/18142958/pexels-photo-18142958.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/light.jpg": {
+  "word": "light",
+  "type": "photo",
+  "session": "More vowels oo ar or igh",
+  "source": "pexels",
+  "id": 577513,
+  "attribution": "LED Supermarket",
+  "url": "https://images.pexels.com/photos/577513/pexels-photo-577513.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "photo/night.jpg": {
+  "word": "night",
+  "type": "photo",
+  "session": "More vowels oo ar or igh",
+  "source": "pexels",
+  "id": 16500829,
+  "attribution": "Alexey Chudin",
+  "url": "https://images.pexels.com/photos/16500829/pexels-photo-16500829.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+ },
+ "symbol/big.png": {
+  "word": "big",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 4658,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/4658/4658_500.png"
+ },
+ "symbol/little.png": {
+  "word": "little",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 4716,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/4716/4716_500.png"
+ },
+ "symbol/up.png": {
+  "word": "up",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 5388,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/5388/5388_500.png"
+ },
+ "symbol/down.png": {
+  "word": "down",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 37428,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/37428/37428_500.png"
+ },
+ "symbol/come.png": {
+  "word": "come",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 32669,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/32669/32669_500.png"
+ },
+ "symbol/go.png": {
+  "word": "go",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 8142,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/8142/8142_500.png"
+ },
+ "symbol/jump.png": {
+  "word": "jump",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 39052,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/39052/39052_500.png"
+ },
+ "symbol/see.png": {
+  "word": "see",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 6564,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6564/6564_500.png"
+ },
+ "symbol/play.png": {
+  "word": "play",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 6537,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6537/6537_500.png"
+ },
+ "symbol/help.png": {
+  "word": "help",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 32648,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/32648/32648_500.png"
+ },
+ "symbol/make.png": {
+  "word": "make",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 25988,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/25988/25988_500.png"
+ },
+ "symbol/find.png": {
+  "word": "find",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 6947,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6947/6947_500.png"
+ },
+ "symbol/ride.png": {
+  "word": "ride",
+  "type": "symbol",
+  "session": "Sight words primer",
+  "source": "arasaac",
+  "id": 6045,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/6045/6045_500.png"
+ },
+ "symbol/good.png": {
+  "word": "good",
+  "type": "symbol",
+  "session": "Sight words primer",
+  "source": "arasaac",
+  "id": 32432,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/32432/32432_500.png"
+ },
+ "symbol/new.png": {
+  "word": "new",
+  "type": "symbol",
+  "session": "Sight words primer",
+  "source": "arasaac",
+  "id": 4705,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/4705/4705_500.png"
+ },
+ "symbol/out.png": {
+  "word": "out",
+  "type": "symbol",
+  "session": "Sight words primer",
+  "source": "arasaac",
+  "id": 2806,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2806/2806_500.png"
+ },
+ "symbol/away.png": {
+  "word": "away",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 36759,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/36759/36759_500.png"
+ },
+ "symbol/funny.png": {
+  "word": "funny",
+  "type": "symbol",
+  "session": "Sight words pre-primer",
+  "source": "arasaac",
+  "id": 30393,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/30393/30393_500.png"
+ },
+ "symbol/brown.png": {
+  "word": "brown",
+  "type": "symbol",
+  "session": "Sight words primer",
+  "source": "arasaac",
+  "id": 2923,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2923/2923_500.png"
+ },
+ "symbol/like.png": {
+  "word": "like",
+  "type": "symbol",
+  "session": "Sight words primer",
+  "source": "arasaac",
+  "id": 37721,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/37721/37721_500.png"
+ },
+ "symbol/top.png": {
+  "word": "top",
+  "type": "symbol",
+  "session": "Short o",
+  "source": "arasaac",
+  "id": 8663,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/8663/8663_500.png"
+ },
+ "symbol/cot.png": {
+  "word": "cot",
+  "type": "symbol",
+  "session": "Short o",
+  "source": "arasaac",
+  "id": 32011,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/32011/32011_500.png"
+ },
+ "symbol/crab.png": {
+  "word": "crab",
+  "type": "symbol",
+  "session": "Beginning blends",
+  "source": "arasaac",
+  "id": 2312,
+  "attribution": "ARASAAC (CC BY-NC-SA)",
+  "url": "https://static.arasaac.org/pictograms/2312/2312_500.png"
+ }
+}
