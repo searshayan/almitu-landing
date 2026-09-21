@@ -412,11 +412,13 @@ function dataUnsubscribe(channel) {
    reads the stored history: the visible chat starts fresh each session, while
    the function itself recalls prior turns server-side for continuity. */
 
-/* Send a message to Amie. Returns { reply, remaining } or throws.
-   A 4xx from the function (e.g. daily_limit) comes back in `data.error`. */
-async function dataAskAmie(message) {
+/* Send a message to Amie about the SELECTED session. Amie is session-bound:
+   `sessionId` is required and scopes context, history, and the per-session
+   reply cap. Returns { reply, used, limit, remaining } or throws.
+   A 4xx from the function (e.g. session_limit) comes back in `data.error`. */
+async function dataAskAmie(message, sessionId) {
   const c = requireSb();
-  const { data, error } = await c.functions.invoke('amie-chat', { body: { message } });
+  const { data, error } = await c.functions.invoke('amie-chat', { body: { message, sessionId } });
   if (error) {
     // supabase-js hides the function's response body inside error.context
     // (a Response). Pull out the real { error, detail } so we can see it.
