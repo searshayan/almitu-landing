@@ -105,6 +105,12 @@ const LITERACY_SESSION_TYPES = {
       { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. Reading the clock', hint: 'Authored session.' }
     ]
   },
+  projects: {
+    key: 'projects', label: 'Projects', literacy: true, icon: _litIcon,
+    fields: [
+      { id: 'title', label: 'Session title', type: 'text', required: true, placeholder: 'e.g. All about me', hint: 'Authored session.' }
+    ]
+  },
   alphabet: {
     key: 'alphabet', label: 'Alphabet & Sounds', literacy: true, icon: _litIcon,
     fields: [

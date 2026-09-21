@@ -8422,6 +8422,641 @@
    ],
    "teacherNote": "Light-support checkpoint across the level. Note which document types are secure and which need review.",
    "homePractice": "Read one sign, one time and write your name — all on your own."
+  },
+  {
+   "curriculum_id": "LIT-7-01",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: All about me",
+   "goal": "Today I can say and write who I am.",
+   "practiceWords": [
+    "name",
+    "town",
+    "phone"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Bring it together: say your name, where you live and your phone number.",
+     "warmup": "Say your name out loud. Today we put your details together in a little project."
+    },
+    {
+     "type": "context",
+     "oral": "My name is Sara. I live in Leeds. This is a project about you."
+    },
+    {
+     "type": "form",
+     "intro": "Tap each detail, then tap the box it goes in.",
+     "form_title": "ABOUT ME",
+     "rows": [
+      {
+       "label": "Name",
+       "answer": "Sara Ali"
+      },
+      {
+       "label": "Town",
+       "answer": "Leeds"
+      },
+      {
+       "label": "Phone",
+       "answer": "07700 900123"
+      }
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "My name is Sara."
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "On paper, write your name and your town. Then say: 'My name is ___. I live in ___.'",
+     "exit": "Says and writes their own name and town in a full sentence."
+    }
+   ],
+   "teacherNote": "Capstone opener. Combine a form, a sentence frame and speaking. Use the learner's real details.",
+   "homePractice": "Write your name and town, and say the two sentences to someone."
+  },
+  {
+   "curriculum_id": "LIT-7-02",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: My family",
+   "goal": "Today I can tell you about my family.",
+   "practiceWords": [
+    "mother",
+    "father",
+    "baby"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Make a little project about your family — names, pictures and sentences.",
+     "warmup": "How many people are in your family? Today we make sentences about them."
+    },
+    {
+     "type": "context",
+     "oral": "This is my mother. This is my father. We will read and make family sentences.",
+     "word": "mother"
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "mother",
+      "father",
+      "baby"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read about a family.",
+     "sentences": [
+      {
+       "text": "This is my **mother**.",
+       "word": "mother"
+      },
+      {
+       "text": "This is my **father**.",
+       "word": "father"
+      },
+      {
+       "text": "This is the **baby**.",
+       "word": "baby"
+      }
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "This is my mother.",
+     "word": "mother"
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Say one sentence about a person in your family. Then write it: 'This is my ___.'",
+     "exit": "Says and writes a sentence about a family member."
+    }
+   ],
+   "teacherNote": "Integrate pictures + sentence building. Let the learner substitute their own family words.",
+   "homePractice": "Draw or name three family members and make a sentence for one."
+  },
+  {
+   "curriculum_id": "LIT-7-03",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: A shopping trip",
+   "goal": "Today I can plan a shop and check what I paid.",
+   "practiceWords": [
+    "milk",
+    "bread",
+    "total"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A whole shopping trip: make a list, read the prices, check the receipt.",
+     "warmup": "What do you buy most often? Today we plan a small shop from start to end."
+    },
+    {
+     "type": "context",
+     "oral": "First a list, then the prices, then the receipt. This is a shopping project."
+    },
+    {
+     "type": "doc",
+     "intro": "Here is the shopping list.",
+     "doc_title": "MY LIST",
+     "lines": [
+      "milk",
+      "bread",
+      "eggs"
+     ]
+    },
+    {
+     "type": "sign",
+     "intro": "Read the prices in the shop.",
+     "items": [
+      {
+       "word": "£1",
+       "sub": "milk",
+       "tone": "info"
+      },
+      {
+       "word": "£1",
+       "sub": "bread",
+       "tone": "info"
+      },
+      {
+       "word": "£2",
+       "sub": "eggs",
+       "tone": "info"
+      }
+     ]
+    },
+    {
+     "type": "doc",
+     "intro": "Now check the receipt.",
+     "doc_title": "RECEIPT",
+     "rows": [
+      {
+       "label": "Milk",
+       "value": "£1"
+      },
+      {
+       "label": "Bread",
+       "value": "£1"
+      },
+      {
+       "label": "Eggs",
+       "value": "£2"
+      },
+      {
+       "label": "TOTAL",
+       "value": "£4"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Write your own short list of three things. What is your total if each is £1?",
+     "exit": "Plans a short shopping list and works out a simple total."
+    }
+   ],
+   "teacherNote": "Chains list → prices → receipt into one real task. Keep totals to whole pounds.",
+   "homePractice": "Write a shopping list of three things before your next shop."
+  },
+  {
+   "curriculum_id": "LIT-7-04",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: Making an appointment",
+   "goal": "Today I can read an appointment and say when it is.",
+   "practiceWords": [
+    "date",
+    "time",
+    "place"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Handle a real appointment: read the card, find the day and the time, and say it.",
+     "warmup": "Do you have any appointments soon? Today we read one from start to end."
+    },
+    {
+     "type": "context",
+     "oral": "An appointment has a day, a time and a place. We find them all."
+    },
+    {
+     "type": "doc",
+     "intro": "Read the appointment card.",
+     "doc_title": "APPOINTMENT",
+     "rows": [
+      {
+       "label": "Name",
+       "value": "Sara Ali"
+      },
+      {
+       "label": "Date",
+       "value": "15 September"
+      },
+      {
+       "label": "Time",
+       "value": "3:00"
+      },
+      {
+       "label": "Place",
+       "value": "Health Centre"
+      }
+     ]
+    },
+    {
+     "type": "calendar",
+     "intro": "Find the day on the calendar.",
+     "month": "September",
+     "first_dow": 1,
+     "days": 30,
+     "highlight": [
+      15
+     ],
+     "note": "The appointment is on **15 September**.",
+     "year": 2026
+    },
+    {
+     "type": "clock",
+     "intro": "Read the time.",
+     "times": [
+      {
+       "time": "3:00",
+       "words": "three o'clock"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Say when the appointment is: the day and the time. Write the date on paper.",
+     "exit": "Reads an appointment and says and writes the date and time."
+    }
+   ],
+   "teacherNote": "Bring doc + calendar + clock together. The learner should point to each fact across the three.",
+   "homePractice": "Find a real date and time on a card or letter and say it."
+  },
+  {
+   "curriculum_id": "LIT-7-05",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: My day",
+   "goal": "Today I can say what I do in a day.",
+   "practiceWords": [
+    "sun",
+    "eat",
+    "work"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Make a project about your day: the times, the things you do, in order.",
+     "warmup": "What is the first thing you do in the morning? Today we tell a whole day."
+    },
+    {
+     "type": "context",
+     "oral": "The sun comes up. I eat. I go to work. I sleep. This is my day.",
+     "word": "sun"
+    },
+    {
+     "type": "clock",
+     "intro": "These are the times in my day.",
+     "times": [
+      {
+       "time": "7:00",
+       "words": "seven o'clock"
+      },
+      {
+       "time": "9:00",
+       "words": "nine o'clock"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read my day, in order.",
+     "sentences": [
+      {
+       "text": "At **seven**, the **sun** is up.",
+       "word": "sun"
+      },
+      {
+       "text": "I **eat**.",
+       "word": "eat"
+      },
+      {
+       "text": "At **nine**, I go to **work**.",
+       "word": "work"
+      },
+      {
+       "text": "At **night**, I **sleep**.",
+       "word": "sleep"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Say three things you do in a day, in order. Write one: 'At ___, I ___.'",
+     "exit": "Describes a daily routine in order, with a time."
+    }
+   ],
+   "teacherNote": "Integrate clock + connected reading + speaking about self. Order words anchor the sequence.",
+   "homePractice": "Tell someone three things you do each day, with a time."
+  },
+  {
+   "curriculum_id": "LIT-7-06",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: A message",
+   "goal": "Today I can read a message and write a reply.",
+   "practiceWords": [
+    "read",
+    "night",
+    "come"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "A real exchange: read a short message, then write a reply back.",
+     "warmup": "When did you last get a text? Today we read one and answer it."
+    },
+    {
+     "type": "context",
+     "oral": "A friend sends a short message. We read it, then we write back."
+    },
+    {
+     "type": "doc",
+     "intro": "Read the message.",
+     "doc_title": "MESSAGE",
+     "lines": [
+      "Hi Sara.",
+      "Come at six.",
+      "See you at night."
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "See you at six."
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Write a short reply of two lines. Say 'yes' or 'no' and a time.",
+     "exit": "Reads a short message and writes a short reply."
+    }
+   ],
+   "teacherNote": "Reading + writing in one loop. Keep the reply to two short lines the learner can manage.",
+   "homePractice": "Read one message and write a one-line reply."
+  },
+  {
+   "curriculum_id": "LIT-7-07",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: Filling in a form",
+   "goal": "Today I can fill in a whole form.",
+   "practiceWords": [
+    "name",
+    "address",
+    "date"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Complete a real form from top to bottom: name, address, date of birth, phone.",
+     "warmup": "Forms are everywhere — at the doctor, the bank, for a card. Today we fill one right through."
+    },
+    {
+     "type": "context",
+     "oral": "A form asks for your details, one box at a time. We fill every box."
+    },
+    {
+     "type": "form",
+     "intro": "Tap each detail, then tap the right box.",
+     "form_title": "REGISTRATION",
+     "rows": [
+      {
+       "label": "Name",
+       "answer": "Sara Ali"
+      },
+      {
+       "label": "Address",
+       "answer": "42 Green Road"
+      },
+      {
+       "label": "Date of birth",
+       "answer": "03/05/1990"
+      },
+      {
+       "label": "Phone",
+       "answer": "07700 900123"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "On a paper form, write your own name, address and date of birth.",
+     "exit": "Completes a simple registration form with their own details."
+    }
+   ],
+   "teacherNote": "The full-form capstone of L6's form work. Have the learner's details on a card to copy from.",
+   "homePractice": "Fill in a real form or write your details on paper."
+  },
+  {
+   "curriculum_id": "LIT-7-08",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: Getting around",
+   "goal": "Today I can follow signs to get where I need to go.",
+   "practiceWords": [
+    "out",
+    "up",
+    "toilets"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Use signs to find your way: the exit, the toilets, the lift.",
+     "warmup": "When you are in a big shop, how do you find the way out? Today we follow signs."
+    },
+    {
+     "type": "context",
+     "oral": "Signs point the way. We read them and go the right way."
+    },
+    {
+     "type": "sign",
+     "intro": "Read the signs you follow.",
+     "items": [
+      {
+       "word": "WAY OUT",
+       "tone": "go"
+      },
+      {
+       "word": "TOILETS",
+       "tone": "info"
+      },
+      {
+       "word": "LIFT",
+       "tone": "info"
+      },
+      {
+       "word": "EXIT",
+       "tone": "go"
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read the directions.",
+     "sentences": [
+      {
+       "text": "The toilets are **up** the stairs.",
+       "word": "up"
+      },
+      {
+       "text": "The way **out** is here.",
+       "word": "out"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "You want the way out. Which sign do you follow? Walk to a sign in this building and read it.",
+     "exit": "Follows the correct signs to reach a real place."
+    }
+   ],
+   "teacherNote": "Signs + short directions in a real space. If you can, walk to an actual sign together.",
+   "homePractice": "Follow one sign to find the exit or toilets somewhere this week."
+  },
+  {
+   "curriculum_id": "LIT-7-09",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: Making tea",
+   "goal": "Today I can read the steps and make a cup of tea.",
+   "practiceWords": [
+    "water",
+    "tea",
+    "cup"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "Follow a recipe: read the steps in order and do them.",
+     "warmup": "How do you make a hot drink? Today we read the steps for a cup of tea."
+    },
+    {
+     "type": "context",
+     "oral": "A recipe is steps in order. First, next, last. We read and do each one.",
+     "word": "tea"
+    },
+    {
+     "type": "teach",
+     "title": "New words",
+     "items": [
+      "water",
+      "tea",
+      "cup"
+     ]
+    },
+    {
+     "type": "read",
+     "intro": "Read the steps in order.",
+     "sentences": [
+      {
+       "text": "**First**, boil the **water**.",
+       "word": "water"
+      },
+      {
+       "text": "**Next**, make the **tea**.",
+       "word": "tea"
+      },
+      {
+       "text": "**Last**, drink from the **cup**.",
+       "word": "cup"
+      }
+     ]
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Put the three steps in order: first, next, last. Then say how you make tea.",
+     "exit": "Reads and orders the steps of a simple recipe."
+    }
+   ],
+   "teacherNote": "Instructions + sequencing + speaking. Mime the steps; order the three pictures first→last.",
+   "homePractice": "Say the three steps to make tea, in order."
+  },
+  {
+   "curriculum_id": "LIT-7-10",
+   "level": "LIT7",
+   "arc": "v2",
+   "skill": "projects",
+   "title": "Project: My story",
+   "goal": "Today I can write and read a few sentences about me.",
+   "practiceWords": [
+    "name",
+    "dog",
+    "work"
+   ],
+   "slides": [
+    {
+     "type": "welcome",
+     "goal": "The big one: write a few sentences about yourself and read them out loud.",
+     "warmup": "You can read words, sentences and forms. Today you write your own short story — about you."
+    },
+    {
+     "type": "context",
+     "oral": "My name is Sara. I live in Leeds. I have a dog. This is my story.",
+     "word": "dog"
+    },
+    {
+     "type": "read",
+     "intro": "Read this story about Sara.",
+     "sentences": [
+      "My name is Sara.",
+      "I live in Leeds.",
+      {
+       "text": "I have a **dog**.",
+       "word": "dog"
+      },
+      {
+       "text": "I go to **work** on the bus.",
+       "word": "work"
+      }
+     ]
+    },
+    {
+     "type": "sentence",
+     "sentence": "I have a dog.",
+     "word": "dog"
+    },
+    {
+     "type": "functional",
+     "title": "Your project",
+     "task": "Write three sentences about you: your name, your town, and one thing you have or do. Read them out loud.",
+     "exit": "Writes and reads aloud three simple sentences about themselves."
+    }
+   ],
+   "teacherNote": "Capstone of the whole pathway: independent writing + reading aloud. Celebrate it — this is real literacy.",
+   "homePractice": "Write three sentences about yourself and read them to someone."
   }
  ]
 }

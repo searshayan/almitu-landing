@@ -12,6 +12,7 @@ const LEVELS = [
   { value: 'LIT4',   label: 'Literacy 4 · Sentences & Grammar', tier: 'literacy' },
   { value: 'LIT5',   label: 'Literacy 5 · Reading for Meaning', tier: 'literacy' },
   { value: 'LIT6',   label: 'Literacy 6 · Functional Reading & Writing', tier: 'literacy' },
+  { value: 'LIT7',   label: 'Literacy 7 · Projects', tier: 'literacy' },
   { value: 'Pre-A1', label: 'Beginner (Pre-A1)',          tier: 'foundation' },
   { value: 'A1',     label: 'Elementary (A1)',            tier: 'foundation' },
   { value: 'A2',     label: 'Pre-Intermediate (A2)',      tier: 'development' },
@@ -156,6 +157,7 @@ const LEVEL_DESCRIPTORS = {
   'LIT4': 'Sentences and grammar. Learner moves from words to accurate simple sentences — subject + verb, articles, plurals, adjectives, prepositions, questions and negatives — always through pictures, oral models, reading and guided writing.',
   'LIT5': 'Reading for meaning. Learner reads short, controlled texts (single sentences up to five connected ones) and shows understanding — matching sentence to picture, scanning for key words and numbers, answering who/what/where and yes/no, sequencing, following instructions and retelling. Decoding is secure; the focus is comprehension.',
   'LIT6': 'Functional reading and writing. Learner reads and completes the everyday texts of adult life — signs and symbols, prices and money, the clock and the calendar, appointment cards, receipts, labels and timetables — and writes their own key details (name, address, phone, date) into simple forms. Real-world documents, not stories.',
+  'LIT7': 'Projects. The capstone level: each session is a small real-life project that brings together everything from earlier levels — reading, sentence building, functional documents, forms and the clock/calendar — into one integrated task (introduce myself, my family, a shopping trip, an appointment, my day, a message, a form, getting around, a recipe, my own story). The learner reads, writes and speaks about their own life with light support.',
   'Pre-A1': 'Absolute beginner. Isolated high-frequency words, fixed greetings, and memorised chunks only. No independent sentence building yet. Everything supported by images and L1.',
   'A1':     'Basic user. Simple present-tense statements and questions about immediate, concrete needs. Very short turns, heavy scaffolding, familiar everyday words.',
   'A2':     'Elementary. Simple connected sentences about routine matters; can use past and near-future with support. Short paragraph contexts, light scaffolding, common collocations.',
@@ -203,6 +205,11 @@ const LEVEL_GUIDE = {
     goal:   'Read the everyday texts of adult life and write your own key details.',
     expect: 'Reading signs, prices, the clock and calendar, cards, receipts and labels; writing name, address, phone and date into a simple form.',
     teach:  'Use a real example of each document; read it together, point to the important part, then have the learner fill in or find their own details.'
+  },
+  'LIT7': {
+    goal:   'Bring every skill together in small, real-life projects about the learner\'s own life.',
+    expect: 'Reading, writing and speaking combined in one task — introducing themselves, planning a shop, handling an appointment, filling a form, telling their own short story.',
+    teach:  'Set the real goal, work through the steps together, then hand over: the learner reads, writes and says it using their own details. Celebrate the finished project.'
   },
   'Pre-A1': {
     goal:   'Help the learner recognise and say a small set of everyday words and fixed phrases.',
