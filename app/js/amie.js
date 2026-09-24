@@ -142,10 +142,15 @@ function applyAmieOwlState() {
   // Header + input reflect the same state when the drawer is built.
   const sub = document.getElementById('amieHeaderSub');
   if (sub) {
-    sub.textContent = active
-      ? `Session connected: ${amieState.sessionTitle}${amieState.sessionLevel ? ' · ' + amieState.sessionLevel : ''}`
-      : 'Choose a session to begin.';
-    sub.setAttribute('dir', active ? textDir(amieState.sessionTitle) : 'ltr');
+    // Keep the English label LTR and isolate the (possibly RTL) title in a <bdi>
+    // so a right-to-left session name can't reorder "Session connected:".
+    if (active) {
+      const lvl = amieState.sessionLevel ? ' · ' + escapeHtml(amieState.sessionLevel) : '';
+      sub.innerHTML = `Session connected: ${bidiText(amieState.sessionTitle)}${lvl}`;
+    } else {
+      sub.textContent = 'Choose a session to begin.';
+    }
+    sub.setAttribute('dir', 'ltr');
   }
   amieUpdateInputEnabled();
 }
@@ -280,7 +285,7 @@ function amieBubblesHtml() {
       : `margin-right:auto; background:var(--card); color:var(--ink); border:1px solid ${m._error ? 'rgba(239,68,68,.4)' : 'var(--line)'}; border-radius:14px 14px 14px 4px;`;
     return `
       <div class="max-w-[85%] px-3 py-2 mb-2" style="${style} width:fit-content;">
-        <div class="text-sm whitespace-pre-wrap break-words" dir="${textDir(m.content)}">${amieRich(m.content)}</div>
+        <div class="text-sm whitespace-pre-wrap break-words amie-bidi" dir="auto">${amieRich(m.content)}</div>
       </div>`;
   }).join('');
 }
@@ -302,16 +307,19 @@ function amieNoSessionHtml() {
 
 function amieWelcomeHtml() {
   const hi = amieState.studentName ? `Hi ${escapeHtml(amieState.studentName)}! ` : 'Hi! ';
-  const title = escapeHtml(amieState.sessionTitle || 'this session');
+  const titleBdi = bidiText(amieState.sessionTitle || 'this session');
   const chips = amieQuickPrompts().map(t =>
     `<button onclick="amieQuick('${t.replace(/'/g, "\\'")}')" class="text-xs px-3 py-1.5 rounded-full text-left" style="background:var(--card); border:1px solid var(--line); color:var(--secondary);">${escapeHtml(t)}</button>`
   ).join('');
+  // Set expectations: Amie is tied to the SELECTED session, and to get help with
+  // another one the student switches sessions on their dashboard first.
   return `
     <div class="flex flex-col items-center text-center px-4 py-8">
       <div class="text-4xl mb-2">🦉</div>
-      <p class="text-sm font-semibold mb-1" style="color:var(--navy);">${hi}I'm ready to help with <span dir="${textDir(amieState.sessionTitle)}">“${title}”</span>.</p>
-      <p class="text-xs mb-5" style="color:var(--muted);">Ask me about the words, phrases, grammar, Reading, Listening, or practice activities.</p>
-      <div class="flex flex-wrap gap-2 justify-center">${chips}</div>
+      <p class="text-sm font-semibold mb-1" style="color:var(--navy);">${hi}I'm ready to help with “${titleBdi}”.</p>
+      <p class="text-xs mb-4" style="color:var(--muted);">I'm focused on <strong>this session</strong> — its words, phrases, grammar, Reading, Listening and practice. Ask me anything about it!</p>
+      <div class="flex flex-wrap gap-2 justify-center mb-5">${chips}</div>
+      <p class="text-[11px] leading-snug" style="color:var(--muted);">Studying a different session? <button onclick="amieChooseSession()" class="font-semibold underline" style="color:var(--secondary);">Switch session</button> on your dashboard and I'll follow along.</p>
     </div>`;
 }
 
@@ -406,7 +414,7 @@ function buildAmieUi() {
       <div id="amieThread" class="flex-1 overflow-y-auto px-4 py-3"></div>
 
       <div class="flex items-end gap-2 px-3 py-3 flex-shrink-0" style="border-top:1px solid var(--line);">
-        <textarea id="amieInput" rows="1" disabled oninput="amieAutoGrow(this)" onkeydown="amieInputKey(event)" placeholder="Choose a session first"
+        <textarea id="amieInput" rows="1" dir="auto" disabled oninput="amieAutoGrow(this)" onkeydown="amieInputKey(event)" placeholder="Choose a session first"
           class="flex-1 resize-none rounded-xl px-3 py-2 text-sm focus:outline-none" style="background:var(--card); border:1px solid var(--line); color:var(--ink); max-height:120px;"></textarea>
         <button id="amieSendBtn" onclick="sendAmie()" disabled class="flex items-center justify-center w-10 h-10 rounded-xl text-white flex-shrink-0" style="background:var(--secondary);" aria-label="Send">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
@@ -415,6 +423,10 @@ function buildAmieUi() {
     </aside>
 
     <style>
+      /* Standard bidi for chat: each paragraph takes its own base direction from
+         its first strong character, so a reply that mixes English and the L1
+         (e.g. Farsi/Arabic) lays out each line correctly. */
+      .amie-bidi { unicode-bidi:plaintext; text-align:start; }
       .amie-typing { display:flex; gap:4px; align-items:center; height:14px; }
       .amie-typing span { width:6px; height:6px; border-radius:50%; background:var(--muted); opacity:.5; animation:amieBounce 1.2s infinite ease-in-out; }
       .amie-typing span:nth-child(2) { animation-delay:.15s; }
