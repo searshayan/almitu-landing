@@ -144,6 +144,7 @@ function renderNotebooks() {
   const container = document.getElementById('notebookList');
   if (!nbs.length) {
     container.innerHTML = '<div class="text-center py-8 text-sm" style="color:var(--muted);">No notebooks yet. Complete a session to see data here.</div>';
+    if (typeof amieSyncSession === 'function') amieSyncSession();   // no session → Amie neutral
     return;
   }
 
@@ -199,6 +200,9 @@ function renderNotebooks() {
 
   container.innerHTML = html;
   updatePracticeHeader();
+  // Keep Amie bound to whatever session is now selected (load / select / delete
+  // all funnel through here). Local only — never triggers a model call.
+  if (typeof amieSyncSession === 'function') amieSyncSession();
 }
 
 /* Select a specific session for practice. The Overview is shown by default so
