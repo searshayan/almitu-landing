@@ -48,6 +48,58 @@ function speakBtn(word) {
   return `<button type="button" class="lit-speak" aria-label="Hear the word ${escapeHtml(word)}" onclick="event.stopPropagation();speak('${w}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>`;
 }
 
+/* ── Interactive fill-in-the-blank dropdown (Vocabulary practice slides) ──
+   3 choices per blank: the correct word bank item plus 2 random distractors
+   from the same bank. Selecting turns the dropdown green/red — no schema
+   change needed, so this works on already-generated content too. */
+function shuffledDistractors(correct, bank, n) {
+  const seen = new Set([String(correct || '').trim().toLowerCase()]);
+  const pool = (bank || []).filter(w => {
+    const key = String(w || '').trim().toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, n);
+}
+
+function blankSelectHtml(correct, bank) {
+  const options = [correct, ...shuffledDistractors(correct, bank, 2)];
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  const optsHtml = options.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
+  return `<select class="blank-select" data-correct="${escapeHtml(String(correct))}" onchange="checkBlankSelect(this)"><option value="" selected disabled hidden>choose…</option>${optsHtml}</select>`;
+}
+
+function checkBlankSelect(sel) {
+  const correct = (sel.dataset.correct || '').trim().toLowerCase();
+  const val = (sel.value || '').trim().toLowerCase();
+  sel.classList.remove('blank-correct', 'blank-wrong');
+  if (!val) return;
+  sel.classList.add(val === correct ? 'blank-correct' : 'blank-wrong');
+}
+
+/* Renders a sentence/prompt string containing "___" blanks as a mix of
+   escaped text and interactive <select> dropdowns, advancing a shared blank
+   cursor into `answers` so multi-blank lines line up correctly. */
+function renderBlanksLine(raw, answers, blankIdx, bank) {
+  const segments = String(raw || '').split('___');
+  let html = escapeHtml(segments[0]);
+  for (let k = 1; k < segments.length; k++) {
+    const ans = answers[blankIdx.i]; blankIdx.i++;
+    const correct = ans ? (typeof ans === 'string' ? ans : ans.answer) : '';
+    html += correct ? blankSelectHtml(correct, bank) : '___';
+    html += escapeHtml(segments[k]);
+  }
+  return html;
+}
+
 /* Small consistent activity icons (the brief's set): listen / say / read /
    write / look / check. */
 const _LIT_ICONS = {
@@ -460,7 +512,7 @@ const LAYOUT_BUILDERS = {
         ${(d.words || []).map((w, i) => `
           <div class="grid grid-cols-[minmax(0,38%)_1fr] gap-3 p-3" style="${i ? 'border-top:1px solid var(--line);' : ''}background:${i % 2 ? '#F8F9FD' : 'white'};">
             <div>
-              <p class="text-base font-bold leading-tight" style="color:var(--secondary);">${md(w.word)}</p>
+              <p class="text-base font-bold leading-tight" style="color:var(--secondary);">${md(w.word)}${speakBtn(w.word)}</p>
               ${w.pron ? `<p class="text-xs mt-0.5" style="color:var(--primary);">${escapeHtml(w.pron)}</p>` : ''}
               ${w.pos ? `<span class="inline-block text-[10px] mt-1 px-2 py-0.5 rounded-full uppercase tracking-wide" style="background:#F1F2F6; color:var(--muted);">${escapeHtml(w.pos)}</span>` : ''}
             </div>
@@ -641,6 +693,7 @@ const LAYOUT_BUILDERS = {
   practice(d, ctx, slide) {
     const a = d.partA || {};
     const b = d.partB || {};
+    const blankIdx = { i: 0 };
     return `
       <h3 class="text-lg mb-3">${escapeHtml(slide.title)}</h3>
       <div class="mb-5">
@@ -651,7 +704,7 @@ const LAYOUT_BUILDERS = {
           ${(a.sentences || []).map((s, i) => `
             <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
               <span class="text-[11px] font-bold w-5" style="color:var(--muted);">${i + 1}.</span>
-              <p class="text-sm flex-1" style="color:var(--ink);">${md(s)}</p>
+              <p class="text-sm flex-1" style="color:var(--ink);">${renderBlanksLine(s, a.answers || [], blankIdx, a.bank)}</p>
             </div>`).join('')}
         </div>
         ${aidBar([
@@ -695,6 +748,7 @@ const LAYOUT_BUILDERS = {
   applyreview(d, ctx, slide) {
     const app = d.application || {};
     const rev = d.review || {};
+    const blankIdx = { i: 0 };
     return `
       <h3 class="text-lg mb-3">${escapeHtml(slide.title)}</h3>
       <div class="mb-5">
@@ -705,7 +759,7 @@ const LAYOUT_BUILDERS = {
           ${(app.prompts || []).map((p, i) => `
             <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">
               <span class="text-[11px] font-bold w-5" style="color:var(--muted);">${i + 1}.</span>
-              <p class="text-sm flex-1" style="color:var(--ink);">${md(typeof p === 'string' ? p : p.q)}</p>
+              <p class="text-sm flex-1" style="color:var(--ink);">${renderBlanksLine(typeof p === 'string' ? p : p.q, app.answers || [], blankIdx, app.bank)}</p>
             </div>`).join('')}
         </div>
         ${aidBar([

@@ -36,11 +36,14 @@ async function generateSlides(formData) {
 /* PHASE 2 — post-session practice bank (deferred; runs in the background
    after the tutor launches, so it's ready by the student dashboard). */
 /* An "activity-ready" bank needs enough vocabulary items — quiz and matching
-   each need ≥3, and flashcards/gap-fill build off the same list. Below this we
-   treat the generation as failed and fall back, rather than archive a session
-   with no activities. */
+   each need ≥3, and flashcards/gap-fill build off the same list — AND all
+   three expansion cards (Reading, Listening, Explore More), which every
+   session is now expected to carry. Below this we treat the generation as
+   failed and fall back, rather than archive a session with incomplete
+   post-session activities. */
 function isPracticeBankUsable(bank) {
-  return !!bank && Array.isArray(bank.items) && bank.items.filter(i => i && i.term).length >= 4;
+  return !!bank && Array.isArray(bank.items) && bank.items.filter(i => i && i.term).length >= 4
+    && !!bank.reading && !!bank.listening && !!bank.externalResources;
 }
 
 /* Guarantee the structural + L1 fields a saved session relies on: a sentences

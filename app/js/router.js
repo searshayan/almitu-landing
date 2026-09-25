@@ -934,6 +934,7 @@ async function initStudentDashboard() {
   showStep(3);
   renderNotebooks();
   renderStudentXpBadge();
+  applyActivityGating();
   if (getActiveNotebook()) actOverview();
 
   // Watch for the tutor starting a session / sharing the Meet link.
