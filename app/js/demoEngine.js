@@ -26,8 +26,17 @@ const LEVEL_SHORT = {
 
 /* ── shared helpers ── */
 
+/* A textarea field (e.g. Communication's Target Expressions, or a curriculum
+   record's expressions joined with "\n") lists one item per LINE, even when
+   an individual line has its own internal comma ("I appreciate your
+   position, but..."). Vocabulary's targetVocab is single-line and
+   comma-separated. Prefer newline-splitting whenever multiple lines are
+   present; only fall back to comma-splitting for single-line input. */
 function parseVocabList(raw) {
-  return String(raw || '').split(',').map(s => s.trim()).filter(Boolean);
+  const s = String(raw || '');
+  const lines = s.split('\n').map(x => x.trim()).filter(Boolean);
+  if (lines.length > 1) return lines;
+  return s.split(',').map(x => x.trim()).filter(Boolean);
 }
 
 function demoL1(word, formData) {
@@ -68,21 +77,23 @@ function demoPracticeCards(terms, formData, exampleFn, topic) {
   const passageText = (t.length
     ? `This week we practise ${topic.toLowerCase()}. ${t.map(w => exampleFn(w)).join(' ')} These words help you talk about ${topic.toLowerCase()} in real life.`
     : `This is a short reading text about ${topic.toLowerCase()}.`);
+  // Multiple-choice only, matching the AI path — never true_false or a typed
+  // answer, so the demo fallback can't put a typing box in front of a student.
   const readQ = t.slice(0, 5).map((w, i) => ({
     id: `reading-q${i + 1}`,
-    type: i % 3 === 1 ? 'true_false' : 'multiple_choice',
-    question: i % 3 === 1 ? `The text mentions "${w}".` : `Which word is in the text?`,
-    options: i % 3 === 1 ? ['True', 'False'] : shuffled([w, 'sky', 'later']).slice(0, 3),
-    answer: i % 3 === 1 ? 'True' : w,
+    type: 'multiple_choice',
+    question: `Which word is in the text?`,
+    options: shuffled([w, 'sky', 'later']).slice(0, 3),
+    answer: w,
     feedbackCorrect: `Yes — "${w}" appears in the passage.`,
     feedbackIncorrect: `Look again — find "${w}" in the passage.`
   }));
   const listenQ = t.slice(0, 5).map((w, i) => ({
     id: `listening-q${i + 1}`,
-    type: i % 3 === 2 ? 'true_false' : 'multiple_choice',
-    question: i % 3 === 2 ? `You hear the word "${w}".` : `Which word do you hear?`,
-    options: i % 3 === 2 ? ['True', 'False'] : shuffled([w, 'never', 'green']).slice(0, 3),
-    answer: i % 3 === 2 ? 'True' : w,
+    type: 'multiple_choice',
+    question: `Which word do you hear?`,
+    options: shuffled([w, 'never', 'green']).slice(0, 3),
+    answer: w,
     feedbackCorrect: `Correct — you heard "${w}".`,
     feedbackIncorrect: `Listen again for "${w}".`
   }));

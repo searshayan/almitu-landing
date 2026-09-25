@@ -35,15 +35,33 @@ async function generateSlides(formData) {
 
 /* PHASE 2 — post-session practice bank (deferred; runs in the background
    after the tutor launches, so it's ready by the student dashboard). */
+/* How many target items the tutor/curriculum actually asked for — Vocabulary's
+   targetVocab is comma-separated (validated 6-12 at the form level), but
+   Communication's targetExpressions is a textarea and can legitimately list
+   as few as 2-3 phrases for an absolute-beginner scenario. Splitting by both
+   comma AND newline and taking the larger count handles either format. */
+function countSuppliedTargets(formData) {
+  const raw = (formData && formData.details && (formData.details.targetVocab || formData.details.targetExpressions)) || '';
+  if (!raw) return 0;
+  const byComma = raw.split(',').map(s => s.trim()).filter(Boolean).length;
+  const byLine = raw.split('\n').map(s => s.trim()).filter(Boolean).length;
+  return Math.max(byComma, byLine);
+}
+
 /* An "activity-ready" bank needs enough vocabulary items — quiz and matching
    each need ≥3, and flashcards/gap-fill build off the same list — AND all
    three expansion cards (Reading, Listening, Explore More), which every
-   session is now expected to carry. Below this we treat the generation as
-   failed and fall back, rather than archive a session with incomplete
-   post-session activities. */
-function isPracticeBankUsable(bank) {
-  return !!bank && Array.isArray(bank.items) && bank.items.filter(i => i && i.term).length >= 4
-    && !!bank.reading && !!bank.listening && !!bank.externalResources;
+   session is now expected to carry. The item floor scales down to whatever
+   was actually supplied (capped at 4) so a legitimately small Communication
+   set isn't rejected as "too short" and pushed into the demo fallback. Below
+   this we treat the generation as failed and fall back, rather than archive
+   a session with incomplete post-session activities. */
+function isPracticeBankUsable(bank, formData) {
+  if (!bank || !Array.isArray(bank.items)) return false;
+  const validItems = bank.items.filter(i => i && i.term).length;
+  const supplied = countSuppliedTargets(formData);
+  const minRequired = supplied > 0 ? Math.min(4, supplied) : 4;
+  return validItems >= minRequired && !!bank.reading && !!bank.listening && !!bank.externalResources;
 }
 
 /* Guarantee the structural + L1 fields a saved session relies on: a sentences
@@ -80,7 +98,7 @@ async function generatePracticeBank(formData, slides) {
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
         const bank = await call();
-        if (isPracticeBankUsable(bank)) return fillPracticeL1(bank, formData);
+        if (isPracticeBankUsable(bank, formData)) return fillPracticeL1(bank, formData);
         console.warn(`Practice bank empty/short on attempt ${attempt} — ${attempt < 2 ? 'retrying' : 'using demo fallback'}.`);
       } catch (e) {
         console.error(`Practice API error on attempt ${attempt}:`, e);
