@@ -416,6 +416,20 @@ function resolveStudentProfile(formData) {
     : 'A general adult learner — ground examples only in the topic and context above; invent no personal facts.';
 }
 
+/* A textarea field can hold several distinct items, one per line (e.g. a
+   curriculum record's expressions joined with "\n", or a tutor typing one
+   phrase per line). Inlined after "- Label: ..." those lines read as
+   continuation prose, not separate items — the model then treats the whole
+   block as ONE target item instead of several. Multi-line values are
+   rendered as an explicit numbered sub-list instead, so each line is
+   unambiguously its own item; a single-line value is untouched. */
+function formatDetailLine(label, v) {
+  const lines = String(v).split('\n').map(s => s.trim()).filter(Boolean);
+  if (lines.length <= 1) return `- ${label}: ${v}\n`;
+  return `- ${label} (${lines.length} SEPARATE items — each numbered line below is its own distinct target item; never merge them into one):\n`
+    + lines.map((l, i) => `  ${i + 1}. ${l}`).join('\n') + '\n';
+}
+
 function buildUserPrompt(formData) {
   const spec = getRenderSpec(formData.sessionType, formData.tier, formData.duration);
   const st = getSessionType(formData.sessionType);
@@ -424,7 +438,7 @@ function buildUserPrompt(formData) {
   let detailLines = '';
   st.fields.forEach(f => {
     const v = formData.details[f.id];
-    if (v) detailLines += `- ${f.label}: ${v}\n`;
+    if (v) detailLines += formatDetailLine(f.label, v);
   });
 
   const slideSpec = spec.slides.map((s, i) =>
@@ -506,6 +520,7 @@ function buildPracticeBankSystemPrompt(formData) {
 
 RULES:
 - Cover EVERY target item the tutor supplied — no more, no fewer.
+- One target item = one "items" entry. When the input lists several distinct target items (each numbered line under a "SEPARATE items" field, or several comma-separated words/phrases), NEVER combine, merge or concatenate more than one of them into a single entry — even when they are naturally used together in one dialogue, script or scenario. A field listing 3 target expressions must produce 3 separate "items" entries, not 1.
 - Definitions and examples must sit exactly at ${formData.level}.
 - ${formData.l1Support ? 'L1 support is ON: give an accurate ' + l1Lang + ' translation for each item.' : 'L1 support is OFF: leave every "l1" and "l1_explanation" field as an empty string.'}
 - Return ONLY one valid JSON object. No markdown, no commentary.
@@ -546,7 +561,7 @@ function buildPracticeBankUserPrompt(formData, slides) {
   let detailLines = '';
   st.fields.forEach(f => {
     const v = formData.details[f.id];
-    if (v) detailLines += `- ${f.label}: ${v}\n`;
+    if (v) detailLines += formatDetailLine(f.label, v);
   });
   // A compact digest of the finalized slides so practice reflects any tutor edits.
   const slideDigest = (slides || []).map(s => `${s.label}: ${s.title}`).join(' | ');
