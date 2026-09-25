@@ -220,6 +220,13 @@ function applyActivityGating() {
     if (isLit) hide = (b.getAttribute('data-reading') === 'quiz') ? (imgItems < 3) : true;
     b.style.display = hide ? 'none' : '';
   });
+  // Flashcards: Vocabulary & Communication only. Literacy keeps its own
+  // always-on picture flashcards, untouched, so it's exempt from this gate.
+  document.querySelectorAll('.sv-activity-tiles [data-skill]').forEach(b => {
+    const allowed = (b.getAttribute('data-skill') || '').split(',');
+    const hide = !isLit && !allowed.includes(nb && nb.sessionType);
+    b.style.display = hide ? 'none' : '';
+  });
   // Expansion cards (Reading / Listening / Explore More): show a tile only when
   // the selected session actually carries that card. Older sessions generated
   // before this feature simply won't have the key, so their tiles stay hidden —
@@ -389,8 +396,8 @@ function actFlashcards(challenge) {
     const term = it.term;
     const def = `${it.meaning}${l1On && it.l1 ? ' · ' + it.l1 : ''}`;
     return challenge
-      ? { front: T(def), back: B(term), example: it.example || '' }   // recall the term from its meaning — harder
-      : { front: T(term), back: B(def), example: it.example || '' };
+      ? { front: T(def), back: B(term), example: it.example || '', term }   // recall the term from its meaning — harder
+      : { front: T(term), back: B(def), example: it.example || '', term };
   });
   if (!cards.length) { showToast('No practice items in this notebook.', 'warn'); return; }
 
@@ -400,10 +407,14 @@ function actFlashcards(challenge) {
   // Track which cards have been flipped so a full pass can earn XP.
   window._flashState = { total: cards.length, flipped: new Set(), challenge: !!challenge, recorded: false };
 
+  // Vocabulary sessions speak the term aloud on every flip (Communication's
+  // items are fuller phrases, and Literacy already has its own speak button).
+  const speakOnFlip = nb.sessionType === 'vocabulary';
   html += '<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">';
   cards.forEach((card, i) => {
+    const speakAttr = (speakOnFlip && card.term) ? ` data-speak-term="${escapeHtml(card.term)}"` : '';
     html += `
-      <div class="flashcard cursor-pointer" onclick="flipCard(this, ${i})" style="height:160px">
+      <div class="flashcard cursor-pointer" onclick="flipCard(this, ${i})"${speakAttr} style="height:160px">
         <div class="flashcard-inner w-full h-full">
           <div class="flashcard-front rounded-2xl p-5 flex flex-col items-center justify-center text-center" style="background:white; border:1px solid var(--line);">
             <span class="text-[10px] uppercase tracking-wider mb-2 font-semibold" style="color:var(--muted);">Card ${i + 1} — tap to flip</span>
@@ -432,6 +443,7 @@ function actFlashcards(challenge) {
    (Flashcards have no score, so a full pass is the only meaningful signal.) */
 function flipCard(el, i) {
   el.classList.toggle('flipped');
+  if (el.dataset.speakTerm && typeof speak === 'function') speak(el.dataset.speakTerm);
   const st = window._flashState;
   if (!st || st.recorded) return;
   st.flipped.add(i);
@@ -946,8 +958,10 @@ function practiceAudioControl(audio) {
 }
 
 /* ── Shared question engine for Reading & Listening ──
-   Handles multiple_choice, true_false (rendered as two options) and
-   short_response (a self-check reveal). Scored locally and shown on completion.
+   Multiple-choice only, by design — never a typing box, even for a stray
+   legacy question with no locatable answer (that question is simply
+   dropped rather than falling back to a text input). Scored locally and
+   shown on completion.
    NOTE: XP/persistence is intentionally NOT wired yet — activity_attempts has a
    CHECK constraint limited to the original five activities, so recording
    'reading'/'listening' needs the DB migration that lands with the audio slice.
@@ -955,47 +969,40 @@ function practiceAudioControl(audio) {
 window._pq = window._pq || {};
 
 function normalizePracticeQuestions(questions) {
-  return (questions || []).filter(q => q && q.question).map((q, i) => {
-    const type = q.type || 'multiple_choice';
-    let options = Array.isArray(q.options) ? q.options.filter(o => o != null && o !== '') : [];
-    if (type === 'true_false' && options.length < 2) options = ['True', 'False'];
-    const isChoice = (type === 'multiple_choice' || type === 'true_false') && options.length >= 2;
-    const correct = isChoice
-      ? options.findIndex(o => String(o).trim().toLowerCase() === String(q.answer || '').trim().toLowerCase())
-      : -1;
-    const scorable = isChoice && correct >= 0;   // a choice whose answer we can locate
-    return {
-      id: q.id || `q${i + 1}`,
-      type: scorable ? type : 'short_response',
-      question: q.question,
-      options: scorable ? options : [],
-      correct,
-      answer: q.answer || '',
-      feedbackCorrect: q.feedbackCorrect || 'Correct!',
-      feedbackIncorrect: q.feedbackIncorrect || ''
-    };
-  });
+  const norm = s => String(s || '').trim().toLowerCase().replace(/[.!?'"]/g, '');
+  return (questions || [])
+    .filter(q => q && q.question && Array.isArray(q.options) && q.options.filter(o => o != null && o !== '').length >= 2)
+    .map((q, i) => {
+      const options = q.options.filter(o => o != null && o !== '');
+      let correct = options.findIndex(o => norm(o) === norm(q.answer));
+      if (correct < 0) correct = 0;   // best-effort — never degrades to free text
+      return {
+        id: q.id || `q${i + 1}`,
+        type: 'multiple_choice',
+        question: q.question,
+        options,
+        correct,
+        answer: q.answer || '',
+        feedbackCorrect: q.feedbackCorrect || 'Correct!',
+        feedbackIncorrect: q.feedbackIncorrect || ''
+      };
+    });
 }
 
 function practiceQuestionsHtml(prefix, questions, onCompleteName) {
   const qs = normalizePracticeQuestions(questions);
-  const total = qs.filter(q => q.type !== 'short_response').length;   // only scorable questions count toward the score
+  const total = qs.length;   // every question is scorable
   window._pq[prefix] = { questions: qs, total, correct: 0, answered: 0, count: qs.length, onComplete: onCompleteName || '' };
   let html = '<div class="space-y-4">';
   qs.forEach((q, qi) => {
     html += `<div class="rounded-xl p-4" id="${prefix}q${qi}" style="background:#F8F9FD; border:1px solid var(--line);">
-      <p class="text-sm font-medium mb-3" style="color:var(--navy);">${qi + 1}. ${escapeHtml(q.question)}</p>`;
-    if (q.type === 'short_response') {
-      html += `<textarea rows="2" class="w-full text-sm rounded-xl px-3 py-2 mb-2" style="border:1px solid var(--line); background:white; color:var(--ink);" placeholder="Type your answer…"></textarea>
-        <button onclick="practiceReveal('${prefix}',${qi})" class="px-3 py-1.5 rounded-xl text-xs font-semibold" style="background:white; border:1px solid var(--line); color:var(--secondary);">Show model answer</button>`;
-    } else {
-      html += `<div class="space-y-2">${q.options.map((opt, oi) => `
+      <p class="text-sm font-medium mb-3" style="color:var(--navy);">${qi + 1}. ${escapeHtml(q.question)}</p>
+      <div class="space-y-2">${q.options.map((opt, oi) => `
         <button onclick="practiceAnswer('${prefix}',${qi},${oi})" id="${prefix}o${qi}_${oi}"
           class="quiz-option w-full text-left px-3 py-2.5 rounded-xl border text-sm" style="border-color:var(--line); background:white; color:var(--ink);">
           <span class="inline-flex items-center justify-center w-5 h-5 rounded-md text-[10px] font-bold mr-2 align-middle" style="background:#F1F2F6; color:var(--muted);">${String.fromCharCode(65 + oi)}</span>
           ${escapeHtml(opt)}
         </button>`).join('')}</div>`;
-    }
     html += `<div id="${prefix}f${qi}" class="hidden mt-2 text-xs px-2 py-1.5 rounded-lg"></div></div>`;
   });
   html += `</div><div id="${prefix}Done" class="hidden mt-4 p-4 rounded-xl" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"></div>`;
