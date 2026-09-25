@@ -220,21 +220,27 @@ function applyActivityGating() {
     if (isLit) hide = (b.getAttribute('data-reading') === 'quiz') ? (imgItems < 3) : true;
     b.style.display = hide ? 'none' : '';
   });
-  // Flashcards: Vocabulary & Communication only. Literacy keeps its own
-  // always-on picture flashcards, untouched, so it's exempt from this gate.
-  document.querySelectorAll('.sv-activity-tiles [data-skill]').forEach(b => {
-    const allowed = (b.getAttribute('data-skill') || '').split(',');
-    const hide = !isLit && !allowed.includes(nb && nb.sessionType);
-    b.style.display = hide ? 'none' : '';
+  // A tile with data-skill is restricted to its comma-separated session
+  // types (Flashcards: Vocabulary & Communication; Listening: Vocabulary &
+  // Communication, i.e. never Grammar). Literacy is exempt — its always-on
+  // picture flashcards are untouched, and literacy tiles are governed by
+  // data-reading above regardless.
+  const skillAllows = b => {
+    const gate = b.getAttribute('data-skill');
+    return !gate || isLit || gate.split(',').includes(nb && nb.sessionType);
+  };
+  document.querySelectorAll('.sv-activity-tiles [data-skill]:not([data-newcard])').forEach(b => {
+    b.style.display = skillAllows(b) ? '' : 'none';
   });
   // Expansion cards (Reading / Listening / Explore More): show a tile only when
-  // the selected session actually carries that card. Older sessions generated
-  // before this feature simply won't have the key, so their tiles stay hidden —
-  // and the pre-reading literacy tier never shows them.
+  // the selected session actually carries that card AND, if the tile is also
+  // skill-gated (Listening), matches the allowed session types. Older sessions
+  // generated before this feature simply won't have the key, so their tiles
+  // stay hidden — and the pre-reading literacy tier never shows them.
   const NEWCARD_KEY = { reading: 'reading', listening: 'listening', explore: 'externalResources' };
   document.querySelectorAll('.sv-activity-tiles [data-newcard]').forEach(b => {
     const present = !!(bank && bank[NEWCARD_KEY[b.getAttribute('data-newcard')]]);
-    b.style.display = (present && !isLit) ? '' : 'none';
+    b.style.display = (present && !isLit && skillAllows(b)) ? '' : 'none';
   });
 }
 
@@ -564,8 +570,6 @@ function quizAnswer(qi, oi, correctIdx) {
 
 /* ═══════════ 3. REORDER (challenge = longest sentences) ═══════════ */
 
-let _reorder = null;
-
 function actReorder(challenge) {
   const nb = requireNotebook(); if (!nb) return;
   const bank = getBank(nb);
@@ -579,81 +583,95 @@ function actReorder(challenge) {
     sentences = shuffled(sentences).slice(0, Math.min(5, sentences.length));
   }
 
-  _reorder = { sentences, index: 0, score: 0, challenge: !!challenge, nb };
+  // All sentences shown together on one page (like Quiz/Gap Fill), each with
+  // its own independent build area, instead of one sentence at a time.
+  window._reorderRounds = sentences.map(sentence => {
+    const words = sentence.replace(/[.!?]$/, '').split(/\s+/);
+    return { target: words.join(' '), placed: [], pool: shuffled(words.map((w, i) => ({ w, id: i }))) };
+  });
+  window._reorderState = { total: sentences.length, correct: 0, answered: 0, challenge: !!challenge, nb };
+
   let html = activityHeader('🔀', 'Reorder', challenge
     ? 'Challenge: the longest sentences from your session. Click the words in order.'
     : 'Click the words in the correct order to rebuild each sentence.', challenge);
-  html += `<div id="reorderArea"></div>`;
+  html += '<div class="space-y-4">';
+  sentences.forEach((s, ri) => {
+    html += `
+      <div class="rounded-xl p-4" id="rq${ri}" style="background:#F8F9FD; border:1px solid var(--line);">
+        <p class="text-[11px] font-bold mb-2" style="color:var(--muted);">Sentence ${ri + 1}</p>
+        <div id="reorderAnswer${ri}" class="reorder-zone mb-3"></div>
+        <div id="reorderPool${ri}" class="flex flex-wrap gap-2 mb-3"></div>
+        <div class="flex gap-2">
+          <button onclick="checkReorder(${ri})" class="px-4 py-2 rounded-xl text-white text-sm font-semibold" style="background:var(--primary);">Check</button>
+          <button onclick="resetReorderRound(${ri})" class="px-4 py-2 rounded-xl text-sm font-semibold" style="background:white; border:1px solid var(--line); color:var(--muted);">Reset</button>
+        </div>
+        <div id="rf${ri}" class="hidden mt-3 p-3 rounded-xl text-sm"></div>
+      </div>`;
+  });
+  html += `</div><div id="reorderScore" class="hidden mt-4 p-4 rounded-xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);"><span class="font-bold text-lg" id="reorderScoreText" style="color:#059669;"></span><div id="reorderActions"></div></div>`;
   showPracticeContent(html);
-  renderReorderRound();
+  sentences.forEach((_, ri) => renderReorderTokens(ri));
   ActivityTimer.start('reorder');
 }
 
-function renderReorderRound() {
-  const r = _reorder;
-  const sentence = r.sentences[r.index];
-  const words = sentence.replace(/[.!?]$/, '').split(/\s+/);
-  r.target = words.join(' ');
-  r.placed = [];
-  r.pool = shuffled(words.map((w, i) => ({ w, id: i })));
-
-  document.getElementById('reorderArea').innerHTML = `
-    <p class="text-xs mb-2" style="color:var(--muted);">Sentence ${r.index + 1} of ${r.sentences.length} · Score: ${r.score}</p>
-    <div id="reorderAnswer" class="reorder-zone mb-3"></div>
-    <div id="reorderPool" class="flex flex-wrap gap-2 mb-4"></div>
-    <div class="flex gap-2">
-      <button onclick="checkReorder()" class="px-4 py-2 rounded-xl text-white text-sm font-semibold" style="background:var(--primary);">Check</button>
-      <button onclick="renderReorderRound()" class="px-4 py-2 rounded-xl text-sm font-semibold" style="background:white; border:1px solid var(--line); color:var(--muted);">Reset</button>
-    </div>
-    <div id="reorderFeedback" class="hidden mt-3 p-3 rounded-xl text-sm"></div>`;
-  renderReorderTokens();
-}
-
-function renderReorderTokens() {
-  const r = _reorder;
-  document.getElementById('reorderAnswer').innerHTML = r.placed.length
-    ? r.placed.map((t, i) => `<button onclick="unplaceWord(${i})" class="reorder-token placed">${escapeHtml(t.w)}</button>`).join('')
+function renderReorderTokens(ri) {
+  const r = window._reorderRounds[ri];
+  document.getElementById(`reorderAnswer${ri}`).innerHTML = r.placed.length
+    ? r.placed.map((t, i) => `<button onclick="unplaceWord(${ri},${i})" class="reorder-token placed">${escapeHtml(t.w)}</button>`).join('')
     : '<span class="text-xs self-center px-2" style="color:#B0B5C2;">Click words below to build the sentence…</span>';
-  document.getElementById('reorderPool').innerHTML =
-    r.pool.map((t, i) => `<button onclick="placeWord(${i})" class="reorder-token">${escapeHtml(t.w)}</button>`).join('');
+  document.getElementById(`reorderPool${ri}`).innerHTML =
+    r.pool.map((t, i) => `<button onclick="placeWord(${ri},${i})" class="reorder-token">${escapeHtml(t.w)}</button>`).join('');
 }
 
-function placeWord(i) { const r = _reorder; r.placed.push(r.pool.splice(i, 1)[0]); renderReorderTokens(); }
-function unplaceWord(i) { const r = _reorder; r.pool.push(r.placed.splice(i, 1)[0]); renderReorderTokens(); }
+function placeWord(ri, i) { const r = window._reorderRounds[ri]; r.placed.push(r.pool.splice(i, 1)[0]); renderReorderTokens(ri); }
+function unplaceWord(ri, i) { const r = window._reorderRounds[ri]; r.pool.push(r.placed.splice(i, 1)[0]); renderReorderTokens(ri); }
 
-function reorderItemFor(sentence) {
-  const bank = getBank(_reorder.nb);
+/* A solved round locks; an unsolved one can always be reset and retried. */
+function resetReorderRound(ri) {
+  if (document.getElementById(`rq${ri}`).dataset.answered) return;
+  const r = window._reorderRounds[ri];
+  r.placed = [];
+  r.pool = shuffled(r.target.split(' ').map((w, i) => ({ w, id: i })));
+  renderReorderTokens(ri);
+}
+
+function reorderItemFor(nb, sentence) {
+  const bank = getBank(nb);
   return bank.items.find(it => sentence.toLowerCase().includes(it.term.toLowerCase()));
 }
 
-function checkReorder() {
-  const r = _reorder;
-  const fb = document.getElementById('reorderFeedback');
+function checkReorder(ri) {
+  const st = window._reorderState;
+  const box = document.getElementById(`rq${ri}`);
+  if (box.dataset.answered) return;
+  const r = window._reorderRounds[ri];
+  const fb = document.getElementById(`rf${ri}`);
   fb.classList.remove('hidden');
   const attempt = r.placed.map(t => t.w).join(' ');
-  const item = reorderItemFor(r.target);
+  const item = reorderItemFor(st.nb, r.target);
   if (attempt === r.target) {
-    r.score++;
+    box.dataset.answered = 'true';
+    st.correct++; st.answered++;
     fb.style.background = 'rgba(6,214,160,.08)'; fb.style.border = '1px solid rgba(6,214,160,.2)';
-    fb.innerHTML = `<span style="color:#059669;" class="font-semibold">✓ Correct!</span> <span style="color:var(--ink);">"${escapeHtml(r.target)}."</span>` + explainAnswer(r.nb, item);
-    setTimeout(() => {
-      r.index++;
-      if (r.index < r.sentences.length) renderReorderRound();
-      else {
-        const perfect = r.score === r.sentences.length;
-        recordActivityCompletion('reorder', r.score, r.sentences.length, r.challenge);
-        document.getElementById('reorderArea').innerHTML = `
-          <div class="p-6 rounded-2xl text-center" style="background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.2);">
-            <p class="text-2xl mb-2">🎉</p>
-            <p class="font-bold text-lg" style="color:#059669;">All done! Score: ${r.score}/${r.sentences.length}</p>
-            ${completionButtons('actReorder', perfect && r.challenge)}
-          </div>`;
-      }
-    }, 1600);
+    fb.innerHTML = `<span style="color:#059669;" class="font-semibold">✓ Correct!</span> <span style="color:var(--ink);">"${escapeHtml(r.target)}."</span>` + explainAnswer(st.nb, item);
+    box.querySelectorAll('.reorder-token').forEach(b => { b.disabled = true; b.classList.add('opacity-60'); });
+    box.querySelectorAll('button').forEach(b => { if (!b.classList.contains('reorder-token')) b.disabled = true; });
+    finishReorderIfDone();
   } else {
     fb.style.background = 'rgba(239,68,68,.06)'; fb.style.border = '1px solid rgba(239,68,68,.15)';
-    fb.innerHTML = `<span class="text-red-500 font-semibold">✗ Not quite.</span> <span style="color:var(--ink);">Try a different order.</span>` + explainAnswer(r.nb, item);
+    fb.innerHTML = `<span class="text-red-500 font-semibold">✗ Not quite.</span> <span style="color:var(--ink);">Try a different order.</span>` + explainAnswer(st.nb, item);
   }
+}
+
+function finishReorderIfDone() {
+  const st = window._reorderState;
+  if (st.answered < st.total) return;
+  const perfect = st.correct === st.total;
+  recordActivityCompletion('reorder', st.correct, st.total, st.challenge);
+  const scoreBox = document.getElementById('reorderScore');
+  scoreBox.classList.remove('hidden');
+  document.getElementById('reorderScoreText').textContent = `Score: ${st.correct}/${st.total}${perfect ? ' — Perfect! 🎯' : ''}`;
+  document.getElementById('reorderActions').innerHTML = completionButtons('actReorder', perfect && st.challenge);
 }
 
 /* ═══════════ 4. GAP FILL (challenge = typed input, no options) ═══════════ */
