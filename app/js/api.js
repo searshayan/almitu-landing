@@ -104,6 +104,10 @@ async function callClaudePractice(formData, slides, cfg) {
       // Raised from 4096: the bank now also carries a reading passage, a
       // listening script and their question sets, which the old cap truncated.
       max_tokens: 8192,
+      // Extended thinking is off: this is rigid, schema-bound JSON generation,
+      // not open-ended reasoning, and thinking tokens were eating into the
+      // same max_tokens budget as the actual output, truncating it.
+      thinking: { type: 'disabled' },
       system: [{ type: 'text', text: buildPracticeBankSystemPrompt(formData), cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: buildPracticeBankUserPrompt(formData, slides) }]
     })
@@ -181,6 +185,7 @@ async function autofillClaude(meta, fieldsToFill, cfg) {
     body: JSON.stringify({
       model: cfg.claudeModel || 'claude-sonnet-4-6',
       max_tokens: 1500,
+      thinking: { type: 'disabled' },
       system: buildAutofillSystemPrompt(meta),
       messages: [{ role: 'user', content: buildAutofillUserPrompt(meta, fieldsToFill) }]
     })
@@ -233,6 +238,10 @@ async function callClaude(formData, cfg) {
     body: JSON.stringify({
       model: cfg.claudeModel || 'claude-sonnet-4-6',
       max_tokens: 8192,
+      // Extended thinking is off: this is rigid, schema-bound JSON generation,
+      // not open-ended reasoning, and thinking tokens were eating into the
+      // same max_tokens budget as the actual output, truncating it.
+      thinking: { type: 'disabled' },
       // Prompt caching: the system prompt (engine role + tier rules + layout
       // schema + contract, ~1.2k tokens) is the large, repeated portion. The
       // cache_control breakpoint caches it as a prefix. Subsequent calls that
