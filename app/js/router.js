@@ -1076,16 +1076,23 @@ async function tutorSaveToPlans() {
     return;
   }
   try {
+    // A plan can be saved straight from the review screen, before a live
+    // session ever runs — make sure the practice bank (and downstream, its
+    // audio) isn't left permanently empty just because this was the first
+    // thing the tutor clicked. Idempotent — a no-op if already generated.
+    if (typeof ensurePracticeBank === 'function') await ensurePracticeBank();
+    let planId;
     if (tutorState.currentPlanIsCurriculum) {
       // Detach from the shared curriculum row and create an owned copy.
       tutorState.currentPlanId = null;
       tutorState.currentPlanIsCurriculum = false;
-      await ensurePlanInLibrary(plan);
+      planId = await ensurePlanInLibrary(plan);
       showToast('Copied into My Session Plans — this copy is yours to edit.', 'success');
     } else {
-      await ensurePlanInLibrary(plan);
+      planId = await ensurePlanInLibrary(plan);
       showToast('Saved to My Session Plans — reuse it with any student.', 'success');
     }
+    if (typeof triggerEagerAudio === 'function') triggerEagerAudio(planId, ['listening']);
     await initTutorDashboard();
   } catch (e) { showToast('Save failed: ' + e.message, 'error'); }
 }
@@ -1100,15 +1107,23 @@ function startSession() {
   if (!student) { showToast('Pick a student for this session first.', 'warn'); return; }
 
   if (typeof _editMode !== 'undefined' && _editMode) savePvEdit();
-  launchCall();          // shows the presentation in this tab
+  launchCall();          // shows the presentation in this tab; also kicks off kickoffPracticeBank()
 
   // Then persist the live session in the background.
   (async () => {
     try {
-      await ensurePlanInLibrary(plan);
+      // Wait for the practice bank before touching the library/session rows —
+      // kickoffPracticeBank() is idempotent (launchCall() already started it;
+      // this just awaits the same in-flight promise), and closes the race
+      // where both rows below could otherwise be inserted with an empty bank.
+      if (typeof kickoffPracticeBank === 'function') await kickoffPracticeBank();
+      const planId = await ensurePlanInLibrary(plan);
       const row = await dataCreateSession(buildSessionRow(plan, student, 'live', ''));
       tutorState.currentSessionId = row.id;
       renderMeetLinkBox();
+      // Fire-and-forget: audio finishes shortly after in the background,
+      // same as the practice bank itself — the tutor's flow doesn't wait on it.
+      if (typeof triggerEagerAudio === 'function') triggerEagerAudio(planId, ['listening']);
     } catch (e) {
       showToast('Could not start the session record: ' + e.message, 'error');
     }

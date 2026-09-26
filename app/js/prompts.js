@@ -502,14 +502,21 @@ Output ONLY the slides payload as a single, syntactically perfect JSON object. D
 /* Per-CEFR targets for the Reading & Listening practice cards, straight from the
    Practice Bank Expansion spec. Reading length + question count, listening
    duration + question count, and the replay allowance for listening audio. */
+// listenChars is derived from listenSecs at our TTS narration speed (0.8x —
+// see practice-tts's ELEVENLABS_SPEED): ~1,000 characters of script produce
+// ~60s of audio at normal (1.0x) pace, so at 0.8x that same 1,000 characters
+// stretches to ~75s. Character count is what the model can actually control
+// and what ElevenLabs bills on — "seconds of speech" is not something Claude
+// can reliably estimate on its own, so it's kept only as informational
+// framing; listenChars is the enforced constraint.
 const PRACTICE_CARD_SPEC = {
-  'Pre-A1': { readWords: '15–40 words (labels, captions, or 2–4 controlled sentences)', readQ: '5',    listenSecs: '60–75',        listenTarget: 70,  listenQ: '5',    maxPlays: 3 },
-  'A1':     { readWords: '40–80 words',   readQ: '5–6',  listenSecs: '60–90',         listenTarget: 80,  listenQ: '5–6',  maxPlays: 3 },
-  'A2':     { readWords: '80–140 words',  readQ: '6–7',  listenSecs: '90–120',        listenTarget: 105, listenQ: '6–7',  maxPlays: 2 },
-  'B1':     { readWords: '140–220 words', readQ: '7–8',  listenSecs: '120–150',       listenTarget: 135, listenQ: '7–8',  maxPlays: 2 },
-  'B2':     { readWords: '220–320 words', readQ: '8–10', listenSecs: '150–180',       listenTarget: 165, listenQ: '8–10', maxPlays: 2 },
-  'C1':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenQ: '8–10', maxPlays: 2 },
-  'C2':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenQ: '8–10', maxPlays: 2 }
+  'Pre-A1': { readWords: '15–40 words (labels, captions, or 2–4 controlled sentences)', readQ: '5',    listenSecs: '60–75',        listenTarget: 70,  listenChars: '800–1,000 characters',   listenQ: '5',    maxPlays: 3 },
+  'A1':     { readWords: '40–80 words',   readQ: '5–6',  listenSecs: '60–90',         listenTarget: 80,  listenChars: '800–1,200 characters',   listenQ: '5–6',  maxPlays: 3 },
+  'A2':     { readWords: '80–140 words',  readQ: '6–7',  listenSecs: '90–120',        listenTarget: 105, listenChars: '1,200–1,600 characters', listenQ: '6–7',  maxPlays: 2 },
+  'B1':     { readWords: '140–220 words', readQ: '7–8',  listenSecs: '120–150',       listenTarget: 135, listenChars: '1,600–2,000 characters', listenQ: '7–8',  maxPlays: 2 },
+  'B2':     { readWords: '220–320 words', readQ: '8–10', listenSecs: '150–180',       listenTarget: 165, listenChars: '2,000–2,400 characters', listenQ: '8–10', maxPlays: 2 },
+  'C1':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenChars: '2,000–2,400 characters (never more)', listenQ: '8–10', maxPlays: 2 },
+  'C2':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenChars: '2,000–2,400 characters (never more)', listenQ: '8–10', maxPlays: 2 }
 };
 function practiceCardSpec(level) { return PRACTICE_CARD_SPEC[level] || PRACTICE_CARD_SPEC['A1']; }
 
@@ -533,7 +540,9 @@ READING PRACTICE
 - Include a short optional warm-up prompt, a small keyVocabulary list drawn from the passage, and one short transferTask.
 
 LISTENING PRACTICE
-- Write an "internalScript": a natural spoken script for TTS, roughly ${spec.listenTarget}s of speech (level range: ${spec.listenSecs}s; NEVER exceed 180s). This script is INTERNAL — it is for audio generation only and must NEVER be shown to the student. Do NOT output a student-facing transcript anywhere.
+- Write an "internalScript": ONE narrator's natural spoken monologue for TTS — a short STORY, a descriptive paragraph, or a piece of useful spoken information (an announcement, a set of instructions, a short talk). LENGTH IS A HARD LIMIT, not a suggestion: ${spec.listenChars} — count characters, not words, before finalizing, and do not go outside this range (this is what actually determines the audio's length and cost, since "seconds of speech" cannot be estimated reliably). For reference this produces roughly ${spec.listenTarget}s of narrated audio (level range: ${spec.listenSecs}s) — informational only, the character count above is what to satisfy.
+- NEVER write it as a back-and-forth dialogue, conversation, interview, or any exchange between two or more named/lettered speakers — a single narrator voice reads this aloud start to finish, so any scripted turn-taking will sound wrong. This applies to EVERY session type, including Communication: instead of scripting the target exchange as two people talking, narrate the SITUATION and what is said/needed in it in the third person or as a direct address to the listener (e.g. "At the pharmacy, you explain your symptoms, and the pharmacist recommends..." rather than "Customer: ... / Pharmacist: ..."). If you notice yourself writing quoted back-and-forth lines, stop and rewrite it as continuous narration.
+- Write it as genuinely well-crafted prose, not a flat list of facts: a real narrative arc for a story (a clear beginning, a small development, an ending) or a clear logical structure for information (what/why/how, in a sensible order). Vary sentence length and structure naturally for the level — avoid mechanical, repetitive phrasing.
 - New but closely related context — do NOT reuse the reading passage verbatim. Recycle key vocabulary, grammar and function naturally. Clear pronunciation and pacing. Pre-A1/A1: very predictable language, no idioms/slang/sarcasm.
 - ${spec.listenQ} questions that assess LISTENING, not reading. ALL must be "type": "multiple_choice" with exactly 3 answer options each — NEVER "true_false" or "short_response", and NEVER a typed-answer question of any kind. Feedback may quote at most a very short phrase — NEVER reveal the whole script.
 - Include a small "keyLanguageAfterCompletion" list (short phrases only). This is not TOEFL/TOEIC test prep unless the session itself is exam preparation.

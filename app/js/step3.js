@@ -962,6 +962,25 @@ async function hydratePracticeAudio(cardId, onReady, opts) {
   }
 }
 
+/* Eager generation: called right after a plan's practice bank is known to be
+   complete (curriculum generation, or a tutor saving/starting a session) so
+   audio is generated once, keyed to the reusable plan rather than a
+   per-delivery session — every future delivery of that same plan then loads
+   it pre-populated, with zero further ElevenLabs calls. Fire-and-forget is
+   fine here: a failure just leaves hydratePracticeAudio()'s lazy path as the
+   fallback the next time someone opens the card. */
+async function triggerEagerAudio(planId, cardIds) {
+  const c = (typeof sb === 'function') ? sb() : null;
+  if (!c || !planId) return;
+  for (const cardId of (cardIds || ['listening'])) {
+    try {
+      await c.functions.invoke('practice-tts', { body: { planId, card: cardId, settingsVersion: AUDIO_SETTINGS_VERSION } });
+    } catch (e) {
+      console.warn('eager practice-tts failed for', cardId, e);
+    }
+  }
+}
+
 /* A saved audio clip renders as a real player only once the TTS pipeline has
    uploaded it (audioStatus 'ready' + a path). Until then it's a disabled,
    non-blocking placeholder. Replay uses the stored file; the student never
