@@ -968,13 +968,26 @@ async function hydratePracticeAudio(cardId, onReady, opts) {
    per-delivery session — every future delivery of that same plan then loads
    it pre-populated, with zero further ElevenLabs calls. Fire-and-forget is
    fine here: a failure just leaves hydratePracticeAudio()'s lazy path as the
-   fallback the next time someone opens the card. */
+   fallback the next time someone opens the card.
+
+   Callers don't await this before refreshing the tutor's plan list, so the
+   in-memory tutorState.plans cache would otherwise still show the pre-call
+   "pending" audio — and tutorUsePlanConfirm() reads straight from that cache
+   ("Use for a student" doesn't re-fetch from the DB), which would copy the
+   stale pending state into a new delivery even though the DB row is already
+   ready. Patching the cached entry here (once the call actually resolves)
+   keeps same-session reuse correct without forcing a page reload. */
 async function triggerEagerAudio(planId, cardIds) {
   const c = (typeof sb === 'function') ? sb() : null;
   if (!c || !planId) return;
   for (const cardId of (cardIds || ['listening'])) {
     try {
-      await c.functions.invoke('practice-tts', { body: { planId, card: cardId, settingsVersion: AUDIO_SETTINGS_VERSION } });
+      const { data, error } = await c.functions.invoke('practice-tts', { body: { planId, card: cardId, settingsVersion: AUDIO_SETTINGS_VERSION } });
+      if (!error && data && data.audio && window.tutorState && Array.isArray(tutorState.plans)) {
+        const cached = tutorState.plans.find(p => p.id === planId);
+        const bank = cached && cached.plan && cached.plan.content && cached.plan.content.practice_bank;
+        if (bank && bank[cardId]) bank[cardId].audio = data.audio;
+      }
     } catch (e) {
       console.warn('eager practice-tts failed for', cardId, e);
     }
