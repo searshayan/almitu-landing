@@ -179,7 +179,7 @@ async function generateCurriculumSession(rec, overwrite) {
   // Regeneration: clear the old entry so the insert (unique on curriculum_id) succeeds.
   if (overwrite) await dataDeleteCurriculumPlan(rec.curriculum_id);
 
-  await dataCreateCurriculumPlan({
+  const row = await dataCreateCurriculumPlan({
     tutor_id: null,
     is_curriculum: true,
     curriculum_id: rec.curriculum_id,
@@ -189,6 +189,14 @@ async function generateCurriculumSession(rec, overwrite) {
     duration: formData.duration,
     plan
   });
+
+  // The deliverable isn't complete until the Listening card's audio exists
+  // too — generated once here, keyed to this shared curriculum row, so every
+  // tutor who ever teaches it reuses the same clip instead of regenerating it
+  // per student. Reading is text-only (no audio) so only Listening applies.
+  if (plan.content.practice_bank && plan.content.practice_bank.listening && typeof triggerEagerAudio === 'function') {
+    await triggerEagerAudio(row.id, ['listening']);
+  }
 
   return plan;
 }

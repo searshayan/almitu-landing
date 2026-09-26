@@ -1,28 +1,55 @@
 // ═══════════════════════════════════════════════════════════════════
 // Almitu — "practice-tts" Edge Function
 //
-// Generate-once audio for the Reading and Listening practice cards. It runs
-// on Supabase's servers so the ElevenLabs key NEVER reaches a browser — not a
-// student's and not a tutor's.
+// Generate-once, SHARED audio for the Reading and Listening practice cards.
+// It runs on Supabase's servers so the ElevenLabs key NEVER reaches a
+// browser — not a student's and not a tutor's.
+//
+// Audio is cached against the REUSABLE plan (`session_plans` — an admin's
+// shared curriculum entry, or a tutor's own saved plan), not the per-student
+// delivery (`sessions`). Every student ever taught the same plan shares the
+// same generated clip instead of each paying for their own ElevenLabs call.
+//
+// Call with EITHER:
+//   • { planId }    — eager path. Used right after a plan's practice bank is
+//                      generated (curriculum admin generation, or a tutor
+//                      saving/starting a session) so audio exists before any
+//                      student ever opens the card. Reads/writes ONLY the
+//                      session_plans row.
+//   • { sessionId }  — lazy fallback path (still used by the student-facing
+//                      "open Listening tile" trigger, and by any pre-existing
+//                      session created before this plan-level caching
+//                      shipped). If that session's `plan_id` points at a
+//                      session_plans row, generation/caching redirects to
+//                      THAT row (same as the planId path) and the specific
+//                      session is also patched as a best-effort side write so
+//                      it's immediately playable without a reload. Only a
+//                      session with no plan_id (legacy) falls back to the
+//                      original per-session behavior.
 //
 // On each call it:
-//   1. Identifies the caller from their JWT and checks they own (student) or
-//      teach (tutor) the session.
-//   2. Reads the FINAL text for the card from the session's practice bank —
-//      the reading passage, or the listening card's INTERNAL script (which is
-//      never sent to a student UI).
-//   3. If audio for that exact text already exists, returns it (no TTS call).
+//   1. Identifies the caller from their JWT and checks they own/teach the
+//      target row (student or tutor for a session; tutor-owner or an
+//      approved admin/tutor for a shared plan).
+//   2. Reads the FINAL text for the card — the reading passage, or the
+//      listening card's INTERNAL script (never sent to a student UI as a
+//      readable transcript).
+//   3. If audio for that exact text already exists at its target path,
+//      returns it (no TTS call).
 //   4. Otherwise calls ElevenLabs standard Text-to-Speech ONCE, uploads the
 //      MP3 to the public `practice-audio` bucket, and writes the path +
-//      metadata back onto the session's plan JSONB. Replay then streams the
-//      stored file from the CDN with no further TTS calls.
+//      metadata back onto the target row's plan JSONB. Replay then streams
+//      the stored file from the CDN with no further TTS calls, for every
+//      future delivery of that same plan.
 //
 // DEPLOY: Supabase dashboard → Edge Functions → Deploy a new function → name
 // it "practice-tts" → paste this file → Deploy.
 // SECRETS (Edge Functions → Manage secrets):
 //   • ELEVENLABS_API_KEY   (required) — your ElevenLabs key. Kept server-side.
 //   • ELEVENLABS_VOICE_ID  (optional) — defaults to DEFAULT_VOICE_ID below.
-//   • ELEVENLABS_MODEL     (optional) — defaults to "eleven_multilingual_v2".
+//   • ELEVENLABS_MODEL     (optional) — defaults to "eleven_flash_v2_5" (half
+//                          the per-character cost of the older
+//                          multilingual_v2 model).
 //   • ELEVENLABS_SPEED     (optional) — 0.7–1.2, defaults to 0.8 (slower =
 //                          clearer for learners). Tune without redeploying.
 // SUPABASE_URL / SUPABASE_ANON_KEY / SUPABASE_SERVICE_ROLE_KEY are injected
@@ -33,7 +60,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const BUCKET = "practice-audio";
 const DEFAULT_VOICE_ID = "Nhs7eitvQWFTQBsf0yiT"; // "Sarah" — clear, gentle (added to the Almitu workspace)
-const DEFAULT_MODEL = "eleven_multilingual_v2";
+const DEFAULT_MODEL = "eleven_flash_v2_5"; // cheaper tier for flat, single-voice narration
 const DEFAULT_SPEED = 0.8;         // calm, deliberate learner pace (1.0 = normal; range 0.7–1.2)
 const OUTPUT_FORMAT = "mp3_44100_64"; // 64 kbps mono MP3 — spec's speech target
 const MAX_TTS_CHARS = 5000;        // guardrail against an over-long script
@@ -55,6 +82,8 @@ async function sha256Hex(text: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
   return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
+
+type TargetRow = { table: "session_plans" | "sessions"; id: string; plan: Record<string, any> };
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
@@ -85,30 +114,71 @@ Deno.serve(async (req) => {
   if (userErr || !user) return json({ error: "unauthorized" }, 401);
 
   // ---- 2. Validate request ----
-  let body: { sessionId?: string; card?: string; settingsVersion?: number };
+  let body: { planId?: string; sessionId?: string; card?: string; settingsVersion?: number };
   try { body = await req.json(); } catch { return json({ error: "bad_request" }, 400); }
+  const planId = (body.planId || "").trim();
   const sessionId = (body.sessionId || "").trim();
   const card = (body.card || "").trim();
   // Cache-busting stamp from the client. Bumping it (in lockstep with a voice/
   // speed change) forces already-generated clips to regenerate on next open.
   const settingsVersion = Number.isFinite(Number(body.settingsVersion)) ? Number(body.settingsVersion) : 1;
-  if (!sessionId) return json({ error: "missing_session" }, 400);
+  if (!planId && !sessionId) return json({ error: "missing_id" }, 400);
   if (card !== "reading" && card !== "listening") return json({ error: "bad_card" }, 400);
 
   if (!ELEVEN_KEY) return json({ error: "tts_not_configured" }, 503);
 
-  // ---- 3. Load the session and authorize ----
-  const { data: session, error: sErr } = await admin
-    .from("sessions")
-    .select("id, student_id, tutor_id, plan")
-    .eq("id", sessionId)
-    .maybeSingle();
-  if (sErr || !session) return json({ error: "session_not_found" }, 404);
-  if (user.id !== session.student_id && user.id !== session.tutor_id) {
-    return json({ error: "forbidden" }, 403);
+  // ---- 3. Resolve the target row: the SHARED plan whenever one is known ----
+  let target: TargetRow;
+  let sideWriteSessionId: string | null = null;
+
+  if (planId) {
+    const { data: planRow, error: pErr } = await admin
+      .from("session_plans")
+      .select("id, tutor_id, is_curriculum, plan")
+      .eq("id", planId)
+      .maybeSingle();
+    if (pErr || !planRow) return json({ error: "plan_not_found" }, 404);
+
+    if (planRow.is_curriculum) {
+      // Mirrors the existing curriculum-read RLS policy: any approved admin/tutor.
+      const { data: profile } = await asUser.from("profiles").select("role, status").eq("id", user.id).maybeSingle();
+      const allowed = !!profile && profile.status === "approved" && (profile.role === "admin" || profile.role === "tutor");
+      if (!allowed) return json({ error: "forbidden" }, 403);
+    } else if (planRow.tutor_id !== user.id) {
+      return json({ error: "forbidden" }, 403);
+    }
+    target = { table: "session_plans", id: planRow.id, plan: planRow.plan || {} };
+  } else {
+    const { data: session, error: sErr } = await admin
+      .from("sessions")
+      .select("id, student_id, tutor_id, plan_id, plan")
+      .eq("id", sessionId)
+      .maybeSingle();
+    if (sErr || !session) return json({ error: "session_not_found" }, 404);
+    if (user.id !== session.student_id && user.id !== session.tutor_id) {
+      return json({ error: "forbidden" }, 403);
+    }
+
+    let redirected = false;
+    if (session.plan_id) {
+      const { data: planRow } = await admin
+        .from("session_plans")
+        .select("id, plan")
+        .eq("id", session.plan_id)
+        .maybeSingle();
+      if (planRow) {
+        target = { table: "session_plans", id: planRow.id, plan: planRow.plan || {} };
+        sideWriteSessionId = session.id;
+        redirected = true;
+      }
+    }
+    if (!redirected) {
+      // Legacy: no plan_id, or its plan row was deleted — original per-session behavior.
+      target = { table: "sessions", id: session.id, plan: session.plan || {} };
+    }
   }
 
-  const plan = session.plan || {};
+  const plan = target!.plan || {};
   const bank = plan?.content?.practice_bank;
   const cardObj = bank?.[card];
   if (!cardObj) return json({ error: "card_missing" }, 404);
@@ -123,7 +193,8 @@ Deno.serve(async (req) => {
 
   const audio = cardObj.audio || {};
   const scriptHash = await sha256Hex(`${sourceText}|${VOICE_ID}|${MODEL}|${SPEED}|v${settingsVersion}`);
-  const path = `generated/${sessionId}/${card}-${scriptHash.slice(0, 12)}.mp3`;
+  const pathRoot = target!.table === "session_plans" ? `generated/plan/${target!.id}` : `generated/${target!.id}`;
+  const path = `${pathRoot}/${card}-${scriptHash.slice(0, 12)}.mp3`;
   const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
 
   // ---- 4. Idempotency: already generated for this exact text? ----
@@ -133,11 +204,9 @@ Deno.serve(async (req) => {
 
   // ---- 5. Generate audio if the object isn't already in storage ----
   let uploaded = false;
-  // If a prior run uploaded this exact file, reuse it without paying for TTS again.
-  const { data: existing } = await admin.storage.from(BUCKET).list(`generated/${sessionId}`, {
-    search: `${card}-${scriptHash.slice(0, 12)}.mp3`,
-  });
-  const alreadyThere = Array.isArray(existing) && existing.some((f) => f.name === `${card}-${scriptHash.slice(0, 12)}.mp3`);
+  const fileName = `${card}-${scriptHash.slice(0, 12)}.mp3`;
+  const { data: existing } = await admin.storage.from(BUCKET).list(pathRoot, { search: fileName });
+  const alreadyThere = Array.isArray(existing) && existing.some((f) => f.name === fileName);
 
   if (!alreadyThere) {
     const ttsRes = await fetch(
@@ -178,7 +247,7 @@ Deno.serve(async (req) => {
     uploaded = true;
   }
 
-  // ---- 6. Write path + metadata back onto the plan ----
+  // ---- 6. Write path + metadata back onto the SHARED target row ----
   const newAudio = {
     ...audio,
     voiceProfile: audio.voiceProfile || "almitu-learning-voice",
@@ -200,11 +269,27 @@ Deno.serve(async (req) => {
   const newPlan = structuredClone(plan);
   newPlan.content.practice_bank[card].audio = newAudio;
 
-  const { error: updErr } = await admin.from("sessions").update({ plan: newPlan }).eq("id", sessionId);
+  const { error: updErr } = await admin.from(target!.table).update({ plan: newPlan }).eq("id", target!.id);
   if (updErr) {
     // Audio exists in storage; the DB just didn't record it. The client still
     // gets the path back and can play it — the next run will reconcile the plan.
     console.warn("plan update failed:", updErr.message);
+  }
+
+  // Best-effort: also patch the ONE session that asked (via sessionId), so
+  // it's immediately playable even though the canonical copy lives on the
+  // shared plan row above.
+  if (sideWriteSessionId) {
+    try {
+      const { data: sessRow } = await admin.from("sessions").select("plan").eq("id", sideWriteSessionId).maybeSingle();
+      if (sessRow?.plan?.content?.practice_bank?.[card]) {
+        const sidePlan = structuredClone(sessRow.plan);
+        sidePlan.content.practice_bank[card].audio = newAudio;
+        await admin.from("sessions").update({ plan: sidePlan }).eq("id", sideWriteSessionId);
+      }
+    } catch (e) {
+      console.warn("session side-write failed:", (e as Error).message);
+    }
   }
 
   return json({ ok: true, card, reused: !uploaded, audio: newAudio, publicUrl });

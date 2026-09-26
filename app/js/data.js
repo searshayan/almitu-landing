@@ -226,6 +226,16 @@ async function dataCreatePlan(row) {
   return data;
 }
 
+/* Patch a tutor's own library plan in place — e.g. once the practice bank
+   finishes generating after the plan was already saved. RLS already permits
+   this (session_plans_tutor_all); it just had no caller until now. */
+async function dataUpdatePlan(id, patch) {
+  const c = requireSb();
+  const { data, error } = await c.from('session_plans').update(patch).eq('id', id).select('*').single();
+  throwIf(error, 'updatePlan');
+  return data;
+}
+
 async function dataDeletePlan(id) {
   const c = requireSb();
   const { error } = await c.from('session_plans').delete().eq('id', id);
