@@ -1023,7 +1023,10 @@ function normalizePracticeQuestions(questions) {
   return (questions || [])
     .filter(q => q && q.question && Array.isArray(q.options) && q.options.filter(o => o != null && o !== '').length >= 2)
     .map((q, i) => {
-      const options = q.options.filter(o => o != null && o !== '');
+      // The model reliably writes the correct option first (a well-known LLM
+      // bias) — every question would otherwise always be "A" is correct.
+      // Shuffling at render time fixes this regardless of model behavior.
+      const options = shuffled(q.options.filter(o => o != null && o !== ''));
       let correct = options.findIndex(o => norm(o) === norm(q.answer));
       if (correct < 0) correct = 0;   // best-effort — never degrades to free text
       return {
@@ -1189,7 +1192,7 @@ function actListening() {
 
   html += `<div class="rounded-2xl p-5 mb-3 text-center" style="background:white; border:1px solid var(--line);">
     <span id="listeningAudioSlot">${practiceAudioControl(card.audio)}</span>
-    ${a.maxPlays ? `<p class="text-[11px] mt-2" style="color:var(--muted);">You can play the audio up to ${a.maxPlays} times.</p>` : ''}
+    <p class="text-[11px] mt-2" style="color:var(--muted);">Take notes as you listen. Replay as many times as you need, and feel free to do this activity again later.</p>
   </div>`;
 
   if (!hasAudio) {

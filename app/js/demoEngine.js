@@ -110,12 +110,12 @@ function demoPracticeCards(terms, formData, exampleFn, topic) {
     listening: {
       id: 'listening', type: 'listening_practice', title: `Listen: ${topic}`, estimatedMinutes: 6, cefrLevel: level,
       canDo: `I can understand a short conversation about ${topic.toLowerCase()}.`,
-      instructions: ['Listen carefully.', 'Choose the best answer.', 'Listen again if you need to.'],
+      instructions: ['Take notes as you listen.', 'Choose the best answer.', 'Replay as many times as you need, and try this activity again later.'],
       audio: {
         generationRequired: true,
         internalScript: `[demo internal script — never shown] A short spoken clip about ${topic.toLowerCase()} using: ${t.join(', ')}.`,
         voiceProfile: 'almitu-learning-voice', speakerPlan: ['narrator'], speed: 0.9, format: 'mp3',
-        audioStatus: 'pending', audioPath: null, durationTargetSeconds: 80, maxPlays: 3, transcriptPolicy: 'never_display'
+        audioStatus: 'pending', audioPath: null, durationTargetSeconds: 80, transcriptPolicy: 'never_display'
       },
       questions: listenQ,
       keyLanguageAfterCompletion: t.slice(0, 3).map(w => ({ phrase: w, focus: `notice how "${w}" is used` }))
