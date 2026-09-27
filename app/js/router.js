@@ -50,6 +50,7 @@ function routeApp() {
   const ctx = activeContext();
   renderHeader(ctx, p);
   if (ctx.role === 'admin') showDashboard('admin');
+  else if (ctx.role === 'coordinator') showDashboard('coordinator');
   else if (ctx.role === 'tutor') showDashboard('tutor');
   else showDashboard('student');
 
@@ -63,11 +64,13 @@ function routeApp() {
 
 function showDashboard(kind) {
   document.getElementById('viewAdmin').classList.toggle('hidden', kind !== 'admin');
+  document.getElementById('viewCoordinator').classList.toggle('hidden', kind !== 'coordinator');
   document.getElementById('viewTutor').classList.toggle('hidden', kind !== 'tutor');
   document.getElementById('viewStudent').classList.toggle('hidden', kind !== 'student');
   if (kind !== 'student') stopStudentLivePolling();   // don't poll off-screen
 
   if (kind === 'admin') initAdminDashboard();
+  else if (kind === 'coordinator') initCoordinatorDashboard();
   else if (kind === 'tutor') {
     // A re-route must never yank the tutor out of a running session — they'd
     // lose the slides, timer, notes and the Meet-link box mid-call.
@@ -87,13 +90,14 @@ function tutorIsInLiveSession() {
 /* ─────────────── header ─────────────── */
 
 function renderHeader(ctx, profile) {
-  const roleLabels = { admin: 'Admin', tutor: 'Tutor', student: 'Student' };
+  const roleLabels = { admin: 'Admin', coordinator: 'Coordinator', tutor: 'Tutor', student: 'Student' };
   const badge = document.getElementById('roleBadge');
   badge.textContent = roleLabels[ctx.role] || '';
   const badgeColors = {
-    admin:   ['rgba(124,58,246,.1)', '#6D28D9'],
-    tutor:   ['rgba(255,107,53,.1)', 'var(--primary)'],
-    student: ['rgba(0,78,137,.08)', 'var(--secondary)']
+    admin:       ['rgba(124,58,246,.1)', '#6D28D9'],
+    coordinator: ['rgba(13,148,136,.1)', '#0F766E'],
+    tutor:       ['rgba(255,107,53,.1)', 'var(--primary)'],
+    student:     ['rgba(0,78,137,.08)', 'var(--secondary)']
   };
   const bc = badgeColors[ctx.role] || badgeColors.student;
   badge.style.background = bc[0]; badge.style.color = bc[1];
@@ -126,6 +130,7 @@ function renderHeaderNav(ctx) {
     nav.innerHTML =
       btn('Users', "adminTab('users')", adminActiveTab === 'users') +
       btn('Assignments', "adminTab('assignments')", adminActiveTab === 'assignments') +
+      btn('Organizations', "adminTab('organizations')", adminActiveTab === 'organizations') +
       btn('Curriculum', "adminTab('curriculum')", adminActiveTab === 'curriculum') +
       btn('AI Settings', "adminTab('settings')", adminActiveTab === 'settings');
   } else if (ctx.role === 'tutor') {
@@ -267,6 +272,18 @@ async function initTutorDashboard() {
     tutorState.sessions = sessions;
     tutorState.plans = plans;
     tutorState.students = students;
+    // A coordinator's View-as can't read the assignments table (deliberately
+    // not granted — see migration_013), so dataListMyStudents comes back
+    // empty even though the coordinator can see this tutor's org-scoped
+    // sessions. Fall back to the unique students visible in those sessions
+    // so their history still renders. Never fires for a real tutor: if
+    // assignments genuinely has no rows for them, sessions is empty too.
+    if (ctx.readOnly && !tutorState.students.length && sessions.length) {
+      const seen = new Set();
+      tutorState.students = sessions
+        .map(s => s.student)
+        .filter(st => st && !seen.has(st.id) && seen.add(st.id));
+    }
     // Practice stats for the tutor's own sessions (RLS scopes this to them).
     tutorState.attempts = await dataListAttemptsForSessions(sessions.map(s => s.id)).catch(() => []);
     renderTutorHome();

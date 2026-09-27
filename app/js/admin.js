@@ -6,7 +6,8 @@
    ═══════════════════════════════════════════════════════ */
 
 var adminActiveTab = 'users';
-window.adminData = { users: [], assignments: [] };
+var adminOrgActiveId = null;
+window.adminData = { users: [], assignments: [], organizations: [], orgMembers: [] };
 
 async function initAdminDashboard() {
   loadRemoteConfig();
@@ -14,9 +15,14 @@ async function initAdminDashboard() {
   const host = document.getElementById('viewAdmin');
   host.innerHTML = '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading…</div>';
   try {
-    const [users, assignments] = await Promise.all([dataListUsers(), dataListAssignments()]);
+    const [users, assignments, organizations] = await Promise.all([
+      dataListUsers(), dataListAssignments(), dataListOrganizations()
+    ]);
     adminData.users = users;
     adminData.assignments = assignments;
+    adminData.organizations = organizations;
+    if (!adminOrgActiveId && organizations[0]) adminOrgActiveId = organizations[0].id;
+    await adminLoadOrgMembers();
     renderAdmin();
   } catch (e) {
     host.innerHTML = `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load admin data: ${escapeHtml(e.message)}</div>`;
@@ -33,6 +39,7 @@ function renderAdmin() {
   const host = document.getElementById('viewAdmin');
   let body;
   if (adminActiveTab === 'assignments') body = renderAssignmentsTab();
+  else if (adminActiveTab === 'organizations') body = renderOrganizationsTab();
   else if (adminActiveTab === 'settings') body = renderSettingsTab();
   else if (adminActiveTab === 'curriculum') body = renderCurriculumTabBody();
   else body = renderUsersTab();
@@ -48,7 +55,7 @@ function renderAdmin() {
 /* ─────────────── Users tab ─────────────── */
 
 function roleOptions(current) {
-  const opts = [['', '— no role —'], ['admin', 'Admin'], ['tutor', 'Tutor'], ['student', 'Student']];
+  const opts = [['', '— no role —'], ['admin', 'Admin'], ['coordinator', 'Coordinator'], ['tutor', 'Tutor'], ['student', 'Student']];
   return opts.map(([v, l]) => `<option value="${v}" ${v === (current || '') ? 'selected' : ''}>${l}</option>`).join('');
 }
 
@@ -219,6 +226,146 @@ function adminOpenSchedule(assignmentId) {
     a.tutor.id, a.tutor.full_name || a.tutor.email || 'Tutor',
     a.student.id, a.student.full_name || a.student.email || 'Student'
   );
+}
+
+/* ─────────────── Organizations tab (B2B coordinator role) ───────────────
+   Create an org, then place its coordinator(s), tutors, and students in
+   it. Only members added here are visible inside that org's coordinator
+   dashboard — this is the admin-controlled scoping layer. */
+
+function renderOrganizationsTab() {
+  const orgs = adminData.organizations;
+  const activeOrg = orgs.find(o => o.id === adminOrgActiveId) || null;
+
+  const orgList = orgs.map(o => `
+    <button onclick="adminSelectOrg('${o.id}')" class="w-full text-left px-4 py-3 rounded-xl border mb-2 transition-all" style="background:${o.id === adminOrgActiveId ? 'rgba(255,107,53,.06)' : 'white'};border-color:${o.id === adminOrgActiveId ? 'rgba(255,107,53,.35)' : 'var(--line)'};">
+      <span class="text-sm font-semibold" style="color:var(--navy);">${escapeHtml(o.name)}</span>
+    </button>`).join('') || `<div class="text-center py-8 text-sm" style="color:var(--muted);">No organizations yet.</div>`;
+
+  const membersBlock = activeOrg
+    ? renderOrgMembersBlock(activeOrg)
+    : `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:var(--muted);">Create an organization, then add its coordinator, tutors, and students here.</div>`;
+
+  return `
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-4">
+        <div class="card-surface rounded-2xl p-5 mb-4">
+          <h2 class="text-sm font-semibold mb-3" style="color:var(--navy);">New organization</h2>
+          <input id="newOrgName" type="text" placeholder="e.g. Acme Corp" class="w-full rounded-xl px-4 py-2.5 text-sm field-input mb-3">
+          <button onclick="adminCreateOrg()" class="w-full py-2.5 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Create</button>
+        </div>
+        <div class="card-surface rounded-2xl p-5">
+          <h2 class="text-sm font-semibold mb-3" style="color:var(--navy);">Organizations</h2>
+          ${orgList}
+        </div>
+      </div>
+      <div class="lg:col-span-8">${membersBlock}</div>
+    </div>`;
+}
+
+function renderOrgMembersBlock(org) {
+  const members = adminData.orgMembers || [];
+  const byRole = { coordinator: [], tutor: [], student: [] };
+  members.forEach(m => { if (m.profile && byRole[m.profile.role]) byRole[m.profile.role].push(m); });
+
+  const section = (label, role) => {
+    const rows = byRole[role].map(m => `
+      <div class="flex items-center justify-between gap-2 py-1.5" style="border-top:1px dashed var(--line);">
+        <span class="text-[12px]" style="color:var(--navy);">${escapeHtml(m.profile.full_name || m.profile.email)}</span>
+        <button onclick="adminRemoveOrgMember('${m.id}')" class="text-[10px] font-semibold px-2 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:#EF4444;">Remove</button>
+      </div>`).join('') || `<p class="text-[11px] py-2" style="color:var(--muted);">None yet.</p>`;
+    return `<div class="mb-4">
+      <p class="text-[10px] uppercase tracking-wide font-semibold mb-1" style="color:var(--muted);">${label}</p>
+      ${rows}
+    </div>`;
+  };
+
+  const memberIds = new Set(members.map(m => m.profile && m.profile.id));
+  const candidates = adminData.users.filter(u => u.status === 'approved' && u.role && !memberIds.has(u.id));
+  const addRow = candidates.length ? `
+    <div class="flex gap-2 mt-2">
+      <select id="orgAddMember" class="flex-1 rounded-xl px-3 py-2 text-sm field-input">
+        ${candidates.map(u => `<option value="${u.id}">${escapeHtml(u.full_name || u.email)} — ${escapeHtml(u.role)}</option>`).join('')}
+      </select>
+      <button onclick="adminAddOrgMember('${org.id}')" class="px-3 py-2 rounded-xl text-white text-xs font-semibold flex-shrink-0" style="background:var(--secondary);">Add</button>
+    </div>` : `<p class="text-[11px] mt-2" style="color:var(--muted);">Every approved, roled user is already in this organization.</p>`;
+
+  return `
+    <div class="card-surface rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="text-sm font-semibold" style="color:var(--navy);">${escapeHtml(org.name)}</h2>
+        <button onclick="adminDeleteOrg('${org.id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:#EF4444;">Delete organization</button>
+      </div>
+      <p class="text-[11px] mb-4" style="color:var(--muted);">Only members added here can see, or be seen inside, this organization's coordinator dashboard.</p>
+      ${section('Coordinator', 'coordinator')}
+      ${section('Tutors', 'tutor')}
+      ${section('Students', 'student')}
+      <div style="border-top:1px dashed var(--line);padding-top:.75rem;">
+        <p class="text-[10px] uppercase tracking-wide font-semibold mb-1" style="color:var(--muted);">Add a member</p>
+        ${addRow}
+      </div>
+    </div>`;
+}
+
+async function adminCreateOrg() {
+  const input = document.getElementById('newOrgName');
+  const name = (input && input.value || '').trim();
+  if (!name) { showToast('Enter an organization name.', 'warn'); return; }
+  try {
+    const org = await dataCreateOrganization(name);
+    adminData.organizations.push(org);
+    adminData.organizations.sort((a, b) => a.name.localeCompare(b.name));
+    adminOrgActiveId = org.id;
+    await adminLoadOrgMembers();
+    showToast('Organization created.', 'success');
+    renderAdmin();
+  } catch (e) { showToast('Could not create organization: ' + e.message, 'error'); }
+}
+
+async function adminDeleteOrg(id) {
+  try {
+    await dataDeleteOrganization(id);
+    adminData.organizations = adminData.organizations.filter(o => o.id !== id);
+    if (adminOrgActiveId === id) adminOrgActiveId = adminData.organizations[0] ? adminData.organizations[0].id : null;
+    await adminLoadOrgMembers();
+    showToast('Organization deleted.', 'info');
+    renderAdmin();
+  } catch (e) { showToast('Delete failed: ' + e.message, 'error'); }
+}
+
+async function adminSelectOrg(id) {
+  adminOrgActiveId = id;
+  await adminLoadOrgMembers();
+  renderAdmin();
+}
+
+async function adminLoadOrgMembers() {
+  if (!adminOrgActiveId) { adminData.orgMembers = []; return; }
+  try { adminData.orgMembers = await dataListOrgMembers(adminOrgActiveId); }
+  catch (e) { adminData.orgMembers = []; showToast('Could not load members: ' + e.message, 'error'); }
+}
+
+async function adminAddOrgMember(orgId) {
+  const sel = document.getElementById('orgAddMember');
+  const profileId = sel && sel.value;
+  if (!profileId) return;
+  try {
+    await dataAddOrgMember(orgId, profileId);
+    await adminLoadOrgMembers();
+    showToast('Member added.', 'success');
+    renderAdmin();
+  } catch (e) {
+    showToast(/duplicate|unique/i.test(e.message) ? 'Already a member of this organization.' : ('Add failed: ' + e.message), 'error');
+  }
+}
+
+async function adminRemoveOrgMember(id) {
+  try {
+    await dataRemoveOrgMember(id);
+    adminData.orgMembers = adminData.orgMembers.filter(m => m.id !== id);
+    showToast('Member removed.', 'info');
+    renderAdmin();
+  } catch (e) { showToast('Remove failed: ' + e.message, 'error'); }
 }
 
 /* ─────────────── AI Settings tab ─────────────── */
