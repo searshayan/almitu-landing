@@ -193,3 +193,72 @@ function formatAttemptScore(a) {
   if (a.activity === 'matching') return `${a.correct} pairs in ${a.total} tries`;
   return `${a.correct}/${a.total}`;
 }
+
+/* ─────────────── Progress CSV export (tutor + student dashboards) ───────────────
+   One row per completed session, built entirely from data already loaded for
+   the dashboard — no extra network round-trip. */
+
+const EXPORT_SESSION_LIMITS = [5, 10, 15, 20];
+
+/* Accuracy across a session's attempts. Flashcards have no correct/total, so
+   they're skipped rather than counted as 0% — same spirit as formatAttemptScore. */
+function sessionAccuracyPct(attempts) {
+  let correct = 0, total = 0;
+  (attempts || []).forEach(a => {
+    if (a.correct != null && a.total != null) { correct += a.correct; total += a.total; }
+  });
+  return total > 0 ? Math.round((correct / total) * 100) : null;
+}
+
+function csvEscape(value) {
+  const s = value == null ? '' : String(value);
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+
+function rowsToCsv(headers, rows) {
+  const lines = [headers.map(csvEscape).join(',')];
+  rows.forEach(r => lines.push(r.map(csvEscape).join(',')));
+  return lines.join('\r\n');
+}
+
+/* sessions: raw session rows (newest first, already trimmed to the chosen
+   N), each with an embedded student/tutor profile (see SESSION_SELECT).
+   attempts: activity_attempts rows covering (at least) those sessions. */
+function buildProgressCsv(sessions, attempts, opts) {
+  opts = opts || {};
+  const headers = ['Date', 'Session Title'];
+  if (opts.includeStudent) headers.push('Student');
+  headers.push('Duration (min)', 'Activities Completed', 'Accuracy', 'XP Earned', 'Practice Time');
+
+  const rows = (sessions || []).map(s => {
+    const own = (attempts || []).filter(a => a.session_id === s.id);
+    const sum = summariseAttempts(own);
+    const acc = sessionAccuracyPct(own);
+    const date = s.created_at
+      ? new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : '';
+    const row = [date, s.title || 'Session'];
+    if (opts.includeStudent) row.push((s.student && s.student.full_name) || '');
+    row.push(s.duration || '', sum.count, acc == null ? '—' : acc + '%', sum.xp, formatDuration(sum.seconds));
+    return row;
+  });
+
+  return rowsToCsv(headers, rows);
+}
+
+function slugifyForFilename(name) {
+  return (name || 'student').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'student';
+}
+
+/* BOM prefix so Excel opens the CSV as UTF-8 instead of guessing Latin-1. */
+function downloadCsv(filename, csv) {
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}

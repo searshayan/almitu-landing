@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=32">
+  <link rel="stylesheet" href="css/main.css?v=33">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -617,9 +617,12 @@
         <!-- Left: Notebooks -->
         <div class="lg:col-span-4 sv-col-notebooks">
           <div class="card-surface rounded-2xl p-5 sv-notebook-list">
-            <h2 class="text-sm font-semibold mb-4 flex items-center gap-2" style="color:var(--navy);">
-              <svg class="w-4 h-4" style="color:var(--secondary);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-              My Notebook Archives
+            <h2 class="text-sm font-semibold mb-4 flex items-center justify-between gap-2" style="color:var(--navy);">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4" style="color:var(--secondary);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                My Notebook Archives
+              </span>
+              <button onclick="studentExportProgressPrompt()" class="text-[10px] font-semibold px-2 py-1 rounded-lg flex-shrink-0" style="background:white;border:1px solid var(--line);color:var(--secondary);">Export progress</button>
             </h2>
             <div id="notebookList" class="space-y-2">
               <div class="text-center py-8 text-sm" style="color:var(--muted);">No notebooks yet.</div>
@@ -759,32 +762,32 @@
   </div>
 
   <!-- Scripts (dependency order) -->
-  <script src="js/supabase.js?v=32"></script>
-  <script src="js/state.js?v=32"></script>
-  <script src="js/levels.js?v=32"></script>
-  <script src="js/literacyAssets.js?v=32"></script>
-  <script src="js/fingerprint.js?v=32"></script>
-  <script src="js/sessionTypes.js?v=32"></script>
-  <script src="js/config.js?v=32"></script>
-  <script src="js/prompts.js?v=32"></script>
-  <script src="js/renders.js?v=32"></script>
-  <script src="js/literacyBuild.js?v=32"></script>
-  <script src="js/demoEngine.js?v=32"></script>
-  <script src="js/api.js?v=32"></script>
-  <script src="js/data.js?v=32"></script>
-  <script src="js/auth.js?v=32"></script>
-  <script src="js/progress.js?v=32"></script>
-  <script src="js/admin.js?v=32"></script>
-  <script src="js/curriculum.js?v=32"></script>
-  <script src="js/ui.js?v=32"></script>
-  <script src="js/step1.js?v=32"></script>
-  <script src="js/step2.js?v=32"></script>
-  <script src="js/step3.js?v=32"></script>
-  <script src="js/router.js?v=32"></script>
-  <script src="js/messaging.js?v=32"></script>
-  <script src="js/amie.js?v=32"></script>
-  <script src="js/schedule.js?v=32"></script>
-  <script src="js/guide.js?v=32"></script>
-  <script src="js/app.js?v=32"></script>
+  <script src="js/supabase.js?v=33"></script>
+  <script src="js/state.js?v=33"></script>
+  <script src="js/levels.js?v=33"></script>
+  <script src="js/literacyAssets.js?v=33"></script>
+  <script src="js/fingerprint.js?v=33"></script>
+  <script src="js/sessionTypes.js?v=33"></script>
+  <script src="js/config.js?v=33"></script>
+  <script src="js/prompts.js?v=33"></script>
+  <script src="js/renders.js?v=33"></script>
+  <script src="js/literacyBuild.js?v=33"></script>
+  <script src="js/demoEngine.js?v=33"></script>
+  <script src="js/api.js?v=33"></script>
+  <script src="js/data.js?v=33"></script>
+  <script src="js/auth.js?v=33"></script>
+  <script src="js/progress.js?v=33"></script>
+  <script src="js/admin.js?v=33"></script>
+  <script src="js/curriculum.js?v=33"></script>
+  <script src="js/ui.js?v=33"></script>
+  <script src="js/step1.js?v=33"></script>
+  <script src="js/step2.js?v=33"></script>
+  <script src="js/step3.js?v=33"></script>
+  <script src="js/router.js?v=33"></script>
+  <script src="js/messaging.js?v=33"></script>
+  <script src="js/amie.js?v=33"></script>
+  <script src="js/schedule.js?v=33"></script>
+  <script src="js/guide.js?v=33"></script>
+  <script src="js/app.js?v=33"></script>
 </body>
 </html>

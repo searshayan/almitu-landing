@@ -651,8 +651,15 @@ function studentsCard(students) {
   const rows = students.map(st => {
     const open = tutorState.openStudentId === st.id;
     const done = tutorState.sessions.filter(x => x.student_id === st.id && x.status === 'completed' && x.plan);
+    const exportBtn = done.length
+      ? `<button onclick="event.stopPropagation(); tutorExportProgressPrompt('${st.id}')" class="text-[10px] font-semibold px-2 py-1 rounded-lg flex-shrink-0" style="background:white;border:1px solid var(--line);color:var(--secondary);">Export progress</button>`
+      : '';
     const history = !open ? '' : `
       <div class="mt-3 pt-3" style="border-top:1px dashed var(--line);">
+        ${done.length ? `<div class="flex items-center justify-between mb-1">
+          <p class="text-[10px] uppercase tracking-wide font-semibold" style="color:var(--muted);">Completed sessions</p>
+          ${exportBtn}
+        </div>` : ''}
         ${done.length ? done.map(row => {
           const nb = rowToNotebook(row);
           const p = summariseAttempts(((tutorState.attempts) || []).filter(a => a.session_id === row.id));
@@ -693,6 +700,36 @@ function studentsCard(students) {
 function tutorToggleStudent(id) {
   tutorState.openStudentId = tutorState.openStudentId === id ? null : id;
   renderTutorHome();
+}
+
+/* ── Export a student's progress: pick how many of their latest completed
+   sessions to include, then download a CSV built from data already loaded. ── */
+function tutorExportProgressPrompt(studentId) {
+  const st = (tutorState.students || []).find(x => x.id === studentId);
+  const count = (tutorState.sessions || []).filter(x => x.student_id === studentId && x.status === 'completed' && x.plan).length;
+  if (!st || !count) { showToast('No completed sessions to export yet.', 'warn'); return; }
+  showModal(`
+    <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">Export progress</h3>
+    <p class="text-xs mb-4" style="color:var(--muted);">${escapeHtml(st.full_name || 'Student')} — choose how many of their most recent completed sessions to include.</p>
+    <select id="exportSessionLimit" class="w-full rounded-xl px-4 py-3 text-sm field-input mb-4">
+      ${EXPORT_SESSION_LIMITS.map(n => `<option value="${n}" ${n === 10 ? 'selected' : ''}>${n} latest sessions${n > count ? ` (only ${count} available)` : ''}</option>`).join('')}
+    </select>
+    <button onclick="tutorExportProgressConfirm('${studentId}')" class="w-full py-3 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Download CSV</button>`);
+}
+
+function tutorExportProgressConfirm(studentId) {
+  const st = (tutorState.students || []).find(x => x.id === studentId);
+  const limitEl = document.getElementById('exportSessionLimit');
+  const limit = limitEl ? parseInt(limitEl.value, 10) : 10;
+  const sessions = (tutorState.sessions || [])
+    .filter(x => x.student_id === studentId && x.status === 'completed' && x.plan)
+    .slice(0, limit);
+  if (!sessions.length) { showToast('No completed sessions to export yet.', 'warn'); return; }
+  const csv = buildProgressCsv(sessions, tutorState.attempts || []);
+  downloadCsv(`almitu-progress-${slugifyForFilename(st && st.full_name)}-${new Date().toISOString().slice(0, 10)}.csv`, csv);
+  const modal = document.getElementById('genericModal');
+  if (modal) modal.classList.add('hidden');
+  showToast('Progress exported.', 'success');
 }
 
 /* ── View a saved plan's actual slide content ── */
@@ -911,7 +948,7 @@ function applyStudentToForm(st) {
 
 /* ═════════════════════ STUDENT DASHBOARD ═════════════════════ */
 
-window.studentProgress = { attempts: [] };
+window.studentProgress = { attempts: [], sessions: [] };
 
 async function initStudentDashboard() {
   const ctx = activeContext();
@@ -927,6 +964,9 @@ async function initStudentDashboard() {
     s.savedNotebooks = rows.map(rowToNotebook).filter(nb => nb && nb.plan && nb.plan.meta);
     s.selectedNotebookId = s.savedNotebooks[0] ? s.savedNotebooks[0].id : null;
     studentProgress.attempts = attempts;
+    // Raw rows (newest first, per dataListStudentSessions) for the progress export —
+    // kept separate from savedNotebooks since that list is reshaped for the UI.
+    studentProgress.sessions = rows.filter(r => r.plan);
   } catch (e) {
     s.savedNotebooks = [];
     showToast('Could not load your sessions: ' + e.message, 'error');
@@ -975,6 +1015,31 @@ function renderStudentXpBadge() {
         ${stat('Time', formatDuration(thisSession.seconds), 'var(--secondary)')}
       </div>
     </div>`;
+}
+
+/* ── Export my own progress: same CSV as the tutor's, minus the Student column. ── */
+function studentExportProgressPrompt() {
+  const count = (studentProgress.sessions || []).length;
+  if (!count) { showToast('No completed sessions to export yet.', 'warn'); return; }
+  showModal(`
+    <h3 class="text-lg font-display font-bold mb-1" style="color:var(--navy);">Export my progress</h3>
+    <p class="text-xs mb-4" style="color:var(--muted);">Choose how many of your most recent completed sessions to include.</p>
+    <select id="exportSessionLimit" class="w-full rounded-xl px-4 py-3 text-sm field-input mb-4">
+      ${EXPORT_SESSION_LIMITS.map(n => `<option value="${n}" ${n === 10 ? 'selected' : ''}>${n} latest sessions${n > count ? ` (only ${count} available)` : ''}</option>`).join('')}
+    </select>
+    <button onclick="studentExportProgressConfirm()" class="w-full py-3 rounded-xl text-white text-sm font-semibold glow-primary" style="background:linear-gradient(135deg, #FF6B35, #E85A2A);">Download CSV</button>`);
+}
+
+function studentExportProgressConfirm() {
+  const limitEl = document.getElementById('exportSessionLimit');
+  const limit = limitEl ? parseInt(limitEl.value, 10) : 10;
+  const sessions = (studentProgress.sessions || []).slice(0, limit);
+  if (!sessions.length) { showToast('No completed sessions to export yet.', 'warn'); return; }
+  const csv = buildProgressCsv(sessions, studentProgress.attempts || []);
+  downloadCsv(`almitu-progress-${slugifyForFilename(activeContext().name)}-${new Date().toISOString().slice(0, 10)}.csv`, csv);
+  const modal = document.getElementById('genericModal');
+  if (modal) modal.classList.add('hidden');
+  showToast('Progress exported.', 'success');
 }
 
 /* ── "Join the Session" banner: locked until the tutor shares a link ── */
