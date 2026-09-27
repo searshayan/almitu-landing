@@ -606,3 +606,73 @@ function dataSubscribeSchedule(myId, cb) {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'class_schedule' }, () => cb && cb())
     .subscribe();
 }
+
+/* ─────────────── organizations (coordinator / B2B) — migration 013 ───────────────
+   Admin manages orgs + membership; a coordinator only ever reads their own
+   org(s) and their members (RLS scopes all of this automatically). */
+
+/* Admin: every organization. */
+async function dataListOrganizations() {
+  const c = requireSb();
+  const { data, error } = await c.from('organizations').select('*').order('name', { ascending: true });
+  throwIf(error, 'listOrganizations');
+  return data || [];
+}
+
+async function dataCreateOrganization(name) {
+  const c = requireSb();
+  const { data, error } = await c.from('organizations').insert({ name }).select('*').single();
+  throwIf(error, 'createOrganization');
+  return data;
+}
+
+async function dataDeleteOrganization(id) {
+  const c = requireSb();
+  const { error } = await c.from('organizations').delete().eq('id', id);
+  throwIf(error, 'deleteOrganization');
+}
+
+/* Admin or coordinator: every membership row of one org, with the member's
+   profile embedded. RLS scopes a coordinator to their own org(s) only. */
+async function dataListOrgMembers(orgId) {
+  const c = requireSb();
+  const { data, error } = await c.from('org_members')
+    .select('id, org_id, created_at, profile:profiles(id, full_name, email, role, status, language, country, level)')
+    .eq('org_id', orgId)
+    .order('created_at', { ascending: true });
+  throwIf(error, 'listOrgMembers');
+  return data || [];
+}
+
+async function dataAddOrgMember(orgId, profileId) {
+  const c = requireSb();
+  const { error } = await c.from('org_members').insert({ org_id: orgId, profile_id: profileId });
+  throwIf(error, 'addOrgMember');
+}
+
+async function dataRemoveOrgMember(id) {
+  const c = requireSb();
+  const { error } = await c.from('org_members').delete().eq('id', id);
+  throwIf(error, 'removeOrgMember');
+}
+
+/* Coordinator: which org(s) am I a member of. */
+async function dataListMyOrgs() {
+  const c = requireSb();
+  const { data, error } = await c.from('org_members')
+    .select('org:organizations(id, name)')
+    .eq('profile_id', currentUserId());
+  throwIf(error, 'listMyOrgs');
+  return (data || []).map(r => r.org).filter(Boolean);
+}
+
+/* Coordinator: every completed session RLS allows them to see (i.e. every
+   org-member student's sessions, across whichever org(s) they belong to —
+   callers narrow this to one org client-side via the student id set). */
+async function dataListOrgSessions() {
+  const c = requireSb();
+  const { data, error } = await c.from('sessions').select(SESSION_SELECT)
+    .eq('status', 'completed').order('created_at', { ascending: false });
+  throwIf(error, 'listOrgSessions');
+  return data || [];
+}
