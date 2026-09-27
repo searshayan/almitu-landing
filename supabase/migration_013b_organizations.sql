@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════
--- Almitu — Migration 013: Coordinator role + Organizations (B2B)
+-- Almitu — Migration 013b: Coordinator role + Organizations (B2B)
 --
 --   A coordinator observes progress for the tutors and students an admin
 --   has explicitly placed in their organization ("org_members" — same
@@ -19,13 +19,16 @@
 -- ⚠️  INCREMENTAL and safe to run against the LIVE database.
 --     Do NOT re-run migration_001 — that one drops every table.
 --
--- HOW TO RUN: Supabase → SQL Editor → New query → paste all → Run.
+-- ⚠️  REQUIRES migration_013a_coordinator_enum.sql to have been run and
+--     committed FIRST, as its own separate paste. This file references
+--     the 'coordinator' enum value, which Postgres won't allow inside
+--     the same transaction that created it.
+--
+-- HOW TO RUN: Supabase → SQL Editor → New query → paste all of THIS
+--             file → Run. (After migration_013a, in a separate query.)
 -- ═══════════════════════════════════════════════════════════════════
 
--- ─────────── 1. New role ───────────
-alter type public.user_role add value if not exists 'coordinator';
-
--- ─────────── 2. organizations + org_members ───────────
+-- ─────────── 1. organizations + org_members ───────────
 create table if not exists public.organizations (
   id         uuid primary key default gen_random_uuid(),
   name       text not null,
@@ -47,7 +50,7 @@ alter table public.org_members enable row level security;
 create index if not exists org_members_org_idx     on public.org_members (org_id);
 create index if not exists org_members_profile_idx on public.org_members (profile_id);
 
--- ─────────── 3. Helper functions (SECURITY DEFINER, mirrors is_admin()) ───────────
+-- ─────────── 2. Helper functions (SECURITY DEFINER, mirrors is_admin()) ───────────
 
 create or replace function public.is_coordinator()
 returns boolean
@@ -142,5 +145,5 @@ create policy class_attendance_coordinator_select on public.class_attendance
 -- app_settings today.
 
 -- ─────────── Result ───────────
-select 'migration 013 complete' as status,
+select 'migration 013b complete' as status,
        (select count(*) from public.organizations) as organizations_total;
