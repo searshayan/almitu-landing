@@ -499,26 +499,27 @@ Output ONLY the slides payload as a single, syntactically perfect JSON object. D
    tutor's target items and the FINAL (possibly edited) slides.
    ═══════════════════════════════════════════════════════ */
 
-/* Per-CEFR targets for the Reading & Listening practice cards, straight from the
-   Practice Bank Expansion spec. Reading length + question count, listening
-   duration + question count, and the replay allowance for listening audio. */
-// listenChars is derived from listenSecs at our TTS narration speed (0.8x —
-// see practice-tts's ELEVENLABS_SPEED): ~1,000 characters of script produce
-// ~60s of audio at normal (1.0x) pace, so at 0.8x that same 1,000 characters
-// stretches to ~75s. Character count is what the model can actually control
-// and what ElevenLabs bills on — "seconds of speech" is not something Claude
-// can reliably estimate on its own, so it's kept only as informational
-// framing; listenChars is the enforced constraint.
+/* Per-CEFR targets for the Reading & Listening practice cards. Reading length
+   stays per-level (word count, since it's displayed text, not audio); the
+   Listening character lock and the question count for BOTH cards are grouped
+   by tier (foundation / development / proficiency) — a deliberate reduction
+   from the old per-level granularity, both to shorten the audio and to keep
+   the spec simple.
+   listenChars is what the model can actually control and what ElevenLabs
+   bills on — "seconds of speech" is not something Claude can reliably
+   estimate on its own, so listenTarget/listenSecs are informational only. */
 const PRACTICE_CARD_SPEC = {
-  'Pre-A1': { readWords: '15–40 words (labels, captions, or 2–4 controlled sentences)', readQ: '5',    listenSecs: '60–75',        listenTarget: 70,  listenChars: '800–1,000 characters',   listenQ: '5',    maxPlays: 3 },
-  'A1':     { readWords: '40–80 words',   readQ: '5–6',  listenSecs: '60–90',         listenTarget: 80,  listenChars: '800–1,200 characters',   listenQ: '5–6',  maxPlays: 3 },
-  'A2':     { readWords: '80–140 words',  readQ: '6–7',  listenSecs: '90–120',        listenTarget: 105, listenChars: '1,200–1,600 characters', listenQ: '6–7',  maxPlays: 2 },
-  'B1':     { readWords: '140–220 words', readQ: '7–8',  listenSecs: '120–150',       listenTarget: 135, listenChars: '1,600–2,000 characters', listenQ: '7–8',  maxPlays: 2 },
-  'B2':     { readWords: '220–320 words', readQ: '8–10', listenSecs: '150–180',       listenTarget: 165, listenChars: '2,000–2,400 characters', listenQ: '8–10', maxPlays: 2 },
-  'C1':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenChars: '2,000–2,400 characters (never more)', listenQ: '8–10', maxPlays: 2 },
-  'C2':     { readWords: '300–450 words', readQ: '8–10', listenSecs: 'up to 180 (never more)', listenTarget: 175, listenChars: '2,000–2,400 characters (never more)', listenQ: '8–10', maxPlays: 2 }
+  'Pre-A1': { readWords: '15–40 words (labels, captions, or 2–4 controlled sentences)', readQ: '5', listenSecs: '40–55',  listenTarget: 45,  listenChars: '500–750 characters' },
+  'A1':     { readWords: '40–80 words',   readQ: '5', listenSecs: '40–55',  listenTarget: 45,  listenChars: '500–750 characters' },
+  'A2':     { readWords: '80–140 words',  readQ: '7', listenSecs: '65–90',  listenTarget: 75,  listenChars: '850–1,200 characters' },
+  'B1':     { readWords: '140–220 words', readQ: '7', listenSecs: '65–90',  listenTarget: 75,  listenChars: '850–1,200 characters' },
+  'B2':     { readWords: '220–320 words', readQ: '9', listenSecs: '120–150', listenTarget: 135, listenChars: '1,600–2,000 characters' },
+  'C1':     { readWords: '300–450 words', readQ: '9', listenSecs: '120–150', listenTarget: 135, listenChars: '1,600–2,000 characters' },
+  'C2':     { readWords: '300–450 words', readQ: '9', listenSecs: '120–150', listenTarget: 135, listenChars: '1,600–2,000 characters' }
 };
 function practiceCardSpec(level) { return PRACTICE_CARD_SPEC[level] || PRACTICE_CARD_SPEC['A1']; }
+/* Reading and Listening now share one question count per tier. */
+function practiceQCount(level) { return practiceCardSpec(level).readQ; }
 
 function buildPracticeBankSystemPrompt(formData) {
   const l1Lang = resolveL1Language(formData.language);
@@ -553,6 +554,7 @@ READING, LISTENING & EXPLORE MORE — TARGET ADHERENCE (non-negotiable): the pas
 READING PRACTICE
 - One passage, ${spec.readWords}, at exactly ${formData.level}. Reading is a text-only exercise — no audio.
 - ${spec.readQ} comprehension questions. ALL must be "type": "multiple_choice" with exactly 3 answer options each — NEVER "true_false" or "short_response", and NEVER a typed-answer question of any kind. No trick questions, no "Which is NOT…?" negatives, nothing that needs language absent from the passage. For Pre-A1/A1 keep wording short and concrete.
+- QUESTIONS MUST COME FROM THIS EXACT PASSAGE: every question and its correct answer must be directly verifiable from the passage text you just wrote — re-read your own passage before finalizing each question and confirm the specific fact is literally there. Never write a question answerable only from general knowledge, or one whose answer isn't clearly present in the passage.
 - Include a short optional warm-up prompt, a small keyVocabulary list drawn from the passage, and one short transferTask.
 
 LISTENING PRACTICE
@@ -560,7 +562,8 @@ LISTENING PRACTICE
 - NEVER write it as a back-and-forth dialogue, conversation, interview, or any exchange between two or more named/lettered speakers — a single narrator voice reads this aloud start to finish, so any scripted turn-taking will sound wrong. This applies to EVERY session type, including Communication: instead of scripting the target exchange as two people talking, narrate the SITUATION and what is said/needed in it in the third person or as a direct address to the listener (e.g. "At the pharmacy, you explain your symptoms, and the pharmacist recommends..." rather than "Customer: ... / Pharmacist: ..."). If you notice yourself writing quoted back-and-forth lines, stop and rewrite it as continuous narration.
 - Write it as genuinely well-crafted prose, not a flat list of facts: a real narrative arc for a story (a clear beginning, a small development, an ending) or a clear logical structure for information (what/why/how, in a sensible order). Vary sentence length and structure naturally for the level — avoid mechanical, repetitive phrasing.
 - New but closely related context — do NOT reuse the reading passage verbatim. Recycle key vocabulary, grammar and function naturally. Clear pronunciation and pacing. Pre-A1/A1: very predictable language, no idioms/slang/sarcasm.
-- ${spec.listenQ} questions that assess LISTENING, not reading. ALL must be "type": "multiple_choice" with exactly 3 answer options each — NEVER "true_false" or "short_response", and NEVER a typed-answer question of any kind. Feedback may quote at most a very short phrase — NEVER reveal the whole script.
+- ${spec.readQ} questions that assess LISTENING, not reading. ALL must be "type": "multiple_choice" with exactly 3 answer options each — NEVER "true_false" or "short_response", and NEVER a typed-answer question of any kind. Feedback may quote at most a very short phrase — NEVER reveal the whole script.
+- QUESTIONS MUST COME FROM THIS EXACT SCRIPT: every question and its correct answer must be directly verifiable from the internalScript you just wrote — re-read your own script before finalizing each question and confirm the specific detail is literally there. Never write a question about information absent from the script.
 - Include a small "keyLanguageAfterCompletion" list (short phrases only). This is not TOEFL/TOEIC test prep unless the session itself is exam preparation.
 
 EXPLORE MORE (optional extension resources — never scored)
@@ -576,7 +579,7 @@ OUTPUT SCHEMA:
   "items": [ { "term": "target item", "meaning": "clear ${formData.level}-appropriate definition", "l1": "${formData.l1Support ? l1Lang + ' translation' : ''}", "example": "one natural sentence using the term", "explanation": "short ${formData.level}-appropriate English note on meaning/form/use", "l1_explanation": "${formData.tier === 'foundation' ? 'the explanation in ' + l1Lang + ' (REQUIRED — powers answer feedback)' : ''}" } ],
   "sentences": [ "6-8 standalone practice sentences, each containing exactly one target term" ],
   "reading": { "id": "reading", "type": "reading_practice", "title": "Read: [specific title]", "estimatedMinutes": 6, "cefrLevel": "${formData.level}", "canDo": "I can understand a short text about [context].", "warmUp": { "prompt": "[one short prediction prompt]", "responseType": "optional_choice_or_short_text" }, "passage": { "title": "[passage title]", "text": "[exact final text to display]" }, "questions": [ { "id": "reading-q1", "type": "multiple_choice", "question": "[clear question]", "options": ["[option]","[option]","[option]"], "answer": "[the exact text of the correct option]", "feedbackCorrect": "[specific explanation using the passage]", "feedbackIncorrect": "[specific clue pointing to the relevant sentence]" } ], "keyVocabulary": [ { "word": "[word]", "simpleMeaning": "[plain meaning]", "exampleFromText": "[short exact example]" } ], "transferTask": { "prompt": "[short personal/practical application]", "responseType": "short_text_or_choice", "exampleAnswer": "[optional model]" } },
-  "listening": { "id": "listening", "type": "listening_practice", "title": "Listen: [specific title]", "estimatedMinutes": 6, "cefrLevel": "${formData.level}", "canDo": "I can understand a short conversation about [context].", "instructions": ["Listen carefully.","Choose the best answer.","Listen again if you need to."], "audio": { "generationRequired": true, "internalScript": "[INTERNAL ONLY — spoken script for TTS; never shown to the student]", "voiceProfile": "almitu-learning-voice", "speakerPlan": ["narrator"], "speed": 0.9, "format": "mp3", "audioStatus": "pending", "audioPath": null, "durationTargetSeconds": ${spec.listenTarget}, "maxPlays": ${spec.maxPlays}, "transcriptPolicy": "never_display" }, "questions": [ { "id": "listening-q1", "type": "multiple_choice", "question": "[clear question]", "options": ["[option]","[option]","[option]"], "answer": "[exact correct option]", "feedbackCorrect": "[short confirmation]", "feedbackIncorrect": "[short listening clue without revealing the full script]" } ], "keyLanguageAfterCompletion": [ { "phrase": "[short phrase only]", "focus": "[what to notice or practise]" } ] },
+  "listening": { "id": "listening", "type": "listening_practice", "title": "Listen: [specific title]", "estimatedMinutes": 6, "cefrLevel": "${formData.level}", "canDo": "I can understand a short conversation about [context].", "instructions": ["Take notes as you listen.","Choose the best answer.","Replay as many times as you need, and try this activity again later."], "audio": { "generationRequired": true, "internalScript": "[INTERNAL ONLY — spoken script for TTS; never shown to the student]", "voiceProfile": "almitu-learning-voice", "speakerPlan": ["narrator"], "speed": 0.9, "format": "mp3", "audioStatus": "pending", "audioPath": null, "durationTargetSeconds": ${spec.listenTarget}, "transcriptPolicy": "never_display" }, "questions": [ { "id": "listening-q1", "type": "multiple_choice", "question": "[clear question]", "options": ["[option]","[option]","[option]"], "answer": "[exact correct option]", "feedbackCorrect": "[short confirmation]", "feedbackIncorrect": "[short listening clue without revealing the full script]" } ], "keyLanguageAfterCompletion": [ { "phrase": "[short phrase only]", "focus": "[what to notice or practise]" } ] },
   "externalResources": { "id": "external_resources", "type": "explore_more", "title": "Explore More", "estimatedMinutes": "Optional", "cefrLevel": "${formData.level}", "intro": "[one concise invitation tied to the session goal]", "videoQuery": "[precise YouTube search query for this topic and level]", "videoLabel": "[short label of what the video is about]", "tedQuery": "${['B2','C1','C2'].includes(formData.level) ? '[TED-style search query on the broader theme]' : ''}", "articleQuery": "[search query for a simple article/explanation on this session's grammar, vocabulary or communication focus]", "articleLabel": "[short label of what the article is about]" }
 } }`;
 }
