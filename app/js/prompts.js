@@ -523,7 +523,23 @@ function practiceCardSpec(level) { return PRACTICE_CARD_SPEC[level] || PRACTICE_
 function buildPracticeBankSystemPrompt(formData) {
   const l1Lang = resolveL1Language(formData.language);
   const spec = practiceCardSpec(formData.level);
-  return `You are the Almitu Practice Engine. Build the post-session practice bank that powers a learner's self-study activities (flashcards, MCQ, gap-fill, reorder, matching, PLUS a Reading, a Listening and an Explore More card). Calibrate everything to CEFR ${formData.level}.
+  // Same calibration machinery buildSystemPrompt() uses for slides (TIER_RULES
+  // + levelDescriptor). Without this, the practice bank only had a vague
+  // "calibrate to CEFR X" aspiration — no concrete sentence-length or
+  // vocabulary-frequency ceiling — so a Pre-A1 Reading/Listening card could
+  // drift toward B1 complexity with nothing here to stop it.
+  const l1Rule = formData.l1Support
+    ? `REQUIRED — provide an accurate, contextualized ${l1Lang} translation or immediate semantic hint inside every designated L1 data slot.`
+    : 'DISABLED — keep all L1 data slots strictly as empty strings (""). Do not introduce any non-English text under any circumstances.';
+  const tierRules = TIER_RULES[formData.tier].replace(/\{\{L1_RULE\}\}/g, l1Rule);
+  const levelLock = levelDescriptor(formData.level);
+  return `You are the Almitu Practice Engine. Build the post-session practice bank that powers a learner's self-study activities (flashcards, MCQ, gap-fill, reorder, matching, PLUS a Reading, a Listening and an Explore More card).
+
+${tierRules}
+
+EXACT-LEVEL CALIBRATION — the learner is ${formData.level}:
+${levelLock}
+Adjacent levels must NOT read alike: a Pre-A1 Reading/Listening card and a B1 one on the same topic must differ in sentence length, vocabulary frequency, grammar range and cognitive demand — not merely wording. A ${formData.level} learner must find this genuinely readable/listenable at their level, not merely "on topic." Calibrate every string to ${formData.level} precisely — never drift toward a higher level because the topic feels rich enough to deserve it.
 
 RULES:
 - Cover EVERY target item the tutor supplied — no more, no fewer.
@@ -532,7 +548,7 @@ RULES:
 - ${formData.l1Support ? 'L1 support is ON: give an accurate ' + l1Lang + ' translation for each item.' : 'L1 support is OFF: leave every "l1" and "l1_explanation" field as an empty string.'}
 - Return ONLY one valid JSON object. No markdown, no commentary.
 
-READING, LISTENING & EXPLORE MORE — align all three tightly with THIS session's CEFR level, topic, objective, target vocabulary, grammar/language target, target phrases and real-life context. Reinforce the session; never generic homework. Use respectful, adult-appropriate, practical, clear international English. Reuse target language naturally — do NOT copy the tutor slides or duplicate the quiz questions word-for-word. Give specific feedback on every question. Each card needs a visible learner-friendly Can-Do statement.
+READING, LISTENING & EXPLORE MORE — TARGET ADHERENCE (non-negotiable): the passage and the internalScript must be ABOUT this session's actual topic/scenario/objective (given below as INPUT SOURCE DATA) — not a generic or loosely-related substitute — and must naturally use the SAME target vocabulary/expressions supplied, not synonyms or a different set of items. If you find yourself writing content that would read identically for a different topic or a different tutor's input, it is too generic — rewrite it grounded in the specifics given. Align all three tightly with THIS session's CEFR level, topic, objective, target vocabulary, grammar/language target, target phrases and real-life context. Reinforce the session; never generic homework. Use respectful, adult-appropriate, practical, clear international English. Reuse target language naturally — do NOT copy the tutor slides or duplicate the quiz questions word-for-word. Give specific feedback on every question. Each card needs a visible learner-friendly Can-Do statement.
 
 READING PRACTICE
 - One passage, ${spec.readWords}, at exactly ${formData.level}. Reading is a text-only exercise — no audio.
