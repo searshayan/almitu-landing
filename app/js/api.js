@@ -122,9 +122,15 @@ async function callClaudePractice(formData, slides, cfg) {
     },
     body: JSON.stringify({
       model: cfg.claudeModel || 'claude-sonnet-4-6',
-      // Raised from 4096: the bank now also carries a reading passage, a
-      // listening script and their question sets, which the old cap truncated.
-      max_tokens: 8192,
+      // Raised from 8192: Proficiency-tier (B2/C1/C2) content — 12 items with
+      // sophisticated definitions, a longer reading passage, 9+9 comprehension
+      // questions, a listening script, and Explore More — reliably filled the
+      // old cap and got cut off mid-JSON (confirmed via output_tokens:8192
+      // exactly + a JSON parse failure on truncated output), silently falling
+      // back to the demo bank on every regeneration attempt. Verified this
+      // model accepts a much higher ceiling; this is a ceiling; a normal
+      // response doesn't cost more just because the ceiling is higher.
+      max_tokens: 16000,
       // Extended thinking is off: this is rigid, schema-bound JSON generation,
       // not open-ended reasoning, and thinking tokens were eating into the
       // same max_tokens budget as the actual output, truncating it.
@@ -152,7 +158,7 @@ async function callCustomPractice(formData, slides, cfg) {
         { role: 'system', content: buildPracticeBankSystemPrompt(formData) },
         { role: 'user', content: buildPracticeBankUserPrompt(formData, slides) }
       ],
-      max_tokens: 8192
+      max_tokens: 16000
     })
   });
   if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
@@ -160,11 +166,45 @@ async function callCustomPractice(formData, slides, cfg) {
   return parsePracticeJSON(data.choices?.[0]?.message?.content || '');
 }
 
+/* Claude occasionally emits a literal control character (almost always a raw
+   newline) inside a JSON string value instead of escaping it — e.g. a
+   multi-line reading passage or explanation written with real line breaks.
+   That's invalid per the JSON spec, and JSON.parse rejects it outright, even
+   though every other byte of the response is fine. Walk the text tracking
+   whether we're inside a string (toggling on unescaped quotes) and escape
+   any raw control character found there, so one stray newline doesn't sink
+   an otherwise-valid, expensive generation. */
+function sanitizeJsonControlChars(raw) {
+  let out = '';
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    const code = raw.charCodeAt(i);
+    if (inString && !escaped && code < 0x20) {
+      if (ch === '\n') out += '\\n';
+      else if (ch === '\r') out += '\\r';
+      else if (ch === '\t') out += '\\t';
+      else out += '\\u' + code.toString(16).padStart(4, '0');
+      continue;
+    }
+    out += ch;
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+    } else if (ch === '"') {
+      inString = true;
+    }
+  }
+  return out;
+}
+
 function parsePracticeJSON(text) {
   let raw = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
   const start = raw.indexOf('{'); const end = raw.lastIndexOf('}');
   if (start === -1 || end === -1) throw new Error('No JSON in practice response');
-  const parsed = JSON.parse(raw.slice(start, end + 1));
+  const parsed = JSON.parse(sanitizeJsonControlChars(raw.slice(start, end + 1)));
   const pb = parsed.practice_bank || parsed;
   // items + sentences power the original 5 activities; reading/listening/
   // externalResources are the new practice cards. Each new key is optional —
@@ -242,7 +282,7 @@ function parseFlatJSON(text) {
   const start = raw.indexOf('{');
   const end = raw.lastIndexOf('}');
   if (start === -1 || end === -1) throw new Error('No JSON found in response');
-  return JSON.parse(raw.slice(start, end + 1));
+  return JSON.parse(sanitizeJsonControlChars(raw.slice(start, end + 1)));
 }
 
 /* ── Claude API (direct browser call) ── */
@@ -258,7 +298,9 @@ async function callClaude(formData, cfg) {
     },
     body: JSON.stringify({
       model: cfg.claudeModel || 'claude-sonnet-4-6',
-      max_tokens: 8192,
+      // Raised from 8192 alongside the practice-bank call — same headroom
+      // margin for Proficiency-tier's longer authentic texts and tables.
+      max_tokens: 16000,
       // Extended thinking is off: this is rigid, schema-bound JSON generation,
       // not open-ended reasoning, and thinking tokens were eating into the
       // same max_tokens budget as the actual output, truncating it.
@@ -321,7 +363,7 @@ async function callCustom(formData, cfg) {
         { role: 'system', content: buildSystemPrompt(formData) },
         { role: 'user', content: buildUserPrompt(formData) }
       ],
-      max_tokens: 8192
+      max_tokens: 16000
     })
   });
 
@@ -345,7 +387,7 @@ function parseContentJSON(text) {
   const start = raw.indexOf('{');
   const end = raw.lastIndexOf('}');
   if (start === -1 || end === -1) throw new Error('No JSON object found in response');
-  const parsed = JSON.parse(raw.slice(start, end + 1));
+  const parsed = JSON.parse(sanitizeJsonControlChars(raw.slice(start, end + 1)));
 
   if (!Array.isArray(parsed.slides) || parsed.slides.length === 0) throw new Error('Response has no slides');
   if (!parsed.practice_bank || !Array.isArray(parsed.practice_bank.items)) {
