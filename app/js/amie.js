@@ -177,15 +177,18 @@ function openAmie() {
   amieState.open = true;
   document.getElementById('amieDrawer').classList.remove('translate-x-full');
   document.getElementById('amieOverlay').classList.remove('hidden');
+  drawerLockViewport(document.getElementById('amieDrawer'));
   renderAmie();
   const input = document.getElementById('amieInput');
-  if (input && amieState.sessionId && amieState.remaining !== 0) input.focus();
+  // Don't auto-focus on touch devices: it pops the keyboard over the intro.
+  if (input && amieState.sessionId && amieState.remaining !== 0 && !window.matchMedia('(pointer: coarse)').matches) input.focus();
 }
 
 function closeAmie() {
   amieState.open = false;
   document.getElementById('amieDrawer').classList.add('translate-x-full');
   document.getElementById('amieOverlay').classList.add('hidden');
+  drawerUnlockViewport(document.getElementById('amieDrawer'));
 }
 
 /* Local action for the no-session state: just close so the student can pick a
@@ -411,7 +414,7 @@ function buildAmieUi() {
         </button>
       </div>
 
-      <div id="amieThread" class="flex-1 overflow-y-auto px-4 py-3"></div>
+      <div id="amieThread" class="flex-1 overflow-y-auto px-4 py-3" style="overscroll-behavior:contain;"></div>
 
       <div class="flex items-end gap-2 px-3 py-3 flex-shrink-0" style="border-top:1px solid var(--line);">
         <textarea id="amieInput" rows="1" dir="auto" disabled oninput="amieAutoGrow(this)" onkeydown="amieInputKey(event)" placeholder="Choose a session first"
@@ -426,6 +429,8 @@ function buildAmieUi() {
       /* Standard bidi for chat: each paragraph takes its own base direction from
          its first strong character, so a reply that mixes English and the L1
          (e.g. Farsi/Arabic) lays out each line correctly. */
+      /* 16px on phones: iOS Safari zooms the page into smaller inputs on focus. */
+      @media (max-width:639px) { #amieInput { font-size:16px !important; } }
       .amie-bidi { unicode-bidi:plaintext; text-align:start; }
       .amie-typing { display:flex; gap:4px; align-items:center; height:14px; }
       .amie-typing span { width:6px; height:6px; border-radius:50%; background:var(--muted); opacity:.5; animation:amieBounce 1.2s infinite ease-in-out; }

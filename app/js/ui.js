@@ -81,3 +81,34 @@ function resetPrepForm() {
   if (errEl) errEl.classList.add('hidden');
   setGenStatus('ready');
 }
+
+/* ─────────────── full-screen chat drawers on phones ───────────────
+   iOS Safari zooms into any input under 16px and, when the keyboard opens,
+   scrolls the *visual* viewport over a fixed panel — so the page behind shows
+   through and scrolls. On phones we (a) lock the page scroll while the drawer
+   is open and (b) size the drawer to the visual viewport, so it stays glued to
+   the space above the keyboard. Desktop / tablet side-drawers are untouched. */
+const _drawerFit = new Map();
+
+function drawerLockViewport(el) {
+  if (!el || !window.matchMedia('(max-width: 639px)').matches) return;
+  drawerUnlockViewport(el);
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const fit = () => { el.style.height = vv.height + 'px'; el.style.top = vv.offsetTop + 'px'; };
+  vv.addEventListener('resize', fit);
+  vv.addEventListener('scroll', fit);
+  _drawerFit.set(el, fit);
+  fit();
+}
+
+function drawerUnlockViewport(el) {
+  const fit = _drawerFit.get(el);
+  const vv = window.visualViewport;
+  if (fit && vv) { vv.removeEventListener('resize', fit); vv.removeEventListener('scroll', fit); }
+  _drawerFit.delete(el);
+  if (el) { el.style.height = ''; el.style.top = ''; }
+  if (!_drawerFit.size) { document.documentElement.style.overflow = ''; document.body.style.overflow = ''; }
+}
