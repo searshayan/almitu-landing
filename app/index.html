@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=38">
+  <link rel="stylesheet" href="css/main.css?v=39">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -696,6 +696,12 @@
               <h3 class="text-xs font-semibold" style="color:var(--navy);">Explore More</h3>
               <p class="text-[10px] mt-0.5" style="color:var(--muted);">Videos &amp; article</p>
             </button>
+            <!-- Phones only: Amie as an inline practice card (js/amie.js actAmie). Shown once Amie is initialised for a real student. -->
+            <button id="amieTile" onclick="actAmie()" style="display:none; border-color:rgba(255,107,53,.45); background:linear-gradient(135deg, rgba(0,78,137,.06), rgba(255,107,53,.12));" class="sm:hidden card-hover card-surface rounded-2xl p-4 text-center group">
+              <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🦉</div>
+              <h3 class="text-xs font-semibold" style="color:var(--navy);">Ask Amie</h3>
+              <p class="text-[10px] mt-0.5" style="color:var(--muted);">Chat about this session</p>
+            </button>
           </div>
 
           <div class="card-surface rounded-2xl p-6 min-h-[300px] sv-activity-detail">
@@ -766,33 +772,33 @@
   </div>
 
   <!-- Scripts (dependency order) -->
-  <script src="js/supabase.js?v=38"></script>
-  <script src="js/state.js?v=38"></script>
-  <script src="js/levels.js?v=38"></script>
-  <script src="js/literacyAssets.js?v=38"></script>
-  <script src="js/fingerprint.js?v=38"></script>
-  <script src="js/sessionTypes.js?v=38"></script>
-  <script src="js/config.js?v=38"></script>
-  <script src="js/prompts.js?v=38"></script>
-  <script src="js/renders.js?v=38"></script>
-  <script src="js/literacyBuild.js?v=38"></script>
-  <script src="js/demoEngine.js?v=38"></script>
-  <script src="js/api.js?v=38"></script>
-  <script src="js/data.js?v=38"></script>
-  <script src="js/auth.js?v=38"></script>
-  <script src="js/progress.js?v=38"></script>
-  <script src="js/admin.js?v=38"></script>
-  <script src="js/coordinator.js?v=38"></script>
-  <script src="js/curriculum.js?v=38"></script>
-  <script src="js/ui.js?v=38"></script>
-  <script src="js/step1.js?v=38"></script>
-  <script src="js/step2.js?v=38"></script>
-  <script src="js/step3.js?v=38"></script>
-  <script src="js/router.js?v=38"></script>
-  <script src="js/messaging.js?v=38"></script>
-  <script src="js/amie.js?v=38"></script>
-  <script src="js/schedule.js?v=38"></script>
-  <script src="js/guide.js?v=38"></script>
-  <script src="js/app.js?v=38"></script>
+  <script src="js/supabase.js?v=39"></script>
+  <script src="js/state.js?v=39"></script>
+  <script src="js/levels.js?v=39"></script>
+  <script src="js/literacyAssets.js?v=39"></script>
+  <script src="js/fingerprint.js?v=39"></script>
+  <script src="js/sessionTypes.js?v=39"></script>
+  <script src="js/config.js?v=39"></script>
+  <script src="js/prompts.js?v=39"></script>
+  <script src="js/renders.js?v=39"></script>
+  <script src="js/literacyBuild.js?v=39"></script>
+  <script src="js/demoEngine.js?v=39"></script>
+  <script src="js/api.js?v=39"></script>
+  <script src="js/data.js?v=39"></script>
+  <script src="js/auth.js?v=39"></script>
+  <script src="js/progress.js?v=39"></script>
+  <script src="js/admin.js?v=39"></script>
+  <script src="js/coordinator.js?v=39"></script>
+  <script src="js/curriculum.js?v=39"></script>
+  <script src="js/ui.js?v=39"></script>
+  <script src="js/step1.js?v=39"></script>
+  <script src="js/step2.js?v=39"></script>
+  <script src="js/step3.js?v=39"></script>
+  <script src="js/router.js?v=39"></script>
+  <script src="js/messaging.js?v=39"></script>
+  <script src="js/amie.js?v=39"></script>
+  <script src="js/schedule.js?v=39"></script>
+  <script src="js/guide.js?v=39"></script>
+  <script src="js/app.js?v=39"></script>
 </body>
 </html>

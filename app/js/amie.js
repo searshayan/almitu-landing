@@ -62,12 +62,28 @@ function resetAmie() {
   amieState.remaining = null;
   amieState.lowWarned = false;
   if (amieState.open) closeAmie();
-  const host = document.getElementById('amieThread');
-  if (host) host.innerHTML = '';
+  ['amieThread', 'amieInlineThread'].forEach(id => { const h = document.getElementById(id); if (h) h.innerHTML = ''; });
 }
 
-function showAmieButton() { const b = document.getElementById('amieFab'); if (b) b.classList.remove('hidden'); }
-function hideAmieButton() { const b = document.getElementById('amieFab'); if (b) b.classList.add('hidden'); resetAmie(); }
+function showAmieButton() {
+  const b = document.getElementById('amieFab'); if (b) b.classList.remove('hidden');
+  const t = document.getElementById('amieTile'); if (t) t.style.display = '';   // phones only (sm:hidden)
+}
+function hideAmieButton() {
+  const b = document.getElementById('amieFab'); if (b) b.classList.add('hidden');
+  const t = document.getElementById('amieTile'); if (t) t.style.display = 'none';
+  resetAmie();
+}
+
+/* Phones get Amie as an inline practice card (a tile → chat in the activity
+   area) instead of the floating drawer: no fixed layer over the page, so the iOS
+   keyboard, zoom and background-scroll problems can't happen. ≥640px keeps the drawer. */
+function amieIsPhone() { return window.matchMedia('(max-width: 639px)').matches; }
+
+/* The live thread / input / send elements: the inline card when it's on screen,
+   otherwise the drawer's. (Distinct ids, so the two never collide.) */
+function amieThreadEl() { return document.getElementById('amieInlineThread') || document.getElementById('amieThread'); }
+function amieInputEl()  { return document.getElementById('amieInlineInput')  || document.getElementById('amieInput'); }
 
 /* ─────────────── session binding ───────────────
    The single hook the dashboard calls whenever the active session changes
@@ -93,7 +109,7 @@ function amieSetSession(nb) {
   amieState.lowWarned = false;
 
   applyAmieOwlState();
-  if (amieState.open) renderAmie();   // refresh the open drawer to the new session
+  if (amieState.open || document.getElementById('amieInlineThread')) renderAmie();   // refresh whichever chat is on screen
 }
 
 /* Deterministic, compact context derived from the session's stored plan —
@@ -141,43 +157,44 @@ function applyAmieOwlState() {
 
   // Header + input reflect the same state when the drawer is built.
   const sub = document.getElementById('amieHeaderSub');
-  if (sub) {
-    // Keep the English label LTR and isolate the (possibly RTL) title in a <bdi>
-    // so a right-to-left session name can't reorder "Session connected:".
-    if (active) {
-      const lvl = amieState.sessionLevel ? ' · ' + escapeHtml(amieState.sessionLevel) : '';
-      sub.innerHTML = `Session connected: ${bidiText(amieState.sessionTitle)}${lvl}`;
-    } else {
-      sub.textContent = 'Choose a session to begin.';
-    }
-    sub.setAttribute('dir', 'ltr');
-  }
+  if (sub) { sub.innerHTML = amieSubHtml(); sub.setAttribute('dir', 'ltr'); }
   amieUpdateInputEnabled();
 }
 
+/* Keep the English label LTR and isolate the (possibly RTL) title in a <bdi>
+   so a right-to-left session name can't reorder "Session connected:". */
+function amieSubHtml() {
+  if (!amieState.sessionId) return 'Choose a session to begin.';
+  const lvl = amieState.sessionLevel ? ' · ' + escapeHtml(amieState.sessionLevel) : '';
+  return `Session connected: ${bidiText(amieState.sessionTitle)}${lvl}`;
+}
+
 function amieUpdateInputEnabled() {
-  const input = document.getElementById('amieInput');
-  const send = document.getElementById('amieSendBtn');
-  if (!input) return;
   const active = !!amieState.sessionId;
   const atLimit = active && amieState.remaining === 0;
   const disabled = !active || atLimit || amieState.sending;
-  input.disabled = disabled;
-  input.placeholder = !active ? 'Choose a session first'
-    : atLimit ? 'Session limit reached'
-    : 'Ask about this session…';
-  input.style.opacity = disabled ? '.6' : '1';
-  if (send) { send.disabled = disabled; send.style.opacity = disabled ? '.5' : '1'; }
+  // Drawer pair + inline (phone) pair — update whichever exist.
+  [['amieInput', 'amieSendBtn'], ['amieInlineInput', 'amieInlineSend']].forEach(([iid, sid]) => {
+    const input = document.getElementById(iid);
+    const send = document.getElementById(sid);
+    if (!input) return;
+    input.disabled = disabled;
+    input.placeholder = !active ? 'Choose a session first'
+      : atLimit ? 'Session limit reached'
+      : 'Ask about this session…';
+    input.style.opacity = disabled ? '.6' : '1';
+    if (send) { send.disabled = disabled; send.style.opacity = disabled ? '.5' : '1'; }
+  });
 }
 
 /* ─────────────── open / close ─────────────── */
 
 function openAmie() {
+  if (amieIsPhone()) { actAmie(); return; }   // phones: inline card, no floating drawer
   if (!amieState.built) buildAmieUi();
   amieState.open = true;
   document.getElementById('amieDrawer').classList.remove('translate-x-full');
   document.getElementById('amieOverlay').classList.remove('hidden');
-  drawerLockViewport(document.getElementById('amieDrawer'), document.getElementById('amieOverlay'));
   renderAmie();
   const input = document.getElementById('amieInput');
   // Don't auto-focus on touch devices: it pops the keyboard over the intro.
@@ -188,17 +205,47 @@ function closeAmie() {
   amieState.open = false;
   document.getElementById('amieDrawer').classList.add('translate-x-full');
   document.getElementById('amieOverlay').classList.add('hidden');
-  drawerUnlockViewport(document.getElementById('amieDrawer'));
+}
+
+/* Phone: the "Amie" practice tile — chat inline in the activity area, like any
+   other activity card. History/counts live in amieState, so switching tiles and
+   coming back keeps the conversation. */
+function actAmie() {
+  if (!amieState.built || !requireNotebook()) return;
+  amieSyncSession();
+  showPracticeContent(`
+    <div>
+      <div class="flex items-center gap-2.5 mb-3">
+        <span class="text-2xl leading-none">🦉</span>
+        <div class="min-w-0">
+          <h3 class="text-lg font-bold font-display" style="color:var(--navy);">Chat with Amie</h3>
+          <p id="amieInlineSub" class="text-xs" style="color:var(--muted);" dir="ltr">${amieSubHtml()}</p>
+        </div>
+      </div>
+      <div id="amieInlineThread" class="mb-3"></div>
+      <div class="flex items-end gap-2">
+        <textarea id="amieInlineInput" rows="1" dir="auto" disabled oninput="amieAutoGrow(this)" onkeydown="amieInputKey(event)" placeholder="Ask about this session…"
+          class="flex-1 resize-none rounded-xl px-3 py-2 focus:outline-none" style="font-size:16px; background:var(--card); border:1px solid var(--line); color:var(--ink); max-height:120px;"></textarea>
+        <button id="amieInlineSend" onclick="sendAmie()" disabled class="flex items-center justify-center w-10 h-10 rounded-xl text-white flex-shrink-0" style="background:var(--secondary);" aria-label="Send">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
+        </button>
+      </div>
+    </div>`);
+  renderAmie();
+  amieUpdateInputEnabled();
 }
 
 /* Local action for the no-session state: just close so the student can pick a
    session from the dashboard list behind the drawer. No model call. */
-function amieChooseSession() { closeAmie(); }
+function amieChooseSession() {
+  closeAmie();
+  if (amieIsPhone() && typeof svExitDetail === 'function') svExitDetail();   // phone: back to the sessions list
+}
 
 /* ─────────────── send ─────────────── */
 
 async function sendAmie() {
-  const input = document.getElementById('amieInput');
+  const input = amieInputEl();
   if (!input || amieState.sending) return;
   if (!amieState.sessionId) return;                 // neutral: nothing to chat about
   if (amieState.remaining === 0) { renderAmie(); return; }   // hard stop at limit
@@ -250,8 +297,17 @@ async function sendAmie() {
 
 /* ─────────────── rendering ─────────────── */
 
+/* Scroll to the newest bubble: the drawer scrolls its own box; the inline card
+   scrolls the page (nothing nested), keeping the bubble clear of the sticky header. */
+function amieScrollEnd(host) {
+  if (host.id === 'amieInlineThread') {
+    const last = host.lastElementChild;
+    if (last) last.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  } else host.scrollTop = host.scrollHeight;
+}
+
 function renderAmie(typing) {
-  const host = document.getElementById('amieThread');
+  const host = amieThreadEl();
   if (!host) return;
 
   // Neutral: no session selected.
@@ -260,7 +316,7 @@ function renderAmie(typing) {
   // Reached the per-session limit.
   if (amieState.remaining === 0) {
     host.innerHTML = (amieState.history.length ? amieBubblesHtml() : '') + amieLimitHtml();
-    host.scrollTop = host.scrollHeight;
+    amieScrollEnd(host);
     return;
   }
 
@@ -277,7 +333,7 @@ function renderAmie(typing) {
     : '';
 
   host.innerHTML = amieBubblesHtml() + lowHtml + typingHtml + amieCounterHtml();
-  host.scrollTop = host.scrollHeight;
+  amieScrollEnd(host);
 }
 
 function amieBubblesHtml() {
@@ -379,7 +435,7 @@ function amieRich(str) {
 }
 
 function amieQuick(text) {
-  const input = document.getElementById('amieInput');
+  const input = amieInputEl();
   if (input && !input.disabled) { input.value = text; input.focus(); amieAutoGrow(input); }
 }
 
@@ -429,6 +485,9 @@ function buildAmieUi() {
       /* Standard bidi for chat: each paragraph takes its own base direction from
          its first strong character, so a reply that mixes English and the L1
          (e.g. Farsi/Arabic) lays out each line correctly. */
+      /* Phones use the inline Amie tile, not the floating owl. */
+      @media (max-width:639px) { #amieFab { display:none !important; } }
+      #amieInlineThread > * { scroll-margin-top:76px; scroll-margin-bottom:24px; }
       /* 16px on phones: iOS Safari zooms the page into smaller inputs on focus. */
       @media (max-width:639px) { #amieInput { font-size:16px !important; } }
       .amie-bidi { unicode-bidi:plaintext; text-align:start; }
