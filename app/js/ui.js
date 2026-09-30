@@ -89,15 +89,23 @@ function resetPrepForm() {
    is open and (b) size the drawer to the visual viewport, so it stays glued to
    the space above the keyboard. Desktop / tablet side-drawers are untouched. */
 const _drawerFit = new Map();
+const _drawerOverlay = new Map();
 
-function drawerLockViewport(el) {
+function drawerLockViewport(el, overlay) {
   if (!el || !window.matchMedia('(max-width: 639px)').matches) return;
   drawerUnlockViewport(el);
+  // Make the dimmer solid on phones: anything the drawer doesn't cover (e.g. the
+  // strip above iOS's translucent form bar) must be plain background, never the
+  // dashboard showing through.
+  if (overlay) { overlay.dataset.css = overlay.style.cssText; overlay.style.background = 'var(--bg)'; _drawerOverlay.set(el, overlay); }
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
   const vv = window.visualViewport;
   if (!vv) return;
-  const fit = () => { el.style.height = vv.height + 'px'; el.style.top = vv.offsetTop + 'px'; };
+  const fit = () => {
+    el.style.height = vv.height + 'px'; el.style.top = vv.offsetTop + 'px';
+    if (overlay) { overlay.style.height = vv.height + 'px'; overlay.style.top = vv.offsetTop + 'px'; }
+  };
   vv.addEventListener('resize', fit);
   vv.addEventListener('scroll', fit);
   _drawerFit.set(el, fit);
@@ -109,6 +117,8 @@ function drawerUnlockViewport(el) {
   const vv = window.visualViewport;
   if (fit && vv) { vv.removeEventListener('resize', fit); vv.removeEventListener('scroll', fit); }
   _drawerFit.delete(el);
+  const ov = _drawerOverlay.get(el);
+  if (ov) { ov.style.cssText = ov.dataset.css || ''; _drawerOverlay.delete(el); }
   if (el) { el.style.height = ''; el.style.top = ''; }
   if (!_drawerFit.size) { document.documentElement.style.overflow = ''; document.body.style.overflow = ''; }
 }

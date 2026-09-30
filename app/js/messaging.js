@@ -273,7 +273,7 @@ function openMessages() {
   msgState.open = true;
   document.getElementById('msgDrawer').classList.remove('translate-x-full');
   document.getElementById('msgOverlay').classList.remove('hidden');
-  drawerLockViewport(document.getElementById('msgDrawer'));
+  drawerLockViewport(document.getElementById('msgDrawer'), document.getElementById('msgOverlay'));
   // Student has exactly one partner → jump straight into it.
   if (msgState.role === 'student' && msgState.partners[0]) {
     openThread(msgState.partners[0].id);

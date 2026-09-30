@@ -177,7 +177,7 @@ function openAmie() {
   amieState.open = true;
   document.getElementById('amieDrawer').classList.remove('translate-x-full');
   document.getElementById('amieOverlay').classList.remove('hidden');
-  drawerLockViewport(document.getElementById('amieDrawer'));
+  drawerLockViewport(document.getElementById('amieDrawer'), document.getElementById('amieOverlay'));
   renderAmie();
   const input = document.getElementById('amieInput');
   // Don't auto-focus on touch devices: it pops the keyboard over the intro.
