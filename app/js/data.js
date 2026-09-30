@@ -569,21 +569,24 @@ async function dataDeleteScheduleSlot(id) {
 async function dataListAttendance(scheduleIds, occurrenceDates) {
   if (!scheduleIds.length || !occurrenceDates.length) return [];
   const c = requireSb();
-  const { data, error } = await c.from('class_attendance')
-    .select('id, schedule_id, occurrence_date, status, marked_by, marked_role')
-    .in('schedule_id', scheduleIds)
-    .in('occurrence_date', occurrenceDates);
+  const q = cols => c.from('class_attendance').select(cols)
+    .in('schedule_id', scheduleIds).in('occurrence_date', occurrenceDates);
+  let { data, error } = await q('id, schedule_id, occurrence_date, status, marked_by, marked_role, note');
+  // migration_014 (the note column) may not be run yet — fall back so flags still show.
+  if (error) ({ data, error } = await q('id, schedule_id, occurrence_date, status, marked_by, marked_role'));
   throwIf(error, 'listAttendance');
   return data || [];
 }
 
-/* Raise a "can't attend" flag for one occurrence. */
-async function dataFlagAttendance(scheduleId, occurrenceDate, myId, role) {
+/* Raise a "can't attend" flag for one occurrence, with an optional note. */
+async function dataFlagAttendance(scheduleId, occurrenceDate, myId, role, note) {
   const c = requireSb();
-  const { error } = await c.from('class_attendance').insert({
+  const row = {
     schedule_id: scheduleId, occurrence_date: occurrenceDate,
     status: 'cant_attend', marked_by: myId, marked_role: role
-  });
+  };
+  if (note) row.note = note;
+  const { error } = await c.from('class_attendance').insert(row);
   throwIf(error, 'flagAttendance');
 }
 

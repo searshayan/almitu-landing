@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=35">
+  <link rel="stylesheet" href="css/main.css?v=36">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -131,6 +131,10 @@
             <span id="userNameLabel" class="text-sm font-semibold" style="color:var(--navy);"></span>
             <span id="userEmailLabel" class="text-[10px]" style="color:var(--muted);"></span>
           </div>
+          <button onclick="schedOpen()" id="scheduleBtn" title="Weekly schedule" aria-label="Weekly schedule" class="hidden flex items-center justify-center w-9 h-9 rounded-lg transition-all" style="background:var(--card); border:1px solid var(--line); color:var(--secondary);"
+            onmouseover="this.style.borderColor='var(--secondary)';" onmouseout="this.style.borderColor='var(--line)';">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg>
+          </button>
           <button onclick="openMessages()" id="messagesBtn" title="Messages" class="hidden relative flex items-center justify-center w-9 h-9 rounded-lg transition-all" style="background:var(--card); border:1px solid var(--line); color:var(--secondary);"
             onmouseover="this.style.borderColor='var(--secondary)';" onmouseout="this.style.borderColor='var(--line)';">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.3-3.9A7.96 7.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
@@ -184,9 +188,6 @@
 
     <!-- Curriculum browser: level → session type → topic (rendered by js/router.js) -->
     <section id="tutorCurriculum" class="hidden animate-fade-in"></section>
-
-    <!-- Weekly schedule (aggregate across students; rendered by js/schedule.js) -->
-    <section id="tutorSchedule" class="hidden animate-fade-in"></section>
 
     <!-- Bar shown above the prep engine to return to the sessions list -->
     <div id="tutorPrepBar" class="hidden flex items-center justify-between gap-2 mb-4 flex-wrap">
@@ -591,7 +592,7 @@
     <!-- Live session banner: "Join the Session" (rendered by js/router.js) -->
     <div id="studentLiveBanner" class="hidden"></div>
 
-    <!-- Weekly class schedule card (rendered by js/schedule.js) -->
+    <!-- "Next class" line; the full week opens from the header calendar button (js/schedule.js) -->
     <div id="studentScheduleCard" class="hidden"></div>
 
     <!-- XP / practice-time badge (rendered by js/router.js) -->
@@ -765,33 +766,33 @@
   </div>
 
   <!-- Scripts (dependency order) -->
-  <script src="js/supabase.js?v=35"></script>
-  <script src="js/state.js?v=35"></script>
-  <script src="js/levels.js?v=35"></script>
-  <script src="js/literacyAssets.js?v=35"></script>
-  <script src="js/fingerprint.js?v=35"></script>
-  <script src="js/sessionTypes.js?v=35"></script>
-  <script src="js/config.js?v=35"></script>
-  <script src="js/prompts.js?v=35"></script>
-  <script src="js/renders.js?v=35"></script>
-  <script src="js/literacyBuild.js?v=35"></script>
-  <script src="js/demoEngine.js?v=35"></script>
-  <script src="js/api.js?v=35"></script>
-  <script src="js/data.js?v=35"></script>
-  <script src="js/auth.js?v=35"></script>
-  <script src="js/progress.js?v=35"></script>
-  <script src="js/admin.js?v=35"></script>
-  <script src="js/coordinator.js?v=35"></script>
-  <script src="js/curriculum.js?v=35"></script>
-  <script src="js/ui.js?v=35"></script>
-  <script src="js/step1.js?v=35"></script>
-  <script src="js/step2.js?v=35"></script>
-  <script src="js/step3.js?v=35"></script>
-  <script src="js/router.js?v=35"></script>
-  <script src="js/messaging.js?v=35"></script>
-  <script src="js/amie.js?v=35"></script>
-  <script src="js/schedule.js?v=35"></script>
-  <script src="js/guide.js?v=35"></script>
-  <script src="js/app.js?v=35"></script>
+  <script src="js/supabase.js?v=36"></script>
+  <script src="js/state.js?v=36"></script>
+  <script src="js/levels.js?v=36"></script>
+  <script src="js/literacyAssets.js?v=36"></script>
+  <script src="js/fingerprint.js?v=36"></script>
+  <script src="js/sessionTypes.js?v=36"></script>
+  <script src="js/config.js?v=36"></script>
+  <script src="js/prompts.js?v=36"></script>
+  <script src="js/renders.js?v=36"></script>
+  <script src="js/literacyBuild.js?v=36"></script>
+  <script src="js/demoEngine.js?v=36"></script>
+  <script src="js/api.js?v=36"></script>
+  <script src="js/data.js?v=36"></script>
+  <script src="js/auth.js?v=36"></script>
+  <script src="js/progress.js?v=36"></script>
+  <script src="js/admin.js?v=36"></script>
+  <script src="js/coordinator.js?v=36"></script>
+  <script src="js/curriculum.js?v=36"></script>
+  <script src="js/ui.js?v=36"></script>
+  <script src="js/step1.js?v=36"></script>
+  <script src="js/step2.js?v=36"></script>
+  <script src="js/step3.js?v=36"></script>
+  <script src="js/router.js?v=36"></script>
+  <script src="js/messaging.js?v=36"></script>
+  <script src="js/amie.js?v=36"></script>
+  <script src="js/schedule.js?v=36"></script>
+  <script src="js/guide.js?v=36"></script>
+  <script src="js/app.js?v=36"></script>
 </body>
 </html>

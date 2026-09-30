@@ -3,12 +3,14 @@
 
    • The coordinator (admin) sets each tutor↔student pair's recurring weekly
      classes (weekday + time), anchored in the TUTOR's timezone.
-   • Students see their week under the "Join the Session" banner; tutors see an
-     aggregate week (all students) in a "Schedule" tab. Each viewer sees the
+   • Both roles open their week from a header calendar button (modal); the
+     dashboards only show a one-line "Next class". Tutors see an aggregate week
+     (all students). Each viewer sees the
      times converted into THEIR OWN timezone — so a class can legitimately land
      on a different weekday for each side (day-shift is expected, not a bug).
-   • Default = attending. Tap a class to flag "can't attend" for THIS week's
-     occurrence; it reddens on both dashboards (the flag lives on the session,
+   • Default = attending. Tap a class to flag "can't attend" (optional note) for
+     THIS week's occurrence; the partner is messaged, and tapping again sends an
+     "I can attend after all" message. It reddens on both sides (the flag lives on the session,
      so each side reddens the correct day). Flags reset weekly automatically —
      we only ever look at the current week.
 
@@ -25,6 +27,7 @@ const schedState = {
   tutorCols: {},        // viewer-weekday (0-6) -> [slotId] (tutor aggregate, for "day off")
   loaded: false,
   channel: null, poll: null,
+  dialog: null,         // open flag/unflag dialog
   editor: null          // admin modal state
 };
 
@@ -83,9 +86,9 @@ function schedFmtTime(instant, tz) {
   } catch (e) { return ''; }
 }
 
-/* This week's occurrence of a slot: the concrete instant + the anchor-tz date
+/* This week's occurrence of a slot (weekOffset 1 = next week): the concrete instant + the anchor-tz date
    that identifies it (used as the attendance key, identical for both parties). */
-function schedOccurrence(slot) {
+function schedOccurrence(slot, weekOffset) {
   const tz = slot.anchor_tz || 'UTC';
   const today = schedPartsInTz(new Date(), tz);           // anchor-local "today"
   const [hh, mm] = String(slot.start_time).split(':').map(n => parseInt(n, 10));
@@ -95,7 +98,7 @@ function schedOccurrence(slot) {
   // Do day arithmetic on midnight-UTC of the anchor-local date (UTC days = 24h,
   // so adding/subtracting days never trips over DST).
   const base = Date.UTC(today.y, today.mo - 1, today.d);
-  const target = new Date(base + (targetMonIdx - todayMonIdx) * 86400000);
+  const target = new Date(base + (targetMonIdx - todayMonIdx + 7 * (weekOffset || 0)) * 86400000);
   const ty = target.getUTCFullYear(), tmo = target.getUTCMonth() + 1, td = target.getUTCDate();
   return {
     instant: schedWallToInstant(ty, tmo, td, hh || 0, mm || 0, tz),
@@ -115,6 +118,7 @@ async function initSchedule(ctx) {
   schedState.role = ctx.role;
   schedState.myId = ctx.userId;
   schedState.readOnly = !!ctx.readOnly;
+  schedShowButton();
 
   // Timezone is admin-controlled: the coordinator sets it per user in the
   // schedule editor. We only auto-detect the browser zone as a first-time
@@ -141,6 +145,9 @@ function teardownSchedule() {
   schedState.slots = [];
   schedState.occBySlot = {};
   schedState.flags = {};
+  schedClose();
+  schedHideButton();
+  schedRenderNext();
 }
 
 /* Full load: slots → occurrences → flags → render. */
@@ -180,8 +187,8 @@ async function schedLoadFlags() {
 }
 
 function schedRenderAll() {
-  if (schedState.role === 'student') schedRenderStudent();
-  else if (schedState.role === 'tutor') schedRenderTutor();
+  schedRenderGrid();
+  schedRenderNext();
 }
 
 /* ─────────────── shared rendering ─────────────── */
@@ -206,44 +213,6 @@ function schedFlagFor(slot) {
   return occ ? schedState.flags[`${slot.id}|${occ.occDate}`] || null : null;
 }
 
-/* Caption under a reddened chip: who raised the flag, from the viewer's POV. */
-function schedFlagCaption(flag) {
-  if (flag.marked_by && flag.marked_by === schedState.myId) return 'You can’t attend';
-  if (flag.marked_role === 'tutor') return 'Tutor can’t attend';
-  if (flag.marked_role === 'student') return 'Student can’t attend';
-  return 'Can’t attend';
-}
-
-/* One class chip. `subtitle` = tutor name (student view) or student name (tutor view). */
-function schedChip(slot, subtitle) {
-  const occ = schedState.occBySlot[slot.id];
-  const tz = schedState.viewerTz;
-  const start = schedFmtTime(occ.instant, tz);
-  const end = schedFmtTime(new Date(occ.instant.getTime() + (slot.duration_min || 60) * 60000), tz);
-  const flag = schedFlagFor(slot);
-  const flagged = !!flag;
-  const disabled = schedState.readOnly ? 'disabled' : '';
-  const cursor = schedState.readOnly ? 'default' : 'pointer';
-
-  const bg = flagged ? 'rgba(239,68,68,.08)' : 'rgba(6,214,160,.08)';
-  const border = flagged ? 'rgba(239,68,68,.45)' : 'rgba(6,214,160,.30)';
-  const timeStyle = flagged ? 'color:#B91C1C;text-decoration:line-through;' : 'color:var(--navy);';
-
-  const caption = flagged
-    ? `<span class="block text-[10px] font-semibold mt-0.5" style="color:#B91C1C;">${schedFlagCaption(flag)}</span>`
-    : (schedState.readOnly ? '' : `<span class="block text-[10px] mt-0.5" style="color:var(--muted);">tap if you can’t make it</span>`);
-
-  return `
-    <button type="button" ${disabled}
-      ${schedState.readOnly ? '' : `onclick="schedToggleFlag('${slot.id}')"`}
-      class="w-full text-left rounded-xl px-2.5 py-2 mb-1.5 transition-all"
-      style="background:${bg};border:1px solid ${border};cursor:${cursor};">
-      <span class="block text-xs font-bold" style="${timeStyle}">${escapeHtml(start)}${end ? '–' + escapeHtml(end) : ''}</span>
-      ${subtitle ? `<span class="block text-[11px] truncate mt-0.5" style="color:var(--muted);">${bidiText(subtitle)}</span>` : ''}
-      ${caption}
-    </button>`;
-}
-
 /* The 7-column week. `subtitleFor(slot)` labels each chip; `dayExtra(wd)` adds
    an optional control under a column header (used for the tutor "day off"). */
 function schedWeekGrid(cols, subtitleFor, dayExtra) {
@@ -262,71 +231,194 @@ function schedWeekGrid(cols, subtitleFor, dayExtra) {
   return `<div class="overflow-x-auto -mx-1 px-1"><div class="grid grid-cols-7 gap-2 min-w-[560px]">${columns}</div></div>`;
 }
 
-/* ─────────────── student view (under the Join banner) ─────────────── */
+/* ─────────────── header button + modal ─────────────── */
 
-function schedRenderStudent() {
-  const host = document.getElementById('studentScheduleCard');
-  if (!host) return;
-  if (!schedState.slots.length) { host.classList.add('hidden'); host.innerHTML = ''; return; }
+function schedShowButton() { const b = document.getElementById('scheduleBtn'); if (b) b.classList.remove('hidden'); }
+function schedHideButton() { const b = document.getElementById('scheduleBtn'); if (b) b.classList.add('hidden'); }
 
-  const cols = schedBucketByViewerDay(schedState.slots);
-  const grid = schedWeekGrid(cols, slot => (slot.tutor && slot.tutor.full_name) || 'Tutor');
-
-  host.classList.remove('hidden');
-  host.innerHTML = `
-    <div class="card-surface rounded-2xl p-5 mb-6">
-      <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
-        <h2 class="text-sm font-semibold" style="color:var(--navy);">Your weekly classes</h2>
-        <span class="text-[11px]" style="color:var(--muted);">times shown in your timezone (${escapeHtml(schedState.viewerTz)})</span>
+function schedOpen() {
+  if (document.getElementById('schedModal')) return;
+  const m = document.createElement('div');
+  m.id = 'schedModal';
+  m.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+  m.style.cssText = 'background:rgba(15,23,42,.45);';
+  m.addEventListener('click', e => { if (e.target === m) schedClose(); });
+  m.innerHTML = `
+    <div class="w-full max-w-4xl rounded-2xl p-5 max-h-[90vh] overflow-y-auto" style="background:var(--bg,#fff);">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <div class="min-w-0">
+          <h2 class="text-base font-display font-bold" style="color:var(--navy);">${schedState.role === 'tutor' ? 'My weekly classes' : 'Your weekly classes'}</h2>
+          <p class="text-[11px]" style="color:var(--muted);">Times in your timezone (${escapeHtml(schedState.viewerTz)})${schedState.readOnly ? '' : ' · tap a class if you can’t make it'}</p>
+        </div>
+        <button onclick="schedClose()" aria-label="Close" class="text-xl leading-none px-2" style="color:var(--muted);">&times;</button>
       </div>
-      ${grid}
+      <div id="schedModalBody"></div>
     </div>`;
+  document.body.appendChild(m);
+  schedRenderGrid();
 }
 
-/* ─────────────── tutor view (Schedule tab) ─────────────── */
+function schedClose() {
+  schedDialogClose();
+  const m = document.getElementById('schedModal');
+  if (m) m.remove();
+}
 
-function schedRenderTutor() {
-  const host = document.getElementById('tutorSchedule');
-  if (!host) return;
-
+/* The week grid inside the modal (no-op while the modal is closed). */
+function schedRenderGrid() {
+  const body = document.getElementById('schedModalBody');
+  if (!body) return;
   if (!schedState.loaded) {
-    host.innerHTML = '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading your schedule…</div>';
+    body.innerHTML = '<div class="text-center py-12 text-sm" style="color:var(--muted);">Loading your schedule…</div>';
     return;
   }
   if (!schedState.slots.length) {
-    host.innerHTML = `
-      <div class="card-surface rounded-2xl p-8 text-center">
+    body.innerHTML = `
+      <div class="rounded-2xl p-8 text-center" style="border:1px dashed var(--line);">
         <p class="text-sm font-semibold mb-1" style="color:var(--navy);">No classes scheduled yet</p>
-        <p class="text-xs" style="color:var(--muted);">Your coordinator sets class times. They'll appear here once assigned.</p>
+        <p class="text-xs" style="color:var(--muted);">Your coordinator sets class times. They’ll appear here once assigned.</p>
       </div>`;
     return;
   }
 
   const cols = schedBucketByViewerDay(schedState.slots);
-  schedState.tutorCols = {};
-  for (const wd in cols) schedState.tutorCols[wd] = cols[wd].map(s => s.id);
-
-  // "Day off" control per column: flag every class that day at once (or clear).
-  const dayExtra = wd => {
-    if (schedState.readOnly || !cols[wd].length) return '';
-    const allFlagged = cols[wd].every(s => schedFlagFor(s));
-    return `<button type="button" onclick="schedTutorDayToggle(${wd})"
-       class="block mx-auto mt-0.5 text-[10px] font-semibold" style="color:${allFlagged ? '#B91C1C' : 'var(--muted)'};">
-       ${allFlagged ? 'undo day off' : 'day off'}</button>`;
-  };
-  const grid = schedWeekGrid(cols, slot => (slot.student && slot.student.full_name) || 'Student', dayExtra);
-
-  host.innerHTML = `
-    <div class="card-surface rounded-2xl p-5">
-      <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
-        <h2 class="text-sm font-semibold" style="color:var(--navy);">My weekly classes</h2>
-        <span class="text-[11px]" style="color:var(--muted);">times in your timezone (${escapeHtml(schedState.viewerTz)}) · tap a class if you can't make it</span>
-      </div>
-      ${grid}
-    </div>`;
+  if (schedState.role === 'tutor') {
+    schedState.tutorCols = {};
+    for (const wd in cols) schedState.tutorCols[wd] = cols[wd].map(s => s.id);
+    // "Day off" control per column: flag every upcoming class that day at once (or undo).
+    const dayExtra = wd => {
+      if (schedState.readOnly) return '';
+      const act = schedDayActionable(wd);
+      if (!act.length) return '';
+      const allFlagged = act.every(s => schedFlagFor(s));
+      return `<button type="button" onclick="schedOpenDay(${wd})"
+         class="block mx-auto mt-0.5 text-[10px] font-semibold" style="color:${allFlagged ? '#B91C1C' : 'var(--muted)'};">
+         ${allFlagged ? 'undo day off' : 'day off'}</button>`;
+    };
+    body.innerHTML = schedWeekGrid(cols, slot => (slot.student && slot.student.full_name) || 'Student', dayExtra);
+  } else {
+    body.innerHTML = schedWeekGrid(cols, slot => (slot.tutor && slot.tutor.full_name) || 'Tutor');
+  }
 }
 
-/* ─────────────── flag toggling + partner notification ─────────────── */
+/* ─────────────── "next class" line (dashboards) ─────────────── */
+
+/* Earliest upcoming class I'm attending. A class already over this week — or
+   one flagged "can't attend" — rolls to next week's occurrence. */
+function schedNextClass() {
+  const now = Date.now();
+  let best = null, cancelled = 0;
+  for (const slot of schedState.slots) {
+    const occ = schedState.occBySlot[slot.id];
+    if (!occ) continue;
+    const upcoming = occ.instant.getTime() + (slot.duration_min || 60) * 60000 > now;
+    let instant = occ.instant;
+    if (!upcoming || schedFlagFor(slot)) {
+      if (upcoming) cancelled++;
+      instant = schedOccurrence(slot, 1).instant;
+    }
+    if (!best || instant < best.instant) best = { slot, instant };
+  }
+  return { best, cancelled };
+}
+
+/* "Today" / "Tomorrow" / "Wed" / "Next Wed", in the viewer's timezone. */
+function schedDayLabel(instant) {
+  const tz = schedState.viewerTz;
+  const a = schedPartsInTz(new Date(), tz), b = schedPartsInTz(instant, tz);
+  const diff = Math.round((Date.UTC(b.y, b.mo - 1, b.d) - Date.UTC(a.y, a.mo - 1, a.d)) / 86400000);
+  if (diff <= 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  return (diff >= 7 ? 'Next ' : '') + SCHED_DAY_SHORT[b.weekday];
+}
+
+function schedNextLineHtml(mb) {
+  const { best, cancelled } = schedNextClass();
+  if (!best) return '';
+  const who = schedState.role === 'tutor'
+    ? (best.slot.student && best.slot.student.full_name)
+    : (best.slot.tutor && best.slot.tutor.full_name);
+  const when = `${schedDayLabel(best.instant)} · ${schedFmtTime(best.instant, schedState.viewerTz)}`;
+  return `
+    <button type="button" onclick="schedOpen()" class="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl ${mb} text-left"
+      style="background:var(--card);border:1px solid var(--line);">
+      <span class="text-xs min-w-0 truncate" style="color:var(--muted);">
+        🗓 Next class: <strong style="color:var(--navy);">${escapeHtml(when)}</strong>${who ? ` with ${bidiText(who)}` : ''}${cancelled ? ` <span style="color:#B91C1C;">· ${cancelled} cancelled this week</span>` : ''}
+      </span>
+      <span class="text-[11px] font-semibold flex-shrink-0" style="color:var(--secondary);">View schedule ›</span>
+    </button>`;
+}
+
+/* Fill whichever "next class" hosts exist: the student card, and the
+   placeholder the tutor home renders (see renderTutorHome). */
+function schedRenderNext() {
+  const student = document.getElementById('studentScheduleCard');
+  if (student) {
+    const html = schedState.role === 'student' && schedState.loaded ? schedNextLineHtml('mb-6') : '';
+    student.classList.toggle('hidden', !html);
+    student.innerHTML = html;
+  }
+  const tutor = document.getElementById('tutorNextClass');
+  if (tutor) tutor.innerHTML = schedState.role === 'tutor' && schedState.loaded ? schedNextLineHtml('mb-4') : '';
+}
+
+/* ─────────────── week grid rendering ─────────────── */
+
+/* Is this week's occurrence already over? (Past classes can't be flagged.) */
+function schedIsPast(slot) {
+  const occ = schedState.occBySlot[slot.id];
+  return !occ || occ.instant.getTime() + (slot.duration_min || 60) * 60000 <= Date.now();
+}
+
+/* Can I toggle this class? Only future ones, and a flag only by whoever raised it. */
+function schedCanAct(slot) {
+  if (schedState.readOnly || schedIsPast(slot)) return false;
+  const flag = schedFlagFor(slot);
+  return !flag || flag.marked_by === schedState.myId;
+}
+
+/* Caption under a reddened chip: who raised the flag, from the viewer's POV. */
+function schedFlagCaption(flag) {
+  if (flag.marked_by && flag.marked_by === schedState.myId) return 'You can’t attend';
+  if (flag.marked_role === 'tutor') return 'Tutor can’t attend';
+  if (flag.marked_role === 'student') return 'Student can’t attend';
+  return 'Can’t attend';
+}
+
+/* One class chip. `subtitle` = tutor name (student view) or student name (tutor view). */
+function schedChip(slot, subtitle) {
+  const occ = schedState.occBySlot[slot.id];
+  const tz = schedState.viewerTz;
+  const start = schedFmtTime(occ.instant, tz);
+  const end = schedFmtTime(new Date(occ.instant.getTime() + (slot.duration_min || 60) * 60000), tz);
+  const flag = schedFlagFor(slot);
+  const flagged = !!flag;
+  const canAct = schedCanAct(slot);
+  const past = schedIsPast(slot);
+
+  const bg = flagged ? 'rgba(239,68,68,.08)' : 'rgba(6,214,160,.08)';
+  const border = flagged ? 'rgba(239,68,68,.45)' : 'rgba(6,214,160,.30)';
+  const timeStyle = flagged ? 'color:#B91C1C;text-decoration:line-through;' : 'color:var(--navy);';
+
+  let caption = '';
+  if (flagged) {
+    caption = `<span class="block text-[10px] font-semibold mt-0.5" style="color:#B91C1C;">${schedFlagCaption(flag)}</span>`;
+    if (flag.note) caption += `<span class="block text-[10px] mt-0.5" style="color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${bidiText(flag.note)}</span>`;
+  } else if (canAct) {
+    caption = `<span class="block text-[10px] mt-0.5" style="color:var(--muted);">tap if you can’t make it</span>`;
+  }
+
+  return `
+    <button type="button" ${canAct ? `onclick="schedOpenSlot('${slot.id}')"` : 'disabled'}
+      class="w-full text-left rounded-xl px-2.5 py-2 mb-1.5 transition-all"
+      style="background:${bg};border:1px solid ${border};cursor:${canAct ? 'pointer' : 'default'};${past && !flagged ? 'opacity:.55;' : ''}">
+      <span class="block text-xs font-bold" style="${timeStyle}">${escapeHtml(start)}${end ? '–' + escapeHtml(end) : ''}</span>
+      ${subtitle ? `<span class="block text-[11px] truncate mt-0.5" style="color:var(--muted);">${bidiText(subtitle)}</span>` : ''}
+      ${caption}
+    </button>`;
+}
+
+/* ─────────────── flag / unflag dialog + partner notification ─────────────── */
 
 /* The other person in this 1:1 class (from my point of view). */
 function schedPartnerId(slot) {
@@ -340,82 +432,125 @@ async function schedWhenForPartner(partnerId, instant) {
   try { const t = await dataGetTimezone(partnerId); if (t) { tz = t; mine = false; } } catch (e) {}
   const day = SCHED_DAY_LONG[schedPartsInTz(instant, tz).weekday];
   const time = schedFmtTime(instant, tz);
-  return `${day} at ${time}${mine ? ' (my time)' : ''}`;
+  return { day, when: `${day} at ${time}${mine ? ' (my time)' : ''}` };
 }
 
-/* Courtesy chat message to the partner when a class is flagged "can't attend".
-   Posts into the existing 1:1 thread (unread badge + realtime). Only fires on
-   flagging (not on clearing), and never blocks the flag — failures swallowed. */
-async function schedNotifyFlag(slot, occ) {
-  try {
-    const partnerId = schedPartnerId(slot);
-    if (!partnerId) return;
-    const when = await schedWhenForPartner(partnerId, occ.instant);
-    await dataSendMessage(partnerId, `Heads up — I can’t attend our class this ${when}, just this week.`);
-  } catch (e) { /* courtesy only */ }
+/* Classes I could flag/unflag in a viewer-day column (tutor "day off"):
+   upcoming, and either unflagged or flagged by me. */
+function schedDayActionable(wd) {
+  return (schedState.tutorCols[wd] || [])
+    .map(id => schedState.slots.find(s => s.id === id))
+    .filter(s => s && schedCanAct(s));
 }
 
-async function schedToggleFlag(slotId) {
-  if (schedState.readOnly) return;
+function schedDialogClose() {
+  schedState.dialog = null;
+  const d = document.getElementById('schedDialog');
+  if (d) d.remove();
+}
+
+/* Tap a class chip → confirm (with a note) to flag, or confirm to un-flag. */
+function schedOpenSlot(slotId) {
   const slot = schedState.slots.find(s => s.id === slotId);
+  if (!slot || !schedCanAct(slot)) return;
   const occ = schedState.occBySlot[slotId];
-  if (!slot || !occ) return;
-  const wasFlagged = !!schedState.flags[`${slotId}|${occ.occDate}`];
+  const tz = schedState.viewerTz;
+  const label = `${SCHED_DAY_LONG[schedPartsInTz(occ.instant, tz).weekday]} at ${schedFmtTime(occ.instant, tz)}`;
+  schedDialogShow({ mode: schedFlagFor(slot) ? 'unflag' : 'flag', ids: [slotId], label, day: false });
+}
+
+/* Tutor "day off" (or undo) for one viewer-day column. */
+function schedOpenDay(wd) {
+  const act = schedDayActionable(wd);
+  if (!act.length) return;
+  const allFlagged = act.every(s => schedFlagFor(s));
+  const n = act.length;
+  schedDialogShow({
+    mode: allFlagged ? 'unflag' : 'flag', ids: act.map(s => s.id),
+    label: `${SCHED_DAY_LONG[wd]} · ${n} class${n > 1 ? 'es' : ''}`, day: true
+  });
+}
+
+function schedDialogShow(d) {
+  schedDialogClose();
+  schedState.dialog = d;
+  const flag = d.mode === 'flag';
+  const first = !flag && schedFlagFor(schedState.slots.find(s => s.id === d.ids[0]));
+  const el = document.createElement('div');
+  el.id = 'schedDialog';
+  el.className = 'fixed inset-0 flex items-center justify-center p-4';
+  el.style.cssText = 'z-index:60;background:rgba(15,23,42,.45);';
+  el.addEventListener('click', e => { if (e.target === el) schedDialogClose(); });
+  el.innerHTML = `
+    <div class="w-full max-w-sm rounded-2xl p-5" style="background:var(--bg,#fff);">
+      <h3 class="text-base font-display font-bold mb-0.5" style="color:var(--navy);">${flag ? (d.day ? 'Take this day off?' : 'Can’t attend this class?') : (d.day ? 'Available again?' : 'Can you attend after all?')}</h3>
+      <p class="text-xs mb-3" style="color:var(--muted);">${escapeHtml(d.label)} · this week only</p>
+      ${flag
+        ? `<textarea id="schedNote" dir="auto" rows="3" maxlength="300" placeholder="Add a note (optional) — e.g. I’m travelling"
+             class="w-full rounded-xl px-3 py-2 text-sm field-input mb-1" style="resize:none;"></textarea>
+           <p class="text-[11px] mb-3" style="color:var(--muted);">We’ll message ${d.day ? 'your students' : 'them'} about it.</p>`
+        : `${first && first.note ? `<p class="text-xs rounded-xl px-3 py-2 mb-3" style="background:rgba(0,0,0,.03);color:var(--muted);">Your note: ${bidiText(first.note)}</p>` : ''}
+           <p class="text-[11px] mb-3" style="color:var(--muted);">We’ll let ${d.day ? 'your students' : 'them'} know you’re available.</p>`}
+      <div class="flex gap-2">
+        <button onclick="schedDialogClose()" class="flex-1 py-2.5 rounded-xl text-sm font-semibold" style="background:white;border:1px solid var(--line);color:var(--muted);">Cancel</button>
+        <button id="schedDialogGo" onclick="schedDialogConfirm()" class="flex-1 py-2.5 rounded-xl text-white text-sm font-semibold"
+          style="background:${flag ? '#DC2626' : '#059669'};">${flag ? (d.day ? 'Take the day off' : 'I can’t attend') : 'Yes, I can attend'}</button>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+  const ta = document.getElementById('schedNote');
+  if (ta) ta.focus();
+}
+
+async function schedDialogConfirm() {
+  const d = schedState.dialog;
+  if (!d || schedState.readOnly) return;
+  const flagging = d.mode === 'flag';
+  const noteEl = document.getElementById('schedNote');
+  const note = flagging && noteEl ? noteEl.value.trim() : '';
+  const go = document.getElementById('schedDialogGo');
+  if (go) { go.disabled = true; go.style.opacity = '.6'; }
+
+  const changed = [];
   try {
-    if (wasFlagged) await dataUnflagAttendance(slotId, occ.occDate);
-    else await dataFlagAttendance(slotId, occ.occDate, schedState.myId, schedState.role);
-    await schedReload();
-    if (!wasFlagged) schedNotifyFlag(slot, occ);   // notify only on "can't attend"
+    for (const id of d.ids) {
+      const occ = schedState.occBySlot[id];
+      if (!occ) continue;
+      if (flagging) await dataFlagAttendance(id, occ.occDate, schedState.myId, schedState.role, note);
+      else await dataUnflagAttendance(id, occ.occDate);
+      changed.push(id);
+    }
   } catch (e) {
     showToast('Could not update attendance: ' + e.message, 'error');
   }
-}
+  schedDialogClose();
+  await schedReload();
 
-/* One summary message to a student when the tutor flags a whole day off. */
-async function schedNotifyDay(partnerId, slots) {
-  try {
-    if (!partnerId || !slots.length) return;
-    const occ = schedState.occBySlot[slots[0].id];
-    const when = await schedWhenForPartner(partnerId, occ.instant);   // "Monday at 6:00 PM"
-    const day = when.split(' at ')[0];
-    const plural = slots.length > 1 ? 'es' : '';
-    await dataSendMessage(partnerId, `Heads up — I can’t make our class${plural} this ${day}, just this week.`);
-  } catch (e) { /* courtesy only */ }
-}
-
-/* Tutor: flag (or clear) every class in one viewer-day column. */
-async function schedTutorDayToggle(wd) {
-  if (schedState.readOnly) return;
-  const ids = schedState.tutorCols[wd] || [];
-  if (!ids.length) return;
-  const allFlagged = ids.every(id => {
-    const occ = schedState.occBySlot[id];
-    return occ && schedState.flags[`${id}|${occ.occDate}`];
-  });
-  const changed = [];
-  try {
-    for (const id of ids) {
-      const occ = schedState.occBySlot[id];
-      if (!occ) continue;
-      const isFlagged = !!schedState.flags[`${id}|${occ.occDate}`];
-      if (allFlagged && isFlagged) { await dataUnflagAttendance(id, occ.occDate); changed.push(id); }
-      else if (!allFlagged && !isFlagged) { await dataFlagAttendance(id, occ.occDate, schedState.myId, schedState.role); changed.push(id); }
-    }
-    await schedReload();
-    // Notify each affected student once — only when flagging (day off), not clearing.
-    if (!allFlagged) {
-      const byPartner = {};
-      for (const id of changed) {
-        const slot = schedState.slots.find(s => s.id === id);
-        if (!slot) continue;
-        const pid = schedPartnerId(slot);
-        (byPartner[pid] = byPartner[pid] || []).push(slot);
-      }
-      for (const pid in byPartner) schedNotifyDay(pid, byPartner[pid]);
-    }
-  } catch (e) {
-    showToast('Could not update the day: ' + e.message, 'error');
+  // One message per partner (a summary if several of their classes changed).
+  const byPartner = {};
+  for (const id of changed) {
+    const slot = schedState.slots.find(s => s.id === id);
+    const pid = slot && schedPartnerId(slot);
+    if (pid) (byPartner[pid] = byPartner[pid] || []).push(slot);
   }
+  for (const pid in byPartner) schedNotify(pid, byPartner[pid], flagging, note);
+}
+
+/* Courtesy chat message into the existing 1:1 thread (unread badge + realtime).
+   Never blocks the flag — failures are swallowed. */
+async function schedNotify(partnerId, slots, flagging, note) {
+  try {
+    const occ = schedState.occBySlot[slots[0].id];
+    const w = await schedWhenForPartner(partnerId, occ.instant);
+    const many = slots.length > 1;
+    const what = many ? 'our classes' : 'our class';
+    const when = many ? w.day : w.when;
+    let text = flagging
+      ? `Heads up — I can’t ${many ? 'make' : 'attend'} ${what} this ${when}, just this week.`
+      : `Good news — I can ${many ? 'make' : 'attend'} ${what} this ${when} after all.`;
+    if (flagging && note) text += `\nNote: ${note}`;
+    await dataSendMessage(partnerId, text);
+  } catch (e) { /* courtesy only */ }
 }
 
 /* ════════════════════════════════════════════════════════════════════════

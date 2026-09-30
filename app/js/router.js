@@ -135,9 +135,8 @@ function renderHeaderNav(ctx) {
       btn('AI Settings', "adminTab('settings')", adminActiveTab === 'settings');
   } else if (ctx.role === 'tutor') {
     nav.innerHTML =
-      btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum' && tutorState.view !== 'schedule') +
-      btn('Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum') +
-      btn('Schedule', "tutorGoSchedule()", tutorState.view === 'schedule');
+      btn('My Sessions', "tutorGoHome()", tutorState.view !== 'curriculum') +
+      btn('Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum');
   } else {
     nav.innerHTML = '';
   }
@@ -297,24 +296,10 @@ function tutorGoHome() {
   tutorState.view = 'home';
   document.getElementById('tutorHome').classList.remove('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
-  document.getElementById('tutorSchedule').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');
   renderHeaderNav(activeContext());
-}
-
-/* Show the tutor's weekly schedule (aggregate across all their students). */
-function tutorGoSchedule() {
-  tutorState.view = 'schedule';
-  document.getElementById('tutorHome').classList.add('hidden');
-  document.getElementById('tutorCurriculum').classList.add('hidden');
-  document.getElementById('tutorSchedule').classList.remove('hidden');
-  document.getElementById('tutorPrepBar').classList.add('hidden');
-  document.getElementById('step1').classList.add('hidden');
-  document.getElementById('step2').classList.add('hidden');
-  renderHeaderNav(activeContext());
-  if (typeof schedRenderTutor === 'function') schedRenderTutor();
 }
 
 /* ═════════════════ Curriculum browser (level → type → topic) ═════════════════
@@ -326,7 +311,6 @@ function tutorGoCurriculum() {
   tutorState.view = 'curriculum';
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.remove('hidden');
-  document.getElementById('tutorSchedule').classList.add('hidden');
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');
@@ -608,6 +592,7 @@ function renderTutorHome() {
     </button>`;
 
   home.innerHTML = `
+    <div id="tutorNextClass"></div>
     <div class="flex items-center justify-between gap-3 mb-6">
       <div>
         <h1 class="text-2xl font-display font-bold" style="color:var(--navy);">Tutor Dashboard</h1>
@@ -620,6 +605,7 @@ function renderTutorHome() {
       <div class="lg:col-span-7" data-guide="tutor-plans">${plansCard(tutorState.plans, ctx.readOnly)}</div>
       <div class="lg:col-span-5" data-guide="tutor-students">${studentsCard(tutorState.students)}</div>
     </div>`;
+  if (typeof schedRenderNext === 'function') schedRenderNext();
 }
 
 /* ── The reusable plan library ── */
