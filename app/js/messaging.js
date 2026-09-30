@@ -273,6 +273,7 @@ function openMessages() {
   msgState.open = true;
   document.getElementById('msgDrawer').classList.remove('translate-x-full');
   document.getElementById('msgOverlay').classList.remove('hidden');
+  drawerLockViewport(document.getElementById('msgDrawer'));
   // Student has exactly one partner → jump straight into it.
   if (msgState.role === 'student' && msgState.partners[0]) {
     openThread(msgState.partners[0].id);
@@ -289,6 +290,7 @@ function closeMessages() {
   msgState.open = false;
   document.getElementById('msgDrawer').classList.add('translate-x-full');
   document.getElementById('msgOverlay').classList.add('hidden');
+  drawerUnlockViewport(document.getElementById('msgDrawer'));
 }
 
 function showMessagesButton() { const b = document.getElementById('messagesBtn'); if (b) b.classList.remove('hidden'); }
@@ -326,7 +328,7 @@ function buildMessagesUi() {
 
       <!-- One conversation -->
       <div id="msgConversation" class="hidden flex-1 flex flex-col min-h-0">
-        <div id="msgThread" class="flex-1 overflow-y-auto px-4 py-3"></div>
+        <div id="msgThread" class="flex-1 overflow-y-auto px-4 py-3" style="overscroll-behavior:contain;"></div>
         <div class="flex items-end gap-2 px-3 py-3 flex-shrink-0" style="border-top:1px solid var(--line);">
           <textarea id="msgInput" rows="1" oninput="autoGrow(this)" onkeydown="msgInputKey(event)" placeholder="Write a message…"
             class="flex-1 resize-none rounded-xl px-3 py-2 text-sm focus:outline-none" style="background:var(--card); border:1px solid var(--line); color:var(--ink); max-height:120px;"></textarea>
@@ -336,6 +338,9 @@ function buildMessagesUi() {
         </div>
       </div>
     </aside>`;
+  const fs = document.createElement('style');
+  fs.textContent = '@media (max-width:639px){ #msgInput { font-size:16px !important; } }';   // iOS zooms inputs <16px
+  wrap.appendChild(fs);
   document.body.appendChild(wrap);
   msgState.built = true;
 }
