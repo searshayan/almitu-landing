@@ -14,7 +14,7 @@
    "kind": "core",
    "title": "Greetings and Introductions",
    "objective": "Improve your ability to greet people and introduce yourself confidently.",
-   "can_do": "I can greet and introduce myself and others appropriately in formal and informal settings.",
+   "can_do": "You can greet and introduce yourself and others appropriately in formal and informal settings.",
    "expressions": [
     "Pleased to meet you. I'm ___ from ___.",
     "Allow me to introduce ___.",
@@ -56,7 +56,7 @@
    "kind": "core",
    "title": "Making Small Talk",
    "objective": "Improve your ability to start and maintain casual conversations.",
-   "can_do": "I can start, maintain, and politely close a casual conversation.",
+   "can_do": "You can start, maintain, and politely close a casual conversation.",
    "expressions": [
     "Did you have a good weekend?",
     "Speaking of which, ___.",
@@ -93,7 +93,7 @@
    "kind": "core",
    "title": "Job Ads and Job Searching",
    "objective": "Improve your ability to discuss job ads and talk about job searching.",
-   "can_do": "I can talk about job ads and my job search.",
+   "can_do": "You can talk about job ads and your job search.",
    "expressions": [
     "I'm applying for the position of ___.",
     "The ad says they require ___.",
@@ -130,7 +130,7 @@
    "kind": "core",
    "title": "Asking for Directions",
    "objective": "Improve your ability to ask for and give clear directions.",
-   "can_do": "I can ask for and give clear directions, including when something goes wrong.",
+   "can_do": "You can ask for and give clear directions, including when something goes wrong.",
    "expressions": [
     "Excuse me, could you tell me how to get to ___?",
     "Go straight until you reach ___.",
@@ -210,7 +210,7 @@
    "kind": "core",
    "title": "At the Restaurant",
    "objective": "Improve your ability to order food and handle restaurant situations.",
-   "can_do": "I can order food, handle problems, and pay in a restaurant.",
+   "can_do": "You can order food, handle problems, and pay in a restaurant.",
    "expressions": [
     "I'd like to start with ___.",
     "Could I have the ___ without ___?",
@@ -252,7 +252,7 @@
    "kind": "core",
    "title": "At the Hotel",
    "objective": "Improve your ability to check in/out and make requests at a hotel.",
-   "can_do": "I can check in, request services, and report issues at a hotel.",
+   "can_do": "You can check in, request services, and report issues at a hotel.",
    "expressions": [
     "I booked a double room for three nights under ___.",
     "Could I have a late checkout?",
@@ -289,7 +289,7 @@
    "kind": "core",
    "title": "At the Bank",
    "objective": "Improve your ability to talk about banking and financial services.",
-   "can_do": "I can use banking and financial language to complete a transaction.",
+   "can_do": "You can use banking and financial language to complete a transaction.",
    "expressions": [
     "I'd like to find out about opening a current account.",
     "What are the fees?",
@@ -326,7 +326,7 @@
    "kind": "core",
    "title": "At the Post Office",
    "objective": "Improve your ability to send mail and packages.",
-   "can_do": "I can send mail and packages and handle customs and delivery questions.",
+   "can_do": "You can send mail and packages and handle customs and delivery questions.",
    "expressions": [
     "I'd like to send this to ___.",
     "How much does it cost by air mail?",
@@ -406,7 +406,7 @@
    "kind": "core",
    "title": "Shopping for Clothes",
    "objective": "Improve your ability to shop for clothes and ask about sizes/prices.",
-   "can_do": "I can shop for clothes and ask about sizes, fit, and prices.",
+   "can_do": "You can shop for clothes and ask about sizes, fit, and prices.",
    "expressions": [
     "Do you have this in a larger size?",
     "Where are the fitting rooms?",
@@ -448,7 +448,7 @@
    "kind": "core",
    "title": "Returning an Item",
    "objective": "Improve your ability to return or exchange products.",
-   "can_do": "I can return or exchange an item politely and clearly.",
+   "can_do": "You can return or exchange an item politely and clearly.",
    "expressions": [
     "I'd like to return this.",
     "It doesn't fit / It's faulty.",
@@ -485,7 +485,7 @@
    "kind": "core",
    "title": "At the Hair Salon",
    "objective": "Improve your ability to describe the hairstyle you want.",
-   "can_do": "I can explain the hairstyle I want and give feedback.",
+   "can_do": "You can explain the hairstyle you want and give feedback.",
    "expressions": [
     "I'd like a trim.",
     "Could you take a little off the sides?",
@@ -522,7 +522,7 @@
    "kind": "core",
    "title": "At the Doctor's Office",
    "objective": "Improve your ability to describe symptoms and understand medical advice.",
-   "can_do": "I can describe symptoms and understand medical advice.",
+   "can_do": "You can describe symptoms and understand medical advice.",
    "expressions": [
     "I've had a sore throat for three days.",
     "It hurts when I swallow.",
@@ -602,7 +602,7 @@
    "kind": "core",
    "title": "At the Airport",
    "objective": "Improve your ability to navigate airport procedures.",
-   "can_do": "I can navigate airport procedures and handle a problem.",
+   "can_do": "You can navigate airport procedures and handle a problem.",
    "expressions": [
     "I'd like to check in for flight ___.",
     "Could I have an aisle seat?",
@@ -644,7 +644,7 @@
    "kind": "core",
    "title": "Renting a Car",
    "objective": "Improve your ability to rent a car and discuss rental terms.",
-   "can_do": "I can rent a car and discuss terms and conditions.",
+   "can_do": "You can rent a car and discuss terms and conditions.",
    "expressions": [
     "I'd like to rent a car for a week.",
     "What's included in the price?",
@@ -681,7 +681,7 @@
    "kind": "core",
    "title": "Taking a Taxi",
    "objective": "Improve your ability to give directions and pay a taxi driver.",
-   "can_do": "I can give directions and settle fares with a taxi driver.",
+   "can_do": "You can give directions and settle fares with a taxi driver.",
    "expressions": [
     "Could you take me to ___?",
     "How long will it take?",
@@ -718,7 +718,7 @@
    "kind": "core",
    "title": "Buying Train Tickets",
    "objective": "Improve your ability to buy tickets and ask about schedules.",
-   "can_do": "I can buy train tickets and ask about schedules.",
+   "can_do": "You can buy train tickets and ask about schedules.",
    "expressions": [
     "Two tickets to ___, please.",
     "Is it a single or a return?",
@@ -798,7 +798,7 @@
    "kind": "core",
    "title": "Job Interviews",
    "objective": "Improve your ability to answer common interview questions.",
-   "can_do": "I can answer common interview questions with clear examples.",
+   "can_do": "You can answer common interview questions with clear examples.",
    "expressions": [
     "I have five years of experience in ___.",
     "One of my strengths is ___.",
@@ -840,7 +840,7 @@
    "kind": "core",
    "title": "Talking Through Your Résumé",
    "objective": "Improve your ability to talk about your résumé and experience.",
-   "can_do": "I can talk about my résumé, experience, and skills.",
+   "can_do": "You can talk about your résumé, experience, and skills.",
    "expressions": [
     "I'm currently ___.",
     "My most relevant experience is ___.",
@@ -877,7 +877,7 @@
    "kind": "core",
    "title": "Networking Events",
    "objective": "Improve your ability to introduce yourself professionally.",
-   "can_do": "I can introduce myself professionally at a networking event.",
+   "can_do": "You can introduce yourself professionally at a networking event.",
    "expressions": [
     "Hi, I'm ___. I work in ___.",
     "What line of work are you in?",
@@ -914,7 +914,7 @@
    "kind": "core",
    "title": "Business Meetings",
    "objective": "Improve your ability to participate in and lead meetings.",
-   "can_do": "I can participate in and lead a business meeting.",
+   "can_do": "You can participate in and lead a business meeting.",
    "expressions": [
     "Let's get started.",
     "Today's agenda covers ___.",
@@ -994,7 +994,7 @@
    "kind": "core",
    "title": "Expressing Opinions",
    "objective": "Improve your ability to state and support your opinions.",
-   "can_do": "I can state and support my opinion with reasons and examples.",
+   "can_do": "You can state and support your opinion with reasons and examples.",
    "expressions": [
     "In my opinion, ___.",
     "I strongly believe that ___.",
@@ -1036,7 +1036,7 @@
    "kind": "core",
    "title": "Agreeing and Disagreeing",
    "objective": "Improve your ability to agree/disagree politely.",
-   "can_do": "I can agree and disagree politely and show partial agreement.",
+   "can_do": "You can agree and disagree politely and show partial agreement.",
    "expressions": [
     "I couldn't agree more.",
     "I see what you mean, but ___.",
@@ -1073,7 +1073,7 @@
    "kind": "core",
    "title": "Making Suggestions",
    "objective": "Improve your ability to make and respond to suggestions.",
-   "can_do": "I can make suggestions and respond to them.",
+   "can_do": "You can make suggestions and respond to them.",
    "expressions": [
     "How about ___?",
     "Why don't we ___?",
@@ -1110,7 +1110,7 @@
    "kind": "core",
    "title": "Talking About Money and Wealth",
    "objective": "Improve your ability to talk about wealth and spending habits.",
-   "can_do": "I can talk about wealth, spending habits, and attitudes to money.",
+   "can_do": "You can talk about wealth, spending habits, and attitudes to money.",
    "expressions": [
     "I'm careful with money.",
     "I tend to spend on ___.",
@@ -1190,7 +1190,7 @@
    "kind": "core",
    "title": "Talking About Feelings",
    "objective": "Improve your ability to express emotions clearly.",
-   "can_do": "I can express emotions clearly and appropriately.",
+   "can_do": "You can express emotions clearly and appropriately.",
    "expressions": [
     "I feel overwhelmed.",
     "I'm really looking forward to ___.",
@@ -1232,7 +1232,7 @@
    "kind": "core",
    "title": "Resolving Conflicts",
    "objective": "Improve your ability to handle disagreements calmly.",
-   "can_do": "I can handle disagreements and resolve conflicts calmly.",
+   "can_do": "You can handle disagreements and resolve conflicts calmly.",
    "expressions": [
     "I'd like to talk about ___.",
     "I feel frustrated when ___.",
@@ -1269,7 +1269,7 @@
    "kind": "core",
    "title": "Giving Compliments",
    "objective": "Improve your ability to give and receive compliments.",
-   "can_do": "I can give and receive compliments gracefully.",
+   "can_do": "You can give and receive compliments gracefully.",
    "expressions": [
     "That's a great ___!",
     "You did a fantastic job on ___.",
@@ -1306,7 +1306,7 @@
    "kind": "core",
    "title": "Apologizing",
    "objective": "Improve your ability to apologize and accept apologies.",
-   "can_do": "I can apologize and respond to apologies.",
+   "can_do": "You can apologize and respond to apologies.",
    "expressions": [
     "I'm so sorry about ___.",
     "I apologize for ___.",
@@ -1386,7 +1386,7 @@
    "kind": "core",
    "title": "Making a Presentation",
    "objective": "Improve your ability to structure and deliver presentations.",
-   "can_do": "I can structure and deliver a clear presentation.",
+   "can_do": "You can structure and deliver a clear presentation.",
    "expressions": [
     "Today I'm going to talk about ___.",
     "I'll start with ___, then move on to ___.",
@@ -1428,7 +1428,7 @@
    "kind": "core",
    "title": "Using Visual Aids",
    "objective": "Improve your ability to describe charts and slides.",
-   "can_do": "I can describe charts, data, and slides clearly.",
+   "can_do": "You can describe charts, data, and slides clearly.",
    "expressions": [
     "As you can see on this slide, ___.",
     "The chart shows a steady rise in ___.",
@@ -1465,7 +1465,7 @@
    "kind": "core",
    "title": "Handling Q&A",
    "objective": "Improve your ability to answer questions after a talk.",
-   "can_do": "I can answer questions after a talk, including difficult ones.",
+   "can_do": "You can answer questions after a talk, including difficult ones.",
    "expressions": [
     "That's a great question.",
     "Let me make sure I understand: you're asking ___?",
@@ -1502,7 +1502,7 @@
    "kind": "core",
    "title": "Speaking at Events",
    "objective": "Improve your ability to speak at formal events.",
-   "can_do": "I can speak at a formal event.",
+   "can_do": "You can speak at a formal event.",
    "expressions": [
     "Ladies and gentlemen, ___.",
     "On behalf of ___, I'd like to thank ___.",
@@ -1582,7 +1582,7 @@
    "kind": "core",
    "title": "Discussing News Articles",
    "objective": "Improve your ability to summarize and discuss news.",
-   "can_do": "I can summarize and discuss a news article.",
+   "can_do": "You can summarize and discuss a news article.",
    "expressions": [
     "The article is about ___.",
     "According to the report, ___.",
@@ -1624,7 +1624,7 @@
    "kind": "core",
    "title": "Talking About Social Media",
    "objective": "Improve your ability to discuss online platforms and habits.",
-   "can_do": "I can discuss online platforms, habits, and their effects.",
+   "can_do": "You can discuss online platforms, habits, and their effects.",
    "expressions": [
     "I rely on ___ for ___.",
     "It's changed the way people ___.",
@@ -1661,7 +1661,7 @@
    "kind": "core",
    "title": "Using Smartphones",
    "objective": "Improve your ability to talk about phone features and apps.",
-   "can_do": "I can talk about phone features and apps and solve a tech problem.",
+   "can_do": "You can talk about phone features and apps and solve a tech problem.",
    "expressions": [
     "My phone keeps freezing.",
     "Could you walk me through ___?",
@@ -1698,7 +1698,7 @@
    "kind": "core",
    "title": "Online Shopping",
    "objective": "Improve your ability to discuss e-commerce experiences.",
-   "can_do": "I can discuss online shopping and e-commerce experiences.",
+   "can_do": "You can discuss online shopping and e-commerce experiences.",
    "expressions": [
     "I usually order online because ___.",
     "I compare prices before I buy.",
@@ -1778,7 +1778,7 @@
    "kind": "core",
    "title": "Describing Holidays",
    "objective": "Improve your ability to talk about cultural celebrations.",
-   "can_do": "I can describe cultural celebrations and their meaning.",
+   "can_do": "You can describe cultural celebrations and their meaning.",
    "expressions": [
     "It's celebrated every year on ___.",
     "It marks the beginning of ___.",
@@ -1820,7 +1820,7 @@
    "kind": "core",
    "title": "Traditional Foods",
    "objective": "Improve your ability to describe traditional dishes.",
-   "can_do": "I can describe traditional dishes and how they are made.",
+   "can_do": "You can describe traditional dishes and how they are made.",
    "expressions": [
     "It's a traditional dish made with ___.",
     "It's typically served at ___.",
@@ -1857,7 +1857,7 @@
    "kind": "core",
    "title": "Customs and Etiquette",
    "objective": "Improve your ability to explain social norms.",
-   "can_do": "I can explain customs and etiquette and avoid misunderstandings.",
+   "can_do": "You can explain customs and etiquette and avoid misunderstandings.",
    "expressions": [
     "It's considered polite to ___.",
     "It's rude to ___.",
@@ -1894,7 +1894,7 @@
    "kind": "core",
    "title": "Festivals Around the World",
    "objective": "Improve your ability to discuss international festivals.",
-   "can_do": "I can discuss festivals around the world.",
+   "can_do": "You can discuss festivals around the world.",
    "expressions": [
     "It takes place in ___.",
     "Thousands of people attend.",
@@ -1974,7 +1974,7 @@
    "kind": "core",
    "title": "Healthy Habits",
    "objective": "Improve your ability to talk about wellness routines.",
-   "can_do": "I can talk about healthy habits and how to build them.",
+   "can_do": "You can talk about healthy habits and how to build them.",
    "expressions": [
     "It's important to ___.",
     "I make an effort to ___.",
@@ -2016,7 +2016,7 @@
    "kind": "core",
    "title": "Exercise Routines",
    "objective": "Improve your ability to discuss fitness plans.",
-   "can_do": "I can discuss fitness plans and progress.",
+   "can_do": "You can discuss fitness plans and progress.",
    "expressions": [
     "I follow a weekly routine.",
     "I train three days a week.",
@@ -2053,7 +2053,7 @@
    "kind": "core",
    "title": "Mental Health",
    "objective": "Improve your ability to talk about stress and self-care.",
-   "can_do": "I can talk about stress and self-care in a supportive way.",
+   "can_do": "You can talk about stress and self-care in a supportive way.",
    "expressions": [
     "It's perfectly normal to feel ___.",
     "Have you tried ___?",
@@ -2090,7 +2090,7 @@
    "kind": "core",
    "title": "Visiting the Gym",
    "objective": "Improve your ability to discuss gym activities and equipment.",
-   "can_do": "I can discuss gym activities and equipment.",
+   "can_do": "You can discuss gym activities and equipment.",
    "expressions": [
     "I'd like to sign up for a membership.",
     "What classes do you offer?",
@@ -2170,7 +2170,7 @@
    "kind": "core",
    "title": "Climate Change",
    "objective": "Improve your ability to discuss environmental issues.",
-   "can_do": "I can discuss climate change and possible solutions.",
+   "can_do": "You can discuss climate change and possible solutions.",
    "expressions": [
     "The evidence suggests that ___.",
     "It's caused by ___.",
@@ -2212,7 +2212,7 @@
    "kind": "core",
    "title": "Recycling",
    "objective": "Improve your ability to talk about waste reduction.",
-   "can_do": "I can talk about recycling and waste reduction.",
+   "can_do": "You can talk about recycling and waste reduction.",
    "expressions": [
     "We separate our trash.",
     "You have to rinse bottles first.",
@@ -2249,7 +2249,7 @@
    "kind": "core",
    "title": "Volunteering",
    "objective": "Improve your ability to describe volunteer work.",
-   "can_do": "I can describe volunteer work and why it matters.",
+   "can_do": "You can describe volunteer work and why it matters.",
    "expressions": [
     "I volunteer at ___.",
     "I help with ___.",
@@ -2286,7 +2286,7 @@
    "kind": "core",
    "title": "Community Service",
    "objective": "Improve your ability to discuss local initiatives.",
-   "can_do": "I can discuss local community initiatives.",
+   "can_do": "You can discuss local community initiatives.",
    "expressions": [
     "Our community is working on ___.",
     "We raised funds for ___.",
@@ -2366,7 +2366,7 @@
    "kind": "core",
    "title": "Setting Goals",
    "objective": "Improve your ability to talk about personal objectives.",
-   "can_do": "I can set goals and describe how I'll reach them.",
+   "can_do": "You can set goals and describe how you'll reach them.",
    "expressions": [
     "My main goal is to ___.",
     "I'm aiming to ___ by ___.",
@@ -2408,7 +2408,7 @@
    "kind": "core",
    "title": "Camping for the First Time",
    "objective": "Improve your ability to describe new experiences.",
-   "can_do": "I can describe a new experience (like camping) in vivid detail.",
+   "can_do": "You can describe a new experience (like camping) in vivid detail.",
    "expressions": [
     "I'd never ___ before.",
     "At first, I felt ___.",
@@ -2445,7 +2445,7 @@
    "kind": "core",
    "title": "Overcoming Fears",
    "objective": "Improve your ability to talk about challenges and fears.",
-   "can_do": "I can talk about fears and how to overcome them.",
+   "can_do": "You can talk about fears and how to overcome them.",
    "expressions": [
     "I used to be terrified of ___.",
     "I'm still a bit nervous about ___.",
@@ -2482,7 +2482,7 @@
    "kind": "core",
    "title": "Giving a Speech",
    "objective": "Improve your ability to prepare and deliver speeches.",
-   "can_do": "I can prepare and deliver a speech with a clear message.",
+   "can_do": "You can prepare and deliver a speech with a clear message.",
    "expressions": [
     "Imagine a world where ___.",
     "I want to talk to you about ___.",
@@ -2562,7 +2562,7 @@
    "kind": "core",
    "title": "Debating Topics",
    "objective": "Improve your ability to argue both sides of an issue.",
-   "can_do": "I can debate a topic and argue both sides.",
+   "can_do": "You can debate a topic and argue both sides.",
    "expressions": [
     "I'd like to argue that ___.",
     "There are strong arguments on both sides.",
@@ -2604,7 +2604,7 @@
    "kind": "core",
    "title": "Storytelling",
    "objective": "Improve your ability to tell engaging stories.",
-   "can_do": "I can tell an engaging story with a clear structure.",
+   "can_do": "You can tell an engaging story with a clear structure.",
    "expressions": [
     "It all started when ___.",
     "Little did I know that ___.",
@@ -2641,7 +2641,7 @@
    "kind": "core",
    "title": "Impromptu Speaking",
    "objective": "Improve your ability to speak without preparation.",
-   "can_do": "I can speak without preparation on an unfamiliar topic.",
+   "can_do": "You can speak without preparation on an unfamiliar topic.",
    "expressions": [
     "Let me gather my thoughts.",
     "That's an interesting question.",

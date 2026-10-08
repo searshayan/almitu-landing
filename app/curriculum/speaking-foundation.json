@@ -14,7 +14,7 @@
    "kind": "core",
    "title": "Nice To Meet You",
    "objective": "Practice the alphabet; learn to give and spell your name and family name.",
-   "can_do": "I can say and spell my name and ask someone's name.",
+   "can_do": "You can say and spell your name and ask someone's name.",
    "expressions": [
     "My name is ___.",
     "What's your name?",
@@ -53,7 +53,7 @@
    "kind": "core",
    "title": "How Are You?",
    "objective": "Learn to say how you feel and ask others how they are.",
-   "can_do": "I can say how I feel and ask how someone is.",
+   "can_do": "You can say how you feel and ask how someone is.",
    "expressions": [
     "Hello! How are you?",
     "I'm fine, thanks.",
@@ -88,7 +88,7 @@
    "kind": "core",
    "title": "What Do You Do?",
    "objective": "Learn to talk about your job and where you work.",
-   "can_do": "I can say my job and where I work.",
+   "can_do": "You can say your job and where you work.",
    "expressions": [
     "I'm a ___.",
     "I work in a ___.",
@@ -123,7 +123,7 @@
    "kind": "core",
    "title": "How Do I Contact You?",
    "objective": "Learn to share and ask for contact information (phone, email).",
-   "can_do": "I can give and ask for a phone number and email address.",
+   "can_do": "You can give and ask for a phone number and email address.",
    "expressions": [
     "What's your phone number?",
     "My number is ___.",
@@ -199,7 +199,7 @@
    "kind": "core",
    "title": "What Is Your Brother's Name?",
    "objective": "Learn to talk about family members' names.",
-   "can_do": "I can say the names of my family members.",
+   "can_do": "You can say the names of your family members.",
    "expressions": [
     "This is my brother.",
     "His name is ___.",
@@ -238,7 +238,7 @@
    "kind": "core",
    "title": "How Old Are You?",
    "objective": "Learn to ask and answer questions about age.",
-   "can_do": "I can ask and say how old people are.",
+   "can_do": "You can ask and say how old people are.",
    "expressions": [
     "How old are you?",
     "I'm twenty-five.",
@@ -273,7 +273,7 @@
    "kind": "core",
    "title": "What Does She Do?",
    "objective": "Learn to describe other people's jobs.",
-   "can_do": "I can say what other people do for work.",
+   "can_do": "You can say what other people do for work.",
    "expressions": [
     "What does she do?",
     "She's a nurse.",
@@ -308,7 +308,7 @@
    "kind": "core",
    "title": "Do You Have a Pet?",
    "objective": "Learn to talk about pets and ownership.",
-   "can_do": "I can talk about pets and say what I have.",
+   "can_do": "You can talk about pets and say what you have.",
    "expressions": [
     "Do you have a pet?",
     "Yes, I do. I have a cat.",
@@ -384,7 +384,7 @@
    "kind": "core",
    "title": "How Is the Weather?",
    "objective": "Learn to describe current weather conditions.",
-   "can_do": "I can describe the weather right now.",
+   "can_do": "You can describe the weather right now.",
    "expressions": [
     "It's sunny.",
     "It's raining.",
@@ -423,7 +423,7 @@
    "kind": "core",
    "title": "What Foods Do You Like?",
    "objective": "Learn to express food preferences.",
-   "can_do": "I can say what foods I like and don't like.",
+   "can_do": "You can say what foods you like and don't like.",
    "expressions": [
     "I like rice.",
     "I don't like fish.",
@@ -458,7 +458,7 @@
    "kind": "core",
    "title": "What Is Your Daily Routine?",
    "objective": "Learn to describe your everyday routine.",
-   "can_do": "I can describe the things I do every day.",
+   "can_do": "You can describe the things you do every day.",
    "expressions": [
     "I wake up at six.",
     "I eat breakfast.",
@@ -493,7 +493,7 @@
    "kind": "core",
    "title": "What Is Your Weekly Routine?",
    "objective": "Learn to talk about weekly habits and schedules.",
-   "can_do": "I can talk about my weekly schedule.",
+   "can_do": "You can talk about your weekly schedule.",
    "expressions": [
     "On Monday I work.",
     "I study on Tuesday.",
@@ -569,7 +569,7 @@
    "kind": "core",
    "title": "What Would You Like?",
    "objective": "Learn to make polite requests and offers.",
-   "can_do": "I can ask for things politely and offer something.",
+   "can_do": "You can ask for things politely and offer something.",
    "expressions": [
     "Can I have some water, please?",
     "I'd like a coffee.",
@@ -608,7 +608,7 @@
    "kind": "core",
    "title": "What Does He Like Doing?",
    "objective": "Learn to talk about other people's hobbies.",
-   "can_do": "I can say what other people like doing.",
+   "can_do": "You can say what other people like doing.",
    "expressions": [
     "He likes playing football.",
     "She likes reading.",
@@ -643,7 +643,7 @@
    "kind": "core",
    "title": "What Time Is It?",
    "objective": "Learn to ask and tell the time.",
-   "can_do": "I can ask for and tell the time.",
+   "can_do": "You can ask for and tell the time.",
    "expressions": [
     "What time is it?",
     "It's three o'clock.",
@@ -678,7 +678,7 @@
    "kind": "core",
    "title": "What Does She Do on the Weekend?",
    "objective": "Learn to describe weekend activities.",
-   "can_do": "I can say what someone does on the weekend.",
+   "can_do": "You can say what someone does on the weekend.",
    "expressions": [
     "She goes to the park.",
     "He plays football on Saturday.",
@@ -754,7 +754,7 @@
    "kind": "core",
    "title": "When Is Your Birthday?",
    "objective": "Learn to talk about dates and birthdays.",
-   "can_do": "I can say and ask about dates and birthdays.",
+   "can_do": "You can say and ask about dates and birthdays.",
    "expressions": [
     "When is your birthday?",
     "My birthday is in March.",
@@ -793,7 +793,7 @@
    "kind": "core",
    "title": "What Can You Do?",
    "objective": "Learn to talk about abilities using 'can'.",
-   "can_do": "I can say what I can and can't do.",
+   "can_do": "You can say what you can and can't do.",
    "expressions": [
     "I can swim.",
     "I can't drive.",
@@ -828,7 +828,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Season?",
    "objective": "Learn to express preferences about seasons.",
-   "can_do": "I can say which season I like best and why.",
+   "can_do": "You can say which season you like best and why.",
    "expressions": [
     "My favorite season is ___.",
     "I like summer.",
@@ -863,7 +863,7 @@
    "kind": "core",
    "title": "What Sports Do You Like?",
    "objective": "Learn to talk about sports you like.",
-   "can_do": "I can say what sports I like and how I play them.",
+   "can_do": "You can say what sports you like and how you play them.",
    "expressions": [
     "I like football.",
     "I play basketball on Saturdays.",
@@ -939,7 +939,7 @@
    "kind": "core",
    "title": "Who Is This?",
    "objective": "Learn to identify and describe people in photos.",
-   "can_do": "I can say who people in photos are.",
+   "can_do": "You can say who people in photos are.",
    "expressions": [
     "Who is this?",
     "This is my friend.",
@@ -978,7 +978,7 @@
    "kind": "core",
    "title": "What Does Your Aunt Do?",
    "objective": "Learn to describe relatives' occupations.",
-   "can_do": "I can say what my relatives do.",
+   "can_do": "You can say what your relatives do.",
    "expressions": [
     "What does your aunt do?",
     "My aunt is a teacher.",
@@ -1013,7 +1013,7 @@
    "kind": "core",
    "title": "What Do You Like Wearing?",
    "objective": "Learn to talk about clothing preferences.",
-   "can_do": "I can say what clothes I like wearing.",
+   "can_do": "You can say what clothes you like wearing.",
    "expressions": [
     "I like wearing jeans.",
     "She wears a blue dress.",
@@ -1048,7 +1048,7 @@
    "kind": "core",
    "title": "What Does She Look Like?",
    "objective": "Learn to describe people's appearance.",
-   "can_do": "I can describe how a person looks.",
+   "can_do": "You can describe how a person looks.",
    "expressions": [
     "She has long black hair.",
     "He's tall.",
@@ -1124,7 +1124,7 @@
    "kind": "core",
    "title": "When Do You Wake Up?",
    "objective": "Learn to talk about daily wake-up and sleep times.",
-   "can_do": "I can say what time I wake up and go to sleep.",
+   "can_do": "You can say what time you wake up and go to sleep.",
    "expressions": [
     "I wake up at six.",
     "I get up at seven.",
@@ -1163,7 +1163,7 @@
    "kind": "core",
    "title": "What Do You Have For Breakfast?",
    "objective": "Learn to describe breakfast habits.",
-   "can_do": "I can say what I have for breakfast and ask others.",
+   "can_do": "You can say what you have for breakfast and ask others.",
    "expressions": [
     "I have eggs for breakfast.",
     "I eat bread and tea.",
@@ -1198,7 +1198,7 @@
    "kind": "core",
    "title": "How Do You Get To Work?",
    "objective": "Learn to talk about transportation to work/school.",
-   "can_do": "I can say how I get to work or school.",
+   "can_do": "You can say how you get to work or school.",
    "expressions": [
     "I go to work by bus.",
     "I walk to school.",
@@ -1233,7 +1233,7 @@
    "kind": "core",
    "title": "Would You Like To Go Out For Dinner?",
    "objective": "Learn to make, accept, and refuse invitations.",
-   "can_do": "I can invite someone and accept or refuse politely.",
+   "can_do": "You can invite someone and accept or refuse politely.",
    "expressions": [
     "Would you like to go out for dinner?",
     "Yes, I'd love to.",
@@ -1309,7 +1309,7 @@
    "kind": "core",
    "title": "What is Your City Like?",
    "objective": "Learn to describe your city or town.",
-   "can_do": "I can describe my city or town.",
+   "can_do": "You can describe your city or town.",
    "expressions": [
     "My city is big.",
     "It's very busy.",
@@ -1348,7 +1348,7 @@
    "kind": "core",
    "title": "What Can You See In Your City?",
    "objective": "Learn to talk about places and sights in your city.",
-   "can_do": "I can say what places and sights are in my city.",
+   "can_do": "You can say what places and sights are in your city.",
    "expressions": [
     "There's a park near my house.",
     "You can see a big mosque.",
@@ -1383,7 +1383,7 @@
    "kind": "core",
    "title": "What Is Your House Like?",
    "objective": "Learn to describe your house or apartment.",
-   "can_do": "I can describe my house or apartment.",
+   "can_do": "You can describe your house or apartment.",
    "expressions": [
     "I live in an apartment.",
     "There are three rooms.",
@@ -1418,7 +1418,7 @@
    "kind": "core",
    "title": "What Is Your Room Like?",
    "objective": "Learn to describe your room and its contents.",
-   "can_do": "I can describe my room and what is in it.",
+   "can_do": "You can describe your room and what is in it.",
    "expressions": [
     "There's a bed in my room.",
     "My desk is next to the window.",
@@ -1494,7 +1494,7 @@
    "kind": "core",
    "title": "How Do You Feel?",
    "objective": "Learn to describe emotions and feelings.",
-   "can_do": "I can say how I feel and why.",
+   "can_do": "You can say how you feel and why.",
    "expressions": [
     "I'm happy today.",
     "I'm sad because ___.",
@@ -1533,7 +1533,7 @@
    "kind": "core",
    "title": "Are You OK?",
    "objective": "Learn to ask about and express well-being.",
-   "can_do": "I can ask if someone is OK and say how I am.",
+   "can_do": "You can ask if someone is OK and say how you are.",
    "expressions": [
     "Are you OK?",
     "I'm OK, thanks.",
@@ -1568,7 +1568,7 @@
    "kind": "core",
    "title": "What Did You Do Yesterday?",
    "objective": "Learn to talk about yesterday using past tense.",
-   "can_do": "I can talk about what I did yesterday.",
+   "can_do": "You can talk about what you did yesterday.",
    "expressions": [
     "I went to work yesterday.",
     "I watched TV.",
@@ -1603,7 +1603,7 @@
    "kind": "core",
    "title": "How Was Your Vacation?",
    "objective": "Learn to describe past vacations.",
-   "can_do": "I can talk about a past vacation.",
+   "can_do": "You can talk about a past vacation.",
    "expressions": [
     "I went to the beach.",
     "We stayed in a hotel.",
@@ -1679,7 +1679,7 @@
    "kind": "core",
    "title": "What Do You Do at Work?",
    "objective": "Learn to describe daily work tasks.",
-   "can_do": "I can describe what I do at work.",
+   "can_do": "You can describe what you do at work.",
    "expressions": [
     "I answer the phone.",
     "I write emails.",
@@ -1718,7 +1718,7 @@
    "kind": "core",
    "title": "Are You Taller Than Your Brother?",
    "objective": "Learn to make comparisons with adjectives.",
-   "can_do": "I can compare two people or things.",
+   "can_do": "You can compare two people or things.",
    "expressions": [
     "My brother is taller than me.",
     "This phone is cheaper.",
@@ -1753,7 +1753,7 @@
    "kind": "core",
    "title": "What Is She Doing?",
    "objective": "Learn to describe actions in progress (present continuous).",
-   "can_do": "I can say what someone is doing right now.",
+   "can_do": "You can say what someone is doing right now.",
    "expressions": [
     "She is cooking.",
     "He's reading a book.",
@@ -1788,7 +1788,7 @@
    "kind": "core",
    "title": "Who Is Your Best Friend?",
    "objective": "Learn to talk about close friends.",
-   "can_do": "I can talk about my best friend.",
+   "can_do": "You can talk about your best friend.",
    "expressions": [
     "My best friend is ___.",
     "We met at school.",
@@ -1864,7 +1864,7 @@
    "kind": "core",
    "title": "Who Are Your Favorite People?",
    "objective": "Learn to talk about favorite people and why.",
-   "can_do": "I can say who my favorite people are and why.",
+   "can_do": "You can say who your favorite people are and why.",
    "expressions": [
     "My favorite person is ___.",
     "I like him because he is kind.",
@@ -1903,7 +1903,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Restaurant?",
    "objective": "Learn to describe favorite places to eat.",
-   "can_do": "I can describe my favorite restaurant.",
+   "can_do": "You can describe your favorite restaurant.",
    "expressions": [
     "My favorite restaurant is ___.",
     "The food is delicious.",
@@ -1938,7 +1938,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Animal?",
    "objective": "Learn to express favorite animals and reasons.",
-   "can_do": "I can say what my favorite animal is and why.",
+   "can_do": "You can say what your favorite animal is and why.",
    "expressions": [
     "My favorite animal is the cat.",
     "It's small and soft.",
@@ -1973,7 +1973,7 @@
    "kind": "core",
    "title": "Who Is Your Favorite Celebrity?",
    "objective": "Learn to talk about favorite famous people.",
-   "can_do": "I can talk about a famous person I like.",
+   "can_do": "You can talk about a famous person you like.",
    "expressions": [
     "My favorite celebrity is ___.",
     "He is a singer.",
@@ -2049,7 +2049,7 @@
    "kind": "core",
    "title": "What Music Do You Like?",
    "objective": "Learn to talk about music preferences.",
-   "can_do": "I can talk about music I like.",
+   "can_do": "You can talk about music you like.",
    "expressions": [
     "I like pop music.",
     "I listen to music every day.",
@@ -2088,7 +2088,7 @@
    "kind": "core",
    "title": "What Sports Do You Like Playing?",
    "objective": "Learn to discuss sports you play.",
-   "can_do": "I can say what sports I play and how often.",
+   "can_do": "You can say what sports you play and how often.",
    "expressions": [
     "I play volleyball.",
     "I play on Saturdays.",
@@ -2123,7 +2123,7 @@
    "kind": "core",
    "title": "What Are Your Favorite Clothes?",
    "objective": "Learn to describe favorite clothing items.",
-   "can_do": "I can describe my favorite clothes.",
+   "can_do": "You can describe your favorite clothes.",
    "expressions": [
     "My favorite shirt is blue.",
     "I like wearing it at home.",
@@ -2158,7 +2158,7 @@
    "kind": "core",
    "title": "What Movie Did You See?",
    "objective": "Learn to talk about movies you watched.",
-   "can_do": "I can say what movie I saw and what I thought.",
+   "can_do": "You can say what movie you saw and what you thought.",
    "expressions": [
     "I saw a movie last night.",
     "It was funny.",
@@ -2234,7 +2234,7 @@
    "kind": "core",
    "title": "What Is the Weather Usually Like in July?",
    "objective": "Learn to describe typical monthly weather.",
-   "can_do": "I can describe typical weather for a month.",
+   "can_do": "You can describe typical weather for a month.",
    "expressions": [
     "It's usually hot in July.",
     "It rains a lot in April.",
@@ -2273,7 +2273,7 @@
    "kind": "core",
    "title": "What Are The Biggest Holidays In Your Country?",
    "objective": "Learn to talk about major holidays.",
-   "can_do": "I can talk about big holidays in my country.",
+   "can_do": "You can talk about big holidays in your country.",
    "expressions": [
     "The biggest holiday is ___.",
     "We celebrate with family.",
@@ -2308,7 +2308,7 @@
    "kind": "core",
    "title": "What Is the Best Park in Your City?",
    "objective": "Learn to recommend local places.",
-   "can_do": "I can recommend a place in my city and say why.",
+   "can_do": "You can recommend a place in your city and say why.",
    "expressions": [
     "The best park is ___.",
     "You can walk there.",
@@ -2343,7 +2343,7 @@
    "kind": "core",
    "title": "What Countries Would You Like to Visit?",
    "objective": "Learn to talk about travel wishes.",
-   "can_do": "I can say which countries I want to visit and why.",
+   "can_do": "You can say which countries you want to visit and why.",
    "expressions": [
     "I'd like to visit Turkey.",
     "I want to see the mountains.",
@@ -2419,7 +2419,7 @@
    "kind": "core",
    "title": "What Does It Look Like?",
    "objective": "Learn to describe objects and appearances.",
-   "can_do": "I can describe objects and what they look like.",
+   "can_do": "You can describe objects and what they look like.",
    "expressions": [
     "It's round and small.",
     "It's made of metal.",
@@ -2458,7 +2458,7 @@
    "kind": "core",
    "title": "Where Is The Bank?",
    "objective": "Learn to ask for and give simple directions.",
-   "can_do": "I can ask for and give simple directions.",
+   "can_do": "You can ask for and give simple directions.",
    "expressions": [
     "Where is the bank?",
     "Go straight.",
@@ -2493,7 +2493,7 @@
    "kind": "core",
    "title": "What Did You Study in High School?",
    "objective": "Learn to talk about past school subjects.",
-   "can_do": "I can say what subjects I studied in high school.",
+   "can_do": "You can say what subjects you studied in high school.",
    "expressions": [
     "I studied math.",
     "I liked English class.",
@@ -2528,7 +2528,7 @@
    "kind": "core",
    "title": "What Did You Do at University?",
    "objective": "Learn to describe university experiences.",
-   "can_do": "I can talk about what I did at university.",
+   "can_do": "You can talk about what you did at university.",
    "expressions": [
     "I studied business.",
     "I lived in a dorm.",
@@ -2604,7 +2604,7 @@
    "kind": "core",
    "title": "How Much Soda Do You Drink?",
    "objective": "Learn to talk about quantities and habits.",
-   "can_do": "I can talk about how much I eat or drink.",
+   "can_do": "You can talk about how much you eat or drink.",
    "expressions": [
     "I drink two cups of tea a day.",
     "How much soda do you drink?",
@@ -2643,7 +2643,7 @@
    "kind": "core",
    "title": "How Often Do You Exercise?",
    "objective": "Learn to describe frequency of activities.",
-   "can_do": "I can say how often I do things.",
+   "can_do": "You can say how often you do things.",
    "expressions": [
     "I exercise every day.",
     "I walk twice a week.",
@@ -2678,7 +2678,7 @@
    "kind": "core",
    "title": "Did You Go Out Last Weekend?",
    "objective": "Learn to talk about last weekend using past tense.",
-   "can_do": "I can talk about what I did last weekend.",
+   "can_do": "You can talk about what you did last weekend.",
    "expressions": [
     "I stayed at home.",
     "I visited my aunt.",
@@ -2713,7 +2713,7 @@
    "kind": "core",
    "title": "What Are You Going to Do Tomorrow?",
    "objective": "Learn to talk about future plans (going to).",
-   "can_do": "I can talk about my plans for tomorrow.",
+   "can_do": "You can talk about your plans for tomorrow.",
    "expressions": [
     "I'm going to study tomorrow.",
     "I'm going to visit my friend.",
@@ -2789,7 +2789,7 @@
    "kind": "core",
    "title": "At the Restaurant (First Steps)",
    "objective": "Learn to order food and drink and ask for the check.",
-   "can_do": "I can order food and drink and ask for the check.",
+   "can_do": "You can order food and drink and ask for the check.",
    "expressions": [
     "A table for two, please.",
     "Can I see the menu, please?",
@@ -2828,7 +2828,7 @@
    "kind": "core",
    "title": "At the Hotel (First Steps)",
    "objective": "Learn to check in at a hotel and ask simple questions.",
-   "can_do": "I can check in at a hotel and ask simple questions.",
+   "can_do": "You can check in at a hotel and ask simple questions.",
    "expressions": [
     "I have a reservation.",
     "My name is ___.",
@@ -2863,7 +2863,7 @@
    "kind": "core",
    "title": "At the Doctor's Office (First Steps)",
    "objective": "Learn to say what is wrong and understand simple instructions.",
-   "can_do": "I can say what is wrong and understand simple instructions.",
+   "can_do": "You can say what is wrong and understand simple instructions.",
    "expressions": [
     "I don't feel well.",
     "I have a headache.",
@@ -2898,7 +2898,7 @@
    "kind": "core",
    "title": "Taking a Taxi (First Steps)",
    "objective": "Learn to tell a taxi driver where to go and pay.",
-   "can_do": "I can tell a taxi driver where to go and pay.",
+   "can_do": "You can tell a taxi driver where to go and pay.",
    "expressions": [
     "To the airport, please.",
     "How much is it?",
@@ -2933,7 +2933,7 @@
    "kind": "core",
    "title": "At the Bank (First Steps)",
    "objective": "Learn to open an account or send money with simple phrases.",
-   "can_do": "I can open an account or send money with simple phrases.",
+   "can_do": "You can open an account or send money with simple phrases.",
    "expressions": [
     "I want to open an account.",
     "I want to send money.",

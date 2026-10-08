@@ -152,6 +152,7 @@ function speakingSkeleton(formData) {
   const st = SPEAKING_STEPS[sp.step] || SPEAKING_STEPS.F2;
   const n = (sp.expressions || []).length || st.toolkit;
   const foundation = formData.tier === 'foundation';
+  const supportMax = foundation ? 2 : 3;
   const modelNote = foundation
     ? ' notes = tutor-aid: the tutor reads the whole dialogue aloud FIRST, then the learner echoes each line, then they swap roles and the learner adapts it.'
     : ' notes = brief role-play notes. The tutor only models briefly; the learner takes the lead.';
@@ -168,8 +169,8 @@ function speakingSkeleton(formData) {
   }
 
   return [
-    { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = a one-sentence objective naming the real-life scenario and what the learner will be able to DO in it (use the can-do wording given in the input). warmup = a SINGLE warm-up question that primes the situation. badges = [] (the app adds the unit badge). No emojis; no personal names.' },
-    { icon: '', label: 'Language Toolkit', layout: 'toolkit', brief: `Present EXACTLY the ${n} target phrases from the input, verbatim and in the given order — none added, removed or reworded. Group them into 2-4 communicative functions; each item: phrase; use = one line on when/why; example = a simple model sentence using it; l1 = "" unless L1 support is on. repeat = ONE quick repeat-aloud activity${foundation ? ' (the tutor says each phrase first, the learner echoes it)' : ''}. Friendly, 2-4 minutes.` },
+    { icon: '', label: 'Objective & Warm-up', layout: 'hero', brief: 'goal = the can-do statement given in the input, word for word (the app sets it). warmup = a SINGLE warm-up question that primes the situation. badges = [] (the app adds the unit badge). No emojis; no personal names.' },
+    { icon: '', label: 'Language Toolkit', layout: 'opentoolkit', brief: `An OPEN slide: it holds everything the learner needs for THIS topic and objective, and its structure comes from the topic itself, not from a fixed template. data.blocks is an ordered list. BLOCK 1 is always type "phrases": the EXACTLY ${n} target phrases from the input, verbatim and in the given order (none added, removed or reworded), each { phrase, use = one line on when/why, example = a short realistic line or reply showing the phrase in use (a DIFFERENT sentence from the phrase itself — never just repeat the phrase), l1 = "" }. Its heading is a short topic-specific heading (for example "At the registration desk"), NEVER a generic function label such as Opening, Requesting, Responding, Clarifying or Closing. Then add ${supportMax} support blocks at most (add only what this topic truly needs), chosen from: "chart" { heading, headers, rows } (for example an alphabet chart, a number guide, a menu, a time or date table, a simple map key); "words" { heading, items: [{ word, meaning }] } (key single words or numbers the topic needs); "model" { heading, lines: [{ speaker, line }] } (a very short example exchange); "how" { heading, steps: [..] } (how something works or the order of an argument or task); "note" { heading, text } (a cultural or usage note); "tip" { heading, text }. Support blocks must help the learner reach the objective but must NOT introduce new sentences the learner is expected to say beyond the target phrases: single words, numbers, charts, steps and tips are fine. Keep every block short enough to read at a glance${foundation ? '; use simple words and keep charts small' : ''}. repeat = ONE quick repeat-aloud activity${foundation ? ' (the tutor says each phrase first, the learner echoes it)' : ''}. Friendly, 2-4 minutes.` },
     { icon: '', label: 'Language Focus', layout: 'focus', brief: `frames = 3-5 core sentence frames taken from the target phrases, each with use = one very simple line on how it helps. examples = 2-3 short mini-dialogue lines using the phrases in the topic context. drills = 3-5 call-and-response items { prompt: what the tutor says, response: the learner's line using a key phrase }.${foundation ? ' Leave variations = [].' : ' variations = [ 2-3 richer variations adding a reason, an example or detail ].'}` },
     { icon: '', label: 'Model Dialogue', layout: 'dialogue', brief: `instruction EXACTLY "Read together, swap roles, then adapt it to talk about your own real situation." A short, natural dialogue showing the speaking focus in a realistic situation. TURNS: exactly ${st.turns}. Speakers use several of the target phrases; bold the most useful lines to notice and reuse. Student side = right. Use generic names or role pairs, never a personal name.${modelNote}` },
     { icon: '', label: 'Conversation Questions', layout: 'questions', brief: `items = EXACTLY ${st.questions} conversation questions that support the objective, each { question, frames: [1-2 answer frames that model the target phrases and leave a blank for the learner's own detail] } — the frames reveal on click. Keep language short so each question supports about a minute of speaking. notes = a tutor note on sequencing from simple factual questions to opinion or feeling questions.` },
@@ -278,20 +279,34 @@ function speakingProcess(content, rec) {
   _walkStrings(slides, s => { if (!leak && _LEVEL_LEAK.test(s)) leak = s; });
   if (leak) throw new Error('A level label leaked into the slides: "' + leak.slice(0, 60) + '"');
 
-  const toolkit = slides.find(s => s.layout === 'toolkit');
-  if (!toolkit) throw new Error('No toolkit slide.');
-  const got = [];
-  (toolkit.data.groups || []).forEach(g => (g.items || []).forEach(it => got.push(_normPhrase(typeof it === 'string' ? it : it.phrase))));
+  // The Language Toolkit is open (blocks chosen by the topic) on core sessions; the review recap keeps the classic toolkit.
   const want = rec.expressions.map(_normPhrase);
+  const got = [];
+  const open = slides.find(s => s.layout === 'opentoolkit');
+  if (open) {
+    const blocks = (open.data && open.data.blocks) || [];
+    const ALLOWED = ['phrases', 'chart', 'words', 'model', 'how', 'note', 'tip'];
+    if (!blocks.length || blocks[0].type !== 'phrases') throw new Error('The first toolkit block must be the target phrases.');
+    const supportMax = rec.tier === 'foundation' ? 2 : 3;
+    if (blocks.length - 1 > supportMax) throw new Error(`Toolkit has ${blocks.length - 1} support blocks; the limit is ${supportMax}.`);
+    blocks.forEach(b => { if (!ALLOWED.includes(b.type)) throw new Error('Unknown toolkit block type: ' + b.type); });
+    if (blocks.filter(b => b.type === 'phrases').length !== 1) throw new Error('The toolkit must have exactly one phrases block.');
+    blocks.forEach(b => { if (/^(opening|requesting|responding|clarifying|closing)$/i.test(String(b.heading || '').trim())) throw new Error('Generic toolkit heading: ' + b.heading); });
+    (blocks[0].items || []).forEach(it => got.push(_normPhrase(typeof it === 'string' ? it : it.phrase)));
+  } else {
+    const toolkit = slides.find(s => s.layout === 'toolkit');
+    if (!toolkit) throw new Error('No toolkit slide.');
+    (toolkit.data.groups || []).forEach(g => (g.items || []).forEach(it => got.push(_normPhrase(typeof it === 'string' ? it : it.phrase))));
+  }
   const missing = want.filter(w => !got.includes(w));
   if (got.length !== want.length || missing.length) throw new Error(`Toolkit does not match the ${want.length} target phrases (missing: ${missing.slice(0, 2).join(' / ') || 'count differs'}).`);
 
-  // Hero: unit badge + outcome.
+  // Hero: unit badge (the can-do statement already carries the goal; no separate outcome line).
   const hero = slides.find(s => s.layout === 'hero');
   if (hero) {
     hero.data = hero.data || {};
     hero.data.badges = [`Unit ${rec.unit}: ${rec.unit_title}`].concat(rec.kind === 'review' ? ['Milestone'] : []);
-    hero.data.outcome = rec.unit_outcome;
+    if (rec.kind !== 'review' && rec.can_do) hero.data.goal = rec.can_do;   // the can-do statement is the objective, word for word
   }
   // Repair phrases slide on unit openers.
   if (rec.repair_phrases && rec.repair_phrases.length) {

@@ -14,7 +14,7 @@
    "kind": "core",
    "title": "Where Do You Live?",
    "objective": "Improve your ability to talk about where you live.",
-   "can_do": "I can say where I live and describe my home area.",
+   "can_do": "You can say where you live and describe your home area.",
    "expressions": [
     "I live in ___.",
     "I live in a small apartment.",
@@ -53,7 +53,7 @@
    "kind": "core",
    "title": "Why Are You Learning English?",
    "objective": "Improve your ability to talk about learning English.",
-   "can_do": "I can explain why I am learning English.",
+   "can_do": "You can explain why you are learning English.",
    "expressions": [
     "I'm learning English because ___.",
     "I need it for work.",
@@ -88,7 +88,7 @@
    "kind": "core",
    "title": "Who Do You Live With?",
    "objective": "Improve your ability to talk about the people you live with.",
-   "can_do": "I can talk about the people I live with.",
+   "can_do": "You can talk about the people you live with.",
    "expressions": [
     "I live with my parents.",
     "We share a room.",
@@ -123,7 +123,7 @@
    "kind": "core",
    "title": "Does He Have a Beard?",
    "objective": "Improve your ability to describe people's appearance in detail.",
-   "can_do": "I can describe people's appearance in detail.",
+   "can_do": "You can describe people's appearance in detail.",
    "expressions": [
     "He has a beard and a mustache.",
     "She has curly hair.",
@@ -199,7 +199,7 @@
    "kind": "core",
    "title": "Do You Usually Take the Train to Work?",
    "objective": "Improve your ability to talk about your commute.",
-   "can_do": "I can describe how I get to work or school.",
+   "can_do": "You can describe how you get to work or school.",
    "expressions": [
     "I usually take the train.",
     "It takes about thirty minutes.",
@@ -238,7 +238,7 @@
    "kind": "core",
    "title": "What Do You Have to Do at Work?",
    "objective": "Improve your ability to talk about work responsibilities.",
-   "can_do": "I can talk about duties and responsibilities at work.",
+   "can_do": "You can talk about duties and responsibilities at work.",
    "expressions": [
     "I have to arrive by nine.",
     "I don't have to work on Sundays.",
@@ -273,7 +273,7 @@
    "kind": "core",
    "title": "What Was Your First Job Like?",
    "objective": "Improve your ability to talk about past jobs.",
-   "can_do": "I can talk about my first job and what it was like.",
+   "can_do": "You can talk about your first job and what it was like.",
    "expressions": [
     "My first job was in a ___.",
     "I worked there for two years.",
@@ -308,7 +308,7 @@
    "kind": "core",
    "title": "When Was the Last Time You Were Sick?",
    "objective": "Improve your ability to talk about health and illness.",
-   "can_do": "I can talk about the last time I was sick.",
+   "can_do": "You can talk about the last time you was sick.",
    "expressions": [
     "I had a cold last week.",
     "I had a fever and a headache.",
@@ -384,7 +384,7 @@
    "kind": "core",
    "title": "What Do You Do in Your Free Time?",
    "objective": "Improve your ability to talk about hobbies and free time.",
-   "can_do": "I can talk about what I do in my free time.",
+   "can_do": "You can talk about what you do in your free time.",
    "expressions": [
     "In my free time I ___.",
     "I enjoy reading.",
@@ -423,7 +423,7 @@
    "kind": "core",
    "title": "What Is Your Pet Like?",
    "objective": "Improve your ability to describe pets.",
-   "can_do": "I can describe my pet or a pet I know.",
+   "can_do": "You can describe your pet or a pet you know.",
    "expressions": [
     "My pet is a ___.",
     "He's very friendly.",
@@ -458,7 +458,7 @@
    "kind": "core",
    "title": "What Was Your First English Class Like?",
    "objective": "Improve your ability to talk about past learning experiences.",
-   "can_do": "I can talk about my first English class.",
+   "can_do": "You can talk about your first English class.",
    "expressions": [
     "My first English class was ___.",
     "The teacher was kind.",
@@ -493,7 +493,7 @@
    "kind": "core",
    "title": "What Was High School Like?",
    "objective": "Improve your ability to describe past school life.",
-   "can_do": "I can describe what my high school was like.",
+   "can_do": "You can describe what your high school was like.",
    "expressions": [
     "My high school was big.",
     "There were many students.",
@@ -569,7 +569,7 @@
    "kind": "core",
    "title": "What Is Your City Like?",
    "objective": "Improve your ability to describe your city.",
-   "can_do": "I can describe my city and what there is to do.",
+   "can_do": "You can describe your city and what there is to do.",
    "expressions": [
     "My city is famous for ___.",
     "There are many things to do.",
@@ -608,7 +608,7 @@
    "kind": "core",
    "title": "Does It Ever Snow in Your City?",
    "objective": "Improve your ability to talk about weather and seasons.",
-   "can_do": "I can talk about weather and seasons in my city.",
+   "can_do": "You can talk about weather and seasons in your city.",
    "expressions": [
     "It snows in January.",
     "It's very humid in summer.",
@@ -643,7 +643,7 @@
    "kind": "core",
    "title": "What Was Your First Trip Abroad Like?",
    "objective": "Improve your ability to talk about past travel experiences.",
-   "can_do": "I can tell the story of my first trip abroad.",
+   "can_do": "You can tell the story of your first trip abroad.",
    "expressions": [
     "My first trip abroad was to ___.",
     "I went with ___.",
@@ -678,7 +678,7 @@
    "kind": "core",
    "title": "When Was The Last Time You Flew?",
    "objective": "Improve your ability to talk about recent flights and travel.",
-   "can_do": "I can talk about the last time I flew.",
+   "can_do": "You can talk about the last time you flew.",
    "expressions": [
     "The last time I flew was ___.",
     "I flew to ___.",
@@ -754,7 +754,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Movie?",
    "objective": "Improve your ability to talk about favorite movies.",
-   "can_do": "I can talk about my favorite movie.",
+   "can_do": "You can talk about your favorite movie.",
    "expressions": [
     "My favorite movie is ___.",
     "It's about a ___.",
@@ -793,7 +793,7 @@
    "kind": "core",
    "title": "What Types of Music Do You Like?",
    "objective": "Improve your ability to discuss music preferences.",
-   "can_do": "I can talk about the kinds of music I like.",
+   "can_do": "You can talk about the kinds of music you like.",
    "expressions": [
     "I like pop music and rock.",
     "I listen to music when I ___.",
@@ -828,7 +828,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Book?",
    "objective": "Improve your ability to talk about favorite books.",
-   "can_do": "I can talk about my favorite book.",
+   "can_do": "You can talk about your favorite book.",
    "expressions": [
     "My favorite book is ___.",
     "It's about ___.",
@@ -863,7 +863,7 @@
    "kind": "core",
    "title": "What Types of TV Shows Do You Like?",
    "objective": "Improve your ability to discuss TV preferences.",
-   "can_do": "I can talk about the TV shows I like and watch.",
+   "can_do": "You can talk about the TV shows you like and watch.",
    "expressions": [
     "I like watching comedies.",
     "I watch the news every day.",
@@ -939,7 +939,7 @@
    "kind": "core",
    "title": "What Social Media Sites Do You Use?",
    "objective": "Improve your ability to talk about social media use.",
-   "can_do": "I can talk about social media sites I use.",
+   "can_do": "You can talk about social media sites you use.",
    "expressions": [
     "I use ___ every day.",
     "I post photos of ___.",
@@ -978,7 +978,7 @@
    "kind": "core",
    "title": "How Was Your First Date?",
    "objective": "Improve your ability to talk about dating experiences.",
-   "can_do": "I can talk about a first date or first meeting.",
+   "can_do": "You can talk about a first date or first meeting.",
    "expressions": [
     "We met at ___.",
     "I was nervous.",
@@ -1013,7 +1013,7 @@
    "kind": "core",
    "title": "What's Your Favorite Outfit?",
    "objective": "Improve your ability to describe clothing and style.",
-   "can_do": "I can describe my favorite outfit.",
+   "can_do": "You can describe your favorite outfit.",
    "expressions": [
     "My favorite outfit is ___.",
     "I wear it when I go ___.",
@@ -1048,7 +1048,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Dish?",
    "objective": "Improve your ability to talk about favorite foods.",
-   "can_do": "I can talk about my favorite dish.",
+   "can_do": "You can talk about your favorite dish.",
    "expressions": [
     "My favorite dish is ___.",
     "It's made of ___.",
@@ -1124,7 +1124,7 @@
    "kind": "core",
    "title": "What Did You Do on Vacation?",
    "objective": "Improve your ability to talk about past vacations.",
-   "can_do": "I can talk about what I did on vacation.",
+   "can_do": "You can talk about what you did on vacation.",
    "expressions": [
     "We went to ___.",
     "We stayed in a hotel.",
@@ -1163,7 +1163,7 @@
    "kind": "core",
    "title": "What Is Your Country Like?",
    "objective": "Improve your ability to describe your country.",
-   "can_do": "I can describe my country.",
+   "can_do": "You can describe your country.",
    "expressions": [
     "My country is in ___.",
     "It's famous for ___.",
@@ -1198,7 +1198,7 @@
    "kind": "core",
    "title": "What Animals Is Your Country Famous For?",
    "objective": "Improve your ability to talk about national symbols and wildlife.",
-   "can_do": "I can talk about animals my country is famous for.",
+   "can_do": "You can talk about animals your country is famous for.",
    "expressions": [
     "The national animal is ___.",
     "You can see ___ in ___.",
@@ -1233,7 +1233,7 @@
    "kind": "core",
    "title": "What Is School Like in Your Country?",
    "objective": "Improve your ability to describe education systems.",
-   "can_do": "I can describe school in my country.",
+   "can_do": "You can describe school in your country.",
    "expressions": [
     "Children start school at ___.",
     "School starts at eight.",
@@ -1309,7 +1309,7 @@
    "kind": "core",
    "title": "What Is Your Favorite Type of Exercise?",
    "objective": "Improve your ability to talk about exercise preferences.",
-   "can_do": "I can talk about the exercise I like best.",
+   "can_do": "You can talk about the exercise you like best.",
    "expressions": [
     "My favorite exercise is ___.",
     "I do it three times a week.",
@@ -1348,7 +1348,7 @@
    "kind": "core",
    "title": "What Time Do You Go to Bed?",
    "objective": "Improve your ability to talk about sleep routines.",
-   "can_do": "I can talk about my sleep routine.",
+   "can_do": "You can talk about your sleep routine.",
    "expressions": [
     "I go to bed at ___.",
     "I usually fall asleep quickly.",
@@ -1383,7 +1383,7 @@
    "kind": "core",
    "title": "Where Do You Go Shopping?",
    "objective": "Improve your ability to talk about shopping habits.",
-   "can_do": "I can talk about where and how I shop.",
+   "can_do": "You can talk about where and how you shop.",
    "expressions": [
     "I usually shop at ___.",
     "I buy groceries on Saturday.",
@@ -1418,7 +1418,7 @@
    "kind": "core",
    "title": "Who Does The Housework?",
    "objective": "Improve your ability to talk about household responsibilities.",
-   "can_do": "I can talk about who does household chores.",
+   "can_do": "You can talk about who does household chores.",
    "expressions": [
     "I wash the dishes.",
     "My brother takes out the trash.",
@@ -1494,7 +1494,7 @@
    "kind": "core",
    "title": "How Was the Wedding?",
    "objective": "Improve your ability to talk about weddings and events.",
-   "can_do": "I can talk about a wedding I went to.",
+   "can_do": "You can talk about a wedding you went to.",
    "expressions": [
     "I went to a wedding in ___.",
     "The bride wore ___.",
@@ -1533,7 +1533,7 @@
    "kind": "core",
    "title": "What's the Best Gift You've Ever Received?",
    "objective": "Improve your ability to talk about memorable gifts.",
-   "can_do": "I can talk about the best gift I have received.",
+   "can_do": "You can talk about the best gift you have received.",
    "expressions": [
     "The best gift I've ever received was ___.",
     "I got it for my birthday.",
@@ -1568,7 +1568,7 @@
    "kind": "core",
    "title": "Would You Like to Try Skydiving?",
    "objective": "Improve your ability to talk about adventurous activities.",
-   "can_do": "I can talk about adventurous activities I'd like to try.",
+   "can_do": "You can talk about adventurous activities you'd like to try.",
    "expressions": [
     "I'd like to try ___.",
     "I wouldn't like to ___.",
@@ -1603,7 +1603,7 @@
    "kind": "core",
    "title": "Have You Ever Broken a Bone?",
    "objective": "Improve your ability to talk about past injuries.",
-   "can_do": "I can talk about injuries and accidents in the past.",
+   "can_do": "You can talk about injuries and accidents in the past.",
    "expressions": [
     "I broke my arm when I was ten.",
     "I fell off a bike.",
@@ -1679,7 +1679,7 @@
    "kind": "core",
    "title": "What Countries Would You Like to Go To?",
    "objective": "Improve your ability to talk about travel dreams.",
-   "can_do": "I can talk about countries I'd like to go to.",
+   "can_do": "You can talk about countries you'd like to go to.",
    "expressions": [
     "I'd like to go to ___.",
     "I want to see ___.",
@@ -1718,7 +1718,7 @@
    "kind": "core",
    "title": "What Would Your Dream Home Be Like?",
    "objective": "Improve your ability to describe ideal living situations.",
-   "can_do": "I can describe my dream home.",
+   "can_do": "You can describe your dream home.",
    "expressions": [
     "My dream home would be ___.",
     "It would have a garden.",
@@ -1753,7 +1753,7 @@
    "kind": "core",
    "title": "What Is Your Dream Job?",
    "objective": "Improve your ability to talk about career aspirations.",
-   "can_do": "I can talk about my dream job.",
+   "can_do": "You can talk about your dream job.",
    "expressions": [
     "My dream job is ___.",
     "I'd like to be a ___.",
@@ -1788,7 +1788,7 @@
    "kind": "core",
    "title": "What Do You Plan to Do in the Future?",
    "objective": "Improve your ability to talk about future plans.",
-   "can_do": "I can talk about plans for the future.",
+   "can_do": "You can talk about plans for the future.",
    "expressions": [
     "I plan to ___.",
     "I'm going to study ___.",
@@ -1864,7 +1864,7 @@
    "kind": "core",
    "title": "Why Did You Decide To Learn English?",
    "objective": "Improve your ability to explain reasons for learning English.",
-   "can_do": "I can explain the reasons I decided to learn English.",
+   "can_do": "You can explain the reasons you decided to learn English.",
    "expressions": [
     "I decided to learn English because ___.",
     "I had to ___.",
@@ -1903,7 +1903,7 @@
    "kind": "core",
    "title": "Who Is Your Oldest Friend?",
    "objective": "Improve your ability to talk about long-term friendships.",
-   "can_do": "I can talk about my oldest friend.",
+   "can_do": "You can talk about your oldest friend.",
    "expressions": [
     "My oldest friend is ___.",
     "We've known each other for ten years.",
@@ -1938,7 +1938,7 @@
    "kind": "core",
    "title": "How Often Do You See Your Relatives?",
    "objective": "Improve your ability to talk about family contact frequency.",
-   "can_do": "I can talk about how often I see my relatives.",
+   "can_do": "You can talk about how often you see your relatives.",
    "expressions": [
     "I see my cousins once a month.",
     "We get together on holidays.",
@@ -1973,7 +1973,7 @@
    "kind": "core",
    "title": "Are You a Dog or Cat Person?",
    "objective": "Improve your ability to express pet preferences and reasons.",
-   "can_do": "I can say whether I'm a dog or cat person and why.",
+   "can_do": "You can say whether you're a dog or cat person and why.",
    "expressions": [
     "I'm a dog person.",
     "I prefer cats because ___.",
@@ -2049,7 +2049,7 @@
    "kind": "core",
    "title": "What Are Your Plans for Next Weekend?",
    "objective": "Improve your ability to talk about near-future plans.",
-   "can_do": "I can talk about my plans for next weekend.",
+   "can_do": "You can talk about your plans for next weekend.",
    "expressions": [
     "I'm going to ___.",
     "I'm meeting a friend on Saturday.",
@@ -2088,7 +2088,7 @@
    "kind": "core",
    "title": "How Did You Sleep Last Night?",
    "objective": "Improve your ability to talk about sleep quality.",
-   "can_do": "I can talk about how I slept last night.",
+   "can_do": "You can talk about how you slept last night.",
    "expressions": [
     "I slept well.",
     "I woke up twice.",
@@ -2123,7 +2123,7 @@
    "kind": "core",
    "title": "What Causes You the Most Stress?",
    "objective": "Improve your ability to discuss sources of stress.",
-   "can_do": "I can talk about what causes me stress.",
+   "can_do": "You can talk about what causes you stress.",
    "expressions": [
     "I feel stressed when ___.",
     "Work makes me nervous.",
@@ -2158,7 +2158,7 @@
    "kind": "core",
    "title": "Do You Exercise Regularly?",
    "objective": "Improve your ability to talk about exercise habits.",
-   "can_do": "I can talk about my exercise habits.",
+   "can_do": "You can talk about your exercise habits.",
    "expressions": [
     "I exercise three times a week.",
     "I usually go for a walk.",
@@ -2234,7 +2234,7 @@
    "kind": "core",
    "title": "What Do You Like About Your Neighborhood?",
    "objective": "Improve your ability to describe your neighborhood.",
-   "can_do": "I can say what I like about my neighborhood.",
+   "can_do": "You can say what you like about your neighborhood.",
    "expressions": [
     "I like my neighborhood because ___.",
     "It's quiet and safe.",
@@ -2273,7 +2273,7 @@
    "kind": "core",
    "title": "What Is Your City Like in Spring and Summer?",
    "objective": "Improve your ability to describe seasonal changes.",
-   "can_do": "I can describe my city in spring and summer.",
+   "can_do": "You can describe your city in spring and summer.",
    "expressions": [
     "In spring, the flowers bloom.",
     "It gets hot in summer.",
@@ -2308,7 +2308,7 @@
    "kind": "core",
    "title": "What Is Your City Like in Fall and Winter?",
    "objective": "Improve your ability to describe seasonal changes.",
-   "can_do": "I can describe my city in fall and winter.",
+   "can_do": "You can describe your city in fall and winter.",
    "expressions": [
     "In autumn, the leaves fall.",
     "It gets cold in winter.",
@@ -2343,7 +2343,7 @@
    "kind": "core",
    "title": "Where Would You Take a Tourist in Your City?",
    "objective": "Improve your ability to recommend local attractions.",
-   "can_do": "I can recommend places to take a tourist.",
+   "can_do": "You can recommend places to take a tourist.",
    "expressions": [
     "I'd take you to ___.",
     "You should see ___.",
@@ -2419,7 +2419,7 @@
    "kind": "core",
    "title": "What's the Best Vacation You've Had?",
    "objective": "Improve your ability to describe memorable trips.",
-   "can_do": "I can describe the best vacation I have had.",
+   "can_do": "You can describe the best vacation you have had.",
    "expressions": [
     "The best vacation I've had was ___.",
     "We went to ___.",
@@ -2458,7 +2458,7 @@
    "kind": "core",
    "title": "Do You Enjoy Spending Time in Nature?",
    "objective": "Improve your ability to talk about outdoor activities.",
-   "can_do": "I can talk about spending time in nature.",
+   "can_do": "You can talk about spending time in nature.",
    "expressions": [
     "I love hiking in the mountains.",
     "We went camping last summer.",
@@ -2493,7 +2493,7 @@
    "kind": "core",
    "title": "What's the Coolest Building You've Seen?",
    "objective": "Improve your ability to describe impressive architecture.",
-   "can_do": "I can describe an impressive building.",
+   "can_do": "You can describe an impressive building.",
    "expressions": [
     "The coolest building I've seen is ___.",
     "It's very tall.",
@@ -2528,7 +2528,7 @@
    "kind": "core",
    "title": "Are There Many Theme Parks in Your Country?",
    "objective": "Improve your ability to talk about entertainment venues.",
-   "can_do": "I can talk about theme parks and fun places in my country.",
+   "can_do": "You can talk about theme parks and fun places in your country.",
    "expressions": [
     "There are some theme parks near ___.",
     "I went to one last year.",
@@ -2604,7 +2604,7 @@
    "kind": "core",
    "title": "What Are Your All-Time Favorite Movies?",
    "objective": "Improve your ability to discuss favorite films in detail.",
-   "can_do": "I can talk about my all-time favorite movies in detail.",
+   "can_do": "You can talk about your all-time favorite movies in detail.",
    "expressions": [
     "One of my all-time favorites is ___.",
     "It's a story about ___.",
@@ -2643,7 +2643,7 @@
    "kind": "core",
    "title": "How Often Do You Read for Pleasure?",
    "objective": "Improve your ability to talk about reading habits.",
-   "can_do": "I can talk about how often I read for pleasure.",
+   "can_do": "You can talk about how often you read for pleasure.",
    "expressions": [
     "I read before bed.",
     "I read about two books a month.",
@@ -2678,7 +2678,7 @@
    "kind": "core",
    "title": "What Are Your Favorite Games?",
    "objective": "Improve your ability to talk about games and hobbies.",
-   "can_do": "I can talk about my favorite games.",
+   "can_do": "You can talk about your favorite games.",
    "expressions": [
     "I like playing ___.",
     "It's a board / video game.",
@@ -2713,7 +2713,7 @@
    "kind": "core",
    "title": "Do You Follow Any Sports?",
    "objective": "Improve your ability to talk about sports fandom.",
-   "can_do": "I can talk about sports I follow.",
+   "can_do": "You can talk about sports you follow.",
    "expressions": [
     "I follow ___.",
     "My favorite team is ___.",
@@ -2789,7 +2789,7 @@
    "kind": "core",
    "title": "How Often Do You Post on Social Media?",
    "objective": "Improve your ability to talk about social media habits.",
-   "can_do": "I can describe how often and why I post on social media.",
+   "can_do": "You can describe how often and why you post on social media.",
    "expressions": [
     "I post about once a week.",
     "I mostly share photos of ___.",
@@ -2830,7 +2830,7 @@
    "kind": "core",
    "title": "Where Do You Get Your News?",
    "objective": "Improve your ability to discuss news sources.",
-   "can_do": "I can talk about where I get my news and whether I trust it.",
+   "can_do": "You can talk about where you get your news and whether you trust it.",
    "expressions": [
     "I get my news from ___.",
     "I check the headlines every morning.",
@@ -2867,7 +2867,7 @@
    "kind": "core",
    "title": "Can You Play Any Instruments?",
    "objective": "Improve your ability to talk about musical skills.",
-   "can_do": "I can talk about the instruments I can play or would like to play.",
+   "can_do": "You can talk about the instruments you can play or would like to play.",
    "expressions": [
     "I can play the ___.",
     "I've been playing for ___ years.",
@@ -2904,7 +2904,7 @@
    "kind": "core",
    "title": "What's the Best Concert You've Been To?",
    "objective": "Improve your ability to describe live music experiences.",
-   "can_do": "I can describe the best concert I've been to.",
+   "can_do": "You can describe the best concert you've been to.",
    "expressions": [
     "The best concert I've been to was ___.",
     "It was held at ___.",
@@ -2984,7 +2984,7 @@
    "kind": "core",
    "title": "How Often Do You Cook?",
    "objective": "Improve your ability to talk about cooking habits.",
-   "can_do": "I can talk about how often I cook and what I make.",
+   "can_do": "You can talk about how often you cook and what you make.",
    "expressions": [
     "I cook almost every day.",
     "I'm not much of a cook.",
@@ -3025,7 +3025,7 @@
    "kind": "core",
    "title": "Are There Any Foods You Dislike?",
    "objective": "Improve your ability to express food dislikes.",
-   "can_do": "I can talk about foods I dislike and say why.",
+   "can_do": "You can talk about foods you dislike and say why.",
    "expressions": [
     "I can't stand ___.",
     "I'm not keen on ___.",
@@ -3062,7 +3062,7 @@
    "kind": "core",
    "title": "How Often Do You Eat Fast Food?",
    "objective": "Improve your ability to talk about fast-food consumption.",
-   "can_do": "I can talk about fast food and how often I eat it.",
+   "can_do": "You can talk about fast food and how often you eat it.",
    "expressions": [
     "I rarely eat fast food.",
     "I have it about once a week.",
@@ -3099,7 +3099,7 @@
    "kind": "core",
    "title": "When Did You Last Go to the Dentist?",
    "objective": "Improve your ability to talk about dental visits.",
-   "can_do": "I can talk about my last visit to the dentist.",
+   "can_do": "You can talk about your last visit to the dentist.",
    "expressions": [
     "The last time I went was ___.",
     "I had a check-up.",
@@ -3179,7 +3179,7 @@
    "kind": "core",
    "title": "When Was Your Last Job Interview?",
    "objective": "Improve your ability to talk about job interviews.",
-   "can_do": "I can talk about my last job interview.",
+   "can_do": "You can talk about your last job interview.",
    "expressions": [
     "My last interview was ___.",
     "I applied for a position as ___.",
@@ -3220,7 +3220,7 @@
    "kind": "core",
    "title": "What Do You Like About Your Job?",
    "objective": "Improve your ability to discuss job satisfaction.",
-   "can_do": "I can say what I like and dislike about my job.",
+   "can_do": "You can say what you like and dislike about your job.",
    "expressions": [
     "What I like most about my job is ___.",
     "I enjoy working with ___.",
@@ -3257,7 +3257,7 @@
    "kind": "core",
    "title": "Have You Ever Worked From Home?",
    "objective": "Improve your ability to talk about remote work.",
-   "can_do": "I can talk about working from home.",
+   "can_do": "You can talk about working from home.",
    "expressions": [
     "I've worked from home for ___.",
     "I have a flexible schedule.",
@@ -3294,7 +3294,7 @@
    "kind": "core",
    "title": "When Do People in Your Country Retire?",
    "objective": "Improve your ability to discuss retirement norms.",
-   "can_do": "I can talk about retirement in my country.",
+   "can_do": "You can talk about retirement in your country.",
    "expressions": [
     "People usually retire at ___.",
     "The retirement age is ___.",
@@ -3374,7 +3374,7 @@
    "kind": "core",
    "title": "How Long Is Your Commute?",
    "objective": "Improve your ability to talk about commute length.",
-   "can_do": "I can talk about the length and quality of my commute.",
+   "can_do": "You can talk about the length and quality of your commute.",
    "expressions": [
     "My commute takes about ___.",
     "I leave home at ___.",
@@ -3415,7 +3415,7 @@
    "kind": "core",
    "title": "Are You a Tidy or Messy Person?",
    "objective": "Improve your ability to describe personal habits.",
-   "can_do": "I can describe myself as tidy or messy.",
+   "can_do": "You can describe yourself as tidy or messy.",
    "expressions": [
     "I'm quite a tidy person.",
     "I tend to leave things everywhere.",
@@ -3452,7 +3452,7 @@
    "kind": "core",
    "title": "Do You Enjoy Shopping?",
    "objective": "Improve your ability to talk about shopping preferences.",
-   "can_do": "I can talk about whether I enjoy shopping.",
+   "can_do": "You can talk about whether you enjoy shopping.",
    "expressions": [
     "I enjoy browsing but not buying.",
     "I'm not really into shopping.",
@@ -3489,7 +3489,7 @@
    "kind": "core",
    "title": "How Often Do You Buy Clothes?",
    "objective": "Improve your ability to discuss clothing purchases.",
-   "can_do": "I can talk about how often I buy clothes.",
+   "can_do": "You can talk about how often you buy clothes.",
    "expressions": [
     "I buy clothes a few times a year.",
     "I wait for the sales.",
@@ -3569,7 +3569,7 @@
    "kind": "core",
    "title": "Do You Like Going to Parties?",
    "objective": "Improve your ability to talk about social events.",
-   "can_do": "I can talk about whether I like going to parties.",
+   "can_do": "You can talk about whether you like going to parties.",
    "expressions": [
     "I love going to parties.",
     "I'm more of a homebody.",
@@ -3610,7 +3610,7 @@
    "kind": "core",
    "title": "How Do You Usually Celebrate Your Birthday?",
    "objective": "Improve your ability to describe birthday traditions.",
-   "can_do": "I can describe how I celebrate my birthday.",
+   "can_do": "You can describe how you celebrate your birthday.",
    "expressions": [
     "I usually have a small party.",
     "We have a cake and sing.",
@@ -3647,7 +3647,7 @@
    "kind": "core",
    "title": "Which of Your Family Members Do You Admire?",
    "objective": "Improve your ability to talk about admired relatives.",
-   "can_do": "I can talk about a family member I admire.",
+   "can_do": "You can talk about a family member you admire.",
    "expressions": [
     "I really admire my ___.",
     "She's the strongest person I know.",
@@ -3684,7 +3684,7 @@
    "kind": "core",
    "title": "What Were You Like 10 Years Ago?",
    "objective": "Improve your ability to compare past and present self.",
-   "can_do": "I can compare myself now and ten years ago.",
+   "can_do": "You can compare yourself now and ten years ago.",
    "expressions": [
     "Ten years ago, I was ___.",
     "I used to ___.",
@@ -3764,7 +3764,7 @@
    "kind": "core",
    "title": "What Streaming Services Do You Use?",
    "objective": "Improve your ability to talk about streaming habits.",
-   "can_do": "I can talk about the streaming services I use.",
+   "can_do": "You can talk about the streaming services you use.",
    "expressions": [
     "I subscribe to ___.",
     "I mostly watch ___.",
@@ -3805,7 +3805,7 @@
    "kind": "core",
    "title": "What Music Have You Always Loved?",
    "objective": "Improve your ability to discuss long-term music tastes.",
-   "can_do": "I can talk about music I have always loved.",
+   "can_do": "You can talk about music you have always loved.",
    "expressions": [
     "I've loved ___ since I was a kid.",
     "It reminds me of ___.",
@@ -3842,7 +3842,7 @@
    "kind": "core",
    "title": "Who Is Your Favorite Author?",
    "objective": "Improve your ability to talk about favorite writers.",
-   "can_do": "I can talk about my favorite author.",
+   "can_do": "You can talk about your favorite author.",
    "expressions": [
     "My favorite author is ___.",
     "She writes mostly about ___.",
@@ -3879,7 +3879,7 @@
    "kind": "core",
    "title": "Do You Have Much Artwork at Home?",
    "objective": "Improve your ability to describe home decor.",
-   "can_do": "I can describe artwork and decoration in my home.",
+   "can_do": "You can describe artwork and decoration in your home.",
    "expressions": [
     "I have a few paintings.",
     "There's a family photo above the sofa.",
@@ -3959,7 +3959,7 @@
    "kind": "core",
    "title": "When Did You Start Learning English?",
    "objective": "Improve your ability to talk about your English-learning history.",
-   "can_do": "I can talk about when and how I started learning English.",
+   "can_do": "You can talk about when and how you started learning English.",
    "expressions": [
     "I started learning English in ___.",
     "I first learned at school.",
@@ -4000,7 +4000,7 @@
    "kind": "core",
    "title": "Do You Have Any Hobbies?",
    "objective": "Improve your ability to describe hobbies.",
-   "can_do": "I can describe my hobbies in detail.",
+   "can_do": "You can describe your hobbies in detail.",
    "expressions": [
     "One of my hobbies is ___.",
     "I got into it when ___.",
@@ -4037,7 +4037,7 @@
    "kind": "core",
    "title": "Do You Spend Much Time in the Garden?",
    "objective": "Improve your ability to talk about gardening activities.",
-   "can_do": "I can talk about gardening and time outdoors at home.",
+   "can_do": "You can talk about gardening and time outdoors at home.",
    "expressions": [
     "I spend an hour in the garden.",
     "I grow vegetables.",
@@ -4074,7 +4074,7 @@
    "kind": "core",
    "title": "How Handy Are You?",
    "objective": "Improve your ability to talk about home improvement.",
-   "can_do": "I can talk about how handy I am at home.",
+   "can_do": "You can talk about how handy you are at home.",
    "expressions": [
     "I'm quite handy.",
     "I can fix simple things.",
@@ -4154,7 +4154,7 @@
    "kind": "core",
    "title": "Do You Play Any Sports?",
    "objective": "Improve your ability to talk about sports participation.",
-   "can_do": "I can talk about the sports I play and why.",
+   "can_do": "You can talk about the sports you play and why.",
    "expressions": [
     "I play ___ twice a week.",
     "I'm on a team.",
@@ -4195,7 +4195,7 @@
    "kind": "core",
    "title": "What Are Your Favorite Things to Wear?",
    "objective": "Improve your ability to describe clothing preferences.",
-   "can_do": "I can describe my favorite things to wear in different situations.",
+   "can_do": "You can describe your favorite things to wear in different situations.",
    "expressions": [
     "I usually wear ___ to work.",
     "I dress up for special occasions.",
@@ -4232,7 +4232,7 @@
    "kind": "core",
    "title": "What Stores Do You Like Shopping At?",
    "objective": "Improve your ability to talk about favorite stores.",
-   "can_do": "I can talk about stores I like shopping at.",
+   "can_do": "You can talk about stores you like shopping at.",
    "expressions": [
     "I like shopping at ___.",
     "They have a great selection.",
@@ -4269,7 +4269,7 @@
    "kind": "core",
    "title": "Are You Saving up for Anything?",
    "objective": "Improve your ability to talk about financial goals.",
-   "can_do": "I can talk about what I'm saving up for.",
+   "can_do": "You can talk about what you're saving up for.",
    "expressions": [
     "I'm saving up for ___.",
     "I put aside ___ every month.",
@@ -4349,7 +4349,7 @@
    "kind": "core",
    "title": "Do You Spend Much Time Meal Planning?",
    "objective": "Improve your ability to talk about meal planning.",
-   "can_do": "I can talk about how I plan my meals.",
+   "can_do": "You can talk about how you plan your meals.",
    "expressions": [
     "I plan my meals for the week.",
     "I make a shopping list.",
@@ -4390,7 +4390,7 @@
    "kind": "core",
    "title": "Do You Have a Favorite Café or Hangout?",
    "objective": "Improve your ability to talk about favorite cafés and places to meet.",
-   "can_do": "I can talk about my favorite bar, café, or hangout.",
+   "can_do": "You can talk about your favorite bar, café, or hangout.",
    "expressions": [
     "My favorite place is ___.",
     "It has a relaxed vibe.",
@@ -4427,7 +4427,7 @@
    "kind": "core",
    "title": "Do You Like Trying Local Foods?",
    "objective": "Improve your ability to discuss trying local cuisine while traveling.",
-   "can_do": "I can talk about trying local foods when traveling.",
+   "can_do": "You can talk about trying local foods when traveling.",
    "expressions": [
     "I always try the local food.",
     "I'm adventurous with food.",
@@ -4464,7 +4464,7 @@
    "kind": "core",
    "title": "How Active Are You on Social Media?",
    "objective": "Improve your ability to describe social media activity levels.",
-   "can_do": "I can talk about how active I am on social media.",
+   "can_do": "You can talk about how active you are on social media.",
    "expressions": [
     "I'm pretty active online.",
     "I post a few times a week.",
@@ -4544,7 +4544,7 @@
    "kind": "core",
    "title": "When Was Your Last Weekend Away?",
    "objective": "Improve your ability to talk about short trips.",
-   "can_do": "I can talk about my last weekend away.",
+   "can_do": "You can talk about your last weekend away.",
    "expressions": [
     "The last time I went away was ___.",
     "We drove / took the train to ___.",
@@ -4585,7 +4585,7 @@
    "kind": "core",
    "title": "Do You Plan Much Before Traveling?",
    "objective": "Improve your ability to discuss travel planning habits.",
-   "can_do": "I can talk about how much I plan before traveling.",
+   "can_do": "You can talk about how much you plan before traveling.",
    "expressions": [
     "I plan everything in advance.",
     "I book flights early.",
@@ -4622,7 +4622,7 @@
    "kind": "core",
    "title": "What's the Best Festival You've Been To?",
    "objective": "Improve your ability to describe festival experiences.",
-   "can_do": "I can describe the best festival I have been to.",
+   "can_do": "You can describe the best festival you have been to.",
    "expressions": [
     "The best festival I've been to was ___.",
     "People came from all over.",
@@ -4659,7 +4659,7 @@
    "kind": "core",
    "title": "Have You Ever Lived Abroad?",
    "objective": "Improve your ability to talk about living overseas.",
-   "can_do": "I can talk about living abroad.",
+   "can_do": "You can talk about living abroad.",
    "expressions": [
     "I've lived in ___ for ___ years.",
     "I moved there for work / family.",
@@ -4739,7 +4739,7 @@
    "kind": "core",
    "title": "What Keeps You Motivated to Exercise?",
    "objective": "Improve your ability to talk about exercise motivation.",
-   "can_do": "I can talk about what keeps me motivated to exercise.",
+   "can_do": "You can talk about what keeps you motivated to exercise.",
    "expressions": [
     "What keeps me going is ___.",
     "I set small goals.",
@@ -4780,7 +4780,7 @@
    "kind": "core",
    "title": "What Do You Do Before Bed?",
    "objective": "Improve your ability to describe bedtime routines.",
-   "can_do": "I can describe what I do before bed.",
+   "can_do": "You can describe what you do before bed.",
    "expressions": [
     "I brush my teeth and wash my face.",
     "I read for about ten minutes.",
@@ -4817,7 +4817,7 @@
    "kind": "core",
    "title": "How Healthy Is Your Country?",
    "objective": "Improve your ability to discuss health and wellbeing in your country.",
-   "can_do": "I can talk about life expectancy and health in my country.",
+   "can_do": "You can talk about life expectancy and health in your country.",
    "expressions": [
     "The average life expectancy is ___.",
     "People live longer than before.",
@@ -4854,7 +4854,7 @@
    "kind": "core",
    "title": "How Do You Prioritize Your Mental Health?",
    "objective": "Improve your ability to talk about mental health habits.",
-   "can_do": "I can talk about how I look after my mental health.",
+   "can_do": "You can talk about how you look after your mental health.",
    "expressions": [
     "I try to take breaks.",
     "I talk to friends.",
@@ -4934,7 +4934,7 @@
    "kind": "core",
    "title": "Have You Had Many Pets?",
    "objective": "Improve your ability to talk about pet ownership history.",
-   "can_do": "I can talk about the pets I've had.",
+   "can_do": "You can talk about the pets you've had.",
    "expressions": [
     "I've had ___ pets.",
     "My first pet was ___.",
@@ -4975,7 +4975,7 @@
    "kind": "core",
    "title": "What Wild Animals Do You Want To See?",
    "objective": "Improve your ability to talk about wildlife interests.",
-   "can_do": "I can talk about wild animals I want to see.",
+   "can_do": "You can talk about wild animals you want to see.",
    "expressions": [
     "I'd love to see ___.",
     "I'd like to go on a safari.",
@@ -5012,7 +5012,7 @@
    "kind": "core",
    "title": "When Did You Last Go Camping?",
    "objective": "Improve your ability to describe camping experiences.",
-   "can_do": "I can describe my last camping trip.",
+   "can_do": "You can describe your last camping trip.",
    "expressions": [
     "The last time I went camping was ___.",
     "We pitched a tent.",
@@ -5049,7 +5049,7 @@
    "kind": "core",
    "title": "How Has Climate Change Impacted Your Country?",
    "objective": "Improve your ability to discuss environmental issues.",
-   "can_do": "I can talk about how climate change has affected my country.",
+   "can_do": "You can talk about how climate change has affected your country.",
    "expressions": [
     "It's become much hotter.",
     "We've had more floods.",
@@ -5129,7 +5129,7 @@
    "kind": "core",
    "title": "How Do You Make New Friends?",
    "objective": "Improve your ability to talk about meeting people and building friendships.",
-   "can_do": "I can describe how I make friends and what helps a friendship grow.",
+   "can_do": "You can describe how you make friends and what helps a friendship grow.",
    "expressions": [
     "The best way to meet people is ___.",
     "I usually start by ___.",
@@ -5170,7 +5170,7 @@
    "kind": "core",
    "title": "What Do You Look for in a Partner?",
    "objective": "Improve your ability to discuss relationship preferences.",
-   "can_do": "I can say what I look for in a partner.",
+   "can_do": "You can say what you look for in a partner.",
    "expressions": [
     "I look for someone who's ___.",
     "Honesty is important to me.",
@@ -5207,7 +5207,7 @@
    "kind": "core",
    "title": "What Makes a Good Neighbor?",
    "objective": "Improve your ability to describe good neighbors and handle small neighbor problems.",
-   "can_do": "I can describe what makes a good neighbor and politely raise a small problem.",
+   "can_do": "You can describe what makes a good neighbor and politely raise a small problem.",
    "expressions": [
     "A good neighbor is someone who ___.",
     "My neighbors are friendly / keep to themselves.",
@@ -5244,7 +5244,7 @@
    "kind": "core",
    "title": "What's Your Parenting Style Like?",
    "objective": "Improve your ability to describe parenting approaches.",
-   "can_do": "I can describe how I raise (or would raise) children.",
+   "can_do": "You can describe how you raise (or would raise) children.",
    "expressions": [
     "I'm quite strict / relaxed.",
     "I believe children should ___.",
@@ -5324,7 +5324,7 @@
    "kind": "core",
    "title": "What Were You Like as a Kid?",
    "objective": "Improve your ability to describe childhood personality.",
-   "can_do": "I can describe what I was like as a kid.",
+   "can_do": "You can describe what you was like as a kid.",
    "expressions": [
     "I was a shy / playful child.",
     "I used to climb trees.",
@@ -5365,7 +5365,7 @@
    "kind": "core",
    "title": "What Does Your Family Do for the Holidays?",
    "objective": "Improve your ability to talk about family traditions.",
-   "can_do": "I can describe my family's holiday traditions.",
+   "can_do": "You can describe your family's holiday traditions.",
    "expressions": [
     "We celebrate ___ every year.",
     "We get together with relatives.",
@@ -5402,7 +5402,7 @@
    "kind": "core",
    "title": "How Has Your Hometown Changed?",
    "objective": "Improve your ability to describe changes over time.",
-   "can_do": "I can describe how my hometown has changed.",
+   "can_do": "You can describe how your hometown has changed.",
    "expressions": [
     "It has changed a lot.",
     "There are more cars now.",
@@ -5439,7 +5439,7 @@
    "kind": "core",
    "title": "When Did You Get Your Driver's License?",
    "objective": "Improve your ability to talk about milestones.",
-   "can_do": "I can talk about important milestones like getting a driver's license.",
+   "can_do": "You can talk about important milestones like getting a driver's license.",
    "expressions": [
     "I got my license when I was ___.",
     "I passed on the second try.",
@@ -5519,7 +5519,7 @@
    "kind": "core",
    "title": "What Were You Like as a Teenager?",
    "objective": "Improve your ability to describe teenage years.",
-   "can_do": "I can describe what I was like as a teenager.",
+   "can_do": "You can describe what you was like as a teenager.",
    "expressions": [
     "I was a rebellious teenager.",
     "I spent a lot of time with friends.",
@@ -5560,7 +5560,7 @@
    "kind": "core",
    "title": "What Did You Major in at College?",
    "objective": "Improve your ability to talk about university studies.",
-   "can_do": "I can talk about what I studied at college or university.",
+   "can_do": "You can talk about what you studied at college or university.",
    "expressions": [
     "I majored in ___.",
     "I chose it because ___.",
@@ -5597,7 +5597,7 @@
    "kind": "core",
    "title": "How Did You Get into Your Profession?",
    "objective": "Improve your ability to describe career paths.",
-   "can_do": "I can describe how I got into my profession.",
+   "can_do": "You can describe how you got into your profession.",
    "expressions": [
     "I got into ___ by chance.",
     "I started as a ___.",
@@ -5634,7 +5634,7 @@
    "kind": "core",
    "title": "What Kind of Training Did You Need for Your Job?",
    "objective": "Improve your ability to talk about job training.",
-   "can_do": "I can describe the training needed for a job.",
+   "can_do": "You can describe the training needed for a job.",
    "expressions": [
     "You need a degree in ___.",
     "I had to complete a training program.",
