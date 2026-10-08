@@ -482,6 +482,7 @@ const LAYOUT_BUILDERS = {
           <span class="text-sm font-semibold" style="color:var(--primary);">Today's Objective</span>
         </div>
         <p class="font-medium" style="color:var(--ink);">${md(d.goal)}</p>
+        ${d.outcome ? `<p class="text-xs mt-2 max-w-md mx-auto" style="color:var(--muted);">${escapeHtml(d.outcome)}</p>` : ''}
         ${d.diagnostic ? `
           <div class="mt-4 mx-auto max-w-lg p-4 rounded-2xl text-left" style="background:rgba(6,214,160,.06); border:1px solid rgba(6,214,160,.18);">
             <p class="text-[11px] uppercase tracking-wider font-semibold mb-2" style="color:#059669;">Quick Check</p>
@@ -672,7 +673,8 @@ const LAYOUT_BUILDERS = {
             </div>
           </div>`).join('')}
       </div>
-      ${d.footer ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);"><p class="font-semibold text-sm" style="color:#059669;">Next Step</p><p class="text-sm mt-1" style="color:var(--ink);">${md(d.footer)}</p></div>` : ''}`;
+      ${d.footer ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);"><p class="font-semibold text-sm" style="color:#059669;">Next Step</p><p class="text-sm mt-1" style="color:var(--ink);">${md(d.footer)}</p></div>` : ''}
+      ${(d.challenge && d.challenge.length) ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(194,37,92,.06); border:1px solid rgba(194,37,92,.18);"><p class="font-semibold text-sm" style="color:#C2255C;">${escapeHtml(d.challengeTitle || 'Speaking challenge')}</p><p class="text-xs mt-0.5" style="color:var(--muted);">Practice these out loud before the next session.</p><ol class="mt-2 space-y-1.5 list-decimal pl-5">${d.challenge.map(c => `<li class="text-sm" style="color:var(--ink);">${md(c)}</li>`).join('')}</ol></div>` : ''}`;
   },
 
   bankmatch(d, ctx, slide) {

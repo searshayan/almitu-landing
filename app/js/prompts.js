@@ -303,9 +303,13 @@ const COMM_SKELETON_15 = [
 const RENDER_SKELETON = {};   // all three skills are now spec-based (see *_SKELETON_* above)
 
 /* All three skills are spec-based and switch architecture by duration. */
-function getRenderSpec(skill, tier, duration) {
+function getRenderSpec(skill, tier, duration, formData) {
   const short = Number(duration) === 15;
   let slides;
+  if (skill === 'speaking') {
+    // Separate Speaking track: its own skeleton, driven by the hidden step (speaking.js).
+    return { id: 'SPK', slides: speakingSkeleton(formData || {}) };
+  }
   if (skill === 'grammar') {
     slides = short ? GRAMMAR_SKELETON_15 : GRAMMAR_SKELETON_25;
   } else if (skill === 'communication') {
@@ -326,7 +330,7 @@ function buildSystemPrompt(formData) {
     : 'DISABLED — keep all L1 data slots strictly as empty strings (""). Do not introduce any non-English text under any circumstances.';
   const tierRules = TIER_RULES[tier].replace(/\{\{L1_RULE\}\}/g, l1Rule);
   const dur = getDuration(formData.duration);
-  const slideCount = getRenderSpec(formData.sessionType, formData.tier, formData.duration).slides.length;
+  const slideCount = getRenderSpec(formData.sessionType, formData.tier, formData.duration, formData).slides.length;
   const durationRules = `SESSION FORMAT: ${dur.label.toUpperCase()} (${slideCount} slides)
 Lesson arc: ${dur.arc}
 Format rules — every slide must comply:
@@ -393,6 +397,8 @@ function grammarTargets(level, duration) {
 
 /* Strict, level-resolved counts for Communication & Speaking. */
 function commTargets(level) {
+  const spk = (typeof speakingStepOf === 'function') ? speakingStepOf(level) : null;
+  if (spk) return { toolkit: spk.toolkit, dialogueTurns: spk.turns, questions: spk.questions };
   const low = ['Pre-A1', 'A1', 'A2'].includes(level);
   const mid = ['B1', 'B2'].includes(level);
   return {
@@ -431,7 +437,7 @@ function formatDetailLine(label, v) {
 }
 
 function buildUserPrompt(formData) {
-  const spec = getRenderSpec(formData.sessionType, formData.tier, formData.duration);
+  const spec = getRenderSpec(formData.sessionType, formData.tier, formData.duration, formData);
   const st = getSessionType(formData.sessionType);
   const l1Lang = resolveL1Language(formData.language);
 
@@ -463,6 +469,8 @@ function buildUserPrompt(formData) {
 - Warm-up diagnostic: ${g.diagType}.
 - Exercise 1: EXACTLY ${g.exCount} ${g.exType} items, each with correct + incorrect feedback.
 - Exercise 2 (True/False): EXACTLY ${g.tfCount} statements.\n`;
+  } else if (formData.sessionType === 'speaking') {
+    lengthTargets = speakingPromptBlock(formData);
   } else if (formData.sessionType === 'communication') {
     const c = commTargets(formData.level);
     lengthTargets = `\nCOMMUNICATION TARGETS for ${formData.level} (STRICT — obey exactly):
@@ -479,7 +487,7 @@ LEARNER PROFILE:
 - Native Language / Culture: ${formData.language}
 - Country of Residence: ${formData.countryOfResident || 'not specified'} — ground examples, settings, and scenarios in this real-world context where natural (currency, places, services, everyday situations). Improve realism only; never stereotype the learner.
 - L1 Translation Support: ${formData.l1Support ? 'ENABLED — populate all L1 data slots with ' + l1Lang + ' terms.' : 'DISABLED — all L1 strings must remain empty ("").'}
-- Confirmed CEFR Target Level: ${formData.level} (Tier Classification: ${formData.tier})
+- ${formData.sessionType === 'speaking' ? 'Speaking track difficulty key (internal; never write it in any field)' : 'Confirmed CEFR Target Level'}: ${formData.level} (Tier Classification: ${formData.tier})
 - Session Duration: ${formData.duration} minutes
 
 SESSION FOCUS: ${st.label}
@@ -522,6 +530,7 @@ function practiceCardSpec(level) { return PRACTICE_CARD_SPEC[level] || PRACTICE_
 function practiceQCount(level) { return practiceCardSpec(level).readQ; }
 
 function buildPracticeBankSystemPrompt(formData) {
+  if (formData.sessionType === 'speaking') return buildSpeakingPracticeBankSystemPrompt(formData);
   const l1Lang = resolveL1Language(formData.language);
   const spec = practiceCardSpec(formData.level);
   // Same calibration machinery buildSystemPrompt() uses for slides (TIER_RULES
@@ -585,6 +594,7 @@ OUTPUT SCHEMA:
 }
 
 function buildPracticeBankUserPrompt(formData, slides) {
+  if (formData.sessionType === 'speaking') return buildSpeakingPracticeBankUserPrompt(formData, slides);
   const st = getSessionType(formData.sessionType);
   let detailLines = '';
   st.fields.forEach(f => {

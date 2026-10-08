@@ -163,9 +163,15 @@ const LITERACY_SESSION_TYPES = {
   }
 };
 
+/* Speaking is its own track (see speaking.js). It reuses the Communication fields but is
+   never offered in the normal "new session" form, so it lives in its own map. */
+const SPEAKING_SESSION_TYPES = {
+  speaking: Object.assign({}, SESSION_TYPES.communication, { key: 'speaking', label: 'Speaking' })
+};
+
 /* Lookups search both sets, so a key resolves the same everywhere (UI, render,
    curriculum). getSessionType falls back to vocabulary for unknown keys. */
-function getSessionType(key) { return SESSION_TYPES[key] || LITERACY_SESSION_TYPES[key] || SESSION_TYPES.vocabulary; }
+function getSessionType(key) { return SESSION_TYPES[key] || LITERACY_SESSION_TYPES[key] || SPEAKING_SESSION_TYPES[key] || SESSION_TYPES.vocabulary; }
 function getAllSessionTypes() { return Object.values(SESSION_TYPES); }
 
 /* The session types to OFFER for a given level: the literacy set for Literacy

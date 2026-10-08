@@ -19,7 +19,10 @@ const LEVELS = [
   { value: 'B1',     label: 'Intermediate (B1)',          tier: 'development' },
   { value: 'B2',     label: 'Upper-Intermediate (B2)',    tier: 'proficiency' },
   { value: 'C1',     label: 'Advanced (C1)',              tier: 'proficiency' },
-  { value: 'C2',     label: 'Mastery (C2)',               tier: 'proficiency' }
+  { value: 'C2',     label: 'Mastery (C2)',               tier: 'proficiency' },
+  { value: 'Speaking Foundation',  label: 'Foundation',  tier: 'speaking' },
+  { value: 'Speaking Development', label: 'Development', tier: 'speaking' },
+  { value: 'Speaking Proficiency', label: 'Proficiency', tier: 'speaking' }
 ];
 
 const TIERS = {
@@ -92,6 +95,22 @@ const TIERS = {
       'Self-assessment and peer feedback',
       'Rhetorical and stylistic awareness'
     ]
+  },
+  speaking: {
+    key: 'speaking',
+    label: 'Speaking',
+    levels: 'Foundation · Development · Proficiency',
+    color: '#C2255C',
+    bg: 'rgba(194,37,92,.07)',
+    border: 'rgba(194,37,92,.22)',
+    desc: 'A separate quick-result speaking track: say useful things from the first session and speak more with every unit.',
+    rules: [
+      'Speaking-first: every session ends in real spoken practice',
+      'Foundation: the tutor models first and the learner repeats',
+      'Learner talk share grows through the three tiers',
+      'Each unit ends with a milestone review',
+      'No levels shown to tutors or learners'
+    ]
   }
 };
 
@@ -108,6 +127,13 @@ function getTier(tierKey) {
    session types, render templates and picture-first slides. */
 function isLiteracyTier(tierKey) { return tierKey === 'literacy'; }
 function isLiteracyLevel(levelValue) { return tierForLevel(levelValue) === 'literacy'; }
+
+/* Speaking is a separate track with its own three tiers (no CEFR levels). The three
+   "levels" below are what tutors and admins browse; difficulty inside a tier is set by a
+   hidden step that only the generator sees (see speaking.js). */
+function isSpeakingTier(tierKey) { return tierKey === 'speaking'; }
+function isSpeakingLevel(levelValue) { return /^Speaking (Foundation|Development|Proficiency)$/.test(levelValue || ''); }
+function speakingSlug(level) { return String(level).toLowerCase().replace(/\s+/g, '-'); }   // 'Speaking Foundation' → 'speaking-foundation'
 
 /* Render matrix: skill × tier → render id (for labeling/debug) */
 const RENDER_MATRIX = {
