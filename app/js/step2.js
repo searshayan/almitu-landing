@@ -161,7 +161,11 @@ function endSession() {
       // API can't hang the save; then guarantee the bank is usable, so we never
       // archive a session with no activities / no L1.
       await Promise.race([ ensurePracticeBank(), new Promise(r => setTimeout(r, 25000)) ]);
-      if (!isPracticeBankUsable(plan.content && plan.content.practice_bank)) {
+      // Speaking banks carry no Reading / Explore More card, so the check must know it is a Speaking
+      // session (it was replacing a perfectly good Speaking bank with the demo bank). Other session
+      // types are checked exactly as before.
+      const speakingFd = plan.formData && plan.formData.sessionType === 'speaking' ? plan.formData : undefined;
+      if (!isPracticeBankUsable(plan.content && plan.content.practice_bank, speakingFd)) {
         plan.content = plan.content || {};
         plan.content.practice_bank = fillPracticeL1(demoPracticeBank(plan.formData), plan.formData);
       }
