@@ -92,7 +92,9 @@ async function loadCurriculumLevel(level) {
   // All literacy levels (LIT1/2/3) live in one authored file; CEFR levels map
   // to their own slug. 'Literacy' is the picker's umbrella value.
   const isLit = level === 'Literacy' || (typeof isLiteracyLevel === 'function' && isLiteracyLevel(level));
-  const slug = isLit ? 'literacy' : level.toLowerCase();   // 'Pre-A1' → 'pre-a1'
+  const slug = isLit ? 'literacy'
+    : (typeof isSpeakingLevel === 'function' && isSpeakingLevel(level)) ? speakingSlug(level)   // 'Speaking Foundation' → 'speaking-foundation'
+    : level.toLowerCase();   // 'Pre-A1' → 'pre-a1'
   const res = await fetch(`curriculum/${slug}.json`);
   if (!res.ok) throw new Error(`Could not load curriculum/${slug}.json (${res.status})`);
   const data = await res.json();
@@ -130,6 +132,8 @@ function isLiteracyRecord(rec) {
 }
 
 async function generateCurriculumSession(rec, overwrite) {
+  // Speaking is its own track with its own generator (speaking.js).
+  if (rec && rec.skill === 'speaking') return generateSpeakingSession(rec, overwrite);
   // Literacy sessions are authored deterministically (buildLiteracyPlan) — no
   // AI call, no engine needed — then stored the same way as any curriculum plan.
   if (isLiteracyRecord(rec)) {
@@ -304,6 +308,27 @@ function cancelCurriculumGeneration() {
   showToast('Stopping after the current session…', 'info');
 }
 
+/* Regenerate ONE already-generated session (overwrites its library entry). */
+async function regenerateCurriculumSession(id) {
+  const cs = window.curriculumState;
+  const rec = cs.sessions.find(r => r.curriculum_id === id);
+  if (!rec || cs.running) return;
+  if (!window.confirm(`Regenerate ${id} (${rec.title})?\n\nThis overwrites the existing library entry and uses Claude API credits.`)) return;
+  cs.status[id] = 'running';
+  renderCurriculumTab();
+  try {
+    await generateCurriculumSession(rec, true);
+    cs.status[id] = 'done';
+    delete cs.errors[id];
+    showToast(`${id} regenerated.`, 'success');
+  } catch (e) {
+    cs.status[id] = 'failed';
+    cs.errors[id] = e.message || String(e);
+    showToast(`${id} failed: ${e.message}`, 'error');
+  }
+  renderCurriculumTab();
+}
+
 /* Retry a single failed session. */
 async function retryCurriculumSession(id) {
   const cs = window.curriculumState;
@@ -360,10 +385,14 @@ function curriculumLevelPicker() {
       style="${active ? 'background:var(--secondary);color:#fff;' : 'background:#fff;border:1px solid var(--line);color:var(--muted);'}">
       ${escapeHtml(label)}</button>`;
   // CEFR levels, then one umbrella pill for the authored Literacy curriculum.
-  const pills = LEVELS.filter(l => !isLiteracyLevel(l.value)).map(l => pill(l.value, l.value, l.value === cs.level)).join('')
+  const pills = LEVELS.filter(l => !isLiteracyLevel(l.value) && !isSpeakingLevel(l.value)).map(l => pill(l.value, l.value, l.value === cs.level)).join('')
     + pill('Literacy', 'Literacy', cs.level === 'Literacy');
+  // Speaking is a separate track with its own three tiers (no CEFR levels).
+  const spk = LEVELS.filter(l => isSpeakingLevel(l.value)).map(l => pill(l.value, l.label, l.value === cs.level)).join('');
   return `<div class="card-surface rounded-2xl p-3 mb-4 flex flex-wrap gap-2 items-center">
-    <span class="text-[11px] font-semibold uppercase tracking-wide mr-1" style="color:var(--muted);">Level</span>${pills}</div>`;
+    <span class="text-[11px] font-semibold uppercase tracking-wide mr-1" style="color:var(--muted);">Level</span>${pills}
+    <span class="mx-2 self-stretch" style="width:1px;background:var(--line);"></span>
+    <span class="text-[11px] font-semibold uppercase tracking-wide mr-1" style="color:var(--muted);">Speaking</span>${spk}</div>`;
 }
 
 const CURRICULUM_STATUS = {
@@ -383,7 +412,7 @@ function renderCurriculumTabBody() {
       .catch(e => {
         document.getElementById('viewAdmin').innerHTML =
           curriculumLevelPicker() +
-          `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load curriculum/${escapeHtml(cs.level.toLowerCase())}.json: ${escapeHtml(e.message)}</div>`;
+          `<div class="card-surface rounded-2xl p-8 text-center text-sm" style="color:#B91C1C;">Could not load curriculum/${escapeHtml(isSpeakingLevel(cs.level) ? speakingSlug(cs.level) : cs.level.toLowerCase())}.json: ${escapeHtml(e.message)}</div>`;
       });
     return curriculumLevelPicker() + '<div class="text-center py-16 text-sm" style="color:var(--muted);">Loading ' + escapeHtml(cs.level) + ' curriculum…</div>';
   }
@@ -415,18 +444,30 @@ function renderCurriculumTabBody() {
          </button>` : ''}
        </div>`;
 
+  let lastUnit = null;
   const rows = cs.sessions.map(r => {
     const st = cs.status[r.curriculum_id] || 'pending';
     const [bg, color, label] = CURRICULUM_STATUS[st];
     const err = cs.errors[r.curriculum_id];
     const actions = [];
     if (st === 'done')   actions.push(`<button onclick="viewCurriculumSession('${r.curriculum_id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>`);
+    if (st === 'done' && !cs.running && !isDemo) actions.push(`<button onclick="regenerateCurriculumSession('${r.curriculum_id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">Regenerate</button>`);
+    if (st === 'pending' && !cs.running && !isDemo) actions.push(`<button onclick="retryCurriculumSession('${r.curriculum_id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style="background:var(--primary);">Generate</button>`);
     if (st === 'failed' && !cs.running) actions.push(`<button onclick="retryCurriculumSession('${r.curriculum_id}')" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style="background:var(--primary);">Retry</button>`);
-    return `
+    // Speaking records belong to units: show the unit and its outcome above its first session.
+    let unitRow = '';
+    if (r.skill === 'speaking' && r.unit !== lastUnit) {
+      lastUnit = r.unit;
+      unitRow = `<tr style="background:rgba(194,37,92,.05);"><td colspan="5" class="py-2 px-2">
+        <div class="text-[11px] font-bold uppercase tracking-wide" style="color:#C2255C;">Unit ${r.unit}: ${escapeHtml(r.unit_title)}</div>
+        <div class="text-[11px]" style="color:var(--muted);">${escapeHtml(r.unit_outcome || '')}</div></td></tr>`;
+    }
+    const kindBadge = r.kind === 'review' ? ' <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="background:rgba(194,37,92,.1);color:#C2255C;">Milestone</span>' : '';
+    return unitRow + `
       <tr style="border-top:1px solid var(--line);">
         <td class="py-2.5 pr-3 font-mono text-[11px]" style="color:var(--muted);">${escapeHtml(r.curriculum_id)}</td>
         <td class="py-2.5 pr-3">
-          <div class="text-sm font-medium" style="color:var(--navy);">${escapeHtml(r.title)}</div>
+          <div class="text-sm font-medium" style="color:var(--navy);">${escapeHtml(r.title)}${kindBadge}</div>
           ${err ? `<div class="text-[10px] mt-0.5" style="color:#B91C1C;">${escapeHtml(err)}</div>` : ''}
         </td>
         <td class="py-2.5 pr-3"><span class="text-[10px] px-1.5 py-0.5 rounded" style="background:rgba(0,78,137,.06);color:var(--secondary);">${escapeHtml(getSessionType(r.skill).label)}</span></td>
@@ -441,7 +482,7 @@ function renderCurriculumTabBody() {
     <div class="card-surface rounded-2xl p-5 mb-4">
       <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
         <div>
-          <h2 class="text-sm font-semibold" style="color:var(--navy);">📚 CEFR Curriculum — ${escapeHtml(cs.level)}</h2>
+          <h2 class="text-sm font-semibold" style="color:var(--navy);">📚 ${isSpeakingLevel(cs.level) ? 'Speaking Curriculum — ' + escapeHtml(cs.level.replace('Speaking ', '')) : 'CEFR Curriculum — ' + escapeHtml(cs.level)}</h2>
           <p class="text-xs mt-0.5" style="color:var(--muted);">
             Generated once and shared with every tutor. Safe to stop and resume — finished sessions are skipped.
           </p>

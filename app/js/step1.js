@@ -73,7 +73,7 @@ function populateLevels() {
   const sel = document.getElementById('inputLevel');
   // Literacy is delivered as a ready-made curriculum, not live-generated, so it
   // is kept out of the Generate form's level list (tutors find it in Curriculum).
-  sel.innerHTML = LEVELS.filter(l => !isLiteracyLevel(l.value))
+  sel.innerHTML = LEVELS.filter(l => !isLiteracyLevel(l.value) && !isSpeakingLevel(l.value))
     .map(l => `<option value="${l.value}" ${l.value === 'A1' ? 'selected' : ''}>${l.label}</option>`).join('');
 }
 

@@ -251,7 +251,8 @@ window.tutorState = {
   curLevels: null,       // { 'Pre-A1': 37, ... } — levels that actually have content
   curTier: null,         // 'foundation' | 'development' | 'proficiency'
   curLevel: null,        // selected level
-  curSkill: null,        // 'vocabulary' | 'grammar' | 'communication'
+  curSkill: null,        // 'vocabulary' | 'grammar' | 'communication' | 'speaking'
+  spkMeta: null,         // unit headings for Speaking, per level (loaded from curriculum/speaking-*.json)
   curIndex: [],          // lightweight rows for the selected level (no plan payload)
   curLoading: false
 };
@@ -355,6 +356,18 @@ async function tutorPickCurriculumLevel(level) {
   renderCurriculumBrowser();
   try { tutorState.curIndex = await dataListCurriculumIndex(level); }
   catch (e) { showToast('Could not load ' + level + ': ' + e.message, 'error'); }
+  if (isSpeakingLevel(level)) {
+    // Unit headings and outcomes come from the static curriculum file (no database change needed).
+    tutorState.spkMeta = tutorState.spkMeta || {};
+    if (!tutorState.spkMeta[level]) {
+      try {
+        const res = await fetch('curriculum/' + speakingSlug(level) + '.json');
+        const data = await res.json();
+        tutorState.spkMeta[level] = (data.sessions || []).map(s => ({ curriculum_id: s.curriculum_id, unit: s.unit, unit_title: s.unit_title, unit_outcome: s.unit_outcome, kind: s.kind }));
+      } catch (e) { console.warn('speaking unit metadata unavailable', e); }
+    }
+    tutorState.curSkill = 'speaking';   // Speaking has one session type: go straight to the sessions
+  }
   tutorState.curLoading = false;
   renderCurriculumBrowser();
 }
@@ -423,7 +436,7 @@ function renderCurriculumBrowser() {
 
 /* Step 1 — the three tiers. */
 function renderCurriculumTiers(available) {
-  const cards = ['literacy', 'foundation', 'development', 'proficiency'].map(key => {
+  const cards = ['literacy', 'foundation', 'development', 'proficiency', 'speaking'].map(key => {
     const t = TIERS[key];
     const levels = LEVELS.filter(l => l.tier === key);
     const count = levels.reduce((n, l) => n + (available[l.value] || 0), 0);
@@ -486,6 +499,7 @@ function renderCurriculumSessions() {
       vocabulary:    'Target words in context — themes, meanings and real-world use.',
       grammar:       'One structure at a time, with guided practice and examples.',
       communication: 'Speaking scenarios and target expressions for real situations.',
+      speaking:      'Quick-result speaking sessions, grouped in units that end with a milestone.',
       alphabet:      'Letters and the sounds they make, each with a picture.',
       blending:      'Sounding out and blending simple words, with pictures.',
       sightword:     'Common words taught by whole-word recognition.',
@@ -508,21 +522,44 @@ function renderCurriculumSessions() {
   }
 
   // Type chosen → the session list.
-  const rows = ts.curIndex.filter(r => r.session_type === ts.curSkill).map(r => `
+  const rowHtml = (r, badge) => `
     <div class="flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl mb-2 transition-all"
       style="background:white; border:1px solid var(--line); border-left:5px solid ${t.color};">
       <div class="min-w-0">
         <p class="text-sm font-semibold truncate" style="color:var(--navy);">${escapeHtml(r.title || '')}</p>
         <p class="text-[11px] mt-0.5" style="color:var(--muted);">
           <span class="font-mono px-1.5 py-0.5 rounded" style="background:var(--surface);">${escapeHtml(r.curriculum_id || '')}</span>
-          · ${r.duration} min
+          · ${r.duration} min${badge || ''}
         </p>
       </div>
       <div class="flex gap-1.5 flex-shrink-0">
         <button onclick="tutorViewCurriculumPlan('${r.id}')" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg" style="background:white;border:1px solid var(--line);color:var(--muted);">View</button>
         <button onclick="tutorTeachCurriculumPrompt('${r.id}')" class="text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white" style="background:var(--primary);">Teach this</button>
       </div>
-    </div>`).join('');
+    </div>`;
+
+  let rows;
+  const flat = ts.curIndex.filter(x => x.session_type === ts.curSkill);
+  const spkMeta = ts.spkMeta && ts.spkMeta[ts.curLevel];
+  if (ts.curSkill === 'speaking' && spkMeta) {
+    // Speaking: group by unit, with the unit outcome on top and a Milestone badge on reviews.
+    const byId = {}; flat.forEach(x => { byId[x.curriculum_id] = x; });
+    let lastUnit = null, out = '';
+    spkMeta.forEach(m => {
+      const x = byId[m.curriculum_id]; if (!x) return;
+      if (m.unit !== lastUnit) {
+        lastUnit = m.unit;
+        out += `<div class="mt-4 mb-2 first:mt-0 px-1">
+          <p class="text-[11px] font-bold uppercase tracking-wide" style="color:${t.color};">Unit ${m.unit}: ${escapeHtml(m.unit_title)}</p>
+          <p class="text-xs" style="color:var(--muted);">${escapeHtml(m.unit_outcome || '')}</p></div>`;
+      }
+      const badge = m.kind === 'review' ? ' · <span class="font-bold" style="color:' + t.color + ';">Milestone</span>' : '';
+      out += rowHtml(x, badge);
+    });
+    rows = out;
+  } else {
+    rows = flat.map(x => rowHtml(x)).join('');
+  }
 
   return `<div class="card-surface rounded-2xl p-5">${rows ||
     '<div class="text-center py-10 text-sm" style="color:var(--muted);">No sessions of this type at this level.</div>'}</div>`;

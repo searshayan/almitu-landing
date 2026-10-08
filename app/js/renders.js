@@ -672,7 +672,8 @@ const LAYOUT_BUILDERS = {
             </div>
           </div>`).join('')}
       </div>
-      ${d.footer ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);"><p class="font-semibold text-sm" style="color:#059669;">Next Step</p><p class="text-sm mt-1" style="color:var(--ink);">${md(d.footer)}</p></div>` : ''}`;
+      ${d.footer ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(6,214,160,.07); border:1px solid rgba(6,214,160,.15);"><p class="font-semibold text-sm" style="color:#059669;">Next Step</p><p class="text-sm mt-1" style="color:var(--ink);">${md(d.footer)}</p></div>` : ''}
+      ${(d.challenge && d.challenge.length) ? `<div class="mt-4 p-4 rounded-2xl" style="background:rgba(194,37,92,.06); border:1px solid rgba(194,37,92,.18);"><p class="font-semibold text-sm" style="color:#C2255C;">${escapeHtml(d.challengeTitle || 'Speaking challenge')}</p><p class="text-xs mt-0.5" style="color:var(--muted);">Practice these out loud before the next session.</p><ol class="mt-2 space-y-1.5 list-decimal pl-5">${d.challenge.map(c => `<li class="text-sm" style="color:var(--ink);">${md(c)}</li>`).join('')}</ol></div>` : ''}`;
   },
 
   bankmatch(d, ctx, slide) {
@@ -776,6 +777,45 @@ const LAYOUT_BUILDERS = {
 
   /* ── Communication: Language Toolkit ── functional expressions grouped by
      communicative function (Open / Ask / Respond / Clarify / Close). */
+  /* Open Language Toolkit (Speaking). One slide whose structure is chosen by the topic:
+     an ordered list of blocks. The first block is always "phrases" (the exact target
+     phrases); the rest are support blocks (chart, words, model, how, note, tip). */
+  opentoolkit(d, ctx, slide) {
+    const chip = t => t ? `<div class="inline-block text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-2" style="background:rgba(0,78,137,.08); color:var(--secondary);">${escapeHtml(t)}</div>` : '';
+    const card = inner => `<div class="p-3 rounded-xl" style="background:#F8F9FD; border:1px solid var(--line);">${inner}</div>`;
+    const block = b => {
+      switch (b.type) {
+        case 'phrases':
+          return `<div>${chip(b.heading)}<div class="space-y-2">${(b.items || []).map(it => {
+            const phrase = typeof it === 'string' ? it : it.phrase;
+            return card(`<p class="text-sm font-semibold" style="color:var(--navy);">${md(phrase)}</p>
+              ${(it && it.use) ? `<p class="text-xs mt-0.5" style="color:var(--muted);">${md(it.use)}</p>` : ''}
+              ${(it && it.example) ? `<p class="text-xs mt-1 italic" style="color:var(--navy);">${md(it.example)}</p>` : ''}
+              ${(it && it.l1) ? `<p class="text-[11px] mt-0.5" style="color:var(--secondary);">${bidiText(it.l1)}</p>` : ''}`);
+          }).join('')}</div></div>`;
+        case 'chart':
+          return `<div>${chip(b.heading)}<div class="rounded-2xl overflow-x-auto" style="border:1px solid var(--line);"><table class="w-full text-sm">
+            <thead><tr style="background:#F1F2F6;">${(b.headers || []).map(h => `<th class="text-left p-2.5 font-semibold" style="color:var(--navy);">${escapeHtml(h)}</th>`).join('')}</tr></thead>
+            <tbody>${(b.rows || []).map(row => `<tr style="border-top:1px solid var(--line);">${(row || []).map(c => `<td class="p-2.5 align-top" style="color:var(--ink);">${md(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
+        case 'words':
+          return `<div>${chip(b.heading)}<div class="grid grid-cols-2 gap-2">${(b.items || []).map(w => card(`<p class="text-sm font-semibold" style="color:var(--navy);">${md(typeof w === 'string' ? w : w.word)}</p>${(w && w.meaning) ? `<p class="text-xs" style="color:var(--muted);">${md(w.meaning)}</p>` : ''}`)).join('')}</div></div>`;
+        case 'model':
+          return `<div>${chip(b.heading)}<div class="space-y-1.5">${(b.lines || []).map((l, i) => `<div class="flex ${i % 2 ? 'justify-end' : 'justify-start'}"><div class="px-3 py-2 rounded-2xl text-sm max-w-[85%]" style="${i % 2 ? 'background:rgba(255,107,53,.08);' : 'background:#F1F2F6;'} color:var(--ink);">${l.speaker ? `<span class="text-[10px] font-bold uppercase" style="color:var(--muted);">${escapeHtml(l.speaker)}</span><br>` : ''}${md(l.line || '')}</div></div>`).join('')}</div></div>`;
+        case 'how':
+          return `<div>${chip(b.heading)}<ol class="space-y-1.5 list-decimal pl-5">${(b.steps || []).map(s => `<li class="text-sm" style="color:var(--ink);">${md(s)}</li>`).join('')}</ol></div>`;
+        case 'tip':
+          return `<div class="p-3 rounded-xl" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);">${b.heading ? `<span class="text-xs font-semibold" style="color:var(--primary);">${escapeHtml(b.heading)}:</span> ` : ''}<span class="text-xs" style="color:var(--ink);">${md(b.text || '')}</span></div>`;
+        default: // note
+          return `<div>${chip(b.heading)}<p class="text-sm" style="color:var(--ink);">${md(b.text || '')}</p></div>`;
+      }
+    };
+    return `
+      <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>
+      ${d.intro ? `<p class="text-sm mb-4" style="color:var(--muted);">${md(d.intro)}</p>` : '<div class="mb-4"></div>'}
+      <div class="space-y-4">${(d.blocks || []).map(block).join('')}</div>
+      ${d.repeat ? `<div class="mt-4 p-3 rounded-xl" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.12);"><span class="text-xs font-semibold" style="color:var(--primary);">Say it aloud:</span> <span class="text-xs" style="color:var(--ink);">${md(d.repeat)}</span></div>` : ''}`;
+  },
+
   toolkit(d, ctx, slide) {
     return `
       <h3 class="text-lg mb-1">${escapeHtml(slide.title)}</h3>

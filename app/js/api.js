@@ -61,6 +61,8 @@ function isPracticeBankUsable(bank, formData) {
   const validItems = bank.items.filter(i => i && i.term).length;
   const supplied = countSuppliedTargets(formData);
   const minRequired = supplied > 0 ? Math.min(4, supplied) : 4;
+  // Speaking sessions carry only the Listening card (no Reading, no Explore More).
+  if (formData && formData.sessionType === 'speaking') return validItems >= minRequired && !!bank.listening;
   return validItems >= minRequired && !!bank.reading && !!bank.listening && !!bank.externalResources;
 }
 
