@@ -26,6 +26,7 @@ const PATH_ICON_PATHS = {
   bolt:   '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
   flame:  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
   star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  chat:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
   arrow:  '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-1.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98 1.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>'
 };
@@ -58,6 +59,8 @@ function pathAttempts() { return (window.studentProgress && studentProgress.atte
 
 /* ─────────────── top of the dashboard: weekly goal + Continue ─────────────── */
 
+const PATH_DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 function pathWeekCardHtml() {
   const wk = pathWeekSummary(pathAttempts());
   const xp = summariseAttempts(pathAttempts()).xp;
@@ -68,9 +71,10 @@ function pathWeekCardHtml() {
         <div><h2 class="pp-h">This week's practice</h2><p class="pp-sub">${sub}</p></div>
         <span class="pp-xp">${pathIcon('bolt', 13, true)} ${xp} XP</span>
       </div>
-      <div class="pp-days">${wk.days.map(d => `
-        <div class="pp-day${d.practiced ? ' pp-day-on' : ''}${d.isToday ? ' pp-day-today' : ''}">${d.label}
-          <span aria-label="${d.practiced ? 'practised' : 'not practised'}">${pathIcon('check', 14)}</span></div>`).join('')}
+      <div class="pp-days" role="list">${wk.days.map((d, i) => `
+        <div class="pp-day${d.practiced ? ' pp-day-on' : ''}${d.isToday ? ' pp-day-today' : ''}" role="listitem"
+          aria-label="${PATH_DAY_NAMES[i]}${d.isToday ? ' (today)' : ''}: ${d.practiced ? 'practised' : 'not practised'}"><span class="pp-day-l" aria-hidden="true">${d.label}</span>
+          <span class="pp-day-c" aria-hidden="true">${pathIcon('check', 14)}</span></div>`).join('')}
       </div>
       ${wk.streak >= 1 ? `<p class="pp-streak">${pathIcon('flame', 14)} Practised ${wk.streak} ${wk.streak === 1 ? 'day' : 'days'} in a row</p>` : ''}
     </section>`;
@@ -92,7 +96,7 @@ function pathContinueCardHtml() {
   return `
     <section class="pp-card pp-continue" aria-label="Continue practising">
       <p class="pp-k">${p.doneCount ? 'Continue where you left off' : 'Start your practice'}</p>
-      <h2 class="pp-ct">${escapeHtml(target.nb.plan.meta.title)}</h2>
+      <h2 class="pp-ct">${bidiText(target.nb.plan.meta.title)}</h2>
       <p class="pp-cl">${escapeHtml(line)}</p>
       <button type="button" class="pp-cbtn" onclick="pathContinue()">Continue ${pathIcon('arrow', 18)}</button>
     </section>`;
@@ -128,9 +132,9 @@ function pathSessionCardsHtml(sessions, selectedId) {
       :                     `<span class="pp-pill pp-pill-left">${left} LEFT</span>`;
     const meta = [nb.date, nb.plan.meta.level, getSessionType(nb.sessionType).label].filter(Boolean).join(' · ');
     return `
-      <button type="button" class="pp-sess${nb.id === selectedId ? ' pp-cur' : ''}" onclick="selectSession('${nb.id}')">
+      <button type="button" class="pp-sess${nb.id === selectedId ? ' pp-cur' : ''}"${nb.id === selectedId ? ' aria-current="true"' : ''} onclick="selectSession('${nb.id}')">
         ${p.total ? pathRing(p.doneCount, p.total, 46) : ''}
-        <span class="pp-sess-body"><span class="pp-sess-t">${escapeHtml(nb.plan.meta.title)}</span><span class="pp-sess-m">${escapeHtml(meta)}</span></span>
+        <span class="pp-sess-body"><span class="pp-sess-t">${bidiText(nb.plan.meta.title)}</span><span class="pp-sess-m">${escapeHtml(meta)}</span></span>
         ${pill}
       </button>`;
   }).join('');
@@ -163,6 +167,15 @@ function pathStepHtml(nb, st, index) {
     </button>`;
 }
 
+/* Amie's phone tile ships with an owl emoji; with the new design on, show a line icon instead. */
+function pathSwapAmieIcon() {
+  const icon = document.querySelector('#amieTile > div');
+  if (icon && !icon.dataset.pp) {
+    icon.dataset.pp = '1';
+    icon.innerHTML = `<span style="color:var(--primary);display:inline-block">${pathIcon('chat', 26)}</span>`;
+  }
+}
+
 /* Header + tutor notes + steps for the selected session. Replaces the classic
    emoji tile grid (hidden by CSS while #step3 carries .pp-on). */
 function pathRenderSteps() {
@@ -174,6 +187,7 @@ function pathRenderSteps() {
   const nb = on ? getActiveNotebook() : null;
   if (!nb) { host.classList.add('hidden'); host.innerHTML = ''; return; }
 
+  pathSwapAmieIcon();
   if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
   const p = pathProgress(nb, pathAttempts());
   const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
@@ -189,7 +203,7 @@ function pathRenderSteps() {
     <section class="pp-card pp-shead" aria-label="Session progress">
       <div class="pp-row" style="justify-content:flex-start;gap:14px">
         ${pathRing(p.doneCount, p.total, 52)}
-        <div style="min-width:0;flex:1"><h2 class="pp-h" style="font-size:16px">${escapeHtml(nb.plan.meta.title)}</h2><p class="pp-sub">${escapeHtml(meta)}</p></div>
+        <div style="min-width:0;flex:1"><h2 class="pp-h" style="font-size:16px">${bidiText(nb.plan.meta.title)}</h2><p class="pp-sub">${escapeHtml(meta)}</p></div>
       </div>
       <div class="pp-bar" role="progressbar" aria-valuenow="${p.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p.pct}%"></i></div>
       <p class="pp-sub" style="margin-top:6px">${left}</p>
