@@ -101,10 +101,18 @@ function pathContinueCardHtml() {
 /* Fill #studentXpBadge with the path home (replaces the classic XP badge). */
 function pathRenderHome(host) {
   const nbs = pathMyNotebooks();
-  if (!nbs.length) { host.classList.add('hidden'); host.innerHTML = ''; host.classList.remove('path-home'); return; }
+  const slot = document.getElementById('pathGoalSlot');
+  if (!nbs.length) {
+    host.classList.add('hidden'); host.innerHTML = ''; host.classList.remove('path-home');
+    if (slot) slot.innerHTML = '';
+    return;
+  }
   host.classList.remove('hidden');
   host.classList.add('path-home');
   host.innerHTML = `<div class="pp-home">${pathWeekCardHtml()}${pathContinueCardHtml()}</div>`;
+  // Wide desktop (≥1280px): the goal moves into the sessions column and the top
+  // row is hidden by CSS (the session header carries its own Continue button).
+  if (slot) slot.innerHTML = `<div class="pp-goal-side">${pathWeekCardHtml()}</div>`;
 }
 
 /* ─────────────── session list cards ─────────────── */
@@ -188,8 +196,10 @@ function pathRenderSteps() {
       ${cta}
     </section>
     ${notes}
-    <p class="pp-sec">Practice path</p>
-    <div class="pp-steps">${p.steps.map((st, i) => pathStepHtml(nb, st, i)).join('')}</div>`;
+    <div class="pp-rightcol">
+      <p class="pp-sec">Practice path</p>
+      <div class="pp-steps">${p.steps.map((st, i) => pathStepHtml(nb, st, i)).join('')}</div>
+    </div>`;
 }
 
 /* ─────────────── after an activity: the "Next" card ─────────────── */
