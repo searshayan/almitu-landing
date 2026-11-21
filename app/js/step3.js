@@ -51,6 +51,9 @@ function svEnterDetail() {
 }
 
 function svExitDetail() {
+  // Practice path, phones: from a full-screen activity the back bar returns to the session's steps.
+  const _s3 = document.getElementById('step3');
+  if (_s3 && _s3.getAttribute('data-mview') === 'activity' && typeof pathExitActivity === 'function') { pathExitActivity(); return; }
   const step3 = document.getElementById('step3');
   // Leaving the objective panel: hide it so desktop "Close" still works too.
   const exp = document.getElementById('notebookExpanded');
@@ -384,7 +387,7 @@ function actOverview(nb) {
       <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--secondary);">✅ Can-do — what ${escapeHtml(nb.studentName)} can do now</p>
       <p class="text-sm italic leading-relaxed" style="color:var(--ink);">${ov.canDo ? '"' + escapeHtml(ov.canDo) + '"' : '<span style="color:var(--muted); font-style:normal;">After practising this session, ' + escapeHtml(nb.studentName) + ' can use the target language from the takeaways above in context.</span>'}</p>
     </div>
-    <p class="text-xs text-center mt-4" style="color:var(--muted);">Pick an activity above to start practising this session.</p>`;
+    <p class="text-xs text-center mt-4" style="color:var(--muted);">${typeof pathUiEnabled === 'function' && pathUiEnabled() ? 'Use the steps to start practising this session.' : 'Pick an activity above to start practising this session.'}</p>`;
 
   showPracticeContent(html);
 }
