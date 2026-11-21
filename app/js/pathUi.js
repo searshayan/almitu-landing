@@ -41,7 +41,7 @@ function pathRing(done, total, size) {
   const sz = size || 46, r = (sz - 8) / 2, c = 2 * Math.PI * r;
   const full = total > 0 && done >= total;
   const frac = total ? Math.min(1, done / total) : 0;
-  return `<span class="pp-ring" style="width:${sz}px;height:${sz}px" role="img" aria-label="${done} of ${total} steps done">
+  return `<span class="pp-ring" style="width:${sz}px;height:${sz}px" role="img" aria-label="${done} of ${total} activities done">
     <svg width="${sz}" height="${sz}" aria-hidden="true"><circle cx="${sz / 2}" cy="${sz / 2}" r="${r}" class="pp-ring-bg"/><circle cx="${sz / 2}" cy="${sz / 2}" r="${r}" class="pp-ring-fg${full ? ' pp-ring-full' : ''}" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - frac)}"/></svg>
     <b>${full ? pathIcon('check', Math.round(sz * 0.4)) : done + '/' + total}</b></span>`;
 }
@@ -93,7 +93,7 @@ function pathContinueCardHtml() {
       </section>`;
   }
   const p = target.progress, nx = p.next;
-  const line = `Step ${p.doneCount + 1} of ${p.total} · ${nx.label}`;
+  const line = `Activity ${p.doneCount + 1} of ${p.total} · ${nx.label}`;
   return `
     <section class="pp-card pp-continue" aria-label="Continue practising">
       <p class="pp-k">${p.doneCount ? 'Continue where you left off' : 'Start your practice'}</p>
@@ -192,7 +192,7 @@ function pathRenderSteps() {
   if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
   const p = pathProgress(nb, pathAttempts());
   const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
-  const stepsText = p.allDone ? 'All steps done' : `${p.doneCount} of ${p.total} steps done`;
+  const stepsText = p.allDone ? 'All activities done' : `${p.doneCount} of ${p.total} activities done`;
   const left = p.seconds > 0 ? `${stepsText} · ${formatDuration(p.seconds)} practised` : stepsText;
   const cta = p.next
     ? `<button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathStartStep('${nb.id}','${p.next.id}')">Continue · ${escapeHtml(p.next.label)} ${pathIcon('arrow', 18)}</button>`
@@ -213,7 +213,7 @@ function pathRenderSteps() {
     </section>
     ${notes}
     <div class="pp-rightcol">
-      <p class="pp-sec">Practice path</p>
+      <p class="pp-sec">Activities</p>
       <div class="pp-steps">${p.steps.map((st, i) => pathStepHtml(nb, st, i)).join('')}</div>
     </div>`;
 }
@@ -239,7 +239,7 @@ function pathNextCardHtml(nb, justId) {
     action = `<button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathStartStep('${nb.id}','${p.next.id}')">Next: ${escapeHtml(p.next.label)} ${pathIcon('arrow', 18)}</button>`;
   } else {
     action = `
-      <p class="pp-doneline">${pathIcon('trophy', 18)} All steps done for this session.</p>
+      <p class="pp-doneline">${pathIcon('trophy', 18)} All activities done for this session.</p>
       <button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathBackToSteps()">Back to the path</button>
       ${explore ? `<button type="button" class="pp-link" onclick="pathStartStep('${nb.id}','${explore.id}')">Optional: ${escapeHtml(explore.label)}</button>` : ''}`;
   }
@@ -247,7 +247,7 @@ function pathNextCardHtml(nb, justId) {
     <div id="pathNextCard" class="pp-next" role="status">
       <div class="pp-next-head">
         <span class="pp-next-orb">${pathIcon('check', 20)}</span>
-        <div style="flex:1;min-width:0"><p class="pp-h">${escapeHtml(just.label)} done</p><p class="pp-sub">${p.doneCount} of ${p.total} steps done</p></div>
+        <div style="flex:1;min-width:0"><p class="pp-h">${escapeHtml(just.label)} done</p><p class="pp-sub">${p.doneCount} of ${p.total} activities done</p></div>
         ${right}
       </div>
       ${goalNote}
@@ -275,7 +275,7 @@ function pathEnterActivity() {
   const s3 = document.getElementById('step3'); if (!s3) return;
   s3.setAttribute('data-mview', 'activity');
   const vs = document.getElementById('viewStudent'); if (vs) vs.classList.add('sv-detail');
-  const label = document.getElementById('svBackLabel'); if (label) label.textContent = 'Steps';
+  const label = document.getElementById('svBackLabel'); if (label) label.textContent = 'Activities';
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
