@@ -49,7 +49,7 @@
     }
   </script>
 
-  <link rel="stylesheet" href="css/main.css?v=46">
+  <link rel="stylesheet" href="css/main.css?v=47">
   <style>* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }</style>
 </head>
 
@@ -650,6 +650,9 @@
             <p class="text-xs" style="color:var(--muted);">Start with the Overview, then 5 activity types — each built from the selected session's practice bank.</p>
           </div>
 
+          <!-- Practice path steps (js/pathUi.js); shown instead of the tiles below when the new design is on -->
+          <div id="pathSteps" class="hidden mb-6 sv-path-steps"></div>
+
           <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6 sv-activity-tiles">
             <button onclick="actOverview()" class="card-hover card-surface rounded-2xl p-4 text-center group">
               <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📋</div>
@@ -772,36 +775,36 @@
   </div>
 
   <!-- Scripts (dependency order) -->
-  <script src="js/supabase.js?v=46"></script>
-  <script src="js/state.js?v=46"></script>
-  <script src="js/levels.js?v=46"></script>
-  <script src="js/literacyAssets.js?v=46"></script>
-  <script src="js/fingerprint.js?v=46"></script>
-  <script src="js/sessionTypes.js?v=46"></script>
-  <script src="js/config.js?v=46"></script>
-  <script src="js/prompts.js?v=46"></script>
-  <script src="js/speaking.js?v=46"></script>
-  <script src="js/renders.js?v=46"></script>
-  <script src="js/literacyBuild.js?v=46"></script>
-  <script src="js/demoEngine.js?v=46"></script>
-  <script src="js/api.js?v=46"></script>
-  <script src="js/data.js?v=46"></script>
-  <script src="js/auth.js?v=46"></script>
-  <script src="js/progress.js?v=46"></script>
-  <script src="js/path.js?v=46"></script>
-  <script src="js/pathUi.js?v=46"></script>
-  <script src="js/admin.js?v=46"></script>
-  <script src="js/coordinator.js?v=46"></script>
-  <script src="js/curriculum.js?v=46"></script>
-  <script src="js/ui.js?v=46"></script>
-  <script src="js/step1.js?v=46"></script>
-  <script src="js/step2.js?v=46"></script>
-  <script src="js/step3.js?v=46"></script>
-  <script src="js/router.js?v=46"></script>
-  <script src="js/messaging.js?v=46"></script>
-  <script src="js/amie.js?v=46"></script>
-  <script src="js/schedule.js?v=46"></script>
-  <script src="js/guide.js?v=46"></script>
-  <script src="js/app.js?v=46"></script>
+  <script src="js/supabase.js?v=47"></script>
+  <script src="js/state.js?v=47"></script>
+  <script src="js/levels.js?v=47"></script>
+  <script src="js/literacyAssets.js?v=47"></script>
+  <script src="js/fingerprint.js?v=47"></script>
+  <script src="js/sessionTypes.js?v=47"></script>
+  <script src="js/config.js?v=47"></script>
+  <script src="js/prompts.js?v=47"></script>
+  <script src="js/speaking.js?v=47"></script>
+  <script src="js/renders.js?v=47"></script>
+  <script src="js/literacyBuild.js?v=47"></script>
+  <script src="js/demoEngine.js?v=47"></script>
+  <script src="js/api.js?v=47"></script>
+  <script src="js/data.js?v=47"></script>
+  <script src="js/auth.js?v=47"></script>
+  <script src="js/progress.js?v=47"></script>
+  <script src="js/path.js?v=47"></script>
+  <script src="js/pathUi.js?v=47"></script>
+  <script src="js/admin.js?v=47"></script>
+  <script src="js/coordinator.js?v=47"></script>
+  <script src="js/curriculum.js?v=47"></script>
+  <script src="js/ui.js?v=47"></script>
+  <script src="js/step1.js?v=47"></script>
+  <script src="js/step2.js?v=47"></script>
+  <script src="js/step3.js?v=47"></script>
+  <script src="js/router.js?v=47"></script>
+  <script src="js/messaging.js?v=47"></script>
+  <script src="js/amie.js?v=47"></script>
+  <script src="js/schedule.js?v=47"></script>
+  <script src="js/guide.js?v=47"></script>
+  <script src="js/app.js?v=47"></script>
 </body>
 </html>

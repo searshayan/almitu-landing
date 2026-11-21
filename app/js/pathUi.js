@@ -25,6 +25,7 @@ const PATH_ICON_PATHS = {
   check:  '<path d="M20 6 9 17l-5-5"/>',
   bolt:   '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
   flame:  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   arrow:  '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-1.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98 1.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>'
 };
@@ -127,6 +128,70 @@ function pathSessionCardsHtml(sessions, selectedId) {
   }).join('');
 }
 
+/* ─────────────── session detail: the steps list ─────────────── */
+
+/* Which step is open in the practice area (for the highlight). */
+const pathUiState = { sessionId: null, cur: null };
+
+function pathStarsHtml(n) {
+  return `<span class="pp-stars" role="img" aria-label="${n} of 3 stars">${[0, 1, 2].map(i =>
+    `<svg class="pp-ic pp-ic-fill" width="14" height="14" viewBox="0 0 24 24" style="${i < n ? '' : 'opacity:.28'}" aria-hidden="true">${PATH_ICON_PATHS.star}</svg>`).join('')}</span>`;
+}
+
+function pathStepHtml(nb, st, index) {
+  const isCur = pathUiState.cur === st.id;
+  const right = st.done
+    ? (st.stars ? pathStarsHtml(st.stars) : '<span class="pp-pill pp-pill-done">DONE</span>')
+    : st.bonus ? '<span class="pp-pill pp-pill-opt">OPTIONAL</span>'
+    : st.state === 'next' ? '<span class="pp-pill pp-pill-next">START</span>' : '';
+  const label = (st.bonus ? '' : (index + 1) + '. ') + st.label;
+  const sub = st.sub + (st.min ? ` · ${st.min} min` : '');
+  return `
+    <button type="button" class="pp-step pp-step-${st.state}${st.bonus ? ' pp-step-bonus' : ''}${isCur ? ' pp-step-cur' : ''}"
+      ${st.state === 'next' ? 'aria-current="step"' : ''} onclick="pathStartStep('${nb.id}','${st.id}')">
+      <span class="pp-orb">${st.done ? pathIcon('check', 22) : pathIcon(st.id, 22)}</span>
+      <span class="pp-step-body"><span class="pp-step-n">${escapeHtml(label)}</span><span class="pp-step-d">${escapeHtml(sub)}</span></span>
+      <span class="pp-step-r">${right}</span>
+    </button>`;
+}
+
+/* Header + tutor notes + steps for the selected session. Replaces the classic
+   emoji tile grid (hidden by CSS while #step3 carries .pp-on). */
+function pathRenderSteps() {
+  const host = document.getElementById('pathSteps');
+  const step3 = document.getElementById('step3');
+  if (!host) return;
+  const on = pathUiEnabled();
+  if (step3) step3.classList.toggle('pp-on', on);
+  const nb = on ? getActiveNotebook() : null;
+  if (!nb) { host.classList.add('hidden'); host.innerHTML = ''; return; }
+
+  if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
+  const p = pathProgress(nb, pathAttempts());
+  const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
+  const left = p.allDone ? 'All steps done' : `${p.doneCount} of ${p.total} steps done · about ${p.minutesLeft} min left`;
+  const cta = p.next
+    ? `<button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathStartStep('${nb.id}','${p.next.id}')">Continue · ${escapeHtml(p.next.label)} ${pathIcon('arrow', 18)}</button>`
+    : (p.total ? `<p class="pp-doneline">${pathIcon('trophy', 18)} All practice for this session is done.</p>` : '');
+  const notes = (nb.tutorNotes && nb.tutorNotes.trim())
+    ? `<div class="pp-notes"><p class="pp-notes-k">Notes from your tutor</p><p class="pp-notes-t">${bidiText(nb.tutorNotes)}</p></div>` : '';
+
+  host.classList.remove('hidden');
+  host.innerHTML = `
+    <section class="pp-card pp-shead" aria-label="Session progress">
+      <div class="pp-row" style="justify-content:flex-start;gap:14px">
+        ${pathRing(p.doneCount, p.total, 52)}
+        <div style="min-width:0;flex:1"><h2 class="pp-h" style="font-size:16px">${escapeHtml(nb.plan.meta.title)}</h2><p class="pp-sub">${escapeHtml(meta)}</p></div>
+      </div>
+      <div class="pp-bar" role="progressbar" aria-valuenow="${p.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p.pct}%"></i></div>
+      <p class="pp-sub" style="margin-top:6px">${left}</p>
+      ${cta}
+    </section>
+    ${notes}
+    <p class="pp-sec">Practice path</p>
+    <div class="pp-steps">${p.steps.map((st, i) => pathStepHtml(nb, st, i)).join('')}</div>`;
+}
+
 /* ─────────────── actions ─────────────── */
 
 /* Open a step of a session. (Slice 3 reuses this for the steps list.) */
@@ -152,6 +217,8 @@ function pathStartStep(sessionId, stepId) {
     expl:   () => actExplore()
   }[stepId];
   if (!run) return;
+  pathUiState.sessionId = nb.id;
+  pathUiState.cur = stepId;
   run();
   pathRefresh();
 }
@@ -166,10 +233,13 @@ function pathContinue() {
 function pathRefresh() {
   if (typeof renderStudentXpBadge === 'function') renderStudentXpBadge();
   if (typeof renderNotebooks === 'function') renderNotebooks();
+  pathRenderSteps();
 }
 
 /* Called after an attempt is recorded (progress.js). The XP badge hook has
    already refreshed the home cards; here we refresh the ring/status list. */
 function pathAfterAttempt() {
-  if (pathUiEnabled() && typeof renderNotebooks === 'function') renderNotebooks();
+  if (!pathUiEnabled()) return;
+  if (typeof renderNotebooks === 'function') renderNotebooks();
+  pathRenderSteps();
 }
