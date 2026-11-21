@@ -859,6 +859,7 @@ textarea:focus-visible,
   #step3[data-mview="list"] #notebookExpanded,
   #step3[data-mview="list"] .sv-practice-intro,
   #step3[data-mview="list"] .sv-activity-tiles,
+  #step3[data-mview="list"] .sv-path-steps,
   #step3[data-mview="list"] .sv-activity-detail { display: none !important; }
 
   /* DETAIL view: objective (context) + tiles + activity area, with a back bar.
@@ -1264,3 +1265,55 @@ textarea:focus-visible,
 .pp-pill-left { background: rgba(255, 107, 53, .10); color: var(--primary); }
 .pp-pill-done { background: rgba(6, 214, 160, .18); color: #059669; }
 .pp-pill-old  { background: rgba(127, 127, 127, .16); color: var(--muted); }
+
+/* ── Practice Path: session detail (steps list) ── */
+/* New design on: the steps list replaces the emoji tiles and the intro card. Only
+   Amie's phone tile stays (it is inside the tile grid, hidden on ≥640px by Tailwind). */
+#step3.pp-on .sv-practice-intro { display: none; }
+#step3.pp-on #notebookExpanded { display: none !important; }   /* the Warm-up step shows the same objective */
+#step3.pp-on .sv-activity-tiles { display: block; margin-bottom: 0; }
+#step3.pp-on .sv-activity-tiles > button:not(#amieTile) { display: none !important; }
+#step3.pp-on #amieTile { width: 100%; margin-bottom: 16px; }
+
+.pp-shead { margin-bottom: 12px; }
+.pp-bar { height: 10px; border-radius: 99px; background: rgba(127, 127, 127, .18); overflow: hidden; margin-top: 12px; }
+.pp-bar > i { display: block; height: 100%; border-radius: 99px; background: var(--success); transition: width .5s; }
+.pp-shead .pp-cbtn-solid { margin-top: 14px; width: 100%; background: var(--primary); color: #fff; box-shadow: 0 4px 0 var(--primary-dark); }
+.pp-doneline { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; font-size: 13px; font-weight: 700; color: #059669; }
+.pp-notes { margin-bottom: 12px; padding: 14px; border-radius: 16px; background: rgba(255, 210, 63, .12); border: 1px solid rgba(255, 210, 63, .38); }
+.pp-notes-k { margin: 0 0 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #B45309; }
+.pp-notes-t { margin: 0; font-size: 14px; line-height: 1.55; white-space: pre-wrap; color: var(--ink); }
+.pp-sec { margin: 16px 0 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+
+/* Phones: a connected vertical path. */
+.pp-steps { padding: 4px 0 8px; }
+.pp-step { position: relative; display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 0; text-align: left; background: none; border: 0; cursor: pointer; }
+.pp-step::before { content: ""; position: absolute; left: 25px; top: -30px; height: 60px; width: 3px; background: rgba(127, 127, 127, .22); z-index: 0; }
+.pp-step:first-child::before { display: none; }
+.pp-step-done::before { background: var(--success); }
+.pp-orb { position: relative; z-index: 1; display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; background: rgba(127, 127, 127, .14); border: 3px solid rgba(127, 127, 127, .22); color: var(--secondary); }
+.pp-step-done .pp-orb { background: var(--success); border-color: #04a67a; color: #fff; }
+.pp-step-next .pp-orb { background: var(--primary); border-color: var(--primary-dark); color: #fff; box-shadow: 0 0 0 6px rgba(255, 107, 53, .18); }
+.pp-step-bonus .pp-orb { border-style: dashed; background: transparent; }
+.pp-step-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.pp-step-n { font-size: 15px; font-weight: 700; color: var(--navy); }
+.pp-step-d { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pp-step-cur .pp-step-n { color: var(--primary); }
+.pp-step-r { flex-shrink: 0; }
+.pp-stars { display: inline-flex; gap: 1px; color: #F5A623; }
+.pp-pill-opt { background: rgba(0, 78, 137, .10); color: var(--secondary); }
+
+/* Desktop: step cards in two columns. */
+@media (min-width: 1024px) {
+  .pp-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0; }
+  .pp-step { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+  .pp-step::before { display: none; }
+  .pp-orb { width: 40px; height: 40px; border-radius: 12px; border-width: 0; }
+  .pp-step-next { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 107, 53, .14); }
+  .pp-step-next .pp-orb { box-shadow: none; }
+  .pp-step-done { background: rgba(6, 214, 160, .07); border-color: rgba(6, 214, 160, .35); }
+  .pp-step-bonus { border-style: dashed; }
+  .pp-step-cur { border-color: var(--secondary); }
+  .pp-step-n { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .pp-bar > i { transition: none; } }

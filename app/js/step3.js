@@ -246,6 +246,8 @@ function applyActivityGating() {
     const present = !!(bank && bank[NEWCARD_KEY[b.getAttribute('data-newcard')]]);
     b.style.display = (present && !isLit && skillAllows(b)) ? '' : 'none';
   });
+  // New practice-path design: the steps list replaces these tiles (js/pathUi.js).
+  if (typeof pathRenderSteps === 'function') pathRenderSteps();
 }
 
 function selectSession(id) {
