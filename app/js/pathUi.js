@@ -192,6 +192,88 @@ function pathRenderSteps() {
     <div class="pp-steps">${p.steps.map((st, i) => pathStepHtml(nb, st, i)).join('')}</div>`;
 }
 
+/* ─────────────── after an activity: the "Next" card ─────────────── */
+
+/* Appended under the activity's own finish screen (never replaces it): what was
+   just completed, overall progress, a weekly-goal note when it was just
+   reached, and ONE obvious button to the next step. */
+function pathNextCardHtml(nb, justId) {
+  const p = pathProgress(nb, pathAttempts());
+  const just = p.steps.find(s => s.id === justId);
+  if (!just) return '';
+  const wk = pathWeekSummary(pathAttempts());
+  const todays = pathAttempts().filter(a => a.created_at && pathDayKey(new Date(a.created_at), _pathTz()) === wk.todayKey).length;
+  const goalNote = (wk.reached && wk.count === wk.goal && todays <= 1)
+    ? `<div class="pp-goalnote">${pathIcon('flame', 22)}<div><b>Weekly goal reached</b><span>${wk.goal} practice days this week.</span></div></div>` : '';
+  const right = just.stars ? pathStarsHtml(just.stars) : '';
+  const explore = p.steps.find(s => s.bonus);
+
+  let action;
+  if (p.next) {
+    action = `<button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathStartStep('${nb.id}','${p.next.id}')">Next: ${escapeHtml(p.next.label)} ${pathIcon('arrow', 18)}</button>`;
+  } else {
+    action = `
+      <p class="pp-doneline">${pathIcon('trophy', 18)} All steps done for this session.</p>
+      <button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathBackToSteps()">Back to the path</button>
+      ${explore ? `<button type="button" class="pp-link" onclick="pathStartStep('${nb.id}','${explore.id}')">Optional: ${escapeHtml(explore.label)}</button>` : ''}`;
+  }
+  return `
+    <div id="pathNextCard" class="pp-next" role="status">
+      <div class="pp-next-head">
+        <span class="pp-next-orb">${pathIcon('check', 20)}</span>
+        <div style="flex:1;min-width:0"><p class="pp-h">${escapeHtml(just.label)} done</p><p class="pp-sub">${p.doneCount} of ${p.total} steps done</p></div>
+        ${right}
+      </div>
+      ${goalNote}
+      ${action}
+    </div>`;
+}
+
+/* Put the Next card at the bottom of the open activity and bring it into view. */
+function pathShowNextCard(nb, justId) {
+  const host = document.getElementById('practiceContent');
+  if (!host || host.classList.contains('hidden')) return;
+  const old = document.getElementById('pathNextCard'); if (old) old.remove();
+  const html = pathNextCardHtml(nb, justId);
+  if (!html) return;
+  host.insertAdjacentHTML('beforeend', html);
+  const el = document.getElementById('pathNextCard');
+  const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
+}
+
+/* ─────────────── phones: the activity gets the whole screen ─────────────── */
+
+function pathEnterActivity() {
+  if (!_svIsMobile()) return;
+  const s3 = document.getElementById('step3'); if (!s3) return;
+  s3.setAttribute('data-mview', 'activity');
+  const vs = document.getElementById('viewStudent'); if (vs) vs.classList.add('sv-detail');
+  const label = document.getElementById('svBackLabel'); if (label) label.textContent = 'Steps';
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+/* Back from a full-screen activity to the session's path (phones). */
+function pathExitActivity() {
+  const s3 = document.getElementById('step3'); if (!s3) return;
+  s3.setAttribute('data-mview', 'detail');
+  const label = document.getElementById('svBackLabel'); if (label) label.textContent = 'Sessions';
+  pathUiState.cur = null;
+  resetActivityArea();
+  pathRenderSteps();
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+/* "Back to the path" from the Next card. */
+function pathBackToSteps() {
+  if (_svIsMobile()) { pathExitActivity(); return; }
+  pathUiState.cur = null;
+  resetActivityArea();
+  pathRenderSteps();
+  const host = document.getElementById('pathSteps');
+  if (host && host.scrollIntoView) host.scrollIntoView({ behavior: 'auto', block: 'start' });
+}
+
 /* ─────────────── actions ─────────────── */
 
 /* Open a step of a session. (Slice 3 reuses this for the steps list.) */
@@ -219,8 +301,10 @@ function pathStartStep(sessionId, stepId) {
   if (!run) return;
   pathUiState.sessionId = nb.id;
   pathUiState.cur = stepId;
+  pathEnterActivity();                // phones: full-screen activity
   run();
   pathRefresh();
+  if (stepId === 'warm') pathShowNextCard(nb, 'warm');   // Warm-up is "done" as soon as it's opened
 }
 
 /* The Continue card: jump into the next unfinished step. */
@@ -242,4 +326,10 @@ function pathAfterAttempt() {
   if (!pathUiEnabled()) return;
   if (typeof renderNotebooks === 'function') renderNotebooks();
   pathRenderSteps();
+  // Show "Next" under the activity the student just finished (only while that
+  // step is still the one on screen).
+  const last = pathAttempts()[0], nb = getActiveNotebook();
+  if (!last || !nb || last.session_id !== nb.id) return;
+  const step = PATH_STEP_CATALOG.find(s => s.activity === last.activity);
+  if (step && pathUiState.cur === step.id) pathShowNextCard(nb, step.id);
 }
