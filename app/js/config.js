@@ -7,6 +7,13 @@
    getConfig() stays synchronous for the generation code paths.
    ═══════════════════════════════════════════════════════ */
 
+/* ── Student "Practice Path" design (see js/path.js) ──
+   PATH_UI_DEFAULT: show the new design to everyone (false = classic tiles; a
+   student/admin can still opt in with ?path=1). Goal/stale values are tunable. */
+const PATH_UI_DEFAULT = false;
+const PATH_WEEKLY_GOAL = 3;      // practice days per week (weeks start Monday)
+const PATH_STALE_DAYS = 14;      // older unfinished sessions stop counting as "behind"
+
 const DEFAULT_CONFIG = {
   engine: 'demo',                 // 'demo' | 'claude' | 'custom'
   claudeKey: '',

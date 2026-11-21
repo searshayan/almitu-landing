@@ -491,6 +491,7 @@ function rowToNotebook(row) {
     duration: row.duration,
     sessionType: row.session_type,
     status: row.status,
+    createdAt: row.created_at || null,   // ISO; used by the practice path to age out old sessions
     chatLog: []   // chat removed; kept empty so any legacy .chatLog access is safe
   };
 }
