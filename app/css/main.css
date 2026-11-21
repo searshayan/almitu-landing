@@ -1282,7 +1282,6 @@ textarea:focus-visible,
   #step3.pp-on[data-mview] .sv-back-bar { display: none !important; }
   #viewStudent.sv-detail #studentXpBadge.path-home { display: block; }
 }
-}
 
 .pp-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--pp-r-lg); padding: var(--pp-s4); }
 .pp-row { display: flex; align-items: center; justify-content: space-between; gap: var(--pp-s3); }
