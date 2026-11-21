@@ -46,6 +46,7 @@ function svEnterDetail() {
   if (!step3) return;
   if (_svIsMobile() && step3.getAttribute('data-mview') !== 'detail') _svScrollY = window.scrollY;   // remember list position
   step3.setAttribute('data-mview', 'detail');
+  const vs = document.getElementById('viewStudent'); if (vs) vs.classList.add('sv-detail');
   if (_svIsMobile()) window.scrollTo({ top: 0, behavior: _svReduceMotion() ? 'auto' : 'smooth' });   // land on the objective
 }
 
@@ -55,6 +56,7 @@ function svExitDetail() {
   const exp = document.getElementById('notebookExpanded');
   if (exp) exp.classList.add('hidden');
   if (step3) step3.setAttribute('data-mview', 'list');
+  const vs = document.getElementById('viewStudent'); if (vs) vs.classList.remove('sv-detail');
   if (_svIsMobile()) window.scrollTo({ top: _svScrollY || 0, behavior: 'auto' });   // restore list position
 }
 
@@ -172,7 +174,9 @@ function renderNotebooks() {
   }
   html += `<p class="text-[10px] uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">${escapeHtml(activeStudent.name)}'s sessions</p>`;
 
-  html += activeStudent.sessions.map((nb, i) => {
+  if (typeof pathUiEnabled === 'function' && pathUiEnabled()) {
+    html += pathSessionCardsHtml(activeStudent.sessions, s.selectedNotebookId);   // progress-ring cards (js/pathUi.js)
+  } else html += activeStudent.sessions.map((nb, i) => {
     const isSel = nb.id === s.selectedNotebookId;
     const isNewest = i === 0;
     const typeLabel = getSessionType(nb.sessionType).label;

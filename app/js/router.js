@@ -1026,6 +1026,8 @@ async function initStudentDashboard() {
 function renderStudentXpBadge() {
   const host = document.getElementById('studentXpBadge');
   if (!host) return;
+  // New "practice path" design (js/pathUi.js): weekly goal + Continue card.
+  if (typeof pathUiEnabled === 'function' && pathUiEnabled()) { pathRenderHome(host); return; }
   const all = (window.studentProgress && studentProgress.attempts) || [];
   const lifetime = summariseAttempts(all);
   if (!lifetime.count) { host.classList.add('hidden'); host.innerHTML = ''; return; }
