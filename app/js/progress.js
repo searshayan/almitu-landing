@@ -144,6 +144,7 @@ async function recordActivityCompletion(activity, correct, total, challenge) {
     if (window.studentProgress) window.studentProgress.attempts.unshift(row);
     showXpFeedback(xp, priorCount > 0);
     if (typeof renderStudentXpBadge === 'function') renderStudentXpBadge();
+    if (typeof pathAfterAttempt === 'function') pathAfterAttempt();
     return row;
   } catch (e) {
     console.warn('Could not record activity attempt:', e);
