@@ -1393,7 +1393,9 @@ textarea:focus-visible,
 
 
 /* ── Practice path: time practised (weekly card + session header) ── */
-.pp-total { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; margin-top: 12px; }
+.pp-side { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.pp-side .pp-xp { margin-bottom: 4px; }
+.pp-side-l { font-size: 11px; font-weight: 600; color: var(--muted); }
 .pp-big { font-size: 32px; font-weight: 800; line-height: 1; color: var(--primary); }
 .pp-big small { font-size: 14px; font-weight: 700; margin-left: 4px; }
 .pp-big-zero { color: var(--muted); }
@@ -1409,8 +1411,8 @@ textarea:focus-visible,
 .pp-col-today .pp-col-b { box-shadow: 0 0 0 2px var(--primary); }
 .pp-col-today .pp-col-l { color: var(--primary); }
 
-.pp-circles { display: flex; gap: 20px; align-items: flex-start; margin-top: 14px; }
-.pp-c { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 96px; text-align: center; }
+.pp-circles { display: flex; gap: 12px; align-items: flex-start; margin-top: 14px; }
+.pp-c { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 88px; text-align: center; }
 .pp-c-l { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; line-height: 1.2; color: var(--muted); }
 .pp-c .pp-ring b { font-size: 18px; }
 .pp-disc { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, #FF8C66, #FF6B35); color: #fff; box-shadow: 0 6px 16px rgba(255, 107, 53, .35); }
@@ -1418,3 +1420,14 @@ textarea:focus-visible,
 .pp-disc span { margin-top: 2px; font-size: 11px; font-weight: 700; opacity: .95; }
 .pp-disc-long b { font-size: 16px; }
 .pp-disc-zero { background: transparent; color: var(--muted); border: 3px dashed rgba(127, 127, 127, .45); box-shadow: none; }
+
+/* XP disc (session header): same size as the time disc, gold instead of orange. */
+.pp-disc-xp { background: linear-gradient(135deg, #FFE27A, #FFC22E); color: #5B3A00; box-shadow: 0 6px 16px rgba(255, 194, 46, .40); }
+.pp-disc-xp.pp-disc-zero { background: transparent; color: var(--muted); border: 3px dashed rgba(127, 127, 127, .45); box-shadow: none; }
+
+/* Weekly card: clock disc + trend under the daily bars. */
+.pp-trendrow { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.pp-clock { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 107, 53, .12); border: 3px solid var(--primary); color: var(--primary); }
+
+/* Dark mode: the XP pill text was too dim on the dark card. */
+:root[data-theme="dark"] .pp-xp { color: #FFD23F; background: rgba(255, 210, 63, .14); }

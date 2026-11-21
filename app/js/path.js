@@ -149,6 +149,7 @@ function pathProgress(nb, attempts) {
     pct: core.length ? Math.round(doneCount / core.length * 100) : 0,
     next,
     allDone: core.length > 0 && !next,
+    xp: mine.reduce((n, a) => n + (a.xp || 0), 0),                // XP earned on this session
     seconds: mine.reduce((n, a) => n + (a.seconds || 0), 0),   // real time practised on this session (finished activities only)
     stepsLeft: left
   };

@@ -27,6 +27,7 @@ const PATH_ICON_PATHS = {
   flame:  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
   star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   chat:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  clock:  '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
   up:     '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
   arrow:  '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-1.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98 1.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>'
@@ -75,14 +76,22 @@ function pathTimeParts(sec) {
 }
 function pathTimeText(sec) { const t = pathTimeParts(sec); return t.unit ? `${t.n} ${t.unit}` : t.n; }
 
-/* Idea C: a friendly comparison with last week. Positive = encouraging; a dip is
-   shown neutrally (no "less than"), and nothing at all without last-week data. */
-function pathTrendHtml(wk) {
+/* Idea C: a clock disc with a friendly comparison to last week, under the bars.
+   Positive = encouraging; a dip is shown neutrally (no "less than"), and nothing
+   at all without last-week data. */
+function pathTrendRowHtml(wk) {
   if (!(wk.lastWeekSeconds > 0) || !(wk.seconds > 0)) return '';
   const diff = wk.seconds - wk.lastWeekSeconds;
-  if (diff >= 60) return `<span class="pp-trend pp-trend-up">${pathIcon('up', 14)} ${pathTimeText(diff)} more than last week</span>`;
-  if (diff <= -60) return `<span class="pp-trend">Last week: ${pathTimeText(wk.lastWeekSeconds)}</span>`;
-  return '<span class="pp-trend">About the same as last week</span>';
+  const last = `Last week: ${pathTimeText(wk.lastWeekSeconds)}`;
+  let main, sub = last, cls = '';
+  if (diff >= 60) { main = `${pathIcon('up', 14)} ${pathTimeText(diff)} more than last week`; cls = ' pp-trend-up'; }
+  else if (diff <= -60) { main = last; sub = ''; }
+  else main = 'About the same as last week';
+  return `
+    <div class="pp-trendrow">
+      <span class="pp-clock" aria-hidden="true">${pathIcon('clock', 24)}</span>
+      <div><span class="pp-trend${cls}">${main}</span>${sub ? `<p class="pp-sub" style="margin-top:4px">${sub}</p>` : ''}</div>
+    </div>`;
 }
 
 function pathWeekCardHtml() {
@@ -102,15 +111,16 @@ function pathWeekCardHtml() {
   }).join('');
   return `
     <section class="pp-card" aria-label="This week's practice">
-      <div class="pp-row">
+      <div class="pp-row" style="align-items:flex-start">
         <div><h2 class="pp-h">This week's practice</h2><p class="pp-sub">${days}</p></div>
-        <span class="pp-xp">${pathIcon('bolt', 13, true)} ${xp} XP</span>
-      </div>
-      <div class="pp-total">
-        <span class="pp-big${wk.seconds > 0 ? '' : ' pp-big-zero'}" aria-label="${pathTimeText(wk.seconds)} practised this week">${tp.n}${tp.unit ? `<small>${tp.unit}</small>` : ''}</span>
-        ${pathTrendHtml(wk)}
+        <div class="pp-side">
+          <span class="pp-xp">${pathIcon('bolt', 13, true)} ${xp} XP</span>
+          <span class="pp-big${wk.seconds > 0 ? '' : ' pp-big-zero'}" aria-label="${pathTimeText(wk.seconds)} practised this week">${tp.n}${tp.unit ? `<small>${tp.unit}</small>` : ''}</span>
+          <span class="pp-side-l">this week</span>
+        </div>
       </div>
       <div class="pp-bars" role="list">${bars}</div>
+      ${pathTrendRowHtml(wk)}
       ${wk.streak >= 1 ? `<p class="pp-streak">${pathIcon('flame', 14)} Practised ${wk.streak} ${wk.streak === 1 ? 'day' : 'days'} in a row</p>` : ''}
     </section>`;
 }
@@ -226,6 +236,7 @@ function pathRenderSteps() {
   if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
   const p = pathProgress(nb, pathAttempts());
   const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
+  const xpDisc = `<div class="pp-disc pp-disc-xp${p.xp > 0 ? '' : ' pp-disc-zero'}" role="img" aria-label="${p.xp} XP earned on this session"><b>${p.xp}</b><span>XP</span></div>`;
   const st = pathTimeParts(p.seconds);
   const disc = `<div class="pp-disc${p.seconds > 0 ? '' : ' pp-disc-zero'}${st.unit ? '' : ' pp-disc-long'}" role="img" aria-label="${pathTimeText(p.seconds)} practised on this session"><b>${st.n}</b>${st.unit ? `<span>${st.unit}</span>` : ''}</div>`;
   const cta = p.next
@@ -241,6 +252,7 @@ function pathRenderSteps() {
       <div class="pp-circles">
         <div class="pp-c">${pathRing(p.doneCount, p.total, 76)}<span class="pp-c-l">Activities done</span></div>
         <div class="pp-c">${disc}<span class="pp-c-l">Time practised</span></div>
+        <div class="pp-c">${xpDisc}<span class="pp-c-l">XP earned</span></div>
       </div>
       ${cta}
     </section>
