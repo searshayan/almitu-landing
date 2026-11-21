@@ -358,7 +358,7 @@ function actOverview(nb) {
 
   if (nb.tutorNotes && nb.tutorNotes.trim()) {
     html += `
-    <div class="rounded-2xl p-5 mb-4" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.35);">
+    <div class="pp-ov-notes rounded-2xl p-5 mb-4" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.35);">
       <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:#B45309;">📝 Notes &amp; Assignments from your tutor</p>
       <p class="text-sm whitespace-pre-wrap leading-relaxed" style="color:var(--ink);">${escapeHtml(nb.tutorNotes)}</p>
     </div>`;
