@@ -38,7 +38,11 @@ function showPracticeContent(html) {
    and scrolls to it, so the content is never left below the fold. Desktop keeps
    its side-by-side layout untouched. */
 let _svScrollY = 0;
-function _svIsMobile() { return window.matchMedia('(max-width: 1023px)').matches; }
+function _svIsMobile() {
+  // Practice-path design: phones only (<768px) use the drill-in; tablets get two columns.
+  const pp = typeof pathUiEnabled === 'function' && pathUiEnabled();
+  return window.matchMedia(pp ? '(max-width: 767px)' : '(max-width: 1023px)').matches;
+}
 function _svReduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
 function svEnterDetail() {
@@ -74,7 +78,10 @@ function resetActivityArea() {
 /* Mobile: after a tile renders its activity, scroll the activity card into view
    (it sits below the objective + tiles, so it would otherwise be below the fold). */
 function scrollActivityIntoView() {
-  if (!_svIsMobile()) return;
+  // Phones always; with the new design also tablets / small laptops (<1280px), where the
+  // activity sits below the activities list instead of in its own column.
+  const ppNarrow = typeof pathUiEnabled === 'function' && pathUiEnabled() && !window.matchMedia('(min-width: 1280px)').matches;
+  if (!_svIsMobile() && !ppNarrow) return;
   const el = document.querySelector('#step3 .sv-activity-detail') || document.getElementById('practiceContent');
   if (el) el.scrollIntoView({ behavior: _svReduceMotion() ? 'auto' : 'smooth', block: 'start' });
 }
@@ -86,6 +93,7 @@ function shuffled(arr) {
 }
 
 function activityHeader(emoji, title, sub, challenge) {
+  if (typeof pathUiEnabled === 'function' && pathUiEnabled() && typeof pathHeaderIcon === 'function') emoji = pathHeaderIcon(emoji);
   return `
     <div class="mb-4">
       <h3 class="text-lg font-bold font-display flex items-center gap-2" style="color:var(--navy);">
@@ -352,6 +360,8 @@ function showSessionObjective(id) {
 function actOverview(nb) {
   nb = nb || requireNotebook(); if (!nb) return;
   const ov = getSessionOverview(nb);
+  const ppOn = typeof pathUiEnabled === 'function' && pathUiEnabled();
+  const L = (emoji, icon) => ppOn ? pathIcon(icon, 14) + ' ' : emoji + ' ';   // line icon in the new design, emoji in the classic one
   const meta = nb.plan.meta;
 
   let html = activityHeader('📋', 'Overview', `Session summary for "${meta.title}" — ${meta.level} · ${getSessionType(nb.sessionType).label} · ${nb.duration}min.`, false);
@@ -359,20 +369,20 @@ function actOverview(nb) {
   if (nb.tutorNotes && nb.tutorNotes.trim()) {
     html += `
     <div class="pp-ov-notes rounded-2xl p-5 mb-4" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.35);">
-      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:#B45309;">📝 Notes &amp; Assignments from your tutor</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--pp-amber-text, #B45309);">${L('📝', 'gap')}Notes &amp; Assignments from your tutor</p>
       <p class="text-sm whitespace-pre-wrap leading-relaxed" style="color:var(--ink);">${escapeHtml(nb.tutorNotes)}</p>
     </div>`;
   }
 
   html += `
     <div class="rounded-2xl p-5 mb-4" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.15);">
-      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--pp-accent-text, var(--primary));">🎯 Objective</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--pp-accent-text, var(--primary));">${L('🎯', 'target')}Objective</p>
       <p class="text-sm leading-relaxed" style="color:var(--ink);">${escapeHtml(ov.objective) || '<span style="color:var(--muted);">No objective recorded for this session.</span>'}</p>
     </div>`;
 
   html += `
     <div class="rounded-2xl p-5 mb-4" style="background:#F8F9FD; border:1px solid var(--line);">
-      <p class="text-xs uppercase tracking-wider font-semibold mb-2" style="color:var(--navy);">🔑 Key Takeaways</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-2" style="color:var(--navy);">${L('🔑', 'key')}Key Takeaways</p>
       ${ov.takeaways.length
         ? `<div class="space-y-2">${ov.takeaways.map(t => `
             <div class="flex items-start gap-2">
@@ -384,7 +394,7 @@ function actOverview(nb) {
 
   html += `
     <div class="rounded-2xl p-5" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12);">
-      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--secondary);">✅ Can-do — what ${escapeHtml(nb.studentName)} can do now</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--secondary);">${L('✅', 'check')}Can-do — what ${escapeHtml(nb.studentName)} can do now</p>
       <p class="text-sm italic leading-relaxed" style="color:var(--ink);">${ov.canDo ? '"' + escapeHtml(ov.canDo) + '"' : '<span style="color:var(--muted); font-style:normal;">After practising this session, ' + escapeHtml(nb.studentName) + ' can use the target language from the takeaways above in context.</span>'}</p>
     </div>
     <p class="text-xs text-center mt-4" style="color:var(--muted);">${typeof pathUiEnabled === 'function' && pathUiEnabled() ? 'Use the Activities list to keep practising this session.' : 'Pick an activity above to start practising this session.'}</p>`;

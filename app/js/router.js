@@ -1004,6 +1004,7 @@ async function initStudentDashboard() {
     s.savedNotebooks = rows.map(rowToNotebook).filter(nb => nb && nb.plan && nb.plan.meta);
     s.selectedNotebookId = s.savedNotebooks[0] ? s.savedNotebooks[0].id : null;
     studentProgress.attempts = attempts;
+    if (typeof pathResetPreview === 'function') pathResetPreview();   // view-as preview rows never outlive a dashboard load
     // Raw rows (newest first, per dataListStudentSessions) for the progress export —
     // kept separate from savedNotebooks since that list is reshaped for the UI.
     studentProgress.sessions = rows.filter(r => r.plan);

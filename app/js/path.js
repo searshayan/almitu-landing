@@ -80,12 +80,17 @@ function _pathWarmMap() {
 }
 function _pathWarmId(nb) { return (nb.studentId || '') + ':' + nb.id; }
 
+/* True while an admin/tutor is viewing a student's dashboard (read-only). */
+function pathViewingAs() {
+  try { return typeof activeContext === 'function' && !!activeContext().readOnly; } catch (e) { return false; }
+}
+
 function pathWarmDone(nb) {
   return !!(nb && _pathWarmMap()[_pathWarmId(nb)]);
 }
 /* Call when the student opens the Warm-up (session overview). */
 function pathMarkWarmDone(nb) {
-  if (!nb || !nb.id) return;
+  if (!nb || !nb.id || pathViewingAs()) return;   // never write the student's marker from someone else's browser
   try {
     const map = _pathWarmMap();
     if (map[_pathWarmId(nb)]) return;
@@ -125,7 +130,9 @@ function pathProgress(nb, attempts) {
   const steps = pathStepsFor(nb).map(s => {
     let done = false, stars = null, count = 0;
     if (s.id === 'warm') {
-      done = pathWarmDone(nb);
+      // Warm-up is remembered per browser, so when someone is VIEWING a student it is inferred:
+      // any recorded activity on the session means they got past it. A preview row counts too.
+      done = pathWarmDone(nb) || mine.some(a => a.activity === 'overview') || (pathViewingAs() && mine.length > 0);
     } else if (!s.bonus) {
       const rows = mine.filter(a => a.activity === s.activity);
       count = rows.length;

@@ -8,9 +8,10 @@
    ═══════════════════════════════════════════════════════ */
 
 /* ── Student "Practice Path" design (see js/path.js) ──
-   PATH_UI_DEFAULT: show the new design to everyone (false = classic tiles; a
-   student/admin can still opt in with ?path=1). Goal/stale values are tunable. */
-const PATH_UI_DEFAULT = false;
+   PATH_UI_DEFAULT: the new design is ON for everyone. A browser can fall back to the
+   classic tiles with ?path=0 (remembered; ?path=1 turns it back on). Set this to
+   false to make the classic design the default again. Goal/stale values are tunable. */
+const PATH_UI_DEFAULT = true;
 const PATH_WEEKLY_GOAL = 3;      // practice days per week (weeks start Monday)
 const PATH_STALE_DAYS = 14;      // older unfinished sessions stop counting as "behind"
 

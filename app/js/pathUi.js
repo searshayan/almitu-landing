@@ -26,6 +26,8 @@ const PATH_ICON_PATHS = {
   bolt:   '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
   flame:  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
   star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  key:    '<path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/>',
   chat:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
   clock:  '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
   up:     '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
@@ -48,6 +50,25 @@ function pathRing(done, total, size) {
     <b>${full ? pathIcon('check', Math.round(sz * 0.4)) : done + '/' + total}</b></span>`;
 }
 
+/* Activity headers (step3.js activityHeader) pass an emoji; with the new design on
+   they show the matching line icon instead. */
+const PATH_EMOJI_ICON = {
+  '\u{1F4CB}': 'warm',     // clipboard   (Overview / Warm-up)
+  '\u{1F0CF}': 'flash',    // joker card  (Flashcards)
+  '\u2753':    'quiz',     // question mark
+  '\u{1F500}': 'reord',    // shuffle
+  '\u270F':    'gap',      // pencil (variation selector stripped below)
+  '\u{1F517}': 'match',    // link
+  '\u{1F4D6}': 'read',     // open book
+  '\u{1F3A7}': 'listen',   // headphones
+  '\u{1F310}': 'expl'      // globe
+};
+function pathHeaderIcon(emoji) {
+  const key = String(emoji || '').replace(/\uFE0F/g, '');
+  const name = PATH_EMOJI_ICON[key];
+  return name ? `<span class="pp-hico">${pathIcon(name, 22)}</span>` : emoji;
+}
+
 /* ─────────────── helpers ─────────────── */
 
 /* The student's own notebooks (the dashboard can hold several students' when
@@ -58,6 +79,22 @@ function pathMyNotebooks() {
   return s.savedNotebooks.filter(n => !sid || n.studentId === sid);
 }
 function pathAttempts() { return (window.studentProgress && studentProgress.attempts) || []; }
+
+/* View-as preview: activities the viewer "finishes" while looking at a student's dashboard are
+   shown (so a tutor can walk the whole flow) but never saved. Cleared whenever the dashboard loads. */
+const pathPreview = [];
+function pathResetPreview() { pathPreview.length = 0; }
+/* Attempts used for PROGRESS (done states, rings, Next): real rows plus any preview rows. */
+function pathProgressAttempts() { return pathPreview.length ? pathAttempts().concat(pathPreview) : pathAttempts(); }
+function pathRecordPreview(activity, correct, total) {
+  const nb = getActiveNotebook();
+  if (!nb || !pathUiEnabled()) return;
+  pathPreview.push({ id: 'preview-' + pathPreview.length, session_id: nb.id, activity, correct, total, xp: 0, seconds: 0, created_at: new Date().toISOString(), preview: true });
+  if (typeof renderNotebooks === 'function') renderNotebooks();
+  pathRenderSteps();
+  const step = PATH_STEP_CATALOG.find(s => s.activity === activity);
+  if (step && pathUiState.cur === step.id) pathShowNextCard(nb, step.id, true);
+}
 
 /* ─────────────── top of the dashboard: weekly goal + Continue ─────────────── */
 
@@ -128,7 +165,7 @@ function pathWeekCardHtml() {
 function pathContinueCardHtml() {
   const nbs = pathMyNotebooks();
   if (!nbs.length) return '';
-  const { target } = pathSessionSummaries(nbs, pathAttempts());
+  const { target } = pathSessionSummaries(nbs, pathProgressAttempts());
   if (!target) {
     return `
       <section class="pp-card pp-caught" aria-label="Practice status">
@@ -167,7 +204,7 @@ function pathRenderHome(host) {
 /* ─────────────── session list cards ─────────────── */
 
 function pathSessionCardsHtml(sessions, selectedId) {
-  const { rows } = pathSessionSummaries(sessions, pathAttempts());
+  const { rows } = pathSessionSummaries(sessions, pathProgressAttempts());
   return rows.map(({ nb, progress: p, status }) => {
     const left = p.stepsLeft;
     const pill = !p.total ? ''
@@ -236,7 +273,7 @@ function pathRenderSteps() {
 
   pathSwapAmieIcon();
   if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
-  const p = pathProgress(nb, pathAttempts());
+  const p = pathProgress(nb, pathProgressAttempts());
   const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
   const xpDisc = `<div class="pp-disc pp-disc-xp${p.xp > 0 ? '' : ' pp-disc-zero'}" role="img" aria-label="${p.xp} XP earned on this session"><b>${p.xp}</b><span>XP</span></div>`;
   const st = pathTimeParts(p.seconds);
@@ -270,8 +307,8 @@ function pathRenderSteps() {
 /* Appended under the activity's own finish screen (never replaces it): what was
    just completed, overall progress, a weekly-goal note when it was just
    reached, and ONE obvious button to the next step. */
-function pathNextCardHtml(nb, justId) {
-  const p = pathProgress(nb, pathAttempts());
+function pathNextCardHtml(nb, justId, preview) {
+  const p = pathProgress(nb, pathProgressAttempts());
   const just = p.steps.find(s => s.id === justId);
   if (!just) return '';
   const wk = pathWeekSummary(pathAttempts());
@@ -298,16 +335,17 @@ function pathNextCardHtml(nb, justId) {
         ${right}
       </div>
       ${goalNote}
+      ${preview ? '<p class="pp-sub" style="margin-top:12px">Preview only: nothing is saved while viewing as a student.</p>' : ''}
       ${action}
     </div>`;
 }
 
 /* Put the Next card at the bottom of the open activity and bring it into view. */
-function pathShowNextCard(nb, justId) {
+function pathShowNextCard(nb, justId, preview) {
   const host = document.getElementById('practiceContent');
   if (!host || host.classList.contains('hidden')) return;
   const old = document.getElementById('pathNextCard'); if (old) old.remove();
-  const html = pathNextCardHtml(nb, justId);
+  const html = pathNextCardHtml(nb, justId, preview);
   if (!html) return;
   host.insertAdjacentHTML('beforeend', html);
   const el = document.getElementById('pathNextCard');
@@ -377,12 +415,14 @@ function pathStartStep(sessionId, stepId) {
   pathEnterActivity();                // phones: full-screen activity
   run();
   pathRefresh();
-  if (stepId === 'warm') pathShowNextCard(nb, 'warm');   // Warm-up is "done" as soon as it's opened
+  if (stepId === 'warm') {                                    // Warm-up is "done" as soon as it's opened
+    if (pathViewingAs()) pathRecordPreview('overview'); else pathShowNextCard(nb, 'warm');
+  }
 }
 
 /* The Continue card: jump into the next unfinished step. */
 function pathContinue() {
-  const { target } = pathSessionSummaries(pathMyNotebooks(), pathAttempts());
+  const { target } = pathSessionSummaries(pathMyNotebooks(), pathProgressAttempts());
   if (target && target.progress.next) pathStartStep(target.nb.id, target.progress.next.id);
 }
 

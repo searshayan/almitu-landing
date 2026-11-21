@@ -1271,9 +1271,17 @@ textarea:focus-visible,
 @media (min-width: 1024px) { .pp-home { grid-template-columns: 1fr 1fr; align-items: stretch; } }
 /* Phones: the home cards belong to the session LIST; hide them inside a session's detail view. */
 @media (max-width: 1023px) { #viewStudent.sv-detail #studentXpBadge.path-home { display: none; } }
-/* Tablets: keep the content at a comfortable reading width instead of stretching it. */
-@media (min-width: 700px) and (max-width: 1023px) {
-  #studentXpBadge.path-home, #step3.pp-on .sv-col-notebooks, #step3.pp-on .sv-col-practice, #step3.pp-on .sv-back-bar { width: 100%; max-width: 640px; margin-left: auto; margin-right: auto; }
+/* Tablets (768-1023px): a true two-column layout, sessions on the left and the session on the right. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pp-home { grid-template-columns: 1fr 1fr; align-items: stretch; }
+  #step3.pp-on > .grid { grid-template-columns: 280px minmax(0, 1fr); column-gap: 20px; align-items: start; }
+  /* Undo the phone drill-in rules (they apply below 1024px) so both columns stay visible. */
+  #step3.pp-on[data-mview] .sv-notebook-list,
+  #step3.pp-on[data-mview] .sv-path-steps,
+  #step3.pp-on[data-mview] .sv-activity-detail { display: block !important; }
+  #step3.pp-on[data-mview] .sv-back-bar { display: none !important; }
+  #viewStudent.sv-detail #studentXpBadge.path-home { display: block; }
+}
 }
 
 .pp-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--pp-r-lg); padding: var(--pp-s4); }
@@ -1380,7 +1388,7 @@ textarea:focus-visible,
 .pp-big { font-size: var(--pp-fs-xl); font-weight: 800; line-height: 1; color: var(--pp-accent-text); }
 .pp-big small { font-size: var(--pp-fs-md); font-weight: 700; margin-left: var(--pp-s1); }
 .pp-big-zero { color: var(--muted); }
-.pp-trend { display: inline-flex; align-items: center; gap: var(--pp-s1); font-size: var(--pp-fs-xs); font-weight: 700; color: var(--muted); padding: var(--pp-s1) var(--pp-s3); border-radius: var(--pp-r-pill); background: var(--pp-neutral); }
+.pp-trend { display: inline-flex; align-items: center; gap: var(--pp-s1); font-size: var(--pp-fs-xs); font-weight: 700; color: var(--ink); padding: var(--pp-s1) var(--pp-s3); border-radius: var(--pp-r-pill); background: var(--pp-neutral); }
 .pp-trend-up { color: var(--pp-green-text); background: var(--pp-tint-green); }
 .pp-bars { display: flex; gap: var(--pp-s2); align-items: flex-end; height: 104px; margin-top: var(--pp-s4); }
 .pp-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: var(--pp-s1); }
@@ -1460,3 +1468,6 @@ textarea:focus-visible,
 /* Desktop: the tutor-notes banner above the list already shows the notes, so the
    Overview's own copy is hidden (phones keep it: the banner isn't on screen in the full-screen Warm-up). */
 @media (min-width: 1024px) { #step3.pp-on .pp-ov-notes { display: none; } }
+
+/* Header icon that replaces the emoji in activity headers (new design). */
+.pp-hico { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--pp-r-md); background: rgba(0, 78, 137, .10); color: var(--secondary); vertical-align: middle; }

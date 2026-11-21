@@ -126,6 +126,8 @@ async function recordActivityCompletion(activity, correct, total, challenge) {
   // Only real students practising a real session are recorded — this keeps
   // an admin's read-only "View as" from polluting the student's stats.
   const ctx = typeof activeContext === 'function' ? activeContext() : null;
+  // Viewing as a student (admin/tutor): show the flow as a preview, but never save anything.
+  if (ctx && ctx.readOnly && sessionId && typeof pathRecordPreview === 'function') pathRecordPreview(activity, correct, total);
   if (!sessionId || !studentId || (ctx && ctx.readOnly)) return null;
 
   try {
