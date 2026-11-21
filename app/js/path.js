@@ -21,15 +21,15 @@
 /* Step catalogue, in path order. `activity` is the value stored in
    activity_attempts.activity (Warm-up and Explore are not recorded there). */
 const PATH_STEP_CATALOG = [
-  { id: 'warm',   activity: 'overview',   label: 'Warm-up',      sub: 'Session overview',            min: 1 },
-  { id: 'flash',  activity: 'flashcards', label: 'Flashcards',   sub: 'Flip and learn',              min: 2 },
-  { id: 'match',  activity: 'matching',   label: 'Matching',     sub: 'Pair them up',                min: 2 },
-  { id: 'quiz',   activity: 'quiz',       label: 'Quiz',         sub: 'Pick the answer',             min: 2 },
-  { id: 'gap',    activity: 'gapfill',    label: 'Gap Fill',     sub: 'Complete the sentence',       min: 3 },
-  { id: 'reord',  activity: 'reorder',    label: 'Reorder',      sub: 'Build the sentence',          min: 3 },
-  { id: 'read',   activity: 'reading',    label: 'Reading',      sub: 'Read and listen',             min: 3 },
-  { id: 'listen', activity: 'listening',  label: 'Listening',    sub: 'Hear and answer',             min: 3 },
-  { id: 'expl',   activity: 'explore',    label: 'Explore More', sub: 'Bonus: videos and article',   min: 0, bonus: true }
+  { id: 'warm',   activity: 'overview',   label: 'Warm-up',      sub: 'Session overview' },
+  { id: 'flash',  activity: 'flashcards', label: 'Flashcards',   sub: 'Flip and learn' },
+  { id: 'match',  activity: 'matching',   label: 'Matching',     sub: 'Pair them up' },
+  { id: 'quiz',   activity: 'quiz',       label: 'Quiz',         sub: 'Pick the answer' },
+  { id: 'gap',    activity: 'gapfill',    label: 'Gap Fill',     sub: 'Complete the sentence' },
+  { id: 'reord',  activity: 'reorder',    label: 'Reorder',      sub: 'Build the sentence' },
+  { id: 'read',   activity: 'reading',    label: 'Reading',      sub: 'Read and listen' },
+  { id: 'listen', activity: 'listening',  label: 'Listening',    sub: 'Hear and answer' },
+  { id: 'expl',   activity: 'explore',    label: 'Explore More', sub: 'Bonus: videos and article',  bonus: true }
 ];
 
 /* Literacy (pre-reader) wording: picture-based. */
@@ -149,7 +149,7 @@ function pathProgress(nb, attempts) {
     pct: core.length ? Math.round(doneCount / core.length * 100) : 0,
     next,
     allDone: core.length > 0 && !next,
-    minutesLeft: core.filter(s => !s.done).reduce((n, s) => n + (s.min || 0), 0),
+    seconds: mine.reduce((n, a) => n + (a.seconds || 0), 0),   // real time practised on this session (finished activities only)
     stepsLeft: left
   };
 }
@@ -223,6 +223,12 @@ function pathWeekSummary(attempts, now, tz, goal) {
     return { key, label, practiced: practiced.has(key), isToday: key === todayKey, isFuture: key > todayKey };
   });
   const count = days.filter(d => d.practiced).length;
+  // Real time practised this week (active seconds saved with each finished activity).
+  const weekKeys = new Set(days.map(d => d.key));
+  const seconds = (attempts || []).reduce((n, a) => {
+    if (!a.created_at || !weekKeys.has(pathDayKey(new Date(a.created_at), tz))) return n;
+    return n + (a.seconds || 0);
+  }, 0);
 
   // Streak: consecutive practice days ending today, or yesterday if the
   // student simply hasn't practised yet today (the streak is still alive).
@@ -230,7 +236,7 @@ function pathWeekSummary(attempts, now, tz, goal) {
   let streak = 0;
   while (practiced.has(cursor)) { streak++; cursor = pathShiftKey(cursor, -1); }
 
-  return { days, count, goal, remaining: Math.max(0, goal - count), reached: count >= goal, streak, todayKey, practicedToday: practiced.has(todayKey) };
+  return { days, count, seconds, goal, remaining: Math.max(0, goal - count), reached: count >= goal, streak, todayKey, practicedToday: practiced.has(todayKey) };
 }
 
 /* ─────────────── feature switch ─────────────── */

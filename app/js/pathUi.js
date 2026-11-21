@@ -64,7 +64,8 @@ const PATH_DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 function pathWeekCardHtml() {
   const wk = pathWeekSummary(pathAttempts());
   const xp = summariseAttempts(pathAttempts()).xp;
-  const sub = wk.reached ? 'Weekly goal reached' : `${wk.count} of ${wk.goal} days · ${wk.remaining} to go`;
+  const days = wk.reached ? 'Weekly goal reached' : `${wk.count} of ${wk.goal} days · ${wk.remaining} to go`;
+  const sub = wk.seconds > 0 ? `${days} · ${formatDuration(wk.seconds)} this week` : days;
   return `
     <section class="pp-card" aria-label="This week's practice">
       <div class="pp-row">
@@ -92,7 +93,7 @@ function pathContinueCardHtml() {
       </section>`;
   }
   const p = target.progress, nx = p.next;
-  const line = `Step ${p.doneCount + 1} of ${p.total} · ${nx.label} · about ${nx.min || 1} min`;
+  const line = `Step ${p.doneCount + 1} of ${p.total} · ${nx.label}`;
   return `
     <section class="pp-card pp-continue" aria-label="Continue practising">
       <p class="pp-k">${p.doneCount ? 'Continue where you left off' : 'Start your practice'}</p>
@@ -157,7 +158,7 @@ function pathStepHtml(nb, st, index) {
     : st.bonus ? '<span class="pp-pill pp-pill-opt">OPTIONAL</span>'
     : st.state === 'next' ? '<span class="pp-pill pp-pill-next">START</span>' : '';
   const label = (st.bonus ? '' : (index + 1) + '. ') + st.label;
-  const sub = st.sub + (st.min ? ` · ${st.min} min` : '');
+  const sub = st.sub;
   return `
     <button type="button" class="pp-step pp-step-${st.state}${st.bonus ? ' pp-step-bonus' : ''}${isCur ? ' pp-step-cur' : ''}"
       ${st.state === 'next' ? 'aria-current="step"' : ''} onclick="pathStartStep('${nb.id}','${st.id}')">
@@ -191,7 +192,8 @@ function pathRenderSteps() {
   if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
   const p = pathProgress(nb, pathAttempts());
   const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
-  const left = p.allDone ? 'All steps done' : `${p.doneCount} of ${p.total} steps done · about ${p.minutesLeft} min left`;
+  const stepsText = p.allDone ? 'All steps done' : `${p.doneCount} of ${p.total} steps done`;
+  const left = p.seconds > 0 ? `${stepsText} · ${formatDuration(p.seconds)} practised` : stepsText;
   const cta = p.next
     ? `<button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathStartStep('${nb.id}','${p.next.id}')">Continue · ${escapeHtml(p.next.label)} ${pathIcon('arrow', 18)}</button>`
     : (p.total ? `<p class="pp-doneline">${pathIcon('trophy', 18)} All practice for this session is done.</p>` : '');
