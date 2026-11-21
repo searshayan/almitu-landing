@@ -27,6 +27,7 @@ const PATH_ICON_PATHS = {
   flame:  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
   star:   '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   chat:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  up:     '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
   arrow:  '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-1.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98 1.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>'
 };
@@ -61,22 +62,55 @@ function pathAttempts() { return (window.studentProgress && studentProgress.atte
 
 const PATH_DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+/* Seconds → big number + unit ("34" "min", "45" "sec", "1h 5m"). Floors to whole
+   minutes, like the tutor export, so a student and tutor see the same figure. */
+function pathTimeParts(sec) {
+  sec = Math.max(0, Math.round(sec || 0));
+  if (sec <= 0) return { n: '0', unit: 'min' };           // nothing yet: "0 min", not "0 sec"
+  if (sec < 60) return { n: String(sec), unit: 'sec' };
+  const m = Math.floor(sec / 60);
+  if (m < 60) return { n: String(m), unit: 'min' };
+  const h = Math.floor(m / 60), r = m % 60;
+  return { n: r ? `${h}h ${r}m` : `${h}h`, unit: '' };
+}
+function pathTimeText(sec) { const t = pathTimeParts(sec); return t.unit ? `${t.n} ${t.unit}` : t.n; }
+
+/* Idea C: a friendly comparison with last week. Positive = encouraging; a dip is
+   shown neutrally (no "less than"), and nothing at all without last-week data. */
+function pathTrendHtml(wk) {
+  if (!(wk.lastWeekSeconds > 0) || !(wk.seconds > 0)) return '';
+  const diff = wk.seconds - wk.lastWeekSeconds;
+  if (diff >= 60) return `<span class="pp-trend pp-trend-up">${pathIcon('up', 14)} ${pathTimeText(diff)} more than last week</span>`;
+  if (diff <= -60) return `<span class="pp-trend">Last week: ${pathTimeText(wk.lastWeekSeconds)}</span>`;
+  return '<span class="pp-trend">About the same as last week</span>';
+}
+
 function pathWeekCardHtml() {
   const wk = pathWeekSummary(pathAttempts());
   const xp = summariseAttempts(pathAttempts()).xp;
   const days = wk.reached ? 'Weekly goal reached' : `${wk.count} of ${wk.goal} days · ${wk.remaining} to go`;
-  const sub = wk.seconds > 0 ? `${days} · ${formatDuration(wk.seconds)} this week` : days;
+  const tp = pathTimeParts(wk.seconds);
+  const max = Math.max(1, ...wk.days.map(d => d.seconds));
+  const bars = wk.days.map((d, i) => {
+    const h = d.practiced ? Math.max(18, Math.round(d.seconds / max * 100)) : 6;
+    const m = d.seconds <= 0 ? '' : (d.seconds < 60 ? '<1' : Math.floor(d.seconds / 60));
+    const what = d.practiced ? (d.seconds > 0 ? `${pathTimeText(d.seconds)} practised` : 'practised') : 'not practised';
+    return `
+      <div class="pp-col${d.practiced ? ' pp-col-on' : ''}${d.isToday ? ' pp-col-today' : ''}" role="listitem" aria-label="${PATH_DAY_NAMES[i]}${d.isToday ? ' (today)' : ''}: ${what}">
+        <span class="pp-col-m" aria-hidden="true">${m}</span><span class="pp-col-b" style="height:${h}%" aria-hidden="true"></span><span class="pp-col-l" aria-hidden="true">${d.label}</span>
+      </div>`;
+  }).join('');
   return `
     <section class="pp-card" aria-label="This week's practice">
       <div class="pp-row">
-        <div><h2 class="pp-h">This week's practice</h2><p class="pp-sub">${sub}</p></div>
+        <div><h2 class="pp-h">This week's practice</h2><p class="pp-sub">${days}</p></div>
         <span class="pp-xp">${pathIcon('bolt', 13, true)} ${xp} XP</span>
       </div>
-      <div class="pp-days" role="list">${wk.days.map((d, i) => `
-        <div class="pp-day${d.practiced ? ' pp-day-on' : ''}${d.isToday ? ' pp-day-today' : ''}" role="listitem"
-          aria-label="${PATH_DAY_NAMES[i]}${d.isToday ? ' (today)' : ''}: ${d.practiced ? 'practised' : 'not practised'}"><span class="pp-day-l" aria-hidden="true">${d.label}</span>
-          <span class="pp-day-c" aria-hidden="true">${pathIcon('check', 14)}</span></div>`).join('')}
+      <div class="pp-total">
+        <span class="pp-big${wk.seconds > 0 ? '' : ' pp-big-zero'}" aria-label="${pathTimeText(wk.seconds)} practised this week">${tp.n}${tp.unit ? `<small>${tp.unit}</small>` : ''}</span>
+        ${pathTrendHtml(wk)}
       </div>
+      <div class="pp-bars" role="list">${bars}</div>
       ${wk.streak >= 1 ? `<p class="pp-streak">${pathIcon('flame', 14)} Practised ${wk.streak} ${wk.streak === 1 ? 'day' : 'days'} in a row</p>` : ''}
     </section>`;
 }
@@ -192,8 +226,8 @@ function pathRenderSteps() {
   if (pathUiState.sessionId !== nb.id) { pathUiState.sessionId = nb.id; pathUiState.cur = null; }
   const p = pathProgress(nb, pathAttempts());
   const meta = [nb.plan.meta.level, getSessionType(nb.sessionType).label, nb.duration ? nb.duration + ' min class' : ''].filter(Boolean).join(' · ');
-  const stepsText = p.allDone ? 'All activities done' : `${p.doneCount} of ${p.total} activities done`;
-  const left = p.seconds > 0 ? `${stepsText} · ${formatDuration(p.seconds)} practised` : stepsText;
+  const st = pathTimeParts(p.seconds);
+  const disc = `<div class="pp-disc${p.seconds > 0 ? '' : ' pp-disc-zero'}${st.unit ? '' : ' pp-disc-long'}" role="img" aria-label="${pathTimeText(p.seconds)} practised on this session"><b>${st.n}</b>${st.unit ? `<span>${st.unit}</span>` : ''}</div>`;
   const cta = p.next
     ? `<button type="button" class="pp-cbtn pp-cbtn-solid" onclick="pathStartStep('${nb.id}','${p.next.id}')">Continue · ${escapeHtml(p.next.label)} ${pathIcon('arrow', 18)}</button>`
     : (p.total ? `<p class="pp-doneline">${pathIcon('trophy', 18)} All practice for this session is done.</p>` : '');
@@ -203,12 +237,11 @@ function pathRenderSteps() {
   host.classList.remove('hidden');
   host.innerHTML = `
     <section class="pp-card pp-shead" aria-label="Session progress">
-      <div class="pp-row" style="justify-content:flex-start;gap:14px">
-        ${pathRing(p.doneCount, p.total, 52)}
-        <div style="min-width:0;flex:1"><h2 class="pp-h" style="font-size:16px">${bidiText(nb.plan.meta.title)}</h2><p class="pp-sub">${escapeHtml(meta)}</p></div>
+      <div class="pp-shead-title"><h2 class="pp-h" style="font-size:16px">${bidiText(nb.plan.meta.title)}</h2><p class="pp-sub">${escapeHtml(meta)}</p></div>
+      <div class="pp-circles">
+        <div class="pp-c">${pathRing(p.doneCount, p.total, 76)}<span class="pp-c-l">Activities done</span></div>
+        <div class="pp-c">${disc}<span class="pp-c-l">Time practised</span></div>
       </div>
-      <div class="pp-bar" role="progressbar" aria-valuenow="${p.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p.pct}%"></i></div>
-      <p class="pp-sub" style="margin-top:6px">${left}</p>
       ${cta}
     </section>
     ${notes}

@@ -1240,12 +1240,6 @@ textarea:focus-visible,
 .pp-h { font-size: 14px; font-weight: 700; color: var(--navy); margin: 0; }
 .pp-sub { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
 .pp-xp { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: #B45309; background: rgba(255, 210, 63, .18); padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
-.pp-days { display: flex; gap: 6px; margin-top: 12px; }
-@media (min-width: 1024px) { .pp-days { gap: 10px; } }
-.pp-day { flex: 1; text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); }
-.pp-day > .pp-day-c { display: grid; place-items: center; width: 100%; max-width: 40px; margin-left: auto; margin-right: auto; aspect-ratio: 1; margin-top: 4px; border-radius: 50%; background: rgba(127, 127, 127, .14); color: transparent; }
-.pp-day-on > .pp-day-c { background: var(--success); color: #fff; }
-.pp-day-today > .pp-day-c { box-shadow: 0 0 0 2px var(--primary); }
 .pp-streak { display: flex; align-items: center; gap: 6px; margin: 12px 0 0; font-size: 12px; color: var(--muted); }
 .pp-streak .pp-ic { color: var(--primary); }
 
@@ -1384,11 +1378,10 @@ textarea:focus-visible,
     align-items: center;
     margin-bottom: 12px;
   }
-  .pp-shead > .pp-row { grid-column: 1; }
-  .pp-shead > .pp-bar { grid-column: 1; }
-  .pp-shead > .pp-sub { grid-column: 1; }
+  .pp-shead > .pp-shead-title,
+  .pp-shead > .pp-circles { grid-column: 1; }
   .pp-shead > .pp-cbtn-solid,
-  .pp-shead > .pp-doneline { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin-top: 0; width: auto; padding: 13px 22px; white-space: nowrap; }
+  .pp-shead > .pp-doneline { grid-column: 2; grid-row: 1 / span 2; align-self: center; margin-top: 0; width: auto; padding: 13px 22px; white-space: nowrap; }
 }
 
 /* Practice path, desktop: the tutor-notes banner above the steps already shows the notes,
@@ -1397,3 +1390,31 @@ textarea:focus-visible,
 
 /* Practice path: the "Smart Notebook & Practice Ground" page title is hidden; the weekly goal / session header lead the page. */
 #step3.pp-on .sv-header { display: none; }
+
+
+/* ── Practice path: time practised (weekly card + session header) ── */
+.pp-total { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; margin-top: 12px; }
+.pp-big { font-size: 32px; font-weight: 800; line-height: 1; color: var(--primary); }
+.pp-big small { font-size: 14px; font-weight: 700; margin-left: 4px; }
+.pp-big-zero { color: var(--muted); }
+.pp-trend { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--muted); padding: 4px 10px; border-radius: 999px; background: rgba(127, 127, 127, .12); }
+.pp-trend-up { color: #059669; background: rgba(6, 214, 160, .16); }
+.pp-bars { display: flex; gap: 8px; align-items: flex-end; height: 96px; margin-top: 14px; }
+.pp-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px; }
+.pp-col-m { font-size: 10px; font-weight: 700; color: var(--muted); min-height: 12px; }
+.pp-col-b { display: block; width: 100%; max-width: 34px; min-height: 6px; border-radius: 8px 8px 4px 4px; background: rgba(127, 127, 127, .20); }
+.pp-col-on .pp-col-b { background: linear-gradient(180deg, #FF8C66, #FF6B35); }
+.pp-col-on .pp-col-m { color: var(--primary); }
+.pp-col-l { font-size: 10px; font-weight: 700; color: var(--muted); }
+.pp-col-today .pp-col-b { box-shadow: 0 0 0 2px var(--primary); }
+.pp-col-today .pp-col-l { color: var(--primary); }
+
+.pp-circles { display: flex; gap: 20px; align-items: flex-start; margin-top: 14px; }
+.pp-c { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 96px; text-align: center; }
+.pp-c-l { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; line-height: 1.2; color: var(--muted); }
+.pp-c .pp-ring b { font-size: 18px; }
+.pp-disc { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, #FF8C66, #FF6B35); color: #fff; box-shadow: 0 6px 16px rgba(255, 107, 53, .35); }
+.pp-disc b { font-size: 22px; line-height: 1; }
+.pp-disc span { margin-top: 2px; font-size: 11px; font-weight: 700; opacity: .95; }
+.pp-disc-long b { font-size: 16px; }
+.pp-disc-zero { background: transparent; color: var(--muted); border: 3px dashed rgba(127, 127, 127, .45); box-shadow: none; }

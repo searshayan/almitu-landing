@@ -222,13 +222,18 @@ function pathWeekSummary(attempts, now, tz, goal) {
     const key = pathShiftKey(monday, i);
     return { key, label, practiced: practiced.has(key), isToday: key === todayKey, isFuture: key > todayKey };
   });
+  // Real time practised (active seconds saved with each finished activity), per day.
+  const secByDay = {};
+  (attempts || []).forEach(a => {
+    if (!a.created_at) return;
+    const k = pathDayKey(new Date(a.created_at), tz);
+    secByDay[k] = (secByDay[k] || 0) + (a.seconds || 0);
+  });
+  days.forEach(d => { d.seconds = secByDay[d.key] || 0; });
   const count = days.filter(d => d.practiced).length;
-  // Real time practised this week (active seconds saved with each finished activity).
-  const weekKeys = new Set(days.map(d => d.key));
-  const seconds = (attempts || []).reduce((n, a) => {
-    if (!a.created_at || !weekKeys.has(pathDayKey(new Date(a.created_at), tz))) return n;
-    return n + (a.seconds || 0);
-  }, 0);
+  const seconds = days.reduce((n, d) => n + d.seconds, 0);
+  let lastWeekSeconds = 0;
+  for (let i = 1; i <= 7; i++) lastWeekSeconds += secByDay[pathShiftKey(monday, -i)] || 0;
 
   // Streak: consecutive practice days ending today, or yesterday if the
   // student simply hasn't practised yet today (the streak is still alive).
@@ -236,7 +241,7 @@ function pathWeekSummary(attempts, now, tz, goal) {
   let streak = 0;
   while (practiced.has(cursor)) { streak++; cursor = pathShiftKey(cursor, -1); }
 
-  return { days, count, seconds, goal, remaining: Math.max(0, goal - count), reached: count >= goal, streak, todayKey, practicedToday: practiced.has(todayKey) };
+  return { days, count, seconds, lastWeekSeconds, goal, remaining: Math.max(0, goal - count), reached: count >= goal, streak, todayKey, practicedToday: practiced.has(todayKey) };
 }
 
 /* ─────────────── feature switch ─────────────── */
