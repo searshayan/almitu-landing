@@ -214,6 +214,8 @@ function pathStepHtml(nb, st, index) {
 
 /* Amie's phone tile ships with an owl emoji; with the new design on, show a line icon instead. */
 function pathSwapAmieIcon() {
+  const title = document.getElementById('notebookListTitle');
+  if (title) title.textContent = 'Sessions';        // the classic card title ("My Notebook Archives") clashes with the new design
   const icon = document.querySelector('#amieTile > div');
   if (icon && !icon.dataset.pp) {
     icon.dataset.pp = '1';

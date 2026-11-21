@@ -175,7 +175,7 @@ function renderNotebooks() {
         ${order.map(st => `<option value="${st.id}" ${st.id === activeStudent.id ? 'selected' : ''}>${escapeHtml(st.name)} · ${st.sessions.length} session${st.sessions.length > 1 ? 's' : ''}</option>`).join('')}
       </select></div>`;
   }
-  html += `<p class="text-[10px] uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">${escapeHtml(activeStudent.name)}'s sessions</p>`;
+  html += `<p class="text-xs uppercase tracking-wide font-semibold mb-2" style="color:var(--muted);">${escapeHtml(activeStudent.name)}'s sessions</p>`;
 
   if (typeof pathUiEnabled === 'function' && pathUiEnabled()) {
     html += pathSessionCardsHtml(activeStudent.sessions, s.selectedNotebookId);   // progress-ring cards (js/pathUi.js)
@@ -359,24 +359,24 @@ function actOverview(nb) {
   if (nb.tutorNotes && nb.tutorNotes.trim()) {
     html += `
     <div class="pp-ov-notes rounded-2xl p-5 mb-4" style="background:rgba(255,210,63,.10); border:1px solid rgba(255,210,63,.35);">
-      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:#B45309;">📝 Notes &amp; Assignments from your tutor</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:#B45309;">📝 Notes &amp; Assignments from your tutor</p>
       <p class="text-sm whitespace-pre-wrap leading-relaxed" style="color:var(--ink);">${escapeHtml(nb.tutorNotes)}</p>
     </div>`;
   }
 
   html += `
     <div class="rounded-2xl p-5 mb-4" style="background:rgba(255,107,53,.06); border:1px solid rgba(255,107,53,.15);">
-      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--primary);">🎯 Objective</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--pp-accent-text, var(--primary));">🎯 Objective</p>
       <p class="text-sm leading-relaxed" style="color:var(--ink);">${escapeHtml(ov.objective) || '<span style="color:var(--muted);">No objective recorded for this session.</span>'}</p>
     </div>`;
 
   html += `
     <div class="rounded-2xl p-5 mb-4" style="background:#F8F9FD; border:1px solid var(--line);">
-      <p class="text-[10px] uppercase tracking-wider font-semibold mb-2" style="color:var(--navy);">🔑 Key Takeaways</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-2" style="color:var(--navy);">🔑 Key Takeaways</p>
       ${ov.takeaways.length
         ? `<div class="space-y-2">${ov.takeaways.map(t => `
             <div class="flex items-start gap-2">
-              <span style="color:var(--primary);">▸</span>
+              <span style="color:var(--pp-accent-text, var(--primary));">▸</span>
               <p class="text-sm" style="color:var(--ink);"><span class="font-semibold" style="color:var(--navy);">${escapeHtml(t.term)}</span>${t.meaning ? ` — ${escapeHtml(t.meaning)}` : ''}</p>
             </div>`).join('')}</div>`
         : '<p class="text-sm" style="color:var(--muted);">Key items appear here once the practice bank is generated.</p>'}
@@ -384,7 +384,7 @@ function actOverview(nb) {
 
   html += `
     <div class="rounded-2xl p-5" style="background:rgba(0,78,137,.05); border:1px solid rgba(0,78,137,.12);">
-      <p class="text-[10px] uppercase tracking-wider font-semibold mb-1.5" style="color:var(--secondary);">✅ Can-do — what ${escapeHtml(nb.studentName)} can do now</p>
+      <p class="text-xs uppercase tracking-wider font-semibold mb-1.5" style="color:var(--secondary);">✅ Can-do — what ${escapeHtml(nb.studentName)} can do now</p>
       <p class="text-sm italic leading-relaxed" style="color:var(--ink);">${ov.canDo ? '"' + escapeHtml(ov.canDo) + '"' : '<span style="color:var(--muted); font-style:normal;">After practising this session, ' + escapeHtml(nb.studentName) + ' can use the target language from the takeaways above in context.</span>'}</p>
     </div>
     <p class="text-xs text-center mt-4" style="color:var(--muted);">${typeof pathUiEnabled === 'function' && pathUiEnabled() ? 'Use the Activities list to keep practising this session.' : 'Pick an activity above to start practising this session.'}</p>`;
