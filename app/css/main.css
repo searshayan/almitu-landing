@@ -1243,9 +1243,9 @@ textarea:focus-visible,
 .pp-days { display: flex; gap: 6px; margin-top: 12px; }
 @media (min-width: 1024px) { .pp-days { gap: 10px; } }
 .pp-day { flex: 1; text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); }
-.pp-day > span { display: grid; place-items: center; width: 100%; max-width: 40px; margin-left: auto; margin-right: auto; aspect-ratio: 1; margin-top: 4px; border-radius: 50%; background: rgba(127, 127, 127, .14); color: transparent; }
-.pp-day-on > span { background: var(--success); color: #fff; }
-.pp-day-today > span { box-shadow: 0 0 0 2px var(--primary); }
+.pp-day > .pp-day-c { display: grid; place-items: center; width: 100%; max-width: 40px; margin-left: auto; margin-right: auto; aspect-ratio: 1; margin-top: 4px; border-radius: 50%; background: rgba(127, 127, 127, .14); color: transparent; }
+.pp-day-on > .pp-day-c { background: var(--success); color: #fff; }
+.pp-day-today > .pp-day-c { box-shadow: 0 0 0 2px var(--primary); }
 .pp-streak { display: flex; align-items: center; gap: 6px; margin: 12px 0 0; font-size: 12px; color: var(--muted); }
 .pp-streak .pp-ic { color: var(--primary); }
 
@@ -1336,7 +1336,7 @@ textarea:focus-visible,
 .pp-goalnote b { display: block; font-size: 13px; color: var(--navy); }
 .pp-goalnote span { font-size: 12px; color: var(--muted); }
 .pp-next .pp-cbtn-solid { margin-top: 14px; width: 100%; background: var(--primary); color: #fff; box-shadow: 0 4px 0 var(--primary-dark); }
-.pp-link { display: block; width: 100%; margin-top: 10px; padding: 8px; text-align: center; background: none; border: 0; font-size: 13px; font-weight: 700; color: var(--secondary); cursor: pointer; }
+.pp-link { display: block; width: 100%; min-height: 44px; margin-top: 6px; padding: 12px 8px; text-align: center; background: none; border: 0; font-size: 13px; font-weight: 700; color: var(--secondary); cursor: pointer; }
 
 /* ═══════════════════════════════════════════════════════
    Practice Path — wide desktop (≥1280px): three columns
