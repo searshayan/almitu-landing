@@ -1394,3 +1394,6 @@ textarea:focus-visible,
 /* Practice path, desktop: the tutor-notes banner above the steps already shows the notes,
    so the Overview's own copy is hidden (phones keep it: the banner isn't on screen in the full-screen Warm-up). */
 @media (min-width: 1024px) { #step3.pp-on .pp-ov-notes { display: none; } }
+
+/* Practice path: the "Smart Notebook & Practice Ground" page title is hidden; the weekly goal / session header lead the page. */
+#step3.pp-on .sv-header { display: none; }
