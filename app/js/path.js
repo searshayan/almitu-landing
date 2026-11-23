@@ -191,13 +191,17 @@ function pathSessionSummaries(notebooks, attempts, now) {
 /* ─────────────── weekly practice goal + streak ─────────────── */
 
 function _pathTz() {
-  if (typeof schedState !== 'undefined' && schedState && schedState.viewerTz) return schedState.viewerTz;
+  // The schedule's timezone (admin-controlled) is only trustworthy once the schedule has
+  // loaded; before that schedState.viewerTz is just its "UTC" placeholder.
+  if (typeof schedState !== 'undefined' && schedState && schedState.loaded && schedState.viewerTz) return schedState.viewerTz;
   try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) { return 'UTC'; }
 }
 
 /* 'YYYY-MM-DD' of an instant, in a timezone (DST-correct, Intl only). */
+const _pathDayFmt = {};   // one formatter per timezone (building one per call was the slow part)
 function pathDayKey(date, tz) {
-  const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(date);
+  const fmt = _pathDayFmt[tz] || (_pathDayFmt[tz] = new Intl.DateTimeFormat('en-US', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }));
+  const parts = fmt.formatToParts(date);
   const g = t => parts.find(p => p.type === t).value;
   return g('year') + '-' + g('month') + '-' + g('day');
 }

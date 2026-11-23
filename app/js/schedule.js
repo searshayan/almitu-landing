@@ -161,6 +161,8 @@ async function schedLoad() {
   schedComputeOccurrences();
   await schedLoadFlags();
   schedState.loaded = true;
+  // Weekly numbers (student home, tutor board) were drawn with the browser's timezone; redraw with the schedule's.
+  try { window.dispatchEvent(new CustomEvent('almitu:schedule-ready')); } catch (e) { /* old browser: next refresh picks it up */ }
   schedRenderAll();
 }
 

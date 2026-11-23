@@ -454,3 +454,8 @@ function pathAfterAttempt() {
   const step = PATH_STEP_CATALOG.find(s => s.activity === last.activity);
   if (step && pathUiState.cur === step.id) pathShowNextCard(nb, step.id);
 }
+
+/* Once the schedule (and so the real timezone) has loaded, redraw the weekly home cards. */
+window.addEventListener('almitu:schedule-ready', () => {
+  try { if (pathUiEnabled() && document.getElementById('studentXpBadge') && window.studentProgress) renderStudentXpBadge(); } catch (e) { /* not on the student dashboard */ }
+});

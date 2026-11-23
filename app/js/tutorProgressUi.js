@@ -91,8 +91,8 @@ function _tpCanNudge(r) {
 
 function _tpActions(r) {
   const nudge = _tpCanNudge(r)
-    ? `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorNudge('${r.studentId}')">${pathIcon('send', 16)} Nudge</button>` : '';
-  const view = `<button type="button" class="tp-btn" onclick="tutorOpenStudent('${r.studentId}')" aria-label="View progress for ${escapeHtml(r.name)}">View</button>`;
+    ? `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorNudge('${escapeHtml(r.studentId)}')">${pathIcon('send', 16)} Nudge</button>` : '';
+  const view = `<button type="button" class="tp-btn" onclick="tutorOpenStudent('${escapeHtml(r.studentId)}')" aria-label="View progress for ${escapeHtml(r.name)}">View</button>`;
   return nudge + view;
 }
 
@@ -252,7 +252,7 @@ function _tpHistoryRow(h) {
       <td>${p.accuracy != null ? `<b class="tp-acc${p.accuracy < tutorCfg().supportAccuracy ? ' tp-lo' : p.accuracy >= tutorCfg().readyAccuracy ? ' tp-hi' : ''}">${Math.round(p.accuracy * 100)}%</b>` : '<span class="tp-muted">no data</span>'}</td>
       <td>${pathTimeText(p.seconds)}</td>
       <td>${p.xp} XP</td>
-      <td class="tp-act"><button type="button" class="tp-btn" onclick="tutorViewSession('${row.id}')" aria-label="Notes and attempts for ${escapeHtml(row.title || 'session')}">Details</button></td>
+      <td class="tp-act"><button type="button" class="tp-btn" onclick="tutorViewSession('${escapeHtml(row.id)}')" aria-label="Notes and attempts for ${escapeHtml(row.title || 'session')}">Details</button></td>
     </tr>`;
 }
 
@@ -267,7 +267,7 @@ function renderTutorStudentPage() {
   const latest = sum.latest, wk = sum.week;
   const meta = [sum.level, sum.language, sum.country].filter(Boolean).join(' · ');
   const nudge = _tpCanNudge(sum)
-    ? `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorNudge('${sum.studentId}')">${pathIcon('send', 16)} Nudge</button>` : '';
+    ? `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorNudge('${escapeHtml(sum.studentId)}')">${pathIcon('send', 16)} Nudge</button>` : '';
 
   const head = `
     <div class="tp-pagehead">
@@ -352,9 +352,9 @@ function _tpHintActions(h, student) {
   if (activeContext().readOnly) return '';   // View-as is read-only: evidence only
   const sid = student.id, a = h.action || {};
   if (a.type === 'teachAgain') return `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorTeachAgain('${escapeHtml(a.sessionId)}')">Teach this session again</button>`;
-  if (a.type === 'openCurriculum') return `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorTeachNext('${escapeHtml(a.curriculumId)}','${sid}')">Teach this next</button>`;
-  if (a.type === 'planSkill') return `<button type="button" class="tp-btn" onclick="tutorPlanSkill('${escapeHtml(a.skill)}','${sid}')">Plan a ${escapeHtml(TP_SKILL_LABELS[a.skill] || a.skill)} session</button>`;
-  if (a.type === 'nudge' && _tpCanNudge({ status: 'nudge', studentId: sid })) return `<button type="button" class="tp-btn" onclick="tutorNudge('${sid}')">${pathIcon('send', 16)} Send a nudge</button>`;
+  if (a.type === 'openCurriculum') return `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorTeachNext('${escapeHtml(a.curriculumId)}','${escapeHtml(sid)}')">Teach this next</button>`;
+  if (a.type === 'planSkill') return `<button type="button" class="tp-btn" onclick="tutorPlanSkill('${escapeHtml(a.skill)}','${escapeHtml(sid)}')">Plan a ${escapeHtml(TP_SKILL_LABELS[a.skill] || a.skill)} session</button>`;
+  if (a.type === 'nudge' && _tpCanNudge({ status: 'nudge', studentId: sid })) return `<button type="button" class="tp-btn" onclick="tutorNudge('${escapeHtml(sid)}')">${pathIcon('send', 16)} Send a nudge</button>`;
   return '';
 }
 
@@ -469,3 +469,12 @@ function tutorPlanSkill(skill, studentId) {
 
 /* Home shortcut: "Prepare" next to the next-class line opens that student's page. */
 function tutorPrepareFor(studentId) { tutorOpenStudent(studentId); }
+
+/* ...and the tutor board / student page, if one is open. */
+window.addEventListener('almitu:schedule-ready', () => {
+  try {
+    if (!tutorUiEnabled() || !tutorBoardState.loaded) return;
+    if (tutorState.view === 'students') renderTutorBoard();
+    else if (tutorState.view === 'student') renderTutorStudentPage();
+  } catch (e) { /* tutor dashboard not shown */ }
+});

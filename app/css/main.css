@@ -1592,3 +1592,5 @@ div.tp-act .tp-btn { flex: 1; }
 .tp-how summary { min-height: var(--pp-tap); display: flex; align-items: center; cursor: pointer; font-weight: 700; color: var(--secondary); }
 .tp-how p { margin: 0 0 var(--pp-s2); line-height: 1.7; }
 .tp-how b { color: var(--navy); }
+
+.tp-how summary:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--pp-r-sm); }
