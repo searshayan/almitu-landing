@@ -1568,3 +1568,27 @@ div.tp-act .tp-btn { flex: 1; }
 .tp-table.tp-always { min-width: 640px; }
 @media (max-width: 979px) { .tp-table.tp-always { display: table; } }
 @media (max-width: 859px) { .tp-grid { grid-template-columns: 1fr; } }
+
+/* ── Tutor brief: "Before your next class" ── */
+.tp-brief { margin-bottom: var(--pp-s4); }
+.tp-brief-head { display: flex; align-items: center; justify-content: space-between; gap: var(--pp-s3); flex-wrap: wrap; }
+.tp-next { display: inline-flex; align-items: center; gap: var(--pp-s2); padding: var(--pp-s1) var(--pp-s3); border-radius: var(--pp-r-pill); background: var(--pp-tint-accent); color: var(--pp-accent-text); font-size: var(--pp-fs-xs); }
+.tp-next b { font-weight: 800; }
+.tp-brief-line { margin-top: var(--pp-s2); font-size: var(--pp-fs-sm); color: var(--ink); line-height: 1.5; }
+.tp-hints { list-style: none; margin: var(--pp-s3) 0 0; padding: 0; display: grid; gap: var(--pp-s2); }
+.tp-hint { display: flex; gap: var(--pp-s3); padding: var(--pp-s3); border: 1px solid var(--line); border-radius: var(--pp-r-md); background: var(--card); }
+.tp-hi { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--pp-r-md); }
+.tp-hint-revisit .tp-hi { background: var(--pp-tint-accent); color: var(--pp-accent-text); }
+.tp-hint-curriculum .tp-hi { background: rgba(0, 78, 137, .10); color: var(--secondary); }
+.tp-hint-balance .tp-hi { background: var(--pp-tint-amber); color: var(--pp-amber-text); }
+.tp-hint-checkin .tp-hi { background: var(--pp-tint-green); color: var(--pp-green-text); }
+.tp-hb { min-width: 0; }
+.tp-hk { margin: 0; font-size: var(--pp-fs-xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tp-ht { margin: 2px 0; font-size: var(--pp-fs-md); font-weight: 700; color: var(--navy); }
+.tp-he { margin: 0; font-size: var(--pp-fs-sm); color: var(--muted); line-height: 1.5; }
+.tp-hacts { display: flex; gap: var(--pp-s2); flex-wrap: wrap; margin-top: var(--pp-s3); }
+.tp-allgood { margin: var(--pp-s3) 0 0; padding: var(--pp-s3); border-radius: var(--pp-r-md); background: var(--pp-tint-green); color: var(--pp-green-text); font-size: var(--pp-fs-sm); font-weight: 700; }
+.tp-how { margin-top: var(--pp-s3); font-size: var(--pp-fs-sm); color: var(--muted); }
+.tp-how summary { min-height: var(--pp-tap); display: flex; align-items: center; cursor: pointer; font-weight: 700; color: var(--secondary); }
+.tp-how p { margin: 0 0 var(--pp-s2); line-height: 1.7; }
+.tp-how b { color: var(--navy); }

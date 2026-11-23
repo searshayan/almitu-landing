@@ -164,6 +164,9 @@ function tutorStudentSummary(student, sessions, attempts, opts) {
   const lastKey = lastAt != null ? _tpDayKey(lastAt, tz) : null;
   const classKey = latestRow ? _tpDayKey(latestRow.created_at, tz) : null;
 
+  // Practice since the latest class (any session): how many days, how much time.
+  const sinceClass = classKey ? mine.filter(a => a.created_at && _tpDayKey(a.created_at, tz) >= classKey) : [];
+
   const ctx = {
     latest,
     daysSinceClass: classKey ? _tpDayDiff(classKey, todayKey) : null,
@@ -179,6 +182,8 @@ function tutorStudentSummary(student, sessions, attempts, opts) {
     week, lastPracticedAt: lastAt,
     daysSincePractice: ctx.daysSincePractice, daysSinceClass: ctx.daysSinceClass,
     practisedSinceClass: ctx.practisedSinceClass,
+    daysPractisedSinceClass: new Set(sinceClass.map(a => _tpDayKey(a.created_at, tz))).size,
+    secondsSinceClass: sinceClass.reduce((n, a) => n + (a.seconds || 0), 0),
     status: status.code, statusLabel: TP_STATUS_LABEL[status.code], statusReason: status.reason,
     attention: TP_STATUS_RANK[status.code]
   };
@@ -291,6 +296,42 @@ function tutorHints(summary, sessions, opts) {
     }
   }
   return hints;
+}
+
+/* ─────────────── next-class brief ─────────────── */
+
+/* One plain sentence for the top of the brief, plus the weakest tracked activity
+   (only when it is below the "ready" accuracy, otherwise there is nothing to flag). */
+function tutorBriefSummary(s, opts) {
+  const cfg = tutorCfg(opts);
+  if (!s.latest) return { line: 'No session has been delivered yet.', weakest: null };
+  if (!s.practisedSinceClass) {
+    return { line: s.daysSinceClass <= 0 ? 'The last class was today and there is no practice yet.' : `No practice since the last class ${_tpAgo(s.daysSinceClass)}.`, weakest: null };
+  }
+  const scored = s.latest.steps.filter(x => x.bestRatio != null).sort((a, b) => a.bestRatio - b.bestRatio);
+  const weakest = scored.length && scored[0].bestRatio < cfg.readyAccuracy ? { label: scored[0].label, ratio: scored[0].bestRatio } : null;
+  const time = typeof pathTimeText === 'function' ? pathTimeText(s.secondsSinceClass) : Math.round(s.secondsSinceClass / 60) + ' min';
+  const acc = s.latest.accuracy != null ? `, accuracy ${_tpPct(s.latest.accuracy)}` : '';
+  return {
+    line: `Since the last class: ${s.latest.doneCount} of ${s.latest.total} activities, ${time} over ${_tpPlural(s.daysPractisedSinceClass, 'day')}${acc}.` +
+      (weakest ? ` Weakest: ${weakest.label} (${_tpPct(weakest.ratio)}).` : ''),
+    weakest
+  };
+}
+
+/* The curriculum level of the most recent delivered curriculum session (so we know which
+   level file to read to find "next"), and the file slug for a level. */
+function tutorCurriculumLevelOf(delivered) {
+  for (const row of delivered || []) {
+    if (row.plan && row.plan.meta && row.plan.meta.curriculumId) return row.plan.meta.level || null;
+  }
+  return null;
+}
+function tutorCurriculumSlug(level) {
+  if (!level) return null;
+  if (level === 'Literacy' || (typeof isLiteracyLevel === 'function' && isLiteracyLevel(level))) return 'literacy';
+  if (typeof isSpeakingLevel === 'function' && isSpeakingLevel(level)) return speakingSlug(level);
+  return String(level).toLowerCase();
 }
 
 /* ─────────────── nudge draft ─────────────── */

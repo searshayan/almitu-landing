@@ -339,14 +339,20 @@ function schedNextLineHtml(mb) {
     ? (best.slot.student && best.slot.student.full_name)
     : (best.slot.tutor && best.slot.tutor.full_name);
   const when = `${schedDayLabel(best.instant)} · ${schedFmtTime(best.instant, schedState.viewerTz)}`;
-  return `
-    <button type="button" onclick="schedOpen()" class="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl ${mb} text-left"
+  // New tutor views (?tutor=1): a "Prepare" button opens that student's brief.
+  const prepId = (schedState.role === 'tutor' && typeof tutorUiEnabled === 'function' && tutorUiEnabled() && best.slot.student_id
+    && (tutorState.students || []).some(s => s.id === best.slot.student_id)) ? best.slot.student_id : null;
+  const line = `
+    <button type="button" onclick="schedOpen()" class="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl ${prepId ? '' : mb} text-left"
       style="background:var(--card);border:1px solid var(--line);">
       <span class="text-xs min-w-0 truncate" style="color:var(--muted);">
         🗓 Next class: <strong style="color:var(--navy);">${escapeHtml(when)}</strong>${who ? ` with ${bidiText(who)}` : ''}${cancelled ? ` <span style="color:#B91C1C;">· ${cancelled} cancelled this week</span>` : ''}
       </span>
       <span class="text-[11px] font-semibold flex-shrink-0" style="color:var(--secondary);">View schedule ›</span>
     </button>`;
+  if (!prepId) return line;
+  return `<div class="flex items-center gap-2 ${mb}"><div class="flex-1 min-w-0">${line}</div>
+    <button type="button" class="tp-btn tp-btn-pri" onclick="tutorPrepareFor('${prepId}')">Prepare</button></div>`;
 }
 
 /* Fill whichever "next class" hosts exist: the student card, and the

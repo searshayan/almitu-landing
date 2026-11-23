@@ -319,5 +319,153 @@ function renderTutorStudentPage() {
       </table></div>
     </section>` : '';
 
-  sec.innerHTML = head + `<div class="tp-grid">${week}${latestCard}</div>${history}`;
+  sec.innerHTML = head + `<div id="tpBrief">${_tpBriefHtml(sum, student, tutorBoardState.curHintFor === student.id ? tutorBoardState.curIndex : null)}</div>` + `<div class="tp-grid">${week}${latestCard}</div>${history}`;
+  tutorLoadCurriculumHint(student);
 }
+
+/* ═══════════════════════════════════════════════════════
+   Before your next class: the brief and its hints
+   ═══════════════════════════════════════════════════════ */
+
+const TP_HINT_ICON = { checkin: 'chat', revisit: 'refresh', curriculum: 'arrow', balance: 'target' };
+const TP_HINT_LABEL = { checkin: 'Check in first', revisit: 'Revisit', curriculum: 'Next in the curriculum', balance: 'Balance' };
+
+/* The student's next scheduled class (tutor's timezone), or null. Mirrors schedNextClass(),
+   but for one student. */
+function tutorNextClassFor(studentId) {
+  if (typeof schedState === 'undefined' || !schedState.slots || !schedState.slots.length) return null;
+  const now = Date.now();
+  let best = null;
+  for (const slot of schedState.slots) {
+    if (slot.student_id !== studentId) continue;
+    const occ = schedState.occBySlot[slot.id];
+    if (!occ) continue;
+    let instant = occ.instant;
+    const upcoming = occ.instant.getTime() + (slot.duration_min || 60) * 60000 > now;
+    if (!upcoming || schedFlagFor(slot)) instant = schedOccurrence(slot, 1).instant;
+    if (!best || instant < best) best = instant;
+  }
+  return best ? `${schedDayLabel(best)} · ${schedFmtTime(best, schedState.viewerTz)}` : null;
+}
+
+function _tpHintActions(h, student) {
+  if (activeContext().readOnly) return '';   // View-as is read-only: evidence only
+  const sid = student.id, a = h.action || {};
+  if (a.type === 'teachAgain') return `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorTeachAgain('${escapeHtml(a.sessionId)}')">Teach this session again</button>`;
+  if (a.type === 'openCurriculum') return `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorTeachNext('${escapeHtml(a.curriculumId)}','${sid}')">Teach this next</button>`;
+  if (a.type === 'planSkill') return `<button type="button" class="tp-btn" onclick="tutorPlanSkill('${escapeHtml(a.skill)}','${sid}')">Plan a ${escapeHtml(TP_SKILL_LABELS[a.skill] || a.skill)} session</button>`;
+  if (a.type === 'nudge' && _tpCanNudge({ status: 'nudge', studentId: sid })) return `<button type="button" class="tp-btn" onclick="tutorNudge('${sid}')">${pathIcon('send', 16)} Send a nudge</button>`;
+  return '';
+}
+
+function _tpHintHtml(h, student) {
+  const acts = _tpHintActions(h, student);
+  return `
+    <li class="tp-hint tp-hint-${h.kind}">
+      <span class="tp-hi">${pathIcon(TP_HINT_ICON[h.kind] || 'target', 22)}</span>
+      <div class="tp-hb">
+        <p class="tp-hk">${escapeHtml(TP_HINT_LABEL[h.kind] || h.kind)}</p>
+        <p class="tp-ht">${bidiText(h.title)}</p>
+        <p class="tp-he">${bidiText(h.evidence)}</p>
+        ${acts ? `<div class="tp-hacts">${acts}</div>` : ''}
+      </div>
+    </li>`;
+}
+
+function _tpBriefHtml(sum, student, curriculumIndex) {
+  const cfg = tutorCfg();
+  const hints = tutorHints(sum, tutorState.sessions, { curriculum: curriculumIndex });
+  const brief = tutorBriefSummary(sum);
+  const next = tutorNextClassFor(student.id);
+  const body = hints.length
+    ? `<ul class="tp-hints">${hints.map(h => _tpHintHtml(h, student)).join('')}</ul>`
+    : `<p class="tp-allgood">${sum.latest ? 'Nothing to flag. The latest session is going well.' : 'Hints appear after the first session is delivered.'}</p>`;
+  return `
+    <section class="pp-card tp-brief" aria-label="Before your next class">
+      <div class="tp-brief-head">
+        <h2 class="pp-h">Before your next class</h2>
+        ${next ? `<span class="tp-next">${pathIcon('clock', 14)} Next class: <b>${escapeHtml(next)}</b></span>` : ''}
+      </div>
+      <p class="pp-sub tp-brief-line">${escapeHtml(brief.line)}</p>
+      ${body}
+      <details class="tp-how"><summary>How these suggestions are chosen</summary>
+        <p><b>Revisit:</b> practising, but at least two activities are under ${Math.round(cfg.revisitAccuracy * 100)}%, or fewer than half were done.
+        <b>Next in the curriculum:</b> the session after the last curriculum session delivered, in the same skill sequence (custom sessions have no position).
+        <b>Balance:</b> a core skill missing from the last ${cfg.balanceWindow} sessions.
+        <b>Check in first:</b> no practice for ${cfg.nudgeDays} or more days.
+        These are suggestions only. You decide what to teach.</p>
+      </details>
+    </section>`;
+}
+
+/* The curriculum hint needs the level file (a static JSON). Fetch it once per level, then
+   redraw only the brief. Failure is silent: the other hints still show. */
+async function tutorLoadCurriculumHint(student) {
+  const delivered = tutorDeliveredSessions(tutorState.sessions, student.id);
+  const slug = tutorCurriculumSlug(tutorCurriculumLevelOf(delivered));
+  if (!slug) return;
+  tutorBoardState.curCache = tutorBoardState.curCache || {};
+  try {
+    if (!tutorBoardState.curCache[slug]) {
+      const res = await fetch(`curriculum/${slug}.json`);
+      if (!res.ok) return;
+      tutorBoardState.curCache[slug] = (await res.json()).sessions || [];
+    }
+  } catch (e) { return; }
+  if (tutorBoardState.studentId !== student.id || tutorState.view !== 'student') return;   // moved on meanwhile
+  tutorBoardState.curIndex = tutorCurriculumIndex([tutorBoardState.curCache[slug]]);
+  tutorBoardState.curHintFor = student.id;
+  const host = document.getElementById('tpBrief');
+  if (host) {
+    const sum = tutorStudentSummary(student, tutorState.sessions, tutorState.attempts, { tz: _pathTz() });
+    host.innerHTML = _tpBriefHtml(sum, student, tutorBoardState.curIndex);
+  }
+}
+
+/* ─────────────── the actions behind the hint buttons ─────────────── */
+
+/* Leave the Students views before the prep screens take over (they only know about
+   My Sessions and Curriculum). */
+function _tpLeaveTutorViews() {
+  ['tutorStudents', 'tutorStudent'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
+}
+
+/* Revisit: open the same plan for this student again (like "Use for a student"). */
+function tutorTeachAgain(sessionId) {
+  if (activeContext().readOnly) return;
+  const row = (tutorState.sessions || []).find(r => r.id === sessionId);
+  const student = row && (tutorState.students || []).find(s => s.id === row.student_id);
+  if (!row || !row.plan || !student) { showToast('Could not open that session.', 'error'); return; }
+  _tpLeaveTutorViews();
+  tutorState.view = 'home';
+  tutorLoadPlanIntoPreview(row.plan, row.plan_id || null, student, 'Teaching again: ' + (row.title || 'session'));
+}
+
+/* Next in the curriculum: open that curriculum session for this student. */
+async function tutorTeachNext(curriculumId, studentId) {
+  if (activeContext().readOnly) return;
+  const student = (tutorState.students || []).find(s => s.id === studentId);
+  if (!student) return;
+  try {
+    const row = await dataGetCurriculumPlan(curriculumId);
+    if (!row || !row.plan) { showToast('That curriculum session is not available yet.', 'warn'); return; }
+    _tpLeaveTutorViews();
+    tutorState.view = 'home';
+    tutorLoadPlanIntoPreview(row.plan, row.id, student, 'Curriculum: ' + (row.title || curriculumId), true);
+  } catch (e) { showToast('Could not open: ' + e.message, 'error'); }
+}
+
+/* Balance: start a new session with that skill and this student already chosen. */
+function tutorPlanSkill(skill, studentId) {
+  if (activeContext().readOnly) return;
+  const student = (tutorState.students || []).find(s => s.id === studentId);
+  if (!student) return;
+  _tpLeaveTutorViews();
+  tutorNewSession();
+  tutorState.selectedStudent = student;
+  renderTutorStudentPicker();
+  selectSessionType(skill);
+}
+
+/* Home shortcut: "Prepare" next to the next-class line opens that student's page. */
+function tutorPrepareFor(studentId) { tutorOpenStudent(studentId); }
