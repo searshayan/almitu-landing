@@ -15,6 +15,18 @@ const PATH_UI_DEFAULT = true;
 const PATH_WEEKLY_GOAL = 3;      // practice days per week (weeks start Monday)
 const PATH_STALE_DAYS = 14;      // older unfinished sessions stop counting as "behind"
 
+/* ── Tutor "Students" views (see js/tutorProgress.js) ──
+   TUTOR_UI_DEFAULT: show the new tutor views to everyone (false = off; a tutor/admin can
+   opt in with ?tutor=1, remembered; ?tutor=0 turns it off). The rest are the rules that
+   turn data into statuses and hints; all are suggestions, tune freely. */
+const TUTOR_UI_DEFAULT = false;
+const TUTOR_NUDGE_DAYS = 4;           // no practice for this many days after a class => "Needs a nudge"
+const TUTOR_SUPPORT_ACCURACY = 0.60;  // practising but accuracy below this => "Needs support"
+const TUTOR_READY_ACCURACY = 0.85;    // everything done at this accuracy or better => "Ready to move on"
+const TUTOR_REVISIT_ACCURACY = 0.60;  // an activity below this counts as weak for the "Revisit" hint
+const TUTOR_MIN_SCORED = 2;           // need at least this many scored activities before judging accuracy
+const TUTOR_BALANCE_WINDOW = 4;       // "Balance" hint looks at this many recent sessions
+
 const DEFAULT_CONFIG = {
   engine: 'demo',                 // 'demo' | 'claude' | 'custom'
   claudeKey: '',
