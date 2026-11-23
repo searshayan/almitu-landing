@@ -19,7 +19,7 @@ function tutorStudentsSection() { return document.getElementById('tutorStudents'
 /* Header tab: show the Students view and hide the other tutor views. */
 function tutorGoStudents() {
   tutorState.view = 'students';
-  ['tutorHome', 'tutorCurriculum', 'tutorPrepBar', 'step1', 'step2'].forEach(id => {
+  ['tutorHome', 'tutorCurriculum', 'tutorStudent', 'tutorPrepBar', 'step1', 'step2'].forEach(id => {
     const el = document.getElementById(id); if (el) el.classList.add('hidden');
   });
   const sec = tutorStudentsSection(); if (sec) sec.classList.remove('hidden');
@@ -27,22 +27,27 @@ function tutorGoStudents() {
   tutorRefreshBoard(true);
 }
 
-/* Re-read the practice attempts (cheap, RLS-scoped) so the board is current, then draw it. */
+/* Re-read the practice attempts (cheap, RLS-scoped). On failure we keep what we already had. */
+async function _tpFetchAttempts() {
+  try {
+    const ids = (tutorState.sessions || []).map(s => s.id);
+    tutorState.attempts = await dataListAttemptsForSessions(ids);
+  } catch (e) {
+    console.warn('tutor progress: could not refresh attempts', e);
+  }
+  tutorBoardState.loaded = true;
+  tutorBoardState.updatedAt = Date.now();
+}
+
+/* Refresh the practice attempts so the board is current, then draw it. */
 async function tutorRefreshBoard(force) {
   const sec = tutorStudentsSection();
   if (!sec || tutorBoardState.loading) return;
   if (force || !tutorBoardState.loaded) {
     tutorBoardState.loading = true;
     if (!tutorBoardState.loaded) sec.innerHTML = '<div class="tp-loading">Loading your students…</div>';
-    try {
-      const ids = (tutorState.sessions || []).map(s => s.id);
-      tutorState.attempts = await dataListAttemptsForSessions(ids);
-    } catch (e) {
-      console.warn('tutor board: could not refresh attempts', e);   // keep what we already had
-    }
+    await _tpFetchAttempts();
     tutorBoardState.loading = false;
-    tutorBoardState.loaded = true;
-    tutorBoardState.updatedAt = Date.now();
   }
   renderTutorBoard();
 }
@@ -87,8 +92,7 @@ function _tpCanNudge(r) {
 function _tpActions(r) {
   const nudge = _tpCanNudge(r)
     ? `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorNudge('${r.studentId}')">${pathIcon('send', 16)} Nudge</button>` : '';
-  const view = r.latestRow
-    ? `<button type="button" class="tp-btn" onclick="tutorViewSession('${r.latestRow.id}')" aria-label="View latest session for ${escapeHtml(r.name)}">View</button>` : '';
+  const view = `<button type="button" class="tp-btn" onclick="tutorOpenStudent('${r.studentId}')" aria-label="View progress for ${escapeHtml(r.name)}">View</button>`;
   return nudge + view;
 }
 
@@ -185,4 +189,135 @@ async function tutorNudge(studentId) {
   const ok = await msgOpenWithDraft(studentId, tutorNudgeDraft(student, summary));
   if (ok) showToast('Draft ready. Edit it if you like, then press Send.', 'info');
   else showToast('Chat is not available right now.', 'warn');
+}
+
+/* ═══════════════════════════════════════════════════════
+   One student's progress page
+   ═══════════════════════════════════════════════════════ */
+
+/* Open a student's page from the board. */
+function tutorOpenStudent(studentId) {
+  tutorBoardState.studentId = studentId;
+  tutorState.view = 'student';
+  ['tutorHome', 'tutorCurriculum', 'tutorStudents', 'tutorPrepBar', 'step1', 'step2'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.classList.add('hidden');
+  });
+  const sec = document.getElementById('tutorStudent'); if (sec) sec.classList.remove('hidden');
+  renderHeaderNav(activeContext());
+  renderTutorStudentPage();
+  window.scrollTo(0, 0);
+}
+
+async function tutorRefreshStudent() {
+  await _tpFetchAttempts();
+  renderTutorStudentPage();
+}
+
+/* "4 of 6 correct (67%)", "4 pairs in 4 tries", "All cards flipped", "Not started". */
+function _tpStepDetail(s) {
+  if (!s.done) return 'Not started';
+  const extra = (s.attempts > 1 ? ` · ${s.attempts} attempts` : '') + (s.challenge ? ' · challenge' : '');
+  if (s.activity === 'flashcards') return 'All cards flipped' + extra;
+  if (s.bestRatio == null) return 'Finished' + extra;
+  if (s.activity === 'matching') return `${s.bestCorrect} pairs in ${s.bestTotal} ${s.bestTotal === 1 ? 'try' : 'tries'}` + extra;
+  return `${s.bestCorrect} of ${s.bestTotal} correct (${Math.round(s.bestRatio * 100)}%)` + extra;
+}
+
+function _tpActivityRow(s) {
+  const cfg = tutorCfg();
+  const meter = s.bestRatio != null
+    ? `<div class="tp-meter${s.bestRatio < cfg.revisitAccuracy ? ' tp-meter-lo' : ''}" aria-hidden="true"><i style="width:${Math.round(s.bestRatio * 100)}%"></i></div>` : '';
+  const right = s.done
+    ? `${s.stars ? pathStarsHtml(s.stars) : ''}${s.seconds > 0 ? `<span class="tp-muted">${pathTimeText(s.seconds)}</span>` : ''}`
+    : '<span class="tp-muted">Open</span>';
+  return `
+    <li class="tp-arow">
+      <span class="tp-ai${s.done ? ' tp-ai-done' : ''}">${s.done ? pathIcon('check', 18) : pathIcon(s.id, 18)}</span>
+      <div class="tp-ab"><div class="tp-an">${escapeHtml(s.label)}</div><div class="tp-ad">${escapeHtml(_tpStepDetail(s))}</div>${meter}</div>
+      <div class="tp-ar">${right}</div>
+    </li>`;
+}
+
+function _tpDate(ts) {
+  try { return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); } catch (e) { return ''; }
+}
+
+function _tpHistoryRow(h) {
+  const p = h.progress, row = h.row;
+  return `
+    <tr>
+      <th scope="row" class="tp-name"><b>${bidiText(row.title || 'Session')}</b><span class="tp-muted">${escapeHtml(getSessionType(row.session_type).label)}</span></th>
+      <td>${_tpDate(row.created_at)}</td>
+      <td>${p.doneCount} of ${p.total}</td>
+      <td>${p.accuracy != null ? `<b class="tp-acc${p.accuracy < tutorCfg().supportAccuracy ? ' tp-lo' : p.accuracy >= tutorCfg().readyAccuracy ? ' tp-hi' : ''}">${Math.round(p.accuracy * 100)}%</b>` : '<span class="tp-muted">no data</span>'}</td>
+      <td>${pathTimeText(p.seconds)}</td>
+      <td>${p.xp} XP</td>
+      <td class="tp-act"><button type="button" class="tp-btn" onclick="tutorViewSession('${row.id}')" aria-label="Notes and attempts for ${escapeHtml(row.title || 'session')}">Details</button></td>
+    </tr>`;
+}
+
+function renderTutorStudentPage() {
+  const sec = document.getElementById('tutorStudent');
+  if (!sec) return;
+  const student = (tutorState.students || []).find(s => s.id === tutorBoardState.studentId);
+  const back = `<button type="button" class="tp-btn" onclick="tutorGoStudents()">${pathIcon('left', 16)} Students</button>`;
+  if (!student) { sec.innerHTML = `<div class="tp-head">${back}</div><div class="tp-card tp-empty">That student is no longer in your list.</div>`; return; }
+
+  const sum = tutorStudentSummary(student, tutorState.sessions, tutorState.attempts, { tz: _pathTz() });
+  const latest = sum.latest, wk = sum.week;
+  const meta = [sum.level, sum.language, sum.country].filter(Boolean).join(' · ');
+  const nudge = _tpCanNudge(sum)
+    ? `<button type="button" class="tp-btn tp-btn-pri" onclick="tutorNudge('${sum.studentId}')">${pathIcon('send', 16)} Nudge</button>` : '';
+
+  const head = `
+    <div class="tp-pagehead">
+      ${back}
+      <div class="tp-who"><h1 class="tp-title">${bidiText(sum.name)}</h1><p class="tp-sub">${escapeHtml(meta)}</p></div>
+      <div class="tp-pagestatus">${_tpPill(sum)}<span class="tp-reason">${escapeHtml(sum.statusReason)}</span></div>
+      <div class="tp-pageactions">${nudge}<button type="button" class="tp-btn" onclick="tutorRefreshStudent()">${pathIcon('refresh', 16)} Refresh</button></div>
+    </div>`;
+
+  // ── this week ──
+  const tp = pathTimeParts(wk.seconds);
+  const circles = latest ? `
+      <div class="pp-circles">
+        <div class="pp-c">${pathRing(latest.doneCount, latest.total, 76)}<span class="pp-c-l">Activities done</span></div>
+        <div class="pp-c"><div class="pp-disc${wk.seconds > 0 ? '' : ' pp-disc-zero'}${tp.unit ? '' : ' pp-disc-long'}" role="img" aria-label="${pathTimeText(wk.seconds)} practised this week"><b>${tp.n}</b>${tp.unit ? `<span>${tp.unit}</span>` : ''}</div><span class="pp-c-l">Time this week</span></div>
+        <div class="pp-c"><div class="pp-disc pp-disc-xp${latest.xp > 0 ? '' : ' pp-disc-zero'}" role="img" aria-label="${latest.xp} XP on the latest session"><b>${latest.xp}</b><span>XP</span></div><span class="pp-c-l">XP this session</span></div>
+      </div>` : '';
+  const week = `
+    <section class="pp-card" aria-label="This week's practice">
+      <div class="pp-row" style="align-items:flex-start">
+        <div><h2 class="pp-h">This week's practice</h2><p class="pp-sub">${wk.reached ? 'Weekly goal reached' : `${wk.count} of ${wk.goal} days · ${wk.remaining} to go`}</p></div>
+        <div class="pp-side"><span class="pp-big${wk.seconds > 0 ? '' : ' pp-big-zero'}" aria-label="${pathTimeText(wk.seconds)} practised this week">${tp.n}${tp.unit ? `<small>${tp.unit}</small>` : ''}</span><span class="pp-side-l">this week</span></div>
+      </div>
+      ${pathBarsHtml(wk)}
+      ${pathTrendRowHtml(wk)}
+      ${wk.streak >= 1 ? `<p class="pp-streak">${pathIcon('flame', 14)} Practised ${wk.streak} ${wk.streak === 1 ? 'day' : 'days'} in a row</p>` : ''}
+      ${circles}
+    </section>`;
+
+  // ── latest session ──
+  const latestCard = latest ? `
+    <section class="pp-card" aria-label="Latest session">
+      <h2 class="pp-h">Latest session: ${bidiText(sum.latestRow.title || 'Session')}</h2>
+      <p class="pp-sub">${_tpDate(sum.latestRow.created_at)} · ${escapeHtml(getSessionType(sum.latestRow.session_type).label)} · ${latest.doneCount} of ${latest.total} activities done</p>
+      <ul class="tp-alist">${latest.steps.map(_tpActivityRow).join('')}</ul>
+      <p class="tp-note">Warm-up and Explore More are not saved on the server, so they are not shown. Time counts finished activities only.</p>
+    </section>` : `
+    <section class="pp-card"><h2 class="pp-h">Latest session</h2><p class="pp-sub">No session has been delivered to ${escapeHtml(sum.name)} yet. Once one is, their practice appears here.</p></section>`;
+
+  // ── history ──
+  const hist = tutorSessionHistory(tutorState.sessions, tutorState.attempts, student.id, 10);
+  const history = hist.length ? `
+    <section class="pp-card" aria-label="Session history">
+      <h2 class="pp-h">Sessions</h2>
+      <div class="tp-scroll"><table class="tp-table tp-always">
+        <caption class="tp-sr">Delivered sessions, newest first</caption>
+        <thead><tr><th scope="col">Session</th><th scope="col">Date</th><th scope="col">Activities</th><th scope="col">Accuracy</th><th scope="col">Time</th><th scope="col">XP</th><th scope="col"><span class="tp-sr">Actions</span></th></tr></thead>
+        <tbody>${hist.map(_tpHistoryRow).join('')}</tbody>
+      </table></div>
+    </section>` : '';
+
+  sec.innerHTML = head + `<div class="tp-grid">${week}${latestCard}</div>${history}`;
 }

@@ -32,6 +32,7 @@ const PATH_ICON_PATHS = {
   refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
   chat:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
   clock:  '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  left:   '<path d="m15 18-6-6 6-6"/>',
   up:     '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
   arrow:  '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-1.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98 1.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>'
@@ -133,11 +134,8 @@ function pathTrendRowHtml(wk) {
     </div>`;
 }
 
-function pathWeekCardHtml() {
-  const wk = pathWeekSummary(pathAttempts());
-  const xp = summariseAttempts(pathAttempts()).xp;
-  const days = wk.reached ? 'Weekly goal reached' : `${wk.count} of ${wk.goal} days · ${wk.remaining} to go`;
-  const tp = pathTimeParts(wk.seconds);
+/* The seven daily time bars for a week summary (shared by the student card and the tutor page). */
+function pathBarsHtml(wk) {
   const max = Math.max(1, ...wk.days.map(d => d.seconds));
   const bars = wk.days.map((d, i) => {
     const h = d.practiced ? Math.max(18, Math.round(d.seconds / max * 100)) : 6;
@@ -148,6 +146,14 @@ function pathWeekCardHtml() {
         <span class="pp-col-m" aria-hidden="true">${m}</span><span class="pp-col-b" style="height:${h}%" aria-hidden="true"></span><span class="pp-col-l" aria-hidden="true">${d.label}</span>
       </div>`;
   }).join('');
+  return `<div class="pp-bars" role="list">${bars}</div>`;
+}
+
+function pathWeekCardHtml() {
+  const wk = pathWeekSummary(pathAttempts());
+  const xp = summariseAttempts(pathAttempts()).xp;
+  const days = wk.reached ? 'Weekly goal reached' : `${wk.count} of ${wk.goal} days · ${wk.remaining} to go`;
+  const tp = pathTimeParts(wk.seconds);
   return `
     <section class="pp-card" aria-label="This week's practice">
       <div class="pp-row" style="align-items:flex-start">
@@ -158,7 +164,7 @@ function pathWeekCardHtml() {
           <span class="pp-side-l">this week</span>
         </div>
       </div>
-      <div class="pp-bars" role="list">${bars}</div>
+      ${pathBarsHtml(wk)}
       ${pathTrendRowHtml(wk)}
       ${wk.streak >= 1 ? `<p class="pp-streak">${pathIcon('flame', 14)} Practised ${wk.streak} ${wk.streak === 1 ? 'day' : 'days'} in a row</p>` : ''}
     </section>`;

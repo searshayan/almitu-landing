@@ -135,9 +135,9 @@ function renderHeaderNav(ctx) {
       btn('AI Settings', "adminTab('settings')", adminActiveTab === 'settings');
   } else if (ctx.role === 'tutor') {
     const students = (typeof tutorUiEnabled === 'function' && tutorUiEnabled())
-      ? btn('Students', "tutorGoStudents()", tutorState.view === 'students') : '';
+      ? btn('Students', "tutorGoStudents()", tutorState.view === 'students' || tutorState.view === 'student') : '';
     nav.innerHTML =
-      btn('My Sessions', "tutorGoHome()", tutorState.view === 'home' || (tutorState.view !== 'curriculum' && tutorState.view !== 'students')) +
+      btn('My Sessions', "tutorGoHome()", tutorState.view === 'home' || !['curriculum', 'students', 'student'].includes(tutorState.view)) +
       students +
       btn('Curriculum', "tutorGoCurriculum()", tutorState.view === 'curriculum');
   } else {
@@ -250,7 +250,7 @@ window.tutorState = {
   currentPlanIsCurriculum: false, // loaded plan came from the shared curriculum (read-only)
 
   // ── curriculum browser ──
-  view: 'home',          // 'home' | 'curriculum' | 'students'
+  view: 'home',          // 'home' | 'curriculum' | 'students' | 'student'
   curLevels: null,       // { 'Pre-A1': 37, ... } — levels that actually have content
   curTier: null,         // 'foundation' | 'development' | 'proficiency'
   curLevel: null,        // selected level
@@ -300,7 +300,7 @@ function tutorGoHome() {
   tutorState.view = 'home';
   document.getElementById('tutorHome').classList.remove('hidden');
   document.getElementById('tutorCurriculum').classList.add('hidden');
-  const _ts = document.getElementById('tutorStudents'); if (_ts) _ts.classList.add('hidden');
+  ['tutorStudents', 'tutorStudent'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');
@@ -316,7 +316,7 @@ function tutorGoCurriculum() {
   tutorState.view = 'curriculum';
   document.getElementById('tutorHome').classList.add('hidden');
   document.getElementById('tutorCurriculum').classList.remove('hidden');
-  const _ts = document.getElementById('tutorStudents'); if (_ts) _ts.classList.add('hidden');
+  ['tutorStudents', 'tutorStudent'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
   document.getElementById('tutorPrepBar').classList.add('hidden');
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.add('hidden');

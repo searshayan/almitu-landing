@@ -92,12 +92,13 @@ function tutorSessionProgress(row, attempts) {
   const mine = (attempts || []).filter(a => a.session_id === row.id);
   const steps = pathStepsFor(_tpNb(row)).filter(s => !s.bonus && s.id !== 'warm').map(s => {
     const rows = mine.filter(a => a.activity === s.activity);
-    let best = null;
-    rows.forEach(a => { const r = pathAttemptRatio(a); if (r != null && (best == null || r > best)) best = r; });
+    let best = null, bestRow = null;
+    rows.forEach(a => { const r = pathAttemptRatio(a); if (r != null && (best == null || r > best)) { best = r; bestRow = a; } });
     return {
       id: s.id, activity: s.activity, label: s.label,
       done: rows.length > 0, attempts: rows.length,
       bestRatio: best, stars: best == null ? null : pathStarsFromRatio(best),
+      bestCorrect: bestRow ? bestRow.correct : null, bestTotal: bestRow ? bestRow.total : null,   // the raw score behind the best attempt
       seconds: rows.reduce((n, a) => n + (a.seconds || 0), 0),
       challenge: rows.some(a => a.challenge)
     };
@@ -113,6 +114,12 @@ function tutorSessionProgress(row, attempts) {
     xp: mine.reduce((n, a) => n + (a.xp || 0), 0),
     attemptCount: mine.length
   };
+}
+
+/* A student's delivered sessions (newest first, up to `limit`), each with its progress. */
+function tutorSessionHistory(sessions, attempts, studentId, limit) {
+  return tutorDeliveredSessions(sessions, studentId).slice(0, limit || 10)
+    .map(row => ({ row, progress: tutorSessionProgress(row, attempts) }));
 }
 
 /* ─────────────── status ─────────────── */

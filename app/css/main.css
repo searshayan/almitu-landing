@@ -1543,3 +1543,28 @@ div.tp-act .tp-btn { flex: 1; }
   .tp-cards { display: grid; gap: var(--pp-s3); padding: var(--pp-s2) 0; }
   .tp-card { padding: var(--pp-s2); border: 0; background: transparent; }
 }
+
+/* ── Tutor student page (js/tutorProgressUi.js) ── */
+.tp-pagehead { display: flex; align-items: center; gap: var(--pp-s3) var(--pp-s4); flex-wrap: wrap; margin-bottom: var(--pp-s4); }
+.tp-who { flex: 1 1 220px; min-width: 0; }
+.tp-pagestatus { display: flex; flex-direction: column; align-items: flex-start; }
+.tp-pagestatus .tp-reason { max-width: 280px; }
+.tp-pageactions { display: flex; gap: var(--pp-s2); flex-wrap: wrap; }
+.tp-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--pp-s4); margin-bottom: var(--pp-s4); align-items: start; }
+.tp-alist { list-style: none; margin: var(--pp-s3) 0 0; padding: 0; }
+.tp-arow { display: flex; align-items: center; gap: var(--pp-s3); padding: var(--pp-s3) 0; border-top: 1px solid var(--line); }
+.tp-arow:first-child { border-top: 0; }
+.tp-ai { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--pp-r-md); background: var(--pp-neutral); color: var(--secondary); }
+.tp-ai-done { background: var(--pp-done-fill); color: var(--pp-on-done); }
+.tp-ab { min-width: 0; flex: 1; }
+.tp-an { font-size: var(--pp-fs-sm); font-weight: 700; color: var(--navy); }
+.tp-ad { font-size: var(--pp-fs-xs); color: var(--muted); margin-top: 2px; }
+.tp-ar { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.tp-meter { width: 120px; max-width: 100%; height: 8px; margin-top: var(--pp-s2); border-radius: 99px; background: var(--pp-neutral); overflow: hidden; }
+.tp-meter > i { display: block; height: 100%; border-radius: 99px; background: var(--pp-done-fill); }
+.tp-meter-lo > i { background: var(--pp-accent); }
+.tp-note { margin: var(--pp-s3) 0 0; font-size: var(--pp-fs-xs); color: var(--muted); line-height: 1.5; }
+.tp-scroll { margin-top: var(--pp-s2); overflow-x: auto; }
+.tp-table.tp-always { min-width: 640px; }
+@media (max-width: 979px) { .tp-table.tp-always { display: table; } }
+@media (max-width: 859px) { .tp-grid { grid-template-columns: 1fr; } }
