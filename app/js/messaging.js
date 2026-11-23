@@ -126,6 +126,25 @@ function upsertThreadRow(row) {
   msgState.thread.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 }
 
+/* Open the drawer on a conversation with a draft already typed in (used by the tutor
+   Students board "Nudge"). The tutor reviews it and presses Send. Text already typed
+   for the SAME student is kept; text left over from a different conversation is replaced,
+   so a half-written message can never end up under the wrong name.
+   Returns false if the chat isn't available. */
+async function msgOpenWithDraft(partnerId, text) {
+  if (!msgState.built || !msgState.partners.some(p => p.id === partnerId)) return false;
+  const sameThread = msgState.partnerId === partnerId;
+  msgState.partnerId = partnerId;      // so openMessages() opens this conversation, not the last one
+  openMessages();
+  await openThread(partnerId);
+  const input = document.getElementById('msgInput');
+  if (input) {
+    if (!(sameThread && input.value.trim())) { input.value = text; autoGrow(input); }
+    input.focus();
+  }
+  return true;
+}
+
 async function openThread(partnerId) {
   msgState.partnerId = partnerId;
   const pane = document.getElementById('msgConversation');
